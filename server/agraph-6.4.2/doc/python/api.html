@@ -1,0 +1,1185 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>AllegroGraph Python API Reference &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="src" href="_gen/modules.html" />
+    <link rel="prev" title="Running AG on AWS EC2" href="tutorial/fedex.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+        &laquo;<a href="tutorial/fedex.html" title="previous chapter">Running AG on AWS EC2</a>
+      <a href="_gen/modules.html" title="next chapter">src</a> 
+      &raquo;
+    </div>
+  
+    
+  <div class="section" id="allegrograph-python-api-reference">
+<h1>AllegroGraph Python API Reference<a class="headerlink" href="#allegrograph-python-api-reference" title="Permalink to this headline">¶</a></h1>
+<p>This is a description of the Python Application Programmer’s Interface
+(API) to Franz Inc.’s <a class="reference external" href="http://franz.com/agraph/allegrograph/">AllegroGraph</a>.</p>
+<p>The Python API offers convenient and efficient access to an
+AllegroGraph server from a Python-based application. This API provides
+methods for creating, querying and maintaining RDF data, and for
+managing the stored triples.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Python API deliberately emulates the Eclipse RDF4J API
+(formerly Aduna Sesame) to make it easier to migrate from RDF4J to
+AllegroGraph.&nbsp; The Python API has also been extended in ways that
+make it easier and more intuitive than the RDF4J API.</p>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="allegrographserver-class">
+<h2>AllegroGraphServer class<a class="headerlink" href="#allegrographserver-class" title="Permalink to this headline">¶</a></h2>
+<a id="franz.openrdf.sail.allegrographserver.AllegroGraphServer"></a><dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">franz.openrdf.sail.allegrographserver.</code><code class="descname">AllegroGraphServer</code><span class="sig-paren">(</span><em>host=None</em>, <em>port=None</em>, <em>user=None</em>, <em>password=None</em>, <em>cainfo=None</em>, <em>sslcert=None</em>, <em>verifyhost=None</em>, <em>verifypeer=None</em>, <em>protocol=None</em>, <em>proxy=None</em>, <em>**options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>The AllegroGraphServer object represents a remote AllegroGraph server on
+the network. It is used to inventory and access the catalogs of that
+server.</p>
+<p>Example:</p>
+<div class="code python highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">server</span> <span class="o">=</span> <span class="n">AllegroGraphServer</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8080</span><span class="p">,</span>
+                            <span class="n">user</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;pw&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.__init__" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.__init__"><code class="xref py py-obj docutils literal"><span class="pre">__init__</span></code></a></td>
+<td>Define the connection to the AllegroGraph HTTP server.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRole" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRole"><code class="xref py py-obj docutils literal"><span class="pre">addRole</span></code></a></td>
+<td>Creates a new role.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRoleAccess" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRoleAccess"><code class="xref py py-obj docutils literal"><span class="pre">addRoleAccess</span></code></a></td>
+<td>Grant read/write access to a role.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRolePermission" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRolePermission"><code class="xref py py-obj docutils literal"><span class="pre">addRolePermission</span></code></a></td>
+<td>Grants a role a certain permission.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRoleSecurityFilter" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRoleSecurityFilter"><code class="xref py py-obj docutils literal"><span class="pre">addRoleSecurityFilter</span></code></a></td>
+<td>Add a security filter for the user.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addScript" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addScript"><code class="xref py py-obj docutils literal"><span class="pre">addScript</span></code></a></td>
+<td>Create or replace a sitescript.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUser" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUser"><code class="xref py py-obj docutils literal"><span class="pre">addUser</span></code></a></td>
+<td>Create a new user.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserAccess" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserAccess"><code class="xref py py-obj docutils literal"><span class="pre">addUserAccess</span></code></a></td>
+<td>Grant read/write access to a user.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserPermission" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserPermission"><code class="xref py py-obj docutils literal"><span class="pre">addUserPermission</span></code></a></td>
+<td>Assigns the given permission to this user.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserRole" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserRole"><code class="xref py py-obj docutils literal"><span class="pre">addUserRole</span></code></a></td>
+<td>Add a role to a user.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserSecurityFilter" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserSecurityFilter"><code class="xref py py-obj docutils literal"><span class="pre">addUserSecurityFilter</span></code></a></td>
+<td>Add a security filter for the user.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.changeUserPassword" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.changeUserPassword"><code class="xref py py-obj docutils literal"><span class="pre">changeUserPassword</span></code></a></td>
+<td>Change the password for the given user.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRole" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRole"><code class="xref py py-obj docutils literal"><span class="pre">deleteRole</span></code></a></td>
+<td>Deletes a role.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRoleAccess" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRoleAccess"><code class="xref py py-obj docutils literal"><span class="pre">deleteRoleAccess</span></code></a></td>
+<td>Revoke read/write access for a role.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRolePermission" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRolePermission"><code class="xref py py-obj docutils literal"><span class="pre">deleteRolePermission</span></code></a></td>
+<td>Revokes a permission for a role.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRoleSecurityFilter" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRoleSecurityFilter"><code class="xref py py-obj docutils literal"><span class="pre">deleteRoleSecurityFilter</span></code></a></td>
+<td>Add a security filter for the user.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteScript" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteScript"><code class="xref py py-obj docutils literal"><span class="pre">deleteScript</span></code></a></td>
+<td>Delete a sitescript.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUser" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUser"><code class="xref py py-obj docutils literal"><span class="pre">deleteUser</span></code></a></td>
+<td>Delete a user.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserAccess" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserAccess"><code class="xref py py-obj docutils literal"><span class="pre">deleteUserAccess</span></code></a></td>
+<td>Takes the same parameters as PUT on this URL, but revokes the access instead of granting it.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserPermission" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserPermission"><code class="xref py py-obj docutils literal"><span class="pre">deleteUserPermission</span></code></a></td>
+<td>Revokes the given permission for this user.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserRole" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserRole"><code class="xref py py-obj docutils literal"><span class="pre">deleteUserRole</span></code></a></td>
+<td>Remove a role from a user.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserSecurityFilter" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserSecurityFilter"><code class="xref py py-obj docutils literal"><span class="pre">deleteUserSecurityFilter</span></code></a></td>
+<td>Add a security filter for the user.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.getInitfile" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.getInitfile"><code class="xref py py-obj docutils literal"><span class="pre">getInitfile</span></code></a></td>
+<td>Retrieve the contents of the server initialization file.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.getScript" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.getScript"><code class="xref py py-obj docutils literal"><span class="pre">getScript</span></code></a></td>
+<td>Get the body of a sitescript.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listCatalogs" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listCatalogs"><code class="xref py py-obj docutils literal"><span class="pre">listCatalogs</span></code></a></td>
+<td>Get the list of catalogs on this server.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRoleAccess" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRoleAccess"><code class="xref py py-obj docutils literal"><span class="pre">listRoleAccess</span></code></a></td>
+<td>Query the access granted to a role.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRolePermissions" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRolePermissions"><code class="xref py py-obj docutils literal"><span class="pre">listRolePermissions</span></code></a></td>
+<td>Lists the permission flags granted to a role.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRoleSecurityFilters" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRoleSecurityFilters"><code class="xref py py-obj docutils literal"><span class="pre">listRoleSecurityFilters</span></code></a></td>
+<td>List security filters for user.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRoles" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRoles"><code class="xref py py-obj docutils literal"><span class="pre">listRoles</span></code></a></td>
+<td>Returns the names of all defined roles.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listScripts" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listScripts"><code class="xref py py-obj docutils literal"><span class="pre">listScripts</span></code></a></td>
+<td>Return the list of Sitescripts currently on the server.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserAccess" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserAccess"><code class="xref py py-obj docutils literal"><span class="pre">listUserAccess</span></code></a></td>
+<td>Retrieve the read/write access for a user.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserEffectiveAccess" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserEffectiveAccess"><code class="xref py py-obj docutils literal"><span class="pre">listUserEffectiveAccess</span></code></a></td>
+<td>Like listUserAccess, but also includes the access granted to roles that this user has.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserEffectivePermissions" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserEffectivePermissions"><code class="xref py py-obj docutils literal"><span class="pre">listUserEffectivePermissions</span></code></a></td>
+<td>Retrieve the permission flags assigned to the user, or any of its roles.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserPermissions" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserPermissions"><code class="xref py py-obj docutils literal"><span class="pre">listUserPermissions</span></code></a></td>
+<td>List the permission flags that have been assigned to a user (any of super, eval, session, replication).</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserRoles" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserRoles"><code class="xref py py-obj docutils literal"><span class="pre">listUserRoles</span></code></a></td>
+<td>Retrieves a list of role names for this user name.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserSecurityFilters" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserSecurityFilters"><code class="xref py py-obj docutils literal"><span class="pre">listUserSecurityFilters</span></code></a></td>
+<td>List security filters for user.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUsers" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUsers"><code class="xref py py-obj docutils literal"><span class="pre">listUsers</span></code></a></td>
+<td>Returns a list of names of all the users that have been defined.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.openCatalog" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.openCatalog"><code class="xref py py-obj docutils literal"><span class="pre">openCatalog</span></code></a></td>
+<td>Open a catalog by name.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.openFederated" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.openFederated"><code class="xref py py-obj docutils literal"><span class="pre">openFederated</span></code></a></td>
+<td>Open a session that federates several repositories.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.openSession" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.openSession"><code class="xref py py-obj docutils literal"><span class="pre">openSession</span></code></a></td>
+<td>Open a session on a federated, reasoning, or filtered store.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.setInitfile" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.setInitfile"><code class="xref py py-obj docutils literal"><span class="pre">setInitfile</span></code></a></td>
+<td>Replace the current initialization file contents with the <code class="docutils literal"><span class="pre">content</span></code> string or remove if None.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="catalog-class">
+<h2>Catalog class<a class="headerlink" href="#catalog-class" title="Permalink to this headline">¶</a></h2>
+<a id="franz.openrdf.sail.allegrographserver.Catalog"></a><dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">franz.openrdf.sail.allegrographserver.</code><code class="descname">Catalog</code><span class="sig-paren">(</span><em>name</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/franz/openrdf/sail/allegrographserver.html#Catalog"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Container of multiple repositories (triple stores).</p>
+<p>Construct catalogs using the server object:</p>
+<div class="code python highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">catalog</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">openCatalog</span><span class="p">(</span><span class="s1">&#39;scratch&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.Catalog.createRepository" title="franz.openrdf.sail.allegrographserver.Catalog.createRepository"><code class="xref py py-obj docutils literal"><span class="pre">createRepository</span></code></a></td>
+<td>Creates a new repository with the given name.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.Catalog.deleteRepository" title="franz.openrdf.sail.allegrographserver.Catalog.deleteRepository"><code class="xref py py-obj docutils literal"><span class="pre">deleteRepository</span></code></a></td>
+<td>Delete a repository.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.Catalog.getName" title="franz.openrdf.sail.allegrographserver.Catalog.getName"><code class="xref py py-obj docutils literal"><span class="pre">getName</span></code></a></td>
+<td>Return the catalog name.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.Catalog.getRepository" title="franz.openrdf.sail.allegrographserver.Catalog.getRepository"><code class="xref py py-obj docutils literal"><span class="pre">getRepository</span></code></a></td>
+<td>Creates or opens a repository.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.Catalog.listRepositories" title="franz.openrdf.sail.allegrographserver.Catalog.listRepositories"><code class="xref py py-obj docutils literal"><span class="pre">listRepositories</span></code></a></td>
+<td>Return a list of names of repositories (triple stores) managed by this catalog.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-franz.openrdf.sail.spec">
+<span id="spec-module"></span><h2>Spec module<a class="headerlink" href="#module-franz.openrdf.sail.spec" title="Permalink to this headline">¶</a></h2>
+<p>Helper functions for creating session specification strings.
+See <a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.openSession" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.openSession"><code class="xref py py-meth docutils literal"><span class="pre">openSession()</span></code></a></p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.spec.federate" title="franz.openrdf.sail.spec.federate"><code class="xref py py-obj docutils literal"><span class="pre">federate</span></code></a></td>
+<td>Create a session spec for connecting to a federated store.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.spec.graphFilter" title="franz.openrdf.sail.spec.graphFilter"><code class="xref py py-obj docutils literal"><span class="pre">graphFilter</span></code></a></td>
+<td>Create a graph-filtered session spec.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.spec.local" title="franz.openrdf.sail.spec.local"><code class="xref py py-obj docutils literal"><span class="pre">local</span></code></a></td>
+<td>Create a session spec for connecting to a store on the local server.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">map</span></code></td>
+<td>Return a list of the results of applying the function to the items of the argument sequence(s).</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.spec.reason" title="franz.openrdf.sail.spec.reason"><code class="xref py py-obj docutils literal"><span class="pre">reason</span></code></a></td>
+<td>Create a session spec that adds reasoning support to another session.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.spec.remote" title="franz.openrdf.sail.spec.remote"><code class="xref py py-obj docutils literal"><span class="pre">remote</span></code></a></td>
+<td>Create a session spec for connecting to a store on another server.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.spec.url" title="franz.openrdf.sail.spec.url"><code class="xref py py-obj docutils literal"><span class="pre">url</span></code></a></td>
+<td>Create a session spec for connecting to a remote store with known URL.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="repository-class">
+<h2>Repository class<a class="headerlink" href="#repository-class" title="Permalink to this headline">¶</a></h2>
+<a id="franz.openrdf.repository.repository.Repository"></a><dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">franz.openrdf.repository.repository.</code><code class="descname">Repository</code><span class="sig-paren">(</span><em>catalog</em>, <em>database_name</em>, <em>repository</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/franz/openrdf/repository/repository.html#Repository"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>A repository contains RDF data that can be queried and updated. Access
+to the repository can be acquired by opening a connection to it. This
+connection can then be used to query and/or update the contents of the
+repository.</p>
+<p>Please note that a repository needs to be initialized before it can be
+used and that it should be shut down before it is discarded/garbage
+collected. Forgetting the latter can result in loss of data (depending
+on the Repository implementation)!</p>
+<p>Construct instances using <a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.Catalog.getRepository" title="franz.openrdf.sail.allegrographserver.Catalog.getRepository"><code class="xref py py-meth docutils literal"><span class="pre">getRepository()</span></code></a>.</p>
+<div class="code python highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">catalog</span><span class="o">.</span><span class="n">getRepository</span><span class="p">(</span><span class="s2">&quot;agraph_test&quot;</span><span class="p">,</span> <span class="n">Repository</span><span class="o">.</span><span class="n">ACCESS</span><span class="p">)</span> <span class="k">as</span> <span class="n">repo</span><span class="p">:</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.__init__" title="franz.openrdf.repository.repository.Repository.__init__"><code class="xref py py-obj docutils literal"><span class="pre">__init__</span></code></a></td>
+<td>Invoke through <a class="reference internal" href="_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.Catalog.getRepository" title="franz.openrdf.sail.allegrographserver.Catalog.getRepository"><code class="xref py py-meth docutils literal"><span class="pre">getRepository()</span></code></a>.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.getConnection" title="franz.openrdf.repository.repository.Repository.getConnection"><code class="xref py py-obj docutils literal"><span class="pre">getConnection</span></code></a></td>
+<td>Opens a connection to this store that can be used for querying and updating the contents of the store.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.getDatabaseName" title="franz.openrdf.repository.repository.Repository.getDatabaseName"><code class="xref py py-obj docutils literal"><span class="pre">getDatabaseName</span></code></a></td>
+<td>Return the name of the database (remote triple store) that this repository is interfacing with.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.getSpec" title="franz.openrdf.repository.repository.Repository.getSpec"><code class="xref py py-obj docutils literal"><span class="pre">getSpec</span></code></a></td>
+<td>Return a session spec string for this repository.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.getValueFactory" title="franz.openrdf.repository.repository.Repository.getValueFactory"><code class="xref py py-obj docutils literal"><span class="pre">getValueFactory</span></code></a></td>
+<td>Return a ValueFactory for this store.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.initialize" title="franz.openrdf.repository.repository.Repository.initialize"><code class="xref py py-obj docutils literal"><span class="pre">initialize</span></code></a></td>
+<td>Initializes this repository.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.isWritable" title="franz.openrdf.repository.repository.Repository.isWritable"><code class="xref py py-obj docutils literal"><span class="pre">isWritable</span></code></a></td>
+<td>Checks whether this store is writable, i.e.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.registerDatatypeMapping" title="franz.openrdf.repository.repository.Repository.registerDatatypeMapping"><code class="xref py py-obj docutils literal"><span class="pre">registerDatatypeMapping</span></code></a></td>
+<td>Register an inlined datatype.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.shutDown" title="franz.openrdf.repository.repository.Repository.shutDown"><code class="xref py py-obj docutils literal"><span class="pre">shutDown</span></code></a></td>
+<td>Shuts the store down, releasing any resources that it keeps hold of.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="utility-connection-functions">
+<h2>Utility connection functions<a class="headerlink" href="#utility-connection-functions" title="Permalink to this headline">¶</a></h2>
+<p>Manually constructing server, catalog and repository objects is often
+tedious when only a simple connection to a single repository is needed.
+In that case the connection may be created directly using
+<a class="reference internal" href="_gen/franz.openrdf.html#franz.openrdf.connect.ag_connect" title="franz.openrdf.connect.ag_connect"><code class="xref py py-func docutils literal"><span class="pre">ag_connect()</span></code></a>.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.html#franz.openrdf.connect.ag_connect" title="franz.openrdf.connect.ag_connect"><code class="xref py py-obj docutils literal"><span class="pre">ag_connect</span></code></a></td>
+<td>Create a connection to an AllegroGraph repository.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="repositoryconnection-class">
+<h2>RepositoryConnection class<a class="headerlink" href="#repositoryconnection-class" title="Permalink to this headline">¶</a></h2>
+<a id="franz.openrdf.repository.repositoryconnection.RepositoryConnection"></a><dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">franz.openrdf.repository.repositoryconnection.</code><code class="descname">RepositoryConnection</code><span class="sig-paren">(</span><em>repository</em>, <em>close_repo=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/franz/openrdf/repository/repositoryconnection.html#RepositoryConnection"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>The RepositoryConnection class is the main interface for updating data
+in and performing queries on a
+<a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository" title="franz.openrdf.repository.repository.Repository"><code class="xref py py-class docutils literal"><span class="pre">Repository</span></code></a>. By default, a
+RespositoryConnection is in autoCommit mode, meaning that each
+operation corresponds to a single transaction on the underlying triple
+store. autoCommit can be switched off, in which case it is up to the
+user to handle transaction commit/rollback. Note that care should be
+taken to always properly close a RepositoryConnection after one is
+finished with it, to free up resources and avoid unnecessary locks.</p>
+<p>Note that concurrent access to the same connection object is explicitly
+forbidden. The client must perform its own synchronization to ensure
+non-concurrent access.</p>
+<p>Several methods take a <em>vararg</em> argument that optionally specifies a
+set of contexts on which the method should operate. (A context is
+the URI of a subgraph.) Note that a <em>vararg</em> parameter is optional, it
+can be completely left out of the method call, in which case a method
+either operates on a provided statement’s context (if one of the method
+parameters is a statement or collection of statements), or operates on
+the repository as a whole, completely ignoring context. A <em>vararg</em>
+argument may also be <code class="docutils literal"><span class="pre">None</span></code>, meaning that the method operates on
+those statements which have no associated context only.</p>
+<p><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection"><code class="xref py py-class docutils literal"><span class="pre">RepositoryConnection</span></code></a> objects should be constructed using
+<a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.getConnection" title="franz.openrdf.repository.repository.Repository.getConnection"><code class="xref py py-meth docutils literal"><span class="pre">getConnection()</span></code></a>.
+To ensure that repository connections are closed, the best practice
+is to use a <code class="docutils literal"><span class="pre">with</span></code> statement:</p>
+<div class="code python highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">repository</span><span class="o">.</span><span class="n">getConnection</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.__init__" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.__init__"><code class="xref py py-obj docutils literal"><span class="pre">__init__</span></code></a></td>
+<td>Call through <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.getConnection" title="franz.openrdf.repository.repository.Repository.getConnection"><code class="xref py py-meth docutils literal"><span class="pre">getConnection()</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="general-connection-methods">
+<h3>General connection methods<a class="headerlink" href="#general-connection-methods" title="Permalink to this headline">¶</a></h3>
+<p>This section contains the <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection"><code class="xref py py-class docutils literal"><span class="pre">RepositoryConnection</span></code></a> methods that create,
+maintain, search, and delete triple stores.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.add" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.add"><code class="xref py py-obj docutils literal"><span class="pre">add</span></code></a></td>
+<td>Calls <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.addTriple" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.addTriple"><code class="xref py py-meth docutils literal"><span class="pre">addTriple()</span></code></a>, <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.addStatement" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.addStatement"><code class="xref py py-meth docutils literal"><span class="pre">addStatement()</span></code></a>, or <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.addFile" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.addFile"><code class="xref py py-meth docutils literal"><span class="pre">addFile()</span></code></a>.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.addData" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.addData"><code class="xref py py-obj docutils literal"><span class="pre">addData</span></code></a></td>
+<td>Adds data from a string to the repository.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.addFile" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.addFile"><code class="xref py py-obj docutils literal"><span class="pre">addFile</span></code></a></td>
+<td>Loads a file into the triple store.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.addStatement" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.addStatement"><code class="xref py py-obj docutils literal"><span class="pre">addStatement</span></code></a></td>
+<td>Add the supplied statement to the specified contexts in the repository.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.addTriple" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.addTriple"><code class="xref py py-obj docutils literal"><span class="pre">addTriple</span></code></a></td>
+<td>Add a single triple to the repository.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.addTriples" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.addTriples"><code class="xref py py-obj docutils literal"><span class="pre">addTriples</span></code></a></td>
+<td>Add the supplied triples or quads to this repository.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.clear" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.clear"><code class="xref py py-obj docutils literal"><span class="pre">clear</span></code></a></td>
+<td>Removes all statements from designated contexts in the repository.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.clearNamespaces" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.clearNamespaces"><code class="xref py py-obj docutils literal"><span class="pre">clearNamespaces</span></code></a></td>
+<td>Delete all namespaces in this repository for the current user.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.close" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.close"><code class="xref py py-obj docutils literal"><span class="pre">close</span></code></a></td>
+<td>Close the connection.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createBNode" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createBNode"><code class="xref py py-obj docutils literal"><span class="pre">createBNode</span></code></a></td>
+<td>Create a new blank node.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createLiteral" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createLiteral"><code class="xref py py-obj docutils literal"><span class="pre">createLiteral</span></code></a></td>
+<td>Create a new literal with value <code class="docutils literal"><span class="pre">value</span></code>.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createRange" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createRange"><code class="xref py py-obj docutils literal"><span class="pre">createRange</span></code></a></td>
+<td>Create a compound literal representing a range from lowerBound to upperBound.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createStatement" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createStatement"><code class="xref py py-obj docutils literal"><span class="pre">createStatement</span></code></a></td>
+<td>Create a new Statement object.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createURI" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createURI"><code class="xref py py-obj docutils literal"><span class="pre">createURI</span></code></a></td>
+<td>Creates a new URI from the supplied string-representation(s).</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.deleteDuplicates" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.deleteDuplicates"><code class="xref py py-obj docutils literal"><span class="pre">deleteDuplicates</span></code></a></td>
+<td>Delete duplicate triples from the store.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.executeBooleanQuery" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.executeBooleanQuery"><code class="xref py py-obj docutils literal"><span class="pre">executeBooleanQuery</span></code></a></td>
+<td>Prepare and immediately evaluate a query that returns a boolean.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.executeGraphQuery" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.executeGraphQuery"><code class="xref py py-obj docutils literal"><span class="pre">executeGraphQuery</span></code></a></td>
+<td>Prepare and immediately evaluate a query that returns RDF.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.executeTupleQuery" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.executeTupleQuery"><code class="xref py py-obj docutils literal"><span class="pre">executeTupleQuery</span></code></a></td>
+<td>Prepare and immediately evaluate a query that returns tuples.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.executeUpdate" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.executeUpdate"><code class="xref py py-obj docutils literal"><span class="pre">executeUpdate</span></code></a></td>
+<td>Prepare and immediately evaluate a SPARQL update query.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.export" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.export"><code class="xref py py-obj docutils literal"><span class="pre">export</span></code></a></td>
+<td>Export all explicit statements in the specified contexts to a file.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.exportStatements" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.exportStatements"><code class="xref py py-obj docutils literal"><span class="pre">exportStatements</span></code></a></td>
+<td>Export statements to a file.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getAddCommitSize" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getAddCommitSize"><code class="xref py py-obj docutils literal"><span class="pre">getAddCommitSize</span></code></a></td>
+<td>Get the current value of <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.add_commit_size" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.add_commit_size"><code class="xref py py-attr docutils literal"><span class="pre">add_commit_size</span></code></a>.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getContextIDs" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getContextIDs"><code class="xref py py-obj docutils literal"><span class="pre">getContextIDs</span></code></a></td>
+<td>Return a list of context resources, one for each context referenced by a quad in the triple store.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getDuplicateStatements" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getDuplicateStatements"><code class="xref py py-obj docutils literal"><span class="pre">getDuplicateStatements</span></code></a></td>
+<td>Return all duplicates in the store.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getNamespace" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getNamespace"><code class="xref py py-obj docutils literal"><span class="pre">getNamespace</span></code></a></td>
+<td>Get the namespace that is associated with the specified prefix, if any.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getNamespaces" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getNamespaces"><code class="xref py py-obj docutils literal"><span class="pre">getNamespaces</span></code></a></td>
+<td>Get all declared prefix/namespace pairs.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getSpec" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getSpec"><code class="xref py py-obj docutils literal"><span class="pre">getSpec</span></code></a></td>
+<td>Get the session specification string for this repository.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements"><code class="xref py py-obj docutils literal"><span class="pre">getStatements</span></code></a></td>
+<td>Get all statements with a specific subject, predicate and/or object from the repository.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatementsById" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatementsById"><code class="xref py py-obj docutils literal"><span class="pre">getStatementsById</span></code></a></td>
+<td>Return all statements whose triple ID matches an ID in the list ‘ids’.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getValueFactory" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getValueFactory"><code class="xref py py-obj docutils literal"><span class="pre">getValueFactory</span></code></a></td>
+<td>Get the <a class="reference internal" href="_gen/franz.openrdf.model.html#franz.openrdf.model.ValueFactory" title="franz.openrdf.model.ValueFactory"><code class="xref py py-class docutils literal"><span class="pre">ValueFactory</span></code></a> associated with this repository.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.isEmpty" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.isEmpty"><code class="xref py py-obj docutils literal"><span class="pre">isEmpty</span></code></a></td>
+<td>Return <code class="docutils literal"><span class="pre">True</span></code> if this repository does not contain any (explicit) statements.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.namespace" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.namespace"><code class="xref py py-obj docutils literal"><span class="pre">namespace</span></code></a></td>
+<td>Creates an object that allows for simple creation of URIs in given namespace.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareBooleanQuery" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareBooleanQuery"><code class="xref py py-obj docutils literal"><span class="pre">prepareBooleanQuery</span></code></a></td>
+<td>Parse <code class="docutils literal"><span class="pre">query</span></code> into a boolean query object which can be executed against the triple store.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareGraphQuery" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareGraphQuery"><code class="xref py py-obj docutils literal"><span class="pre">prepareGraphQuery</span></code></a></td>
+<td>Parse <code class="docutils literal"><span class="pre">query</span></code> into a graph query object which can be executed against the triple store.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareTupleQuery" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareTupleQuery"><code class="xref py py-obj docutils literal"><span class="pre">prepareTupleQuery</span></code></a></td>
+<td>Parse <code class="docutils literal"><span class="pre">query</span></code> into a tuple query object which can be executed against the triple stroe.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareUpdate" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareUpdate"><code class="xref py py-obj docutils literal"><span class="pre">prepareUpdate</span></code></a></td>
+<td>Parse <code class="docutils literal"><span class="pre">query</span></code> into an update query object which can be executed against the triple store.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.registerDatatypeMapping" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.registerDatatypeMapping"><code class="xref py py-obj docutils literal"><span class="pre">registerDatatypeMapping</span></code></a></td>
+<td>Register an inlined datatype.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.remove" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.remove"><code class="xref py py-obj docutils literal"><span class="pre">remove</span></code></a></td>
+<td>Call <code class="xref py py-meth docutils literal"><span class="pre">removeTriples()</span></code> or <code class="xref py py-meth docutils literal"><span class="pre">removeStatement()</span></code>.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.removeNamespace" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.removeNamespace"><code class="xref py py-obj docutils literal"><span class="pre">removeNamespace</span></code></a></td>
+<td>Remove a namespace declaration by removing the association between a prefix and a namespace name.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.removeQuads" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.removeQuads"><code class="xref py py-obj docutils literal"><span class="pre">removeQuads</span></code></a></td>
+<td>Remove enumerated quads from this repository.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.removeQuadsByID" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.removeQuadsByID"><code class="xref py py-obj docutils literal"><span class="pre">removeQuadsByID</span></code></a></td>
+<td>Remove all quads with matching IDs.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.removeStatement" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.removeStatement"><code class="xref py py-obj docutils literal"><span class="pre">removeStatement</span></code></a></td>
+<td>Remove the supplied statement from the specified contexts in the repository.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.removeTriples" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.removeTriples"><code class="xref py py-obj docutils literal"><span class="pre">removeTriples</span></code></a></td>
+<td>Remove the statement(s) with the specified subject, predicate and object from the repository, optionally restricted to the specified contexts.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.setAddCommitSize" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.setAddCommitSize"><code class="xref py py-obj docutils literal"><span class="pre">setAddCommitSize</span></code></a></td>
+<td>Set the value of <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.add_commit_size" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.add_commit_size"><code class="xref py py-attr docutils literal"><span class="pre">add_commit_size</span></code></a>.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.setNamespace" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.setNamespace"><code class="xref py py-obj docutils literal"><span class="pre">setNamespace</span></code></a></td>
+<td>Define or redefine a namespace mapping in the repository.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.size" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.size"><code class="xref py py-obj docutils literal"><span class="pre">size</span></code></a></td>
+<td>Returns the number of (explicit) statements that are in the specified contexts in this repository.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.add_commit_size" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.add_commit_size"><code class="xref py py-obj docutils literal"><span class="pre">add_commit_size</span></code></a></td>
+<td>The threshold for commit size during triple add operations.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="triple-index-methods">
+<h3>Triple Index Methods<a class="headerlink" href="#triple-index-methods" title="Permalink to this headline">¶</a></h3>
+<p>These <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection"><code class="xref py py-class docutils literal"><span class="pre">RepositoryConnection</span></code></a> methods support user-defined triple indices.
+See <a class="reference external" href="../triple-index.html">AllegroGraph Triple Indices</a> for more
+information on this topic.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.listIndices" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.listIndices"><code class="xref py py-obj docutils literal"><span class="pre">listIndices</span></code></a></td>
+<td>Return the list of the current set of triple indices.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.listValidIndices" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.listValidIndices"><code class="xref py py-obj docutils literal"><span class="pre">listValidIndices</span></code></a></td>
+<td>Return the list of valid index names.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.addIndex" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.addIndex"><code class="xref py py-obj docutils literal"><span class="pre">addIndex</span></code></a></td>
+<td>Add a specific type of index to the current set of triple indices.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.dropIndex" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.dropIndex"><code class="xref py py-obj docutils literal"><span class="pre">dropIndex</span></code></a></td>
+<td>Removes a specific type of index to the current set of triple indices.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.optimizeIndices" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.optimizeIndices"><code class="xref py py-obj docutils literal"><span class="pre">optimizeIndices</span></code></a></td>
+<td>Optimize indices.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="free-text-indexing-methods">
+<h3>Free Text Indexing Methods<a class="headerlink" href="#free-text-indexing-methods" title="Permalink to this headline">¶</a></h3>
+<p>The following <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection"><code class="xref py py-class docutils literal"><span class="pre">RepositoryConnection</span></code></a> methods support free-text indexing in
+AllegroGraph.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createFreeTextIndex" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createFreeTextIndex"><code class="xref py py-obj docutils literal"><span class="pre">createFreeTextIndex</span></code></a></td>
+<td>Create a free-text index with the given parameters.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.deleteFreeTextIndex" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.deleteFreeTextIndex"><code class="xref py py-obj docutils literal"><span class="pre">deleteFreeTextIndex</span></code></a></td>
+<td>Delete a free-text index from the server.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.evalFreeTextSearch" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.evalFreeTextSearch"><code class="xref py py-obj docutils literal"><span class="pre">evalFreeTextSearch</span></code></a></td>
+<td>Return a list of statements for the given free-text pattern search.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getFreeTextIndexConfiguration" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getFreeTextIndexConfiguration"><code class="xref py py-obj docutils literal"><span class="pre">getFreeTextIndexConfiguration</span></code></a></td>
+<td>Get the current settings of a free-text index.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.listFreeTextIndices" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.listFreeTextIndices"><code class="xref py py-obj docutils literal"><span class="pre">listFreeTextIndices</span></code></a></td>
+<td>Get the names of currently defined free-text indices.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.modifyFreeTextIndex" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.modifyFreeTextIndex"><code class="xref py py-obj docutils literal"><span class="pre">modifyFreeTextIndex</span></code></a></td>
+<td>Modify parameters of a free-text index.</td>
+</tr>
+</tbody>
+</table>
+<p>Note that text search is implemented through a SPARQL query using a
+“magic” predicate called <code class="docutils literal"><span class="pre">fti:search</span></code>. See the <a class="reference internal" href="tutorial.html"><span class="doc">AllegroGraph
+Python API Tutorial</span></a> for an example of how to set up this
+search.</p>
+</div>
+<div class="section" id="prolog-rule-inference-methods">
+<h3>Prolog Rule Inference Methods<a class="headerlink" href="#prolog-rule-inference-methods" title="Permalink to this headline">¶</a></h3>
+<p>These <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection"><code class="xref py py-class docutils literal"><span class="pre">RepositoryConnection</span></code></a> methods support the use of Prolog rules in
+AllegroGraph. Any use of Prolog rules requires that you create a
+<a class="reference internal" href="#transactions"><span class="std std-ref">transaction</span></a> to run them in.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.addRules" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.addRules"><code class="xref py py-obj docutils literal"><span class="pre">addRules</span></code></a></td>
+<td>Add Prolog functors to the current session.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.loadRules" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.loadRules"><code class="xref py py-obj docutils literal"><span class="pre">loadRules</span></code></a></td>
+<td>Add Prolog rules from file to the current session.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="geospatial-reasoning-methods">
+<h3>Geospatial Reasoning Methods<a class="headerlink" href="#geospatial-reasoning-methods" title="Permalink to this headline">¶</a></h3>
+<p>These <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection"><code class="xref py py-class docutils literal"><span class="pre">RepositoryConnection</span></code></a> methods support geospatial reasoning.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createBox" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createBox"><code class="xref py py-obj docutils literal"><span class="pre">createBox</span></code></a></td>
+<td>Create a rectangular search region (a box) for geospatial search.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createCircle" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createCircle"><code class="xref py py-obj docutils literal"><span class="pre">createCircle</span></code></a></td>
+<td>Create a circular search region for geospatial search.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createCoordinate" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createCoordinate"><code class="xref py py-obj docutils literal"><span class="pre">createCoordinate</span></code></a></td>
+<td>Create an x, y or latitude, longitude  coordinate in the current coordinate system.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createLatLongSystem" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createLatLongSystem"><code class="xref py py-obj docutils literal"><span class="pre">createLatLongSystem</span></code></a></td>
+<td>Create a spherical coordinate system and use it as the current coordinate system.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createPolygon" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createPolygon"><code class="xref py py-obj docutils literal"><span class="pre">createPolygon</span></code></a></td>
+<td>Define a polygonal region with the specified vertices.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createRectangularSystem" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createRectangularSystem"><code class="xref py py-obj docutils literal"><span class="pre">createRectangularSystem</span></code></a></td>
+<td>Create a Cartesian coordinate system and use it as the current coordinate system.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getGeoType" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getGeoType"><code class="xref py py-obj docutils literal"><span class="pre">getGeoType</span></code></a></td>
+<td>Get the current geospatial coordinate system.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.setGeoType" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.setGeoType"><code class="xref py py-obj docutils literal"><span class="pre">setGeoType</span></code></a></td>
+<td>Set the current geospatial coordinate system.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="social-network-analysis-methods">
+<h3>Social Network Analysis Methods<a class="headerlink" href="#social-network-analysis-methods" title="Permalink to this headline">¶</a></h3>
+<p>The following <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection"><code class="xref py py-class docutils literal"><span class="pre">RepositoryConnection</span></code></a> methods support Social Network
+Analysis in AllegroGraph. The Python API to the Social Network Analysis
+methods of AllegroGraph requires Prolog queries, and therefore must be
+run in a <a class="reference internal" href="#transactions"><span class="std std-ref">dedicated session</span></a>.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.registerNeighborMatrix" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.registerNeighborMatrix"><code class="xref py py-obj docutils literal"><span class="pre">registerNeighborMatrix</span></code></a></td>
+<td>Construct a neighbor matrix named <code class="docutils literal"><span class="pre">name</span></code>.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.registerSNAGenerator" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.registerSNAGenerator"><code class="xref py py-obj docutils literal"><span class="pre">registerSNAGenerator</span></code></a></td>
+<td>Create a new SNA generator named <code class="docutils literal"><span class="pre">name</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="transactions">
+<span id="id1"></span><h3>Transactions<a class="headerlink" href="#transactions" title="Permalink to this headline">¶</a></h3>
+<p>AllegroGraph lets you set up a special <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection"><code class="xref py py-class docutils literal"><span class="pre">RepositoryConnection</span></code></a> (a
+“session”) that supports transaction semantics. You can add statements
+to this session until you accumulate all the triples you need for a
+specific transaction. Then you can commit the triples in a single act.
+Up to that moment the triples will not be visible to other users of the
+repository.</p>
+<p>If anything interrupts the accumulation of triples building to the
+transaction, you can roll back the session. This discards all of the
+uncommitted triples and resynchronizes the session with the repository
+as a whole.</p>
+<p>Closing the session discards all uncommitted triples and all rules,
+generators, and matrices that were created in the session. Rules,
+generators, and matrices cannot be committed. They persist as long as the
+session persists.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.openSession" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.openSession"><code class="xref py py-obj docutils literal"><span class="pre">openSession</span></code></a></td>
+<td>Open a session.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.closeSession" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.closeSession"><code class="xref py py-obj docutils literal"><span class="pre">closeSession</span></code></a></td>
+<td>Close a session.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.session" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.session"><code class="xref py py-obj docutils literal"><span class="pre">session</span></code></a></td>
+<td>A session context manager for use with the <code class="docutils literal"><span class="pre">with</span></code> statement:</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.commit" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.commit"><code class="xref py py-obj docutils literal"><span class="pre">commit</span></code></a></td>
+<td>Commit changes on an open session.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.rollback" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.rollback"><code class="xref py py-obj docutils literal"><span class="pre">rollback</span></code></a></td>
+<td>Roll back changes on open session.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="subject-triples-caching">
+<h3>Subject Triples Caching<a class="headerlink" href="#subject-triples-caching" title="Permalink to this headline">¶</a></h3>
+<p>You can enable subject triple caching to speed up queries where the same
+subject URI appears in multiple patterns. The first time AllegroGraph
+retrieves triples for a specific resource, it caches the triples in
+memory. Subsequent query patterns that ask for the same subject URI can
+retrieve the matching triples very quickly from the cache. The cache has
+a size limit and automatically discards old entries as that limit is exceeded.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.enableSubjectTriplesCache" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.enableSubjectTriplesCache"><code class="xref py py-obj docutils literal"><span class="pre">enableSubjectTriplesCache</span></code></a></td>
+<td>Maintain a cache of size <code class="docutils literal"><span class="pre">size</span></code> that caches, for each accessed resource, quads where the resource appears in subject position.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.disableSubjectTriplesCache" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.disableSubjectTriplesCache"><code class="xref py py-obj docutils literal"><span class="pre">disableSubjectTriplesCache</span></code></a></td>
+<td>Disable the subject triples cache (see <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.enableSubjectTriplesCache" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.enableSubjectTriplesCache"><code class="xref py py-meth docutils literal"><span class="pre">enableSubjectTriplesCache()</span></code></a>).</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getSubjectTriplesCacheSize" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getSubjectTriplesCacheSize"><code class="xref py py-obj docutils literal"><span class="pre">getSubjectTriplesCacheSize</span></code></a></td>
+<td>Return the current size of the subject triples cache.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="query-class-and-subclasses">
+<h2>Query Class (and Subclasses)<a class="headerlink" href="#query-class-and-subclasses" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Query class is non-instantiable. It is an abstract class from which
+the three query subclasses are derived. It is included here because of
+its methods, which are inherited by the subclasses.</p>
+</div>
+<p>A query on a <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository" title="franz.openrdf.repository.repository.Repository"><code class="xref py py-class docutils literal"><span class="pre">Repository</span></code></a> that can be formulated
+in one of the supported query languages (for example SPARQL). The query can
+be parameterized, to allow one to reuse the same query with different parameter
+bindings.</p>
+<p>The best practice is to allow the <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection"><code class="xref py py-class docutils literal"><span class="pre">RepositoryConnection</span></code></a> object to
+create an instance of one of the Query subclasses
+(<a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.TupleQuery" title="franz.openrdf.query.query.TupleQuery"><code class="xref py py-class docutils literal"><span class="pre">TupleQuery</span></code></a>, <a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.GraphQuery" title="franz.openrdf.query.query.GraphQuery"><code class="xref py py-class docutils literal"><span class="pre">GraphQuery</span></code></a>, <a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.BooleanQuery" title="franz.openrdf.query.query.BooleanQuery"><code class="xref py py-class docutils literal"><span class="pre">BooleanQuery</span></code></a>, <a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.UpdateQuery" title="franz.openrdf.query.query.UpdateQuery"><code class="xref py py-class docutils literal"><span class="pre">UpdateQuery</span></code></a>).
+There is no reason for the Python application programmer to create
+such objects directly.</p>
+<div class="code python highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">tupleQuery</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">prepareTupleQuery</span><span class="p">(</span><span class="n">QueryLanguage</span><span class="o">.</span><span class="n">SPARQL</span><span class="p">,</span> <span class="n">queryString</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">tupleQuery</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
+</pre></div>
+</div>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.evaluate_generic_query" title="franz.openrdf.query.query.Query.evaluate_generic_query"><code class="xref py py-obj docutils literal"><span class="pre">evaluate_generic_query</span></code></a></td>
+<td>Evaluate a SPARQL or PROLOG query, which may be a ‘select’, ‘construct’, ‘describe’ or ‘ask’ query (in the SPARQL case).</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.getBindings" title="franz.openrdf.query.query.Query.getBindings"><code class="xref py py-obj docutils literal"><span class="pre">getBindings</span></code></a></td>
+<td>Retrieve the bindings that have been set on this query.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.getDataset" title="franz.openrdf.query.query.Query.getDataset"><code class="xref py py-obj docutils literal"><span class="pre">getDataset</span></code></a></td>
+<td>Get the dataset against which this query will operate.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.getIncludeInferred" title="franz.openrdf.query.query.Query.getIncludeInferred"><code class="xref py py-obj docutils literal"><span class="pre">getIncludeInferred</span></code></a></td>
+<td>Check whether this query will return inferred statements.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.removeBinding" title="franz.openrdf.query.query.Query.removeBinding"><code class="xref py py-obj docutils literal"><span class="pre">removeBinding</span></code></a></td>
+<td>Removes a previously set binding on the supplied variable.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.setBinding" title="franz.openrdf.query.query.Query.setBinding"><code class="xref py py-obj docutils literal"><span class="pre">setBinding</span></code></a></td>
+<td>Binds the specified variable to the supplied value.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.setBindings" title="franz.openrdf.query.query.Query.setBindings"><code class="xref py py-obj docutils literal"><span class="pre">setBindings</span></code></a></td>
+<td>Set multiple variable bindings.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.setCheckVariables" title="franz.openrdf.query.query.Query.setCheckVariables"><code class="xref py py-obj docutils literal"><span class="pre">setCheckVariables</span></code></a></td>
+<td>Determine whether the presence of variables in the select clause not referenced in a triple is flagged.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.setConnection" title="franz.openrdf.query.query.Query.setConnection"><code class="xref py py-obj docutils literal"><span class="pre">setConnection</span></code></a></td>
+<td>Internal call to embed the connection into the query.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.setContexts" title="franz.openrdf.query.query.Query.setContexts"><code class="xref py py-obj docutils literal"><span class="pre">setContexts</span></code></a></td>
+<td>Assert a set of contexts (named graphs) that filter all triples.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.setDataset" title="franz.openrdf.query.query.Query.setDataset"><code class="xref py py-obj docutils literal"><span class="pre">setDataset</span></code></a></td>
+<td>Select the dataset against which to evaluate this query, overriding any dataset that is specified in the query itself.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.setIncludeInferred" title="franz.openrdf.query.query.Query.setIncludeInferred"><code class="xref py py-obj docutils literal"><span class="pre">setIncludeInferred</span></code></a></td>
+<td>Determine whether evaluation results of this query should include inferred statements.</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="subclass-tuplequery">
+<h3>Subclass TupleQuery<a class="headerlink" href="#subclass-tuplequery" title="Permalink to this headline">¶</a></h3>
+<p>This subclass is used with SELECT queries. Use the
+<a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareTupleQuery" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareTupleQuery"><code class="xref py py-meth docutils literal"><span class="pre">prepareTupleQuery()</span></code></a> method to create
+a TupleQuery object. The results of the query are returned in a
+<a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.QueryResult" title="franz.openrdf.query.queryresult.QueryResult"><code class="xref py py-class docutils literal"><span class="pre">QueryResult</span></code></a> iterator that yields a sequence of
+<a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.ListBindingSet" title="franz.openrdf.query.queryresult.ListBindingSet"><code class="xref py py-class docutils literal"><span class="pre">binding</span> <span class="pre">sets</span></code></a>.</p>
+<p>TupleQuery uses all the methods of the <a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query" title="franz.openrdf.query.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a> class,
+plus two more:</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.TupleQuery.evaluate" title="franz.openrdf.query.query.TupleQuery.evaluate"><code class="xref py py-obj docutils literal"><span class="pre">evaluate</span></code></a></td>
+<td>Execute the embedded query against the RDF store.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.TupleQuery.analyze" title="franz.openrdf.query.query.TupleQuery.analyze"><code class="xref py py-obj docutils literal"><span class="pre">analyze</span></code></a></td>
+<td>Analyze the query.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="subclass-graphquery">
+<h3>Subclass GraphQuery<a class="headerlink" href="#subclass-graphquery" title="Permalink to this headline">¶</a></h3>
+<p>This subclass is used with CONSTRUCT and DESCRIBE queries. Use the
+<a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareGraphQuery" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareGraphQuery"><code class="xref py py-meth docutils literal"><span class="pre">prepareGraphQuery()</span></code></a> method to create a
+GraphQuery object. The results of the query are returned in a
+<a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.GraphQueryResult" title="franz.openrdf.query.queryresult.GraphQueryResult"><code class="xref py py-class docutils literal"><span class="pre">GraphQueryResult</span></code></a> iterator that yields a
+sequence of <a class="reference internal" href="_gen/franz.openrdf.model.html#franz.openrdf.model.Statement" title="franz.openrdf.model.Statement"><code class="xref py py-class docutils literal"><span class="pre">statements</span></code></a>.</p>
+<p><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.GraphQuery" title="franz.openrdf.query.query.GraphQuery"><code class="xref py py-class docutils literal"><span class="pre">GraphQuery</span></code></a> implements all the methods of the <a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query" title="franz.openrdf.query.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a> class,
+plus one more:</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.GraphQuery.evaluate" title="franz.openrdf.query.query.GraphQuery.evaluate"><code class="xref py py-obj docutils literal"><span class="pre">evaluate</span></code></a></td>
+<td>Execute the embedded query against the RDF store.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="subclass-booleanquery">
+<h3>Subclass BooleanQuery<a class="headerlink" href="#subclass-booleanquery" title="Permalink to this headline">¶</a></h3>
+<p>This subclass is used with ASK queries. Use the
+<a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareBooleanQuery" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareBooleanQuery"><code class="xref py py-meth docutils literal"><span class="pre">prepareBooleanQuery()</span></code></a> method to create
+a <a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.BooleanQuery" title="franz.openrdf.query.query.BooleanQuery"><code class="xref py py-class docutils literal"><span class="pre">BooleanQuery</span></code></a> object. The results of the query are
+<code class="docutils literal"><span class="pre">True</span></code> or <code class="docutils literal"><span class="pre">False</span></code>.</p>
+<p>BooleanQuery implements all the methods of the <a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query" title="franz.openrdf.query.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a>
+class, plus one more:</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.BooleanQuery.evaluate" title="franz.openrdf.query.query.BooleanQuery.evaluate"><code class="xref py py-obj docutils literal"><span class="pre">evaluate</span></code></a></td>
+<td>Execute the embedded query against the RDF store.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="subclass-updatequery">
+<h3>Subclass UpdateQuery<a class="headerlink" href="#subclass-updatequery" title="Permalink to this headline">¶</a></h3>
+<p>This subclass is used for <code class="docutils literal"><span class="pre">DELETE</span></code> and <code class="docutils literal"><span class="pre">INSERT</span></code> queries.  The
+result returned when the query is evaluated is a boolean that can be
+used to tell if the store has been modified by the operation. Use the
+<a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareUpdate" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareUpdate"><code class="xref py py-meth docutils literal"><span class="pre">prepareUpdate()</span></code></a> method to create an
+<a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.UpdateQuery" title="franz.openrdf.query.query.UpdateQuery"><code class="xref py py-class docutils literal"><span class="pre">UpdateQuery</span></code></a> object.</p>
+<p><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.UpdateQuery" title="franz.openrdf.query.query.UpdateQuery"><code class="xref py py-class docutils literal"><span class="pre">UpdateQuery</span></code></a> implements all the methods of the <a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query" title="franz.openrdf.query.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a>
+class, plus one more:</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.query.UpdateQuery.evaluate" title="franz.openrdf.query.query.UpdateQuery.evaluate"><code class="xref py py-obj docutils literal"><span class="pre">evaluate</span></code></a></td>
+<td>Execute the embedded update against the RDF store.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="queryresult-class">
+<h2>QueryResult Class<a class="headerlink" href="#queryresult-class" title="Permalink to this headline">¶</a></h2>
+<p>A QueryResult object is simply an iterator that also has a
+<a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.QueryResult.close" title="franz.openrdf.query.queryresult.QueryResult.close"><code class="xref py py-meth docutils literal"><span class="pre">close()</span></code></a> method that must be called to free
+resources. Such objects are returned as a result of SPARQL and PROLOG
+query evaluation and should not be constructed directly. Result
+objects are context managers and can be used in the <code class="docutils literal"><span class="pre">with</span></code>
+statement. The recommended usage looks like this:</p>
+<div class="code python highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">tupleQuery</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">prepareTupleQuery</span><span class="p">(</span><span class="n">QueryLanguage</span><span class="o">.</span><span class="n">SPARQL</span><span class="p">,</span> <span class="n">queryString</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">tupleQuery</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span> <span class="k">as</span> <span class="n">results</span><span class="p">:</span>
+   <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+       <span class="k">print</span> <span class="n">result</span>
+</pre></div>
+</div>
+<p>It is also possible to use one of the <code class="docutils literal"><span class="pre">execute*Query</span></code> methods
+(e.g. <code class="xref py py-meth docutils literal"><span class="pre">executeTupleQuery()</span></code>) to prepare and execute a query in a
+single call:</p>
+<div class="code python highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span><span class="n">queryString</span><span class="p">)</span> <span class="k">as</span> <span class="n">results</span><span class="p">:</span>
+   <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+       <span class="k">print</span> <span class="n">result</span>
+</pre></div>
+</div>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.QueryResult.close" title="franz.openrdf.query.queryresult.QueryResult.close"><code class="xref py py-obj docutils literal"><span class="pre">close</span></code></a></td>
+<td>Release resources used by this query result.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">__next__</span></code></td>
+<td>Return the next result item if there is one.</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="subclass-tuplequeryresult">
+<h3>Subclass TupleQueryResult<a class="headerlink" href="#subclass-tuplequeryresult" title="Permalink to this headline">¶</a></h3>
+<p>A QueryResult subclass used for queries that return tuples.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.TupleQueryResult.getBindingNames" title="franz.openrdf.query.queryresult.TupleQueryResult.getBindingNames"><code class="xref py py-obj docutils literal"><span class="pre">getBindingNames</span></code></a></td>
+<td>Get the names of the bindings, in order of projection.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="subclass-graphqueryresult">
+<h3>Subclass GraphQueryResult<a class="headerlink" href="#subclass-graphqueryresult" title="Permalink to this headline">¶</a></h3>
+<p>A QueryResult subclass used for queries that return statements. Objects
+of this class are also <code class="xref py py-class docutils literal"><span class="pre">RepositoryResult</span></code> instances.</p>
+</div>
+</div>
+<div class="section" id="repositoryresult-class">
+<h2>RepositoryResult class<a class="headerlink" href="#repositoryresult-class" title="Permalink to this headline">¶</a></h2>
+<p>A <code class="xref py py-class docutils literal"><span class="pre">RepositoryResult</span></code> object is a result collection of <a class="reference internal" href="_gen/franz.openrdf.model.html#franz.openrdf.model.Statement" title="franz.openrdf.model.Statement"><code class="xref py py-class docutils literal"><span class="pre">statements</span></code></a> that can be iterated over. It keeps
+an open connection to the backend for lazy retrieval of individual
+results. Additionally it has some utility methods to fetch all results
+and add them to a collection.</p>
+<p>By default, a <code class="xref py py-class docutils literal"><span class="pre">RepositoryResult</span></code> is not necessarily a (mathematical)
+set: it may contain duplicate objects. Duplicate filtering can be
+switched on, but this should not be used lightly as the filtering
+mechanism is potentially memory-intensive.</p>
+<p>A <code class="xref py py-class docutils literal"><span class="pre">RepositoryResult</span></code> must be closed after use to free up any resources
+(open connections, read locks, etc.) it has on the underlying
+repository. To make this easier it is a context manager and
+can be used in the <code class="docutils literal"><span class="pre">with</span></code> statement.</p>
+<div class="code python highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">graphQuery</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">prepareGraphQuery</span><span class="p">(</span><span class="n">QueryLanguage</span><span class="o">.</span><span class="n">SPARQL</span><span class="p">,</span> <span class="n">queryString</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">graphQuery</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span> <span class="k">as</span> <span class="n">results</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">print</span> <span class="n">result</span>
+</pre></div>
+</div>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">close</span></code></td>
+<td>Shut down the iterator to be sure the resources are freed up.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">__next__</span></code></td>
+<td>Return the next Statement in the answer, if there is one.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">enableDuplicateFilter</span></code></td>
+<td>Switch on duplicate filtering while iterating over objects.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">asList</span></code></td>
+<td>Returns a list containing all objects of this RepositoryResult in order of iteration.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">addTo</span></code></td>
+<td>Add all objects of this RepositoryResult to the supplied collection.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">rowCount</span></code></td>
+<td>Get the number of statements in this result object.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="statement-class">
+<h2>Statement Class<a class="headerlink" href="#statement-class" title="Permalink to this headline">¶</a></h2>
+<p>A <a class="reference internal" href="_gen/franz.openrdf.model.html#franz.openrdf.model.Statement" title="franz.openrdf.model.Statement"><code class="xref py py-class docutils literal"><span class="pre">Statement</span></code></a> is a client-side triple. It encapsulates the subject,
+predicate, object and context (subgraph) values of a single triple and
+makes them available.</p>
+<p>Best practice is to allow the <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createStatement" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createStatement"><code class="xref py py-meth docutils literal"><span class="pre">RepositoryConnection.createStatement()</span></code></a>
+method to create and return the Statement object. There is no reason for
+the Python application programmer to create a Statement object
+directly.</p>
+<div class="code python highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">stmt1</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createStatement</span><span class="p">(</span><span class="n">alice</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">fortyTwo</span><span class="p">)</span>
+</pre></div>
+</div>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.model.html#franz.openrdf.model.Statement.getContext" title="franz.openrdf.model.Statement.getContext"><code class="xref py py-obj docutils literal"><span class="pre">getContext</span></code></a></td>
+<td>Get the graph (the fourth, optional element of the statement).</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.model.html#franz.openrdf.model.Statement.getObject" title="franz.openrdf.model.Statement.getObject"><code class="xref py py-obj docutils literal"><span class="pre">getObject</span></code></a></td>
+<td>Get the object (the third element of the statement).</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.model.html#franz.openrdf.model.Statement.getPredicate" title="franz.openrdf.model.Statement.getPredicate"><code class="xref py py-obj docutils literal"><span class="pre">getPredicate</span></code></a></td>
+<td>Get the predicate (the second element of the statement).</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.model.html#franz.openrdf.model.Statement.getSubject" title="franz.openrdf.model.Statement.getSubject"><code class="xref py py-obj docutils literal"><span class="pre">getSubject</span></code></a></td>
+<td>Get the subject (the first element of the statement).</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="valuefactory-class">
+<h2>ValueFactory Class<a class="headerlink" href="#valuefactory-class" title="Permalink to this headline">¶</a></h2>
+<p>A ValueFactory is a factory for creating URIs, blank nodes, literals
+and <a class="reference internal" href="_gen/franz.openrdf.model.html#franz.openrdf.model.Statement" title="franz.openrdf.model.Statement"><code class="xref py py-class docutils literal"><span class="pre">Statement</span></code></a> objects. In the AllegroGraph Python interface,
+the <a class="reference internal" href="_gen/franz.openrdf.model.html#franz.openrdf.model.ValueFactory" title="franz.openrdf.model.ValueFactory"><code class="xref py py-class docutils literal"><span class="pre">ValueFactory</span></code></a> class is regarded as obsolete. Its
+functions have been subsumed by the expanded capability of the
+<a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection"><code class="xref py py-class docutils literal"><span class="pre">RepositoryConnection</span></code></a> class. It is documented here for the
+convenience of users porting an application from Eclipse RDF4J.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.model.html#franz.openrdf.model.ValueFactory.createBNode" title="franz.openrdf.model.ValueFactory.createBNode"><code class="xref py py-obj docutils literal"><span class="pre">createBNode</span></code></a></td>
+<td>See <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createBNode" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createBNode"><code class="xref py py-meth docutils literal"><span class="pre">RepositoryConnection.createBNode()</span></code></a>.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.model.html#franz.openrdf.model.ValueFactory.createLiteral" title="franz.openrdf.model.ValueFactory.createLiteral"><code class="xref py py-obj docutils literal"><span class="pre">createLiteral</span></code></a></td>
+<td>See <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createLiteral" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createLiteral"><code class="xref py py-meth docutils literal"><span class="pre">RepositoryConnection.createLiteral()</span></code></a>.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="_gen/franz.openrdf.model.html#franz.openrdf.model.ValueFactory.createStatement" title="franz.openrdf.model.ValueFactory.createStatement"><code class="xref py py-obj docutils literal"><span class="pre">createStatement</span></code></a></td>
+<td>See <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createStatement" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createStatement"><code class="xref py py-meth docutils literal"><span class="pre">RepositoryConnection.createStatement()</span></code></a>.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="_gen/franz.openrdf.model.html#franz.openrdf.model.ValueFactory.createURI" title="franz.openrdf.model.ValueFactory.createURI"><code class="xref py py-obj docutils literal"><span class="pre">createURI</span></code></a></td>
+<td>See <a class="reference internal" href="_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createURI" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createURI"><code class="xref py py-meth docutils literal"><span class="pre">RepositoryConnection.createURI()</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+  
+    <div class="nav-links nav-links-footer">
+        &laquo;<a href="tutorial/fedex.html" title="previous chapter">Running AG on AWS EC2</a>
+      <a href="_gen/modules.html" title="next chapter">src</a> 
+      &raquo;
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">AllegroGraph Python API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_gen/modules.html">src</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#allegrographserver-class">AllegroGraphServer class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#catalog-class">Catalog class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-franz.openrdf.sail.spec">Spec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#repository-class">Repository class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utility-connection-functions">Utility connection functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#repositoryconnection-class">RepositoryConnection class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#query-class-and-subclasses">Query Class (and Subclasses)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#queryresult-class">QueryResult Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#repositoryresult-class">RepositoryResult class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#statement-class">Statement Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#valuefactory-class">ValueFactory Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="tutorial/fedex.html" title="previous chapter">Running AG on AWS EC2</a></li>
+      <li>Next: <a href="_gen/modules.html" title="next chapter">src</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

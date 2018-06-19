@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Replication and High Availability</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="warmStandby"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>Replication and High Availability in AllegroGraph 6.4.2</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-17' title='UUIDs'>UUIDs</a></li>
+<li><a href='#header2-19' title='Transaction Logs'>Transaction Logs</a></li>
+<li><a href='#header2-28' title='Replication'>Replication</a></li>
+<li><a href='#header2-53' title='High Availability'>High Availability</a></li>
+<li><a href='#header2-62' title='Command Reference'>Command Reference</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>This document is a continuation of the <a href="replication.html">Replication</a> document. This document gives specific instructions on how to initiate database replication. </p><p>Replication is the process by which one or more databases can be kept in sync with a single master database.  We refer to the master database as the primary database and the replicants as the secondary databases. </p><p>High availability refers to the ability to switch between the primary and secondary at will, so if the primary is suddenly unavailable (for whatever reason), the secondary can promoted to become the new primary. </p><p>The primary database can handle normal read and write operations while it is acting as the replication master.   The secondary databases can only handle read operations from clients while they are replicating the master. (More precisely, the clients are free to add and delete triples but they cannot commit these changes to the secondary databases during replication.) </p><p>Replication occurs across the network so any set of Allegrograph servers connected by a network can participate in replication. </p><p>Replication occurs in real time. As commits are made to the primary database they are sent as soon as possible to the secondaries. </p><p>Replication can only be done between two instances of the same database. The primary will have at least the same commits as the replica and possibly more.  The agraph backup program helps one create databases that can be used as secondaries. </p><p>The <code>ReplicationPorts</code> configuration option (see <strong>Top-level directives</strong> in <a href="daemon-config.html">Server Configuration and Control</a>) allows specification of a range of port numbers from which the primary will select listening port numbers for incoming connections from replicas. If the option is specified and none of the ports in the specified range is available, the request to establish a replica will fail. If <code>ReplicationPorts</code> is not specified, the port number will be chosen by the OS. </p><a name='header2-17' id='header2-17'></a><h2>UUIDs</h2><p>Every database is assigned a <em>uuid</em> (Universally Unique IDentifier) when it is created.  It is a string like <em>de7f021d-b191-99f4-0181-001517d76b50</em>.  This is like a fingerprint for the database and can be used to identify it even if the database name changes.  The uuid is stored in the file <strong>uuid</strong> in the database directory.  The uuid is important for replication and for point-in-time recovery (see <a href="point-in-time-recovery.html">Point-in-Time Recovery</a>). </p><a name='header2-19' id='header2-19'></a><h2>Transaction Logs</h2><p>Transaction logs record important information about database state. The state of the database is maintained persistently using files on one or more disks.  A commit changes the database from one state to another.  A commit will likely involve changing two or more files and this means that there will be a period of time during which one file was updated and another is yet to be updated.  If the machine crashes at this point the database would be left in an inconsistent state. </p><p>Therefore AllegroGraph stores the changes it would make to the files in the transaction log first and then it updates the files. Thus if the machine crashes during the file update, AllegroGraph can look in the transaction log for the set of steps still needed to be done to complete the state change for the commit. </p><p>A further optimization is that the database files are not updated on each commit.   Instead the commit is only reflected in the transaction log and the in-memory copy of the file data.  Periodically an operation called a <em>checkpoint</em> is done.   A checkpoint updates all the database files on disk and writes a record in the transaction log to note that it has done this. </p><p>While a database is active, transaction logs are written and never read (except they are read when doing replication which we'll describe later). </p><p>When a database is opened the most recent transaction logs are read to ensure that all commits after the last checkpoint have been applied to the database files.  If a database is closed normally then a checkpoint is the last operation performed so there will be no commits after the checkpoint. </p><p>What one can conclude from this is that if you're not interested in replication or point in time recovery then you can safely get rid of most of the transaction log files that accumulate on your disk. AllegroGraph provides an automatic way to removing or archiving unneeded transaction logs using a process called the Transaction Log Archiver. There are more details on how to configure it in the <a href="transaction-log-archiving.html">Transaction Log Archiving</a> document. </p><p>Transaction logs are named  "tlog-uuid-N" where uuid is the uuid of the database and N is a number starting with 0 and incrementing each time Allegrograph moves to a new transaction log. </p><p><a name="replication-section"></a> </p><a name='header2-28' id='header2-28'></a><h2>Replication</h2><p>As commits are done, a database moves from one state to the next. If you have two copies of the same database, one after commit 10 was done and one after commit 20 was done, then replication allows you to move the first database from commit 10 to commit 20 using the transaction logs of the second database.  Further, as more commits are added to the second database, replication will cause the first database to see the effect of those commits in its state as well. </p><p>There are two requirements for replication: </p>
+<ol>
+<li><p>You can only replicate to the same database.  This means that the database uuids must match. </p></li>
+<li><p>The transaction logs must be available that contain the commit records needed to do the replication. </p></li></ol><p>The steps for replication are as follows. </p><p>Assume we have two AllegroGraph servers, which we refer to as <strong>prime-server</strong> and <strong>second-server</strong> (servers do not actually have names -- their host and port specify them, but we are using names to make this example clearer).  <strong>prime-server</strong> is running on machine <code>prime-host</code> and listening at port 20000, and <strong>second-server</strong> is running on machine <code>second-host</code> and listening at port 30000. <strong>prime-server</strong> has a repository <strong>Sales</strong> that we wish to replicate. </p><p>We first register a replication job for <strong>prime-server</strong>: </p>
+<pre><code>% agtool replicate \  
+  --primary-host prime-host --primary-port 20000 \  
+  --user USER --password PW \  
+  --name Sales  
+  --jobname repl-1 \  
+  --register </code></pre><p>The <code>--uuid</code> argument could have been used instead of the <code>--name</code> argument. Note we do not specify the secondary server at this time. </p><p>This tells the system that all <strong>Sales</strong> transaction log files recording commits subsequent to the registration of replication job <code>repl-1</code> must be kept around until that replication job indicates it is done with them. </p><p>We wish to replicate the <strong>Sales</strong> repository on <strong>second-server</strong>. </p><p>We make a backup of the <strong>Sales</strong> repository. This backup must be done after the replication job repl-1 is registered. Otherwise some commits after the backup but before the registration may be lost. On machine <strong>prime-host</strong> do: </p>
+<pre><code>%  agtool archive --port 20000 backup Sales &lt;sales-dir&gt; </code></pre><p>&lt;sales-dir&gt; must be the path of a non-existent or empty directory. You can do the backup while the <strong>Sales</strong> database is in use. </p><p>Now restore that backup to <strong>second-server</strong>: </p>
+<pre><code>% agtool archive --port 30000 --replica restore Sales.sec &lt;sales-dir&gt; </code></pre><p>Here we have chosen to call the restored database <strong>Sales.sec</strong> instead of <strong>Sales</strong> just to illustrate when we use the name on the secondary machine and when we use the name on the primary machine. </p><p>We pass the <strong>--replica</strong> argument to ensure that no processes open this database and modify it before we have a chance to start replication. </p><div style="border:1px solid red"> <strong>Warning!</strong> Failure to restore the database in <strong>--replica</strong> mode can cause database corruption if any operations are performed on the secondary before or during replication.  </div> <p>Finally, we set up <strong>second-server</strong> as the repl-1 replica of <strong>Sales</strong>: </p>
+<pre><code>agtool replicate \  
+  --primary-host prime-host --primary-port 20000 \  
+  --secondary-host second-host --secondary-port 30000 \  
+  --name Sales  
+  --user USER --password PW \  
+  --jobname repl-1  
+</code></pre><p>Once replication starts it continues to run forever. Should either or both machines (<strong>prime-host</strong> or <strong>second-host</strong>) go down the replication will continue when the machines and their AllegroGraph servers are again running.  To stop replication, run <strong>agtool replicate</strong> again and pass it the <strong>--stop</strong> argument. You can also stop replication using the AGWebView browser interface. </p><p><strong>agtool replicate</strong> will mark the Sales.sec repository on <strong>second-server</strong> as no-commit so that no changes other than from replication will be made to this repository.  This is done because if such changes were permitted, then <strong>second-server</strong>'s repository would no longer be a copy of <strong>prime-server</strong>'s repository. </p><p>At this point we could also restore &lt;sales-dir&gt; on another server (<strong>third-server</strong>) and do replication from <strong>prime-server</strong> to <strong>third-server</strong> using the same steps shown above, except with a different jobname. </p><a name='header2-53' id='header2-53'></a><h2>High Availability</h2><p>With replication running as prepared above you can change the roles of <strong>prime-server</strong> and <strong>second-server</strong>, thus bringing <strong>second-server</strong> online as a read/write repository.  This only works if there is <em>exactly one secondary</em> replicating the primary. </p>
+<pre><code>% agtool replicate  --primary-host prime-host  --primary-port 20000 \  
+                    --secondary-host second-host --secondary-port 30000 \  
+                    --user USER --password PW  \  
+                    --name Sales --switch-roles --become-client  
+</code></pre><p>Note that the primary and secondary arguments are the same as when we started the replication.  In this case the command is sent to the primary machine so we use the database name on the primary. </p><p><strong>--switch-roles</strong> causes AllegroGraph to put the <strong>prime-server</strong> repository in no-commit mode.  Then all commits that the <strong>prime-server</strong> has not sent yet are sent to the secondary so that it is totally up to date before the switch. Then the role switch occurs and the no-commit flag is removed from the Sales.sec database on <strong>second-server</strong>. </p><p><strong>--become-client</strong> tells AllegroGraph on <strong>prime-server</strong> to start replicating from Sales.sec on <strong>second-server</strong>.  If --become-client is not passed in, then <strong>second-server</strong> will still become a read/write server for Sales.sec but <strong>prime-server</strong> will not attempt to follow commits made on <strong>second-server</strong>. </p><p>The <strong>agtool replicate</strong> program will initiate the role switch and will exit right away, before the role switch has been completed. However, a role switch can take some time (ten seconds or more) depending how many outstanding commits are still to be sent. During this time, both databases will be in no-commit mode. A process that attempts to commit during this period will receive an error message saying that commits are not possible at this time. </p><p>Now if we wish to switch the roles <em>back</em> to their original state with <strong>prime-server</strong> being the primary and <strong>second-server</strong> the secondary we issue the same command but must change the primary-host and secondary-host to reflect the pre-switch state. </p>
+<pre><code>% agtool replicate  --primary-host second-host  --primary-port 30000 \  
+                    --secondary-host prime-host --secondary-port 20000 \  
+                    --user USER --password PW  \  
+                    --name Sales.sec --switch-roles --become-client  
+ 
+</code></pre><a name='header2-62' id='header2-62'></a><h2>Command Reference</h2><p>The replication program is one of the <strong>agtool</strong> utilities. The <a href="agtool.html">agtool</a> program is the general program for AllegroGraph command-line operations. (In earlier releases, there was a separate <strong>agraph-replicate</strong> program. A change from earlier releases is the <code>-u</code> is a short synonym for <code>--user</code> and <code>-c</code> is a short synonym for <code>--catalog</code>.) </p>
+<pre><code>agtool replicate [--primary-host host] [--primary-port port]  
+[--secondary-host host] [--secondary-port port]  
+[--catalog|-c cat] [--name name] [--uuid uuid]  
+[--user|-u user] [--password password]  
+[--jobname jobname] [--stop]  
+[--status] [--switch-roles] [--become-client]  
+[--list] </code></pre><p><strong>agtool replication</strong> can start and stops replication, switch primary and secondary roles, and get the status from the primary and secondary. </p><p>Databases can be named by <strong>catalog</strong> and <strong>name</strong> or by their <strong>uuid</strong>. </p><p>The <strong>primary-port</strong> and <strong>secondary-port</strong> arguments default to 10035.  The <strong>primary-host</strong> and <strong>secondary-host</strong> arguments do not have defaults and must be explictily supplied when needed. </p><p>The <strong>jobname</strong> names this particular replication job.  This is important for transaction log archiving as described below. If a jobname argument is not passed in but one is needed, then one will be created. </p><p>Replication is started if neither the <strong>--stop, --status</strong> nor <strong>--switch-roles</strong> arguments are passed. </p><p>If <strong>--stop</strong> is passed in then replication will stop.  For stopping replication only these arguments need be provided: </p>
+<pre><code>agtool replicate  
+  [--secondary-host host] [--secondary-port port]  
+  [--catalog|-c cat] [--name name] [--uuid uuid]  
+  [--user|-u user] [--password password]  
+  --stop </code></pre><p>For a status report pass the <strong>--status</strong> argument.   You will see status from both the primary and secondary sides. </p><p><strong>--switch-roles</strong> causes AllegroGraph to put the primary database in no-commit mode.  Then all commits that the secondary has not seen yet are sent to the secondary so that it is totally up to date before the switch. Then the role switch occurs and the no-commit flag is removed from the former secondary database. </p><p><strong>--list</strong> causes the list of jobnames associated with the specified server(s) to be printed. The <code>--primary-host</code>/<code>primary-port</code> and <code>--secondary-host</code>/<code>secondary-port</code> arguments specify servers, so associated jobnames will be printed for whichever one is specified, or for both if both are specified. For example: </p>
+<pre><code>$ agtool replicate \  
+     --primary-host localhost --primary-port 10443 \  
+     --name test --user  test --password xyzzy \  
+     --list  
+Jobnames on primary:  
+replica-1  
+replica-2 </code></pre></div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

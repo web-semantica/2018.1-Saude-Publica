@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Server Installation | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="server-installation"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>AllegroGraph 6.4.2 Server Installation</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Server Installation'>Server Installation</a>
+<ul>
+<li><a href='#rpminstall' title='From the RPM (Red Hat/Fedora systems)'>From the RPM (Red Hat/Fedora systems)</a></li>
+<li><a href='#tarinstall' title='From the TAR.GZ (all systems)'>From the TAR.GZ (all systems)</a></li>
+<li><a href='#header3-34' title='Running the installation script on untarred files'>Running the installation script on untarred files</a></li>
+<li><a href='#configscript' title='Configuration'>Configuration</a></li>
+<li><a href='#licensekey' title='Installing the License Key'>Installing the License Key</a></li>
+<li><a href='#header3-119' title='Uninstalling the Server'>Uninstalling the Server</a></li></ul></li>
+<li><a href='#header2-137' title='Client Installation'>Client Installation</a>
+<ul>
+<li><a href='#header3-141' title='Python Client'>Python Client</a></li>
+<li><a href='#header3-195' title='Java Client'>Java Client</a></li>
+<li><a href='#header3-216' title='Jena Client'>Jena Client</a></li>
+<li><a href='#sessionport' title='Session Port Setup'>Session Port Setup</a></li></ul></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Server Installation</h2><p>There are two methods of installation for the AllegroGraph server, one for administrators and one for non-administrators. Administrators can install the RPM file, and non-administrators can extract the files from a TAR.GZ file and install in a location of their choosing. </p><a name='rpminstall' id='rpminstall'></a> <h3>From the RPM (Red Hat/Fedora systems)</h3><p>To execute the commands in this section, you must run the commands as "root". </p><p>Obtain agraph-6.4.2-1.x86_64.rpm from the <a href="http://franz.com/agraph/downloads/" target="_blank">Franz download page</a>. </p><p>Install the RPM: </p>
+<pre><code># rpm -i agraph-6.4.2-1.x86_64.rpm </code></pre><p>Then run the configuration script: </p>
+<pre><code># /usr/bin/configure-agraph </code></pre><a name='rpm-install' id='rpm-install'></a> <p>The script asks several questions about configuring AllegroGraph.  Please see <a href="#configscript">Running the Configuration Script</a> for advice on how to reply to the script. Note that the last few lines of the script show how to start and stop AllegroGraph on your server.  These lines will be similar to this example: </p>
+<pre><code>You can start AllegroGraph by running:  
+/sbin/service agraph start  
+ 
+You can stop AllegroGraph by running:  
+/sbin/service agraph stop </code></pre><p>To verify that AllegroGraph is running correctly, open a browser and direct it to the <a href="http://franz.com/agraph/agwebview/index.lhtml" target="_blank">AllegroGraph WebView</a>  URL: </p>
+<pre><code>http://localhost:10035 </code></pre><p>You may substitute your server's IP address for "localhost." The port number is the AllegroGraph port, which defaults to 10035. This opens the WebView interface, which lets you manage users and interactively examine the data in your repositories. </p><p>To uninstall AllegroGraph (see also <a href="#server-uninstallation">Uninstalling the Server</a> below): </p>
+<pre><code># rpm --erase agraph </code></pre><p>Note that the uninstallation does not remove other directories created by AllegroGraph, which may contain configuration files, catalogs or log files.  Those live in /var/lib/agraph, /var/log/agraph, /var/run/agraph and /etc/agraph.  Be careful when removing these directories. </p><p>Unless you are using the free version (which allows up to 5 million triples), you must add a license key to the configuration file. See <a href="#licensekey">below</a> for more information. If you are using the free version, go to <a href="#client-installation">Client Installation below</a>. </p><a name='tarinstall' id='tarinstall'></a> <h3>From the TAR.GZ (all systems)</h3><p>The commands in this section do not require "root" access. </p><p>Obtain agraph-6.4.2-linuxamd64.64.tar.gz from the <a href="http://franz.com/agraph/downloads/" target="_blank">Franz download page</a>.  Place it in a directory of your choosing.  Then extract the installation files: </p>
+<pre><code>$ tar zxf agraph-6.4.2-linuxamd64.64.tar.gz </code></pre><p>This creates the "agraph-6.4.2" subdirectory, where the installation script resides.<br />
+</p><a name='header3-34' id='header3-34'></a><h3>Running the installation script on untarred files</h3><p>The installation script is <strong>install-agraph</strong>.  It takes the path to a writable directory where you want to install AllegroGraph as a required argument. It also accepts the following options: </p>
+<dl><dt><code>--no-configure</code> </dt>
+<dd>If supplied, AllegroGraph will be installed in the argument directory but the configuration program will not be run. This allows installing and configuring to be done without user input (by running the configuration script non-interactively, as described <a href="#confignoninter">below</a>). You can also run the configuration program, <strong>agraph-configure</strong>, interactively after the non-configuring installation finishes (as described in the <a href="#configscript">Configuration section</a> below). </dd><dt><code>--supersede</code> </dt>
+<dd>If supplied, an existing installation directory specified as the required argument to <strong>install-agraph</strong> will be overwritten without further warning or request for confirmation. </dd><dt><code>--help</code> </dt>
+<dd>Print information on the options to <strong>install-agraph</strong>.</dd></dl><p>Here is how a typical interactive installation is initiated: </p>
+<pre><code>$ agraph-6.4.2/install-agraph /home/joe/tmp/ag6.4.2  
+ 
+Installation complete.  
+Now running configure-agraph. </code></pre><a name='gz-install' id='gz-install'></a> <p>The script asks several questions about configuring AllegroGraph.  Please see <a href="#configscript">Running the Configuration Script</a> for advice on how to reply to these questions. Note that the last few lines of the script show how to start and stop AllegroGraph on your server.  These lines will be similar to this example: </p>
+<pre><code>You can start AllegroGraph by running:  
+/home/joe/tmp/ag6.4.2/bin/agraph-control --config /home/joe/tmp/ag6.4.2/lib/agraph.cfg start  
+ 
+You can stop AllegroGraph by running:  
+/home/joe/tmp/ag6.4.2/bin/agraph-control --config /home/joe/tmp/ag6.4.2/lib/agraph.cfg stop </code></pre><p>Now, the server can be started as shown above: </p>
+<pre><code>$ /home/joe/tmp/ag6.4.2/bin/agraph-control --config /home/joe/tmp/ag6.4.2/lib/agraph.cfg start  
+AllegroGraph 6.4.2 server  
+Daemonizing... </code></pre><p>To verify that AllegroGraph is running correctly, open a browser and direct it to the <a href="http://franz.com/agraph/agwebview/index.lhtml" target="_blank">AllegroGraph WebView</a> URL: </p>
+<pre><code>http://localhost:10035 </code></pre><p>You may substitute your server's IP address for "localhost." The port number is the AllegroGraph port, which defaults to 10035. You will need to your default AllegroGraph username and password to log in. This opens the WebView interface, which lets you manage users and interactively examine the data in your repositories. </p><p>Unless you are using the free version (which allows up to 5 million triples), you must add a license key to the configuration file. See <a href="#licensekey">below</a> for more information. If you are using the free version, go to <a href="#client-installation">Client Installation below</a>. </p><a name='configscript' id='configscript'></a> <h3>Configuration</h3><p>The server installation instructions in the previous two sections link to this section to avoid repeating detailed information about the AllegroGraph configuration script. You should follow these directions until the script exits and then return to the installation instructions. </p><p>The program which configures AllegroGraph is <strong>configure-agraph</strong>. It is called automatically by <strong>install-agraph</strong> described above unless the <code>--no-configure</code> option is specified. It can be called to configure an unconfigured AllegroGraph (this is necessary when AllegroGraph is installed with the RPM method). In this section we describe interactive configuration. See <a href="#confignoninter">below</a> for information on running <strong>configure-agraph</strong> non-interactively. </p><div style="border:1px solid blue"> <p>  <strong>NOTE:</strong> The Linux user account ("agraph") and the AllegroGraph superuser account ("test:xyzzy") are not interchangeable: the first is a regular operating system account, the second is used only by AllegroGraph and has nothing to do with the operating system. Each has a specific role to play.<br />
+</p>
+<ul>
+<li><p>If you are logged in as root, the installation script will prompt you to name a non-root account for AllegroGraph to run under. (It would be a security risk to let AllegroGraph run as root.) This account defaults to "agraph" and is designated in agraph.cfg as "RunAs agraph". The "agraph" account has no password and is used only by AllegroGraph server.</p></li>
+<li><p>The installation script will <em>always</em> prompt for the name and password of your initial AllegroGraph superuser. (In the paragraphs below this user appears as "test" with password "xyzzy".) This is the account that gives access to your triple stores. It appears in your initial agraph.cfg as "SuperUser <em>name:password</em>".  The first time AllegroGraph runs, it will use this line to create the superuser account. After that you can delete the entry from the configuration file for added security.</p></li></ul></div> <p>The AllegroGraph installation script creates an AllegroGraph configuration file (agraph.cfg) with settings appropriate to your environment. The script creates the minimal configuration files to get you started. The configuration file may be edited later. </p><a name='config-back' id='config-back'></a> <p>The configuration script asks several questions. The default answers are usually adequate, and can be reconfigured later if necessary. </p>
+<pre><code>Welcome to the AllegroGraph configuration program.  This script will  
+help you establish a baseline AllegroGraph configuration.  
+ 
+You will be prompted for a few settings.  In most cases, you can hit return  
+to accept the default value.  
+ 
+Location of configuration file to create:  
+[/home/joe/tmp/ag6.4.2/lib/agraph.cfg]:  
+Directory to store data and settings:  
+[/home/joe/tmp/ag6.4.2/data]:  
+Directory to store log files:  
+[/home/joe/tmp/ag6.4.2/log]:  
+Location of file to write server process id:  
+[/home/joe/tmp/ag6.4.2/data/agraph.pid]:  
+Port:  
+[10035]: </code></pre><p>If you are logged on as the root operator when you run the script, it will ask you to identify a non-root user account that AllegroGraph will run under. You can usually take the default value: </p>
+<pre><code>User to run as:  
+[agraph]:  
+ 
+User 'agraph' doesn't exist on this system.  
+Create agraph user:  
+[y]: </code></pre><p>The configuration script will then ask for a user name and password to be your AllegroGraph superuser.  This account is internal to AllegroGraph, and is not your server logon account. The example below shows the user "test" with password "xyzzy". This is the account expected by the tutorial examples, so it is convenient to create that account now. User account management is easy to perform through the <a href="http://franz.com/agraph/agwebview/index.lhtml" target="_blank">AllegroGraph WebView</a> interface, so this initial user/password combination is easily changed later. </p>
+<pre><code>Now you must set up an initial user account for AllegroGraph.  This  
+account will have "super user" privileges within AllegroGraph.  
+ 
+SuperUser account name:  
+[super]: test  
+SuperUser account password:  
+xyzzy  
+SuperUser account password (again):  
+xyzzy </code></pre><p>Finally, you are asked for the instance timeout seconds. This is the length of time (in seconds) a database will stay open without being accessed. The default is 604800, which is 60 x 60 x 24 x 7, that is one week in seconds. In contrast, an hour is 3600. </p>
+<pre><code>Instance timeout seconds:  
+[604800]: </code></pre><p>The value will be written into the agraph.cfg file like <code>InstanceTimeout 604800</code>. If you remove that line from the file, the timeout interval will be one hour (3600 seconds). </p><p>The script writes out the agraph.cfg file in the &lt;yourInstallDirectory&gt;/lib directory for the TAR.GZ installation, and in the /etc/agraph subdirectory for the RPM installation. These are the default locations. Make a note of where your agraph.cfg file resides. </p>
+<pre><code>/home/joe/tmp/ag6.4.2/lib/agraph.cfg has been created.   
+ 
+If desired, you may modify the configuration.  </code></pre><p>The script concludes with a display of start and stop commands customized to your installation. These commands vary between the TAR.GZ installation and the RPM installation, and depending on the location of your AllegroGraph installation directory. Make a note of the start and stop commands for your installation (see <a href="daemon-config.html#server-control">Server Control in Server Configuration and Control</a> for more information on the <strong>agraph-control</strong> program). </p>
+<pre><code>You can start AllegroGraph by running:  
+/home/joe/tmp/ag6.4.2/bin/agraph-control --config /home/joe/tmp/ag6.4.2/lib/agraph.cfg start  
+ 
+You can stop AllegroGraph by running:  
+/home/joe/tmp/ag6.4.2/bin/agraph-control --config /home/joe/tmp/ag6.4.2/lib/agraph.cfg stop </code></pre><p>This concludes the discussion of running the configuration script interactively. Please return to the installation instructions (<a href="#rpm-install">above here</a> for RPM installation, <a href="#gz-install">above here</a> for TAR.GZ installation) and continue from there. </p><a name='confignoninter' id='confignoninter'></a> <h4>Running the configuration script non-interactively</h4><p>You can run the configure-agraph script non-interactively, which allows you, for example, to run it from another script. To do so you specify <code>--non-interactive</code> on the <strong>configure-agraph</strong> command line along with additional arguments which provide answers to the questions that the script would have asked. See just above for information on the questions and answers. </p><p>If an error occurs, a message is output and the script exits with a non-zero status code. Most arguments have reasonable defaults but some do not and must be specified (either --super-password or --super-password-file must be specified, for example). </p><p>Here are the arguments in addition to --non-interactive: </p>
+<dl><dt><code>--config-file &lt;path&gt;</code> </dt>
+<dd>Location of the configuration file to create (defaults to $configfile).</dd><dt><code>--data-dir &lt;path&gt;</code> </dt>
+<dd>Directory to store data and settings (defaults to $datadir).</dd><dt><code>--log-dir &lt;path&gt;</code> </dt>
+<dd>Directory to write log files (defaults to $logdir). This argument corresponds to the <strong>LogDir</strong> top-level directive in the config file. See the description in <a href="daemon-config.html#LogDir">Server Configuration and Control</a>.</dd><dt><code>--pid-file &lt;path&gt;</code> </dt>
+<dd>Where to store the AllegroGraph PID file (defaults to $pidfile). This argument corresponds to the <strong>PidFile</strong> top-level directive in the config file. See the description in <a href="daemon-config.html#PidFile">Server Configuration and Control</a>. </dd><dt><code>--runas-user &lt;user&gt;</code> </dt>
+<dd>Which user to run the server under. Only applicable when starting AllegroGraph as root. This argument corresponds to the <strong>RunAs</strong> top-level directive in the config file. See the description in <a href="daemon-config.html#RunAs">Server Configuration and Control</a>. </dd><dt><code>--create-runas-user</code> </dt>
+<dd>Tells the script to create the user named in --runas-user if it does not already exists.</dd><dt><code>--port</code> </dt>
+<dd>Specifies the default port to be used by the server. Defaults to 10035. This argument corresponds to the <strong>Port</strong> top-level directive in the config file. See the description in <a href="daemon-config.html#PidFile">Server Configuration and Control</a>. </dd><dt><code>--super-user &lt;name&gt;</code> </dt>
+<dd>Name of AllegroGraph-internal user that gets super user privileges (defaults to 'super'). This argument corresponds to the <strong>SuperUser</strong> top-level directive in the config file. See the description in <a href="daemon-config.html#SuperUser">Server Configuration and Control</a>. </dd><dt><code>--super-password &lt;password&gt;</code> </dt>
+<dd>Password of this super user. See the <strong>SuperUser</strong> top-level directive in <a href="daemon-config.html#SuperUser">Server Configuration and Control</a>. The password is specified in that directive along with the super user name. </dd><dt><code>--super-password-file &lt;path&gt;</code> </dt>
+<dd>Allows you to specify a file containing the super user password, so that it doesn't appear in the command line. </dd></dl><p>The file and directory defaults when running as root are </p>
+<pre><code>configfile=/etc/agraph/agraph.cfg  
+datadir=/var/lib/agraph  
+logdir=/var/log/agraph  
+pidfile=/var/run/agraph/agraph.pid </code></pre><p>The defaults when not running as root are </p>
+<pre><code>basedir=~/agraph  
+configfile="$basedir/etc/agraph.cfg"  
+datadir="$basedir/data"  
+logdir="$basedir/log"  
+pidfile="$datadir/agraph.pid". </code></pre><p>Return to <a href="#config-back">configuration description above</a> or to the installation instructions (<a href="#rpm-install">above here</a> for RPM installation, <a href="#gz-install">above here</a> for TAR.GZ installation) and continue from there. </p><a name='licensekey' id='licensekey'></a> <h3>Installing the License Key</h3><p>When you download the free version of AllegroGraph, no License Key is provided or required. The free version lets you load a maximum of 5,000,000 triples, and has no expiration date.<br />
+</p><p>Franz issues a special License Key to users of the paid version of AllegroGraph. The License Key defines a maximum number of triples and an expiration date for the license, and is issued to an individual client company. Your License Key will be issued by the Franz sales department, and will arrive in your email.  A typical license key looks like this (non-working) example: </p>
+<pre><code>Licensee Customer Name  
+LicenseLimit 1000000  
+LicenseExpires 2010-06-16  
+&lt;LicenseCode&gt;  
+829P93952R9E8P7X4E8W565Z7A2A4Z592E4W5E49693P9K325X296S3R945A789D4  
+S843K9455787K3R3A2K6Z6N8K8V6V658A3V3D293H8X5S7X3V9A4R6533979V246V  
+6J8Y3T928MA69B928R7E4D8C7C4T6X9F28626Z448E986R6E9B6F4S9J9U6H8A7Q8  
+S324C67783Y89495Q8W867B7S349Q6C6T5W42A59P8Q5M967R5B554C2K3Q424T  
+&lt;/LicenseCode&gt; </code></pre><p>The "License Key" consists of all four fields: the Licensee, LicenseLimit, LicenseExpires and LicenseCode. They must all be present in order for the Key to work. The first three values reflect the terms of your contract with Franz. The LicenseCode verifies the other values. </p><p>To install your License Key, copy the entire block of text (Licensee, LicenseLimit, LicenseExpires, and LicenseCode) and paste it into your agraph.cfg file. (In the TAR.GZ installation example above, the agraph.cfg file was located at /home/joe/tmp/ag6.4.2/lib/agraph.cfg. The default location in the RPM installation is /etc/agraph/agraph.cfg.) The License Key can go into any part of the file as long as it is outside of a catalog definition. Save the file and restart the AllegroGraph server. </p><p>If there is any problem with your License Key, AllegroGraph will revert to the behavior of the free version.  It will return an error when you first exceed 5 million triples and every time thereafter. </p><p>Now go to <a href="#client-installation">Client Installation below</a>. </p> <p><a name="server-uninstallation"></a> </p><a name='header3-119' id='header3-119'></a><h3>Uninstalling the Server</h3><p>When installing from a <strong><em>tar.gz</em></strong> file, it is not necessary to uninstall the older AllegroGraph versions from a computer, but when installing from an <strong><em>RPM</em></strong> distribution, it is required unless you install the new distribution with the <strong><em>-U</em></strong> option. (You may wish to uninstall earlier versions installed with tar.gz even though it is not necessary to save space and reduce clutter.) </p><p>The main issue with uninstalling is ensuring you do not delete files or directories that you may need with the new installation or, if you are ceasing to use AllegroGraph, you may need if you start using it again. </p><p>You should save: </p>
+<ul>
+<li><p>The <strong>settings/</strong> directory</p></li>
+<li><p>The agraph.cfg file from the <strong>lib/</strong> directory of the existing installation</p></li>
+<li><p>The transaction logs (generally on production servers only)</p></li></ul><p>It is recommended that you copy all files and directories you wish to keep to a new directory named somthing like <strong>agraph-vXXX-saved-files/</strong> (where <strong>XXX</strong> is the version number without dots, like <strong>v45</strong>). This directory should not be a subdirectory of any AllegroGraph directory. Also, tools described in <a href="backup-and-restore.html">Backup and Restore</a> like <strong><em>agraph-backup</em></strong> can be used to save the contents of the settings directories and also databases. </p><h4>RPM uninstall</h4><p>Once everything is saved, you uninstall a RPM installation with the command </p>
+<pre><code># rpm --erase agraph </code></pre><p>This command will not remove directories created by AllegroGraph, which may contain configuration files, catalogs or log files. Those live in /var/lib/agraph, /var/log/agraph, /var/run/agraph and /etc/agraph. You should already have saved what you need, but make sure before deleting these remaining directories. </p><h4>tar.gz uninstall</h4><p>You uninstall by deleting the AllegroGraph installation directory using standard OS tools. On UNIX, for example, you would do so with a command like </p>
+<pre><code>% rm -rf my-old-allegrograph-install-directory/ </code></pre><p>Note that unlike RPM uninstallation, this command removes everything from the directory and the directory itself. There is no way to recover files or directories which you intended to keep but which where not copied elsewhere once the command is executed. </p><p>You should also remove other directories pointed to by the old configuration file such as TransactionLogDirs and TransactionLogArchives etc. once you have saved material in those directories you wish to keep. </p><p><a name="client-installation"></a> </p><a name='header2-137' id='header2-137'></a><h2>Client Installation</h2><p><a href="agwebview.html">AGWebView</a> and the <a href="http-protocol.html">REST/HTTP interface</a> need no further installation. They can be used as soon as the AllegroGraph server is running. </p><p>The Lisp client requires installing an appropriate version of Allegro CL and loading the AllegroGraph client <em>fasl</em> (compiled Lisp) file <em>agraph.fasl</em>. See the <a href="lisp-quickstart.html">Lisp Quick Start</a> document for information on the installation and use of the Lisp client. </p><p><a name="python-client"></a> </p><a name='header3-141' id='header3-141'></a><h3>Python Client</h3><p>The Python client works with Python 2.6, 2.7 and 3.3+. </p><p>The AllegroGraph Python client files are in agraph-6.4.2-client-python.tar.gz which you may obtain from the <a href="http://franz.com/agraph/downloads/clients" target="_blank">Franz Agraph client download page</a>. Download and place it in a directory of your choosing.  Then extract the files: </p>
+<pre><code>$ tar zxf agraph-6.4.2-client-python.tar.gz </code></pre><p>This creates the agraph-6.4.2-client-python subdirectory. </p><h4>Requirements</h4><p>Python versions 2.6+ and 3.3+ are supported. </p><p>The Python client depends on a few third-party Python modules. These will be downloaded from PyPI_ during installation and compiled on the target systems. Since some of the required packages use native extensions, it is necessary to have a proper development environment set up so that the compilation may succeed. This environment must include: </p>
+<ul>
+<li>A C compiler</li>
+<li>Python development headers</li>
+<li>libcurl development headers</li></ul><p>Below we describe more detailed setup instructions for some of the supported systems. </p><h5>Windows</h5><p>The required packages are available in binary form for Windows, so it is not necessary to install any compilers or headers. </p><h5>RHEL 6/7 and compatible systems</h5><p>On RHEL-like systems the requirements mentioned above can be satisfied by following these steps (note that root privileges are required): </p>
+<ul>
+<li>Enable <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a> repositories,  since some of the required packages are only available there.  The detailed instructions can be found <a href="https://fedoraproject.org/wiki/EPEL#How_can_I_use_these_extra_packages.3F">here</a>.  On CentOS systems, simply run 
+<pre><code> yum -y install epel-release </code></pre></li>
+<li>Install the required packages:
+<pre><code> yum -y install python-devel python-pip libcurl-devel gcc </code></pre></li>
+<li>Before installing the client make sure that the following environment  variable is set: 
+<pre><code> export PYCURL_SSL_LIBRARY=nss </code></pre></li>
+<li>To use virtual environments (recommended) an additional package is needed:
+<pre><code>yum -y install python-virtualenv </code></pre></li></ul><h5>Ubuntu</h5><p>Ubuntu offers three variants of curl, built using different SSL libraries. These variants differ in their licensing and SSL related capabilities (see https://curl.haxx.se/docs/ssl-compared.html for more details). The list of packages that need to be installed depends on the chosen SSL implementation. </p><p>The following package is required in all cases to use Python 2: </p>
+<pre><code># This will bring in Python, dev headers and GCC as dependencies  
+apt-get install python-pip </code></pre><p>For Python 3 this becomes: </p>
+<pre><code>apt-get install python3-pip </code></pre><p>To use the OpenSSL backend in curl:: </p>
+<pre><code>apt-get install libcurl4-openssl-dev libssl-dev </code></pre><p>For GnuTLS: </p>
+<pre><code>apt-get install libcurl4-gnutls-dev libgnutls28-dev </code></pre><p>For NSS: </p>
+<pre><code>apt-get install libcurl4-nss-dev libnss3-dev </code></pre><h5>Arch Linux</h5><p>On Arch the following packages are needed to use the client with Python 2: </p>
+<pre><code>pacman -S gcc python2 python2-pip libcurl </code></pre><p>For Python 3 use: </p>
+<pre><code>pacman -S gcc python python-pip libcurl </code></pre><h4>Installation</h4><p>  <strong>NOTE:</strong> It is highly recommended to perform the install in a virtual environment. See <a href="">https://virtualenv.pypa.io/en/stable/</a> and <a href="">http://docs.python-guide.org/en/latest/dev/virtualenvs/</a> for more information. </p><p>The client can be installed with the following command </p>
+<pre><code>pip install ./agraph-{property agraph-version}-client-python </code></pre><p>This will also download and install all required third-party packages. </p><h4>Testing</h4><p>To validate the installation make sure that you have access to an AllegroGraph server and run the following Python script:: </p>
+<pre><code>from franz.openrdf.connect import ag_connect  
+with ag_connect('repo', host='HOST', port='PORT',  
+                user='USER', password='PASS') as conn:  
+    print conn.size() </code></pre><p>Substitute appropriate values for the HOST/PORT/USER/PASS placeholders. If the script runs successfully a new repository named <code>repo</code> will be created. </p><h4>Tutorial</h4><p>There is a Python tutorial, described <a href="python/tutorial.html">here</a>. The tutorial examples can be run anywhere that Python 2.6 or 2.7 works. The tutorial assumes that AllegroGraph and Python 2.6 or 2.7 have been installed and configured. The tutorial examples currently do not work with Python 3.x. </p><p>The tutorial examples provide a good test of the installation for Python 2.6 or 2.7. </p><p><a name="java-client"></a> </p><a name='header3-195' id='header3-195'></a><h3>Java Client</h3><p>The AllegroGraph Java client files are in </p>
+<pre><code>agraph-java-client-6.4.2.tar.gz </code></pre><p>which you may obtain from the <a href="http://franz.com/agraph/downloads/" target="_blank">Franz download page</a>. Place it in a directory of your choosing. </p><p>The AllegroGraph Java client is a Maven artifact. To use it, install it into your local Maven repository by executing the following command in the directory containing unpacked client files: </p>
+<pre><code> mvn install:install-file -Dfile=lib/agraph-java-client-*.jar -DpomFile=pom.xml  
+</code></pre><p>Edit your agraph.cfg configuration file (agraph.cfg). You'll find it in the &lt;yourInstallDirectory&gt;/lib directory for the TAR.GZ installation, or in the system's /etc/agraph/ directory for the RPM installation. These are the default locations. Make a note of the port number, which defaults to 10035. </p>
+<pre><code>Port 10035 </code></pre><p>In this file you'll see an entry describing the rootcatalog.  It will be similar to this: </p>
+<pre><code>&lt;RootCatalog&gt;  
+  Main /yourInstallDirectory/data/rootcatalog  
+&lt;/RootCatalog&gt; </code></pre><p>The Java tutorial examples require this RootCatalog plus an additional catalog subdirectory that you must add to the config file.  The tutorial example code expects to find a catalog called "java-catalog" so please don't change the name. You can specify any writable directory as the location of the repository data. </p>
+<pre><code>&lt;Catalog java-catalog&gt;  
+  Main /yourInstallDirectory/data/java-catalog  
+&lt;/Catalog&gt; </code></pre><p>You'll have to stop and restart the AllegroGraph Server to force it to load the edited configuration file. </p><p>Navigate to the AllegroGraph 6.4.2 Java Client/tutorials/sesame directory. This directory contains a Maven project. To run the tutorial, type: </p>
+<pre><code> mvn java:exec </code></pre><p>The examples run for about 2.5 minutes and touch most AllegroGraph features. It is also possible to run only specific examples: </p>
+<pre><code>mvn java:exec -Dexec.args="1 2 3 5 8 13 21" </code></pre><p>If you are running AllegroGraph on another host or using non-default values for the port number, user name, or password, you will have to set the following environment variables prior to running the tutorial: AGRAPH<em>HOST, AGRAPH</em>PORT, AGRAPH<em>USER, AGRAPH</em>PASS. </p><p>The explanation of these examples is in the AllegroGraph <a href="java-tutorial/java-tutorial.html">Java Tutorial</a>. </p><p>If the tutorial examples throw an error in example6(), see the discussion of <a href="#sessionport">Session Port Setup</a>. </p><p><a name="jena-client"></a> </p><a name='header3-216' id='header3-216'></a><h3>Jena Client</h3><p>The Jena client is a variant of the Java client.  Simply follow the Java client setup (above).  The Jena tutorial can be found in tutorials/jena. </p><p>The explanation of these examples is in the AllegroGraph <a href="java-tutorial/jena-tutorial.html">Jena Tutorial</a>. </p><a name='sessionport' id='sessionport'></a> <h3>Session Port Setup</h3><p>If you connect to AllegroGraph on a remote server (using an SSH client, for example), it is possible that you will see a connection error when you reach the sixth tutorial example. The solution is to add a SessionPorts entry in agraph.cfg, specifying a range of ports for AllegroGraph to use, as in: </p>
+<pre><code>Port 10035  
+SessionPorts 9091-9100 </code></pre><p>Any range of unused ports will do. Ten ports are sufficient for initial installation and testing. Don't forget to restart AllegroGraph after editing the config file. </p><p>Then you must configure your SSH client to map the same range of ports from your local computer to the remote server. Local port 9091 must map to remote port 9091, etc. This should clear up the connection issue. </p><p>If the problem persists, it is possible that a firewall is obstructing the required ports. </p><p>If you are running AllegroGraph and the client on the same computer, the allocation of session ports is handled automatically and transparently. </p></div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

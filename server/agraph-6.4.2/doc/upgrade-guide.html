@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Upgrade Guide | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="upgrade-guide"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>AllegroGraph Upgrade Guide</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a>
+<ul>
+<li><a href='#header3-12' title='The issue with upgrading'>The issue with upgrading</a></li>
+<li><a href='#header3-16' title='Quick and simple upgrading'>Quick and simple upgrading</a></li>
+<li><a href='#header3-25' title='Is upgrading necessary?'>Is upgrading necessary?</a></li>
+<li><a href='#header3-27' title='If upgrading is not necessary, can a database from the later release be opened in an earlier release?'>If upgrading is not necessary, can a database from the later release be opened in an earlier release?</a></li>
+<li><a href='#header3-29' title='What is the cost of upgrading?'>What is the cost of upgrading?</a></li>
+<li><a href='#header3-31' title='Suggested procedures when an upgrade is not required'>Suggested procedures when an upgrade is not required</a></li>
+<li><a href='#header3-51' title='Suggested procedures when an upgrade is required'>Suggested procedures when an upgrade is required</a></li></ul></li>
+<li><a href='#header2-72' title='The agtool upgrade program'>The agtool upgrade program</a>
+<ul>
+<li><a href='#header3-75' title='Backup databases before converting with agtool upgrade'>Backup databases before converting with agtool upgrade</a></li>
+<li><a href='#header3-79' title='agtool upgrade usage'>agtool upgrade usage</a></li></ul></li>
+<li><a href='#header2-86' title='The --noconvert option'>The --noconvert option</a></li>
+<li><a href='#header2-90' title='Recent releases where the internal format changed'>Recent releases where the internal format changed</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>This document describes how to upgrade database from one version of AllegrGraph to a later version of AllegroGraph. Using the same technique, you can also make a copy of a database. The tools and methods described in this document work for all versions of AllegroGraph, 4.4 and later. </p><p><strong><em>If you have AllegroGraph version 3.x and want to upgrade to version 5.x</em></strong> please contact Franz Inc. Customer Support (support@franz.com). </p><p><strong><em>If you want to upgrade from a version v4.x where x < 4</em></strong> (e.g., from 4.3) to a later version (such as 6.4.2), see <a href="pre-v44-upgrade-guide.html">pre-v4.4 Upgrade Guide</a>. </p><a name='header3-12' id='header3-12'></a><h3>The issue with upgrading</h3><p>You want two things to be moved from the earlier version to the later: <strong>the data</strong> and <strong>the server settings</strong>. The data is the set of triples. The server settings are (more or less) everything else: user information, security settings, etc. </p><p>While you can simply upgrade databases (when necessary) to a new AllegroGraph release or (if upgrading is not required) simply shut down the old server and open the databases in the new server, we recommend that you (1) back up your databases before using them in the new release and (2) test the new release with your data before committing to switching over. That means having more than one copy of the data, at least for a while. For large databases, that can mean using a great deal of disk space. We make suggestions about how to proceed to minimize disk usage in various situations but we cannot anticipate all cases. All AllegroGraph users have to devise upgrade plans which suit their specific needs using the available backup and upgrading tools. </p><p><a name="qdupgrade"></a> </p><a name='header3-16' id='header3-16'></a><h3>Quick and simple upgrading</h3><p>When you install a new release of AllegroGraph, running the following programs will make a copy of all databases in a new location suitable to be used by the new release and do any database conversions that are necessary. Note that this quick and simple method trades disk space for simplicity. So if your databases use X bytes, about 3X bytes are needed by this method. If you have large databases and disk space might be an issue, consider the more efficient methods described below. </p><p>Suppose you have version X and a new version Y, with version X &lt;= version Y. The steps are these: </p>
+<ol>
+<li>Using <strong>agtool archive</strong> of version X, archive all the    repositories and settings into the directory specified as an argument (see <a href="backup-and-restore.html">Backup and Restore</a> for <strong>agtool archive</strong> usage). </li>
+<pre><code>agtool archive --port X-port backup-all &lt;directory&gt; </code></pre>
+<li>Using <strong>agtool archive</strong> of version Y, restore all the repositories    and settings. If the database format has changed, it is this step that    reformats the data. </li>
+<pre><code>agtool archive --port Y-port restore-all &lt;directory&gt; </code></pre></ol><p>After restoring the settings, you must restart the new (version Y) AG server to reflect the changes. </p><p>If the original installation uses catalogs other than root, the same catalogs need to exist in the destination configuration. </p><a name='header3-25' id='header3-25'></a><h3>Is upgrading necessary?</h3><p>AllegroGraph has a release number (such as the current release 6.4.2). AllegroGraph databases have an internal format and this format is changed from time to time. If the internal database format changes between releases, databases must be upgraded in order to be used. (The upgrading is done either by the <strong>agtool archive</strong> program with the <strong>restore</strong> or <strong>restore-all</strong> option, or by the program <strong>agtool upgrade</strong>, described <a href="#convertdb">below</a>.)  But if the internal database format is the same in two release, databases need not be upgraded. The <a href="release-notes.html">Release Notes</a> say whether the internal database format has changed. If you try to open a database from an earlier database format that has not been upgraded, you will get an error and the database will not open. See the <a href="#chart">chart</a> below for information on when the format has changed. </p><a name='header3-27' id='header3-27'></a><h3>If upgrading is not necessary, can a database from the later release be opened in an earlier release?</h3><p>No. If both later release Y and earlier release X use the same internal database format, you can open X databases in Y. However, you cannot open Y databases in X. Even though the database structure is the same, other aspects may be different. </p><a name='header3-29' id='header3-29'></a><h3>What is the cost of upgrading?</h3><p>Upgrading takes time and uses disk space. Following the quick upgrade path described <a href="#qdupgrade">above</a> -- backup in old version, restore in new version -- there are for a time at least three copies of the data on disk. That is significant if you have a large amount of data. Upgrading can take appreciable time, but it only needs to be done once or maybe twice per new release. (If upgrading is required, you must upgrade at least once. When you need to have the server running without interruption and you want to test the new release, you may find you need to upgrade twice: once to create databases for testing and once again when testing is complete and you want the server data -- which now has data added since the first upgrade -- moved to the new release.) </p><a name='header3-31' id='header3-31'></a><h3>Suggested procedures when an upgrade is not required</h3><p>In this discussion, your current version is <em>release-current</em> and the new version is <em>release-new</em>. </p><p>Even though an upgrade is not required, you still have to test the new release before switching over and it is desirable to test it with your actual databases. </p><p>The issue is how much downtime you can tolerate and how much new data you are willing to risk if things go wrong. In a development or test system, a reasonable downtime is often OK, as is some data loss. In a production system, downtime should be as short as possible and data lossage is unacceptable. (Data might be lost if the <em>release-current</em> server is stopped and testing of the <em>release-new</em> server fails: data added during the <em>release-new</em> test may be difficult or impossible to recover.) </p><h4>Upgrade is not required, case 1 (minimal testing)</h4><p>This is a minimal test method. You backup and stop the current version and start and restore to the new version. If the new version is unsatisfactory, you can restart and restore the backup to the old version. </p>
+<ol>
+<li>Create a backup in the current release of the running databases using the <strong>agtool archive</strong> from <em>release-current</em> with the <strong>backup</strong> or <strong>backup-all</strong> option, like the following: </li>
+<pre><code>agtool archive --port release-current-port backup-all &lt;directory&gt; </code></pre>
+<li><p>Stop the current AllegroGraph version (<em>release-current</em>). </p></li>
+<li><p>Start the new version (<em>release-new</em>) and restore the backed up data with: </p></li>
+<pre><code>agtool archive --port release-new-port restore-all &lt;directory&gt; </code></pre></ol><h4>Upgrade is not required, case 2 (more testing)</h4><p>Here are suggested steps for a testing track upgrade: </p>
+<ol>
+<li>Create a backup in the current release of the running databases using the <strong>agtool archive</strong> from <em>release-current</em> with the <strong>backup</strong> or <strong>backup-all</strong> option, like the following: 
+<pre><code>agtool archive --port release-current-port backup-all &lt;directory&gt; </code></pre>
+<li>While leaving the current release running, start the new version (<em>release-new</em>) and restore the backup up data: </li></li><p>   agtool archive --port release-new-port restore-all <directory>  </p>
+<li>Test while both versions are running. </li></ol><p>If testing fails, continue with <em>release-current</em> while you solve the problem, whatever it is. If testing is ok, </p>
+<ol>
+<li>Stop <em>release-current</em> and continue with <em>release-new</em>. </li></ol><a name='header3-51' id='header3-51'></a><h3>Suggested procedures when an upgrade is required</h3><p>When the internal database version is changed, then to use a database created by <em>release-current</em> in <em>release-new</em>, it must be upgraded/converted. The <strong>agtool archive</strong> backup/restore procedure described <a href="#qdupgrade">above</a> does the upgrade, but at a significant space cost when databases are large (since for a while at least, three copies of the data exist simultaneously). <strong>agtool upgrade</strong> (see <a href="#convertdb">below</a>) does an in-place conversion, so in theory only one copy of a database needs to exist but having a backup is recommended so two copies will in fact exist. </p><p>Again, consider two cases: (1) you need the server running while you test the later release (roughly, do you have a continuously running production system), or (2) you can tolerate noticeable downtimes and possible data loss (roughly, you are developing and can recover without too much work). </p><h4>Upgrade required, case 1 (minimal server downtime)</h4><p>If you are in the case where the server downtime must be minimal, then possible steps are: </p>
+<ol>
+<li>Create a backup in <em>release-current</em> of the running databases using the <em>release-current</em> <strong>agtool archive</strong> with the <strong>backup</strong> or <strong>backup-all</strong> option: </li>
+<pre><code>agtool archive --port release-current-port backup-all &lt;directory&gt;  
+</code></pre>
+<li>Restore that backup to <em>release-new</em> using the <em>release-new</em> <strong>agtool archive</strong> with the <strong>restore</strong> or <strong>restore-all</strong> option. </li>
+<pre><code>agtool archive --port release-new-port restore-all &lt;directory&gt;  
+</code></pre>
+<li><p>Keep <em>release-current</em> server running while you test the new release. </p></li>
+<li><p>When testing is complete, delete the new release databases (they do not include changes made to the old release versions while testing). </p></li>
+<li><p>Make a backup in <em>release-current</em> of the running databases using the <em>release-current</em> <strong>agtool archive</strong> with the <strong>backup</strong> or <strong>backup-all</strong> option (this backup protects you in case there is a problem with the upgrade; the backup can be deleted when the databases are successfully upgraded): </p></li>
+<pre><code>agtool archive --port release-current-port backup-all &lt;directory&gt;  
+</code></pre>
+<li>Either user the <strong>restore</strong> or <strong>restore-all</strong> option to <em>release-new</em> <strong>agtool archive</strong> (the easiest but least space efficient way) or use <a href="#convertdb">agtool upgrade</a> to upgrade the old release databases to the new release (the harder but more space efficient way). </li></ol><h4>Upgrade required, case 2 (server can be down for some time)</h4><p>If you are in case (2) where server downtime is allowed, then the steps are: </p>
+<ol>
+<li>Create a backup of the <em>release-current</em> databases using <strong>agtool archive</strong> (use the <strong>agraph-backup</strong> program if <em>release-current</em> is prior to 6.2.0, which was when <em>*agtool</em> was introduced). Use the <strong>backup</strong> or <strong>backup-all</strong> option: </li>
+<pre><code># For releases prior to 6.2.0  
+ 
+agraph-backup --port release-current-port backup-all &lt;directory&gt;  
+ 
+# For release 6.2.0 and later  
+ 
+agtool archive --port release-current-port backup-all &lt;directory&gt;  
+</code></pre>
+<li><p>Restore to the new release using the <strong>restore</strong> or <strong>restore-all</strong> options to <em>release-new</em> <strong>agtool archive</strong>. Test the new release. </p></li>
+<li><p>If testing goes well, continue using the new release server. If you need to revert to the old release server, restore from the backup made in step 1. You will have to make any changes made with the new release server again. (Recall, case (2) assumes that downtime and some lossages are acceptable. Recall too that once a database is opened by the new release server, it cannot be opened by the old release server.) </p></li></ol><p><a name="convertdb"></a> </p><a name='header2-72' id='header2-72'></a><h2>The agtool upgrade program</h2><p>The <strong>agtool upgrade</strong> program will do an in-place upgrade of a single database from an earlier release to the current release (the release containing the <strong>agtool</strong> program being run). The AllegroGraph server must be running. </p><p>The <a href="agtool.html">agtool</a> program is the general program for AllegroGraph command-line operations. (In earlier releases, there was a separate <strong>convertdb</strong> program. A change from earlier releases is the <code>-p</code> short form of the <code>--port</code> option and the <code>-c</code> short form of the <code>--catalog</code> option.) </p><a name='header3-75' id='header3-75'></a><h3>Backup databases before converting with agtool upgrade</h3><p>Before using <strong>agtool upgrade</strong>, be sure to backup your databases. You can do this with <strong>agtool archive</strong> (<strong>agraph-backup</strong> for releases prior to 6.2.0). Using the <strong>agtool archive</strong> or <strong>agraph-backup</strong> from the earlier release, do the following (this is the same as the first step of <a href="#qdupgrade">the quick and simple upgrading</a>: </p>
+<pre><code># For releases prior to 6.2.0  
+agraph-backup --port X-port backup-all &lt;directory&gt;  
+ 
+# For release 6.2.0 and later  
+agtool archive --port X-port backup-all &lt;directory&gt; </code></pre><p>Now you can upgrade the individual databases with <strong>agtool upgrade</strong>. If something goes wrong, you are in a position to restore the databases, using <strong>agtool archive</strong>/<strong>agraph-backup</strong> with the <strong>restore</strong> or <strong>restore-all</strong>. (You can restore to the old version or the new version, depending on which <strong>agtool archive</strong>/<strong>agraph-backup</strong> you use.) </p><a name='header3-79' id='header3-79'></a><h3>agtool upgrade usage</h3><p>The usage is: </p>
+<pre><code>agtool upgrade [--port|-p port] [--catalog|-c catalog] dbname </code></pre><p>The <em>--port</em> argument allows specifying the server port. The <em>--catalog</em> argument allows specifying catalogs other than <strong>root</strong>. </p><p>Because the upgrade is in-place, this is the most space efficient way to upgrade a database. </p><p>Only one database at a time in a catalog can be upgraded. If a catalog has five separate databases, <strong>agtool upgrade</strong> must be run five times. </p><p><a name="noconvert"></a> </p><a name='header2-86' id='header2-86'></a><h2>The --noconvert option</h2><p>When an archive created by older version of <strong>agtool archive</strong> is restored, either by <strong>restore</strong> or <strong>restore-all</strong>, the database is converted to the current version by default. </p><p>To suppress this operation, give <code>--noconvert</code> option to <strong>agtool archive</strong>. </p><p><a name="chart"></a> </p><a name='header2-90' id='header2-90'></a><h2>Recent releases where the internal format changed</h2><p>As we said, upgrades are required when the internal database format changes.  The table below shows the release where the format changed. Contact support (support@franz.com) if you have questions about the internal format of earlier releases. </p>
+<pre><code>Recent releases where the internal format changed  
+---------------------------------------------------------------  
+      4.14.1  
+      5.0  
+      6.0  
+      6.1  
+</code></pre><p>So a database from a release prior to 4.14.1 must be upgraded in order to be used in any release starting with 4.14.1. Databases from releases 4.14.1 and after but before 5.0 must be upgraded to be used with release 5.0 and after. Databases from releases 5.0 to 6.0.2 need to be upgraded to be used with release 6.1. Once a database has been opened in a newer release, it should not be used with an earlier release, even if the format has not changed. </p> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Audit | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="audit"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>AllegroGraph 6.4.2 Audit</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a>
+<ul>
+<li><a href='#header3-11' title='Enabling auditing'>Enabling auditing</a></li>
+<li><a href='#header3-18' title='Auditing event types'>Auditing event types</a></li>
+<li><a href='#header3-24' title='Security'>Security</a></li>
+<li><a href='#header3-26' title='Superuser access and permissions'>Superuser access and permissions</a></li></ul></li>
+<li><a href='#header2-29' title='Audit email notifications'>Audit email notifications</a></li>
+<li><a href='#header2-38' title='Web Interface'>Web Interface</a></li>
+<li><a href='#header2-41' title='HTTP interface'>HTTP interface</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>AllegroGraph always provides an unstructured log of system activity. This is mainly for debugging and to aid in technical support. AllegroGraph also provides a structured system audit log which tracks important changes to the server and its triple-stores. This log is useful for system and database administrators conscious of security and performance. </p><p><a name="audit-enable"></a> </p><a name='header3-11' id='header3-11'></a><h3>Enabling auditing</h3><p>Logging will only be performed if auditing is enabled when the AllegroGraph server is started. It is not possible to start logging in a running server started without auditing enabled. </p><p>To enable auditing, add this line to the AllegroGraph configuration file: </p>
+<pre><code>Auditing yes </code></pre><p>The AllegroGraph configuration file and the various configuration options are discussed in the <a href="daemon-config.html">server configuration document</a>. </p><p>When auditing is enabled, when certain events occur (see below), statements will be added to the <code>system:system</code> repository (i.e., the repository named <code>system</code> in the catalog named <code>system</code>).  This repository is created automatically if it does not exist at the time an audit event is logged. </p><p><a name="audit-events"></a> </p><a name='header3-18' id='header3-18'></a><h3>Auditing event types</h3><p>Here are the audit event types: </p>
+<pre><code>addIndex  
+addRole  
+addUser  
+changePassword  
+changeRole  
+changeUser  
+createArchive  
+createFreeTextIndex  
+createTripleStore  
+deleteDuplicateTriples  
+deleteRole  
+deleteTripleStore  
+deleteUser  
+disableAccount  
+dropFreeTextIndex  
+dropIndex  
+enableAccount  
+expirePassword  
+failedLogin  
+logIn  
+logOut  
+logOutWithTimeout  
+modifyRole  
+optimizeIndices  
+restoreArchive  
+setBulkMode  
+suspendAccount  
+unsuspendAccount </code></pre><p>The list of audit event types can be obtained via the REST interface: </p>
+<pre><code>GET /auditLog/eventTypes </code></pre><p>The events are also listed on the <em>Audit Log Page</em> in WebView, as shown in the WebView section <a href="#audit-web-interface">below</a>. The events are listed by their labels, like "add user". To get the event name, remove the spaces and capitalize every word except the first (so <code>addUser</code>). </p><a name='header3-24' id='header3-24'></a><h3>Security</h3><p>Regardless of the security settings, only superusers have access to the <code>system:system</code> repository. </p><a name='header3-26' id='header3-26'></a><h3>Superuser access and permissions</h3><p>Superusers can modify the access rights to repositories and permissions of any user, including themselves. However, superusers may not have access rights or permissions initially (depending on the value of the <code>SuperUserCanAccessAllData</code> configuration option described in <a href="daemon-config.html">Server Configuration and Control</a>). Any access or permission change is recorded if auditing is enabled. Therefore, the fact that a superuser granted him/herself permissions and rights will be discoverable when auditing is enabled, assuming <code>SuperUserCanAccessAllData</code> was set to <code>no</code> in the configuration file. </p><p><a name="audit-email"></a> </p><a name='header2-29' id='header2-29'></a><h2>Audit email notifications</h2><p>AllegroGraph provides a flexible interface to cause email notifications of auditable events to be sent to designated email addresses. The email addresses must be specified in the AllegroGraph configuration file. Auditing must be enabled (<code>Auditing yes</code> must appear in the configuration file) for emails to be sent. The AllegroGraph configuration file and the various configuration options are discussed in the <a href="daemon-config.html">server configuration document</a>. </p><p>In order to have email notifications sent, you must define one or more SMTP hosts with entries like the following in the configuration file (see the <a href="daemon-config.html">server configuration document</a>): </p>
+<pre><code>SMTPHost gmail \  
+      server="smtp.gmail.com", ssl=true, starttls=false,\  
+      from="me@gmail.com", login="me@gmail.com", \  
+      password="somepassword" </code></pre><p>That defines the <em>gmail</em> SMTP host. Now, add as many <code>AuditEventsToEmail</code> entries as you wish: </p>
+<pre><code>AuditEventsToEmail to="agadmin@gmail.com", smtphost="gmail", \  
+  events="expirePassword,addUser,deleteUser" </code></pre><p>We list three audit events which will trigger emails to agadmin@gmail.com (expirePassword, addUser, and deleteUser), but the list can contain any audit events (see <a href="#audit-events">above</a> for a list of audit events). Note the SMTP host is specified by the name it is given (<em>gamil</em> in this case). If there is only one SMTPHost defined, it can be left out of the <code>AuditEventsToEmail</code> entry: </p>
+<pre><code>AuditEventsToEmail to="agadmin@gmail.com", \  
+  events="expirePassword,addUser,deleteUser"  
+</code></pre><p><a name="audit-web-interface"></a> </p><a name='header2-38' id='header2-38'></a><h2>Web Interface</h2><p>AllegroGraph's AGWebView tool provides an interface to query the audit information; see the <a href="agwebview.html">AGWebView documentation</a> for information on AGWebView. The WebView auditing is described next (this description is repeated in the <a href="agwebview.html#agwebview-auditing">AGWebView document</a>). </p> <p>You can use the AG WebView interface to examine auditing information. Only superusers can look at the auditing information. There is an <strong>Audit log</strong> entry on the <strong>Admin</strong> menu on the WebView menu bar, as shown in the illustration: </p><p><img src="audit-p1.jpg" alt="The Admin menu on the WebView menu bar"></img> </p><p>If selected, the following page is displayed: </p><p><img src="audit-p2.jpg" alt="The Audit Log page in WebView"></img> </p><p>No information is displayed because we have not requested any (and, in fact, the page was displayed immediately after a fresh startup so there is no information to display). </p><p>After we have, as superuser <strong>test</strong>, added two users (fred and joe), the updated page (looking at actions by test, as test is selected, and event <strong>add user</strong>) shows when those users were added and by whom. Information is refreshed when the <strong>View Audit Log</strong> button is clicked. </p><p><img src="audit-p3.jpg" alt="The Audit Log displaying add user events"></img> </p><p>The multi-item widgets <strong>User names</strong> and <strong>Event types</strong> allow you to filter audit log entries by user and event type. Multiple items can be selected from each list. Clicking <strong>All</strong> under each list selects all items. The standard combinations of mouse clicks and the Control and Shift keys can be used to select individual or groups of items. </p><p>The two date boxes to the right allow restricting displayed log entries to a range of dates. </p><p>Next user joe creates and deletes a repository <em>asia</em> and creates a repository <em>kennedy</em>, to which he adds a bunch of triples, and test (the superuser) modifies joe's user permissions several times. Here are screens after that activity, the first showing all activity and the second just the <strong>change user</strong> activity of test. Again, clicking <strong>View Audit Log</strong> clears the currently displayed information and displays information based on the selections in the various lists and boxes. </p><p><img src="audit-p4.jpg" alt="The Audit Log displaying all activity"></img> </p><p><img src="audit-p5.jpg" alt="The Audit Log displaying test's change-user activity"></img> </p><p>User joe did add triples to the <em>kennedy</em> repository, but the audit log does not record adding and deleting triples so that activity is not shown. </p> <a name='header2-41' id='header2-41'></a><h2>HTTP interface</h2><p>See <a href="http-protocol.html">HTTP Protocol - SPARQL Endpoint</a> for information on AllegroGraph's HTTP interface. The interface for getting audit log information is <a href="http-protocol.html#get-audit-log">here</a> in that document and is repeated (for convenience) just below. </p> <h3>GET /auditLog <a name="get-audit-log"></a></h3><p>Returns entries from the audit log which match the given parameters. </p><p>This service takes the following parameters: </p>
+<dl><dt><code>startDate</code> </dt>
+<dd>An untyped literal in <code>xsd:dateTime</code> format. For example, <code>"2014-02-23T00:00:00Z"</code>. This can be used to select only events which occurred on or after this date and time. See <a href="datatypes.html#date-time">the date-time section of Datatypes</a> for information on the date-time format. </dd><dt><code>endDate</code> </dt>
+<dd>An untyped literal in <code>xsd:dateTime</code> format. For example, <code>"2014-02-23T00:00:00Z"</code>. This can be used to select only events which occurred on or before this date and time. See <a href="datatypes.html#date-time">the date-time section of Datatypes</a> for information on the date-time format. </dd><dt><code>users</code> </dt>
+<dd>A comma-separated list of user ids or the special value   <code>UNKNOWN</code>. Only events triggered by the specified users are   included in the results.   <code>UNKNOWN</code> matches entries for which the acting user is not   recorded which includes some automatic system actions and failed   logins. </dd><dt><code>events</code> </dt>
+<dd>A comma-separated list of event type classes as returned by <a href="#get-audit-event-types">auditLog/eventTypes</a>. Only events whose type is among the members of the list are included in the results. </dd><dt><code>limit</code> </dt>
+<dd>An integer. This can be used to limit the amount of results returned by   the query. </dd><dt><code>offset</code> </dt>
+<dd>An integer. This can be used to skip the first <code>offset</code> results in result   set. </dd></dl><p>If a parameter is not specified then no restriction is imposed on the corresponding component of the audit log entires. </p><p>The columns of results are: </p>
+<dl><dt><code>eventName</code> </dt>
+<dd>The name of event. This is one of the labels returned by   <a href="#get-audit-event-types">eventTypes</a>. </dd><dt><code>eventTime</code> </dt>
+<dd>The date and time of the event. Must be an untyped literal in xsd:dateTime format, for example, <code>"2014-02-23T00:00:01Z"</code> ( equals February 23, 2014, one second after midnight, Greenwich Mean Time). See <a href="datatypes.html#date-time">the date-time section of Datatypes</a> for information on the date-time format. </dd><dt><code>user</code> </dt>
+<dd>The user who triggered the event. This   is unbound if the user is not known, and so no information about   the user will be returned. </dd><dt><code>remote</code> </dt>
+<dd>The IP address and the port from where the request which triggered   the event was sent. For example, <code>192.168.1.1:43420</code>. </dd><dt><code>databaseName</code> </dt>
+<dd>If the event is associated with a store then this value identifies   it in the format of <code>&lt;catalog-name&gt;/&lt;repository-name&gt;</code>. For stores   in the root catalog, the <code>&lt;catalog-name&gt;</code> is <code>root</code>. </dd><dt><code>target</code> </dt>
+<dd>For <code>addIndex</code> and <code>dropIndex</code> events, this is the name of the   <a href="triple-index.html">index</a>. For <code>addUser</code>, <code>changePassword</code>, <code>deleteUser</code>   and <code>failedLogin</code> events, this is the user id of the affected user. </dd></dl><p>The results are sorted by <code>eventTime</code>. The format of the results can be controlled with the <a href="http-protocol.html#output">Accept</a> header. </p>  <h3>GET /auditLog/eventTypes <a name="get-audit-event-types"></a></h3><p>Returns the event classes and their labels. Classes can be passed in the <code>events</code> parameter of <a href="#get-audit-log">auditLog</a> to restrict the types of events in the results. </p><p>The format of the results can be controlled with the <a href="http-protocol.html#output">Accept</a> header. </p>  <h3>HTTP audit interface example <a name="http-audit-example"></a></h3><p>Here is an example where we use <strong>curl</strong> to get audit information. </p>
+<pre><code>curl -u test:xyzzy -X GET http://localhost:10035/auditLog  
+</code></pre><p>The information returned uses the <code>application/sparql-results+xml</code> format which is the default for SPARQL results (audit requests are implemented internally as SPARQL queries). Note that some events have no user information as the user is not known for them. </p>
+<pre><code>$ curl -u test:xyzzy -X GET http://localhost:10035/auditLog  
+&lt;?xml version="1.0"?&gt;  
+&lt;!-- Generated by AllegroGraph 4.14 --&gt;  
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#"&gt;  
+  &lt;head&gt;  
+    &lt;variable name="eventName"/&gt;  
+    &lt;variable name="eventTime"/&gt;  
+    &lt;variable name="user"/&gt;  
+    &lt;variable name="remote"/&gt;  
+    &lt;variable name="databaseName"/&gt;  
+    &lt;variable name="target"/&gt;  
+  &lt;/head&gt;  
+  &lt;results&gt;  
+    &lt;result&gt;  
+      &lt;binding name="eventName"&gt;  
+        &lt;literal&gt;add user&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="eventTime"&gt;  
+        &lt;literal datatype="http://www.w3.org/2001/XMLSchema#dateTime"&gt;2014-03-24T08:05:44Z&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="target"&gt;  
+        &lt;literal&gt;test&lt;/literal&gt;  
+      &lt;/binding&gt;  
+    &lt;/result&gt;  
+    &lt;result&gt;  
+      &lt;binding name="eventName"&gt;  
+        &lt;literal&gt;create triple-store&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="eventTime"&gt;  
+        &lt;literal datatype="http://www.w3.org/2001/XMLSchema#dateTime"&gt;2014-03-24T08:05:45Z&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="databaseName"&gt;  
+        &lt;literal&gt;system/system&lt;/literal&gt;  
+      &lt;/binding&gt;  
+    &lt;/result&gt;  
+    &lt;result&gt;  
+      &lt;binding name="eventName"&gt;  
+        &lt;literal&gt;create triple-store&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="eventTime"&gt;  
+        &lt;literal datatype="http://www.w3.org/2001/XMLSchema#dateTime"&gt;2014-03-24T08:05:52Z&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="user"&gt;  
+        &lt;literal&gt;test&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="databaseName"&gt;  
+        &lt;literal&gt;root/xxx&lt;/literal&gt;  
+      &lt;/binding&gt;  
+    &lt;/result&gt;  
+    &lt;result&gt;  
+      &lt;binding name="eventName"&gt;  
+        &lt;literal&gt;add index&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="eventTime"&gt;  
+        &lt;literal datatype="http://www.w3.org/2001/XMLSchema#dateTime"&gt;2014-03-24T08:06:36Z&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="user"&gt;  
+        &lt;literal&gt;test&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="databaseName"&gt;  
+        &lt;literal&gt;root/xxx&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="target"&gt;  
+        &lt;uri&gt;http://franz.com/allegrograph/4.11/audit-log#i&lt;/uri&gt;  
+      &lt;/binding&gt;  
+    &lt;/result&gt;  
+    &lt;result&gt;  
+      &lt;binding name="eventName"&gt;  
+        &lt;literal&gt;create freetext index&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="eventTime"&gt;  
+        &lt;literal datatype="http://www.w3.org/2001/XMLSchema#dateTime"&gt;2014-03-24T08:06:36Z&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="user"&gt;  
+        &lt;literal&gt;test&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="databaseName"&gt;  
+        &lt;literal&gt;root/xxx&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="target"&gt;  
+        &lt;literal&gt;fff&lt;/literal&gt;  
+      &lt;/binding&gt;  
+    &lt;/result&gt;  
+  &lt;/results&gt;  
+&lt;/sparql&gt; </code></pre> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

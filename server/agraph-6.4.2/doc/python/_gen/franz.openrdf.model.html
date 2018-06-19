@@ -1,0 +1,694 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>franz.openrdf.model package &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="franz.openrdf.query package" href="franz.openrdf.query.html" />
+    <link rel="prev" title="franz.openrdf package" href="franz.openrdf.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+        &laquo;<a href="franz.openrdf.html" title="previous chapter">franz.openrdf package</a>
+      <a href="franz.openrdf.query.html" title="next chapter">franz.openrdf.query package</a> 
+      &raquo;
+    </div>
+  
+    
+  <div class="section" id="franz-openrdf-model-package">
+<h1>franz.openrdf.model package<a class="headerlink" href="#franz-openrdf-model-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-franz.openrdf.model">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-franz.openrdf.model" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="franz.openrdf.model.BNode">
+<em class="property">class </em><code class="descclassname">franz.openrdf.model.</code><code class="descname">BNode</code><span class="sig-paren">(</span><em>id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/value.html#BNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.BNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">franz.openrdf.model.value.Resource</span></code></p>
+<p>A blank node.</p>
+<dl class="method">
+<dt id="franz.openrdf.model.BNode.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/value.html#BNode.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.BNode.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.BNode.getID">
+<code class="descname">getID</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/value.html#BNode.getID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.BNode.getID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.BNode.getId">
+<code class="descname">getId</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/value.html#BNode.getId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.BNode.getId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.BNode.getValue">
+<code class="descname">getValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#franz.openrdf.model.BNode.getValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.BNode.get_cmp_key">
+<code class="descname">get_cmp_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/value.html#BNode.get_cmp_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.BNode.get_cmp_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.BNode.toNTriples">
+<code class="descname">toNTriples</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/value.html#BNode.toNTriples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.BNode.toNTriples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="franz.openrdf.model.Literal">
+<em class="property">class </em><code class="descclassname">franz.openrdf.model.</code><code class="descname">Literal</code><span class="sig-paren">(</span><em>label</em>, <em>datatype=None</em>, <em>language=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">franz.openrdf.model.value.Value</span></code></p>
+<p>Implementation of the Literal class.</p>
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>label</em>, <em>datatype=None</em>, <em>language=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.booleanValue">
+<code class="descname">booleanValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.booleanValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.booleanValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to bool</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.calendarValue">
+<code class="descname">calendarValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.calendarValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.calendarValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>calendarValue not useful for Python.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.model.Literal.datatype">
+<code class="descname">datatype</code><a class="headerlink" href="#franz.openrdf.model.Literal.datatype" title="Permalink to this definition">¶</a></dt>
+<dd><p>The URI representing the datatype for this literal, if there is one</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.dateValue">
+<code class="descname">dateValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.dateValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.dateValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to date</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.datetimeValue">
+<code class="descname">datetimeValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.datetimeValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.datetimeValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to datetime</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.decimalValue">
+<code class="descname">decimalValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.decimalValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.decimalValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to a decimal</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.floatValue">
+<code class="descname">floatValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.floatValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.floatValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to float</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.getDatatype">
+<code class="descname">getDatatype</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.getDatatype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.getDatatype" title="Permalink to this definition">¶</a></dt>
+<dd><p>The URI representing the datatype for this literal, if there is one</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.getLabel">
+<code class="descname">getLabel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.getLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.getLabel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The label/value for this Literal</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.getLanguage">
+<code class="descname">getLanguage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.getLanguage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.getLanguage" title="Permalink to this definition">¶</a></dt>
+<dd><p>The language for this Literal</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.getValue">
+<code class="descname">getValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.getValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.getValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>The label/value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.get_cmp_key">
+<code class="descname">get_cmp_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.get_cmp_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.get_cmp_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.intValue">
+<code class="descname">intValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.intValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.intValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to int</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.model.Literal.label">
+<code class="descname">label</code><a class="headerlink" href="#franz.openrdf.model.Literal.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>The label/value for this Literal</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.model.Literal.language">
+<code class="descname">language</code><a class="headerlink" href="#franz.openrdf.model.Literal.language" title="Permalink to this definition">¶</a></dt>
+<dd><p>The language for this Literal</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.longValue">
+<code class="descname">longValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.longValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.longValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to long</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.setDatatype">
+<code class="descname">setDatatype</code><span class="sig-paren">(</span><em>datatype</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.setDatatype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.setDatatype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the datatype of the value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.setLabel">
+<code class="descname">setLabel</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.setLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.setLabel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the label for this Literal</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.setLanguage">
+<code class="descname">setLanguage</code><span class="sig-paren">(</span><em>language</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.setLanguage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.setLanguage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the language for this Literal</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.timeValue">
+<code class="descname">timeValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.timeValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.timeValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to time</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.toNTriples">
+<code class="descname">toNTriples</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.toNTriples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.toNTriples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an NTriples representation for this Literal.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Literal.toPython">
+<code class="descname">toPython</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/literal.html#Literal.toPython"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Literal.toPython" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Python object representation of this literal.   
+Slightly silly implementation because we implement a conversion table
+and then don’t use the conversion functions.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="franz.openrdf.model.Statement">
+<em class="property">class </em><code class="descclassname">franz.openrdf.model.</code><code class="descname">Statement</code><span class="sig-paren">(</span><em>subject</em>, <em>predicate</em>, <em>object</em>, <em>context=None</em>, <em>id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/statement.html#Statement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Statement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#franz.openrdf.model.Statement.object" title="franz.openrdf.model.Statement.object"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Wraps a triple or a quad. Might also contain an id.</p>
+<dl class="method">
+<dt id="franz.openrdf.model.Statement.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>subject</em>, <em>predicate</em>, <em>object</em>, <em>context=None</em>, <em>id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/statement.html#Statement.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Statement.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a statement.</p>
+<p>Each component can be either a Value object or a string in N-Triples format.
+Strings will be parsed lazily the first time a component is accessed.
+Accessors will always return Value objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>subject</strong> (<em>URI|BNode|str</em>) – Subject component - URI, blank node or a string
+in N-Triples format.</li>
+<li><strong>predicate</strong> (<em>URI|str</em>) – Predicate component. Either a URI or a string
+in N-Triples format.</li>
+<li><strong>object</strong> (<em>Value|str</em>) – Subject component. Either a Value or a string
+in N-Triples format.</li>
+<li><strong>context</strong> (<em>URI|str</em>) – Graph component (optional). Can be a URI or
+a string in N-Triples format.</li>
+<li><strong>id</strong> (<em>int|str</em>) – Statement id (optional).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.model.Statement.context">
+<code class="descname">context</code><a class="headerlink" href="#franz.openrdf.model.Statement.context" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Statement.getContext">
+<code class="descname">getContext</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/statement.html#Statement.getContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Statement.getContext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the graph (the fourth, optional element of the statement).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Graph URI.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#franz.openrdf.model.URI" title="franz.openrdf.model.URI">URI</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Statement.getObject">
+<code class="descname">getObject</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/statement.html#Statement.getObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Statement.getObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the object (the third element of the statement).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#franz.openrdf.model.Value" title="franz.openrdf.model.Value">Value</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Statement.getPredicate">
+<code class="descname">getPredicate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/statement.html#Statement.getPredicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Statement.getPredicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the predicate (the second element of the statement).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Predicate.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#franz.openrdf.model.URI" title="franz.openrdf.model.URI">URI</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Statement.getSubject">
+<code class="descname">getSubject</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/statement.html#Statement.getSubject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Statement.getSubject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the subject (the first element of the statement).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Subject.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#franz.openrdf.model.Value" title="franz.openrdf.model.Value">Value</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Statement.getTripleID">
+<code class="descname">getTripleID</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/statement.html#Statement.getTripleID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Statement.getTripleID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the statement id.</p>
+<p>Note that this field might not present, depending on the way in which
+the statement has been created.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A numerical id.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)">int</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.model.Statement.id">
+<code class="descname">id</code><a class="headerlink" href="#franz.openrdf.model.Statement.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.model.Statement.object">
+<code class="descname">object</code><a class="headerlink" href="#franz.openrdf.model.Statement.object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.model.Statement.predicate">
+<code class="descname">predicate</code><a class="headerlink" href="#franz.openrdf.model.Statement.predicate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Statement.setContext">
+<code class="descname">setContext</code><span class="sig-paren">(</span><em>context</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/statement.html#Statement.setContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Statement.setContext" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Statement.setObject">
+<code class="descname">setObject</code><span class="sig-paren">(</span><em>object</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/statement.html#Statement.setObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Statement.setObject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Statement.setPredicate">
+<code class="descname">setPredicate</code><span class="sig-paren">(</span><em>predicate</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/statement.html#Statement.setPredicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Statement.setPredicate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Statement.setSubject">
+<code class="descname">setSubject</code><span class="sig-paren">(</span><em>subject</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/statement.html#Statement.setSubject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Statement.setSubject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.model.Statement.subject">
+<code class="descname">subject</code><a class="headerlink" href="#franz.openrdf.model.Statement.subject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="franz.openrdf.model.URI">
+<em class="property">class </em><code class="descclassname">franz.openrdf.model.</code><code class="descname">URI</code><span class="sig-paren">(</span><em>uri=None</em>, <em>namespace=None</em>, <em>localname=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/value.html#URI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.URI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">franz.openrdf.model.value.Resource</span></code></p>
+<p>Lightweight implementation of the class ‘URI’.</p>
+<dl class="method">
+<dt id="franz.openrdf.model.URI.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>uri=None</em>, <em>namespace=None</em>, <em>localname=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/value.html#URI.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.URI.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.URI.getLocalName">
+<code class="descname">getLocalName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/value.html#URI.getLocalName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.URI.getLocalName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.URI.getNamespace">
+<code class="descname">getNamespace</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/value.html#URI.getNamespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.URI.getNamespace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.URI.getURI">
+<code class="descname">getURI</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/value.html#URI.getURI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.URI.getURI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the URI (string) for ‘self’.  This method is typically
+overloaded by subclasses, which may use lazy evaluation to
+retrieve the string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.URI.getValue">
+<code class="descname">getValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/value.html#URI.getValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.URI.getValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.URI.get_cmp_key">
+<code class="descname">get_cmp_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/value.html#URI.get_cmp_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.URI.get_cmp_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.model.URI.localname">
+<code class="descname">localname</code><a class="headerlink" href="#franz.openrdf.model.URI.localname" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.model.URI.namespace">
+<code class="descname">namespace</code><a class="headerlink" href="#franz.openrdf.model.URI.namespace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.URI.toNTriples">
+<code class="descname">toNTriples</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/value.html#URI.toNTriples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.URI.toNTriples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an NTriples representation of a resource, in this case, wrap
+it in angle brackets.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.model.URI.uri">
+<code class="descname">uri</code><a class="headerlink" href="#franz.openrdf.model.URI.uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the URI (string) for ‘self’.  This method is typically
+overloaded by subclasses, which may use lazy evaluation to
+retrieve the string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.model.URI.value">
+<code class="descname">value</code><a class="headerlink" href="#franz.openrdf.model.URI.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="franz.openrdf.model.Value">
+<em class="property">class </em><code class="descclassname">franz.openrdf.model.</code><code class="descname">Value</code><a class="reference internal" href="../_modules/franz/openrdf/model/value.html#Value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Top class in the org.openrdf.model interfaces.</p>
+<dl class="method">
+<dt id="franz.openrdf.model.Value.get_cmp_key">
+<code class="descname">get_cmp_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/value.html#Value.get_cmp_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Value.get_cmp_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a key that will be used to compare and hash this object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.Value.toNTriples">
+<code class="descname">toNTriples</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/value.html#Value.toNTriples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.Value.toNTriples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an NTriples representation of an open rdf term</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="franz.openrdf.model.ValueFactory">
+<em class="property">class </em><code class="descclassname">franz.openrdf.model.</code><code class="descname">ValueFactory</code><span class="sig-paren">(</span><em>store</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/valuefactory.html#ValueFactory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.ValueFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A factory for creating URIs, blank nodes, literals and statements.</p>
+<dl class="attribute">
+<dt id="franz.openrdf.model.ValueFactory.BLANK_NODE_AMOUNT">
+<code class="descname">BLANK_NODE_AMOUNT</code><em class="property"> = 10</em><a class="headerlink" href="#franz.openrdf.model.ValueFactory.BLANK_NODE_AMOUNT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.ValueFactory.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>store</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/valuefactory.html#ValueFactory.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.ValueFactory.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.ValueFactory.createBNode">
+<code class="descname">createBNode</code><span class="sig-paren">(</span><em>nodeID=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/valuefactory.html#ValueFactory.createBNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.ValueFactory.createBNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createBNode" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createBNode"><code class="xref py py-meth docutils literal"><span class="pre">RepositoryConnection.createBNode()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.ValueFactory.createLiteral">
+<code class="descname">createLiteral</code><span class="sig-paren">(</span><em>value</em>, <em>datatype=None</em>, <em>language=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/valuefactory.html#ValueFactory.createLiteral"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.ValueFactory.createLiteral" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createLiteral" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createLiteral"><code class="xref py py-meth docutils literal"><span class="pre">RepositoryConnection.createLiteral()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.ValueFactory.createRange">
+<code class="descname">createRange</code><span class="sig-paren">(</span><em>lowerBound</em>, <em>upperBound</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/valuefactory.html#ValueFactory.createRange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.ValueFactory.createRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a compound literal representing a range from ‘lowerBound’ to ‘upperBound’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.ValueFactory.createStatement">
+<code class="descname">createStatement</code><span class="sig-paren">(</span><em>subject</em>, <em>predicate</em>, <em>_object</em>, <em>context=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/valuefactory.html#ValueFactory.createStatement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.ValueFactory.createStatement" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createStatement" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createStatement"><code class="xref py py-meth docutils literal"><span class="pre">RepositoryConnection.createStatement()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.ValueFactory.createURI">
+<code class="descname">createURI</code><span class="sig-paren">(</span><em>uri=None</em>, <em>namespace=None</em>, <em>localname=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/valuefactory.html#ValueFactory.createURI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.ValueFactory.createURI" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.createURI" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.createURI"><code class="xref py py-meth docutils literal"><span class="pre">RepositoryConnection.createURI()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.ValueFactory.getUnusedBNodeId">
+<code class="descname">getUnusedBNodeId</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/valuefactory.html#ValueFactory.getUnusedBNodeId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.ValueFactory.getUnusedBNodeId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.ValueFactory.namespace">
+<code class="descname">namespace</code><span class="sig-paren">(</span><em>prefix</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/valuefactory.html#ValueFactory.namespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.ValueFactory.namespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an object that allows for simple creation of URIs in given namespace.
+Attribute lookups on the returned object will produce URIs with the attribute
+name as localname. Array item access and function calls will have the same
+effect.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prefix</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Prefix prepended to URIs created by the returned object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">An object that can be used to create URIs.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.ValueFactory.object_position_term_to_openrdf_term">
+<code class="descname">object_position_term_to_openrdf_term</code><span class="sig-paren">(</span><em>term</em>, <em>predicate=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/valuefactory.html#ValueFactory.object_position_term_to_openrdf_term"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.ValueFactory.object_position_term_to_openrdf_term" title="Permalink to this definition">¶</a></dt>
+<dd><p>If ‘term’ is a string, integer, float, etc, convert it to
+a Literal term.  Otherwise, if its a Value, just pass it through.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.ValueFactory.validateCompoundLiteral">
+<code class="descname">validateCompoundLiteral</code><span class="sig-paren">(</span><em>term</em>, <em>predicate</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/valuefactory.html#ValueFactory.validateCompoundLiteral"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.ValueFactory.validateCompoundLiteral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check to see if range boundaries are mapped.
+TODO: ADD VALIDATION FOR GEO TERMS</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.model.ValueFactory.validateRangeConstant">
+<code class="descname">validateRangeConstant</code><span class="sig-paren">(</span><em>term</em>, <em>predicate</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/valuefactory.html#ValueFactory.validateRangeConstant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.ValueFactory.validateRangeConstant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate an individual range constant</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="franz.openrdf.model.parse_term">
+<code class="descclassname">franz.openrdf.model.</code><code class="descname">parse_term</code><span class="sig-paren">(</span><em>string_term</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/model/utils.html#parse_term"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.model.parse_term" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a string representing a term in ntriples format, return
+a URI, Literal, or BNode.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+  
+    <div class="nav-links nav-links-footer">
+        &laquo;<a href="franz.openrdf.html" title="previous chapter">franz.openrdf package</a>
+      <a href="franz.openrdf.query.html" title="next chapter">franz.openrdf.query package</a> 
+      &raquo;
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">AllegroGraph Python API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="modules.html">src</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#allegrographserver-class">AllegroGraphServer class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#catalog-class">Catalog class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-franz.openrdf.sail.spec">Spec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#repository-class">Repository class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utility-connection-functions">Utility connection functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#repositoryconnection-class">RepositoryConnection class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#query-class-and-subclasses">Query Class (and Subclasses)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#queryresult-class">QueryResult Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#repositoryresult-class">RepositoryResult class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#statement-class">Statement Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#valuefactory-class">ValueFactory Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../api.html">AllegroGraph Python API Reference</a><ul>
+  <li><a href="modules.html">src</a><ul>
+  <li><a href="franz.html">franz package</a><ul>
+  <li><a href="franz.openrdf.html">franz.openrdf package</a><ul>
+      <li>Previous: <a href="franz.openrdf.html" title="previous chapter">franz.openrdf package</a></li>
+      <li>Next: <a href="franz.openrdf.query.html" title="next chapter">franz.openrdf.query package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/_gen/franz.openrdf.model.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

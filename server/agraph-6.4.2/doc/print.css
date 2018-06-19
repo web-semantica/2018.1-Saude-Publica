@@ -1,0 +1,42 @@
+#search-form, #table-of-contents, .table-of-contents, #docIndex {
+    display: none;
+}
+
+body {
+  font-size: 12pt;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  margin-top:  0.75in;
+  margin-bottom: 0.5in;
+}
+
+#contents {
+  position: static;
+  top: 250px;
+  left: 0px; right: 0px;
+  bottom: 00px;
+  margin-left: 1in;
+  margin-right: 1in;
+}
+
+#main-content {
+  margin-bottom: 2em;
+  line-height: 1.4;
+  max-width: 8.5in;
+  width: 8.5in;
+  margin-left: 0in;
+  margin-right: 0in;
+  margin-bottom: 2em;
+  border-left: none;
+  border-right: none;
+  padding: 0px 0px 0px 0px;
+  background: white;
+  z-index: 0;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+pre {
+  font-size: 10pt;
+  overflow: auto;
+  font-family: "Courier New", Courier, mono;
+}

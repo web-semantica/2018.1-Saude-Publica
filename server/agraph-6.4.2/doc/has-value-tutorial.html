@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>hasValue reasoning Introduction and Tutorial | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="has-value-tutorial"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>      <h1>hasValue reasoning in AllegroGraph 6.4.2</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-7' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-21' title='How to use hasValue reasoning'>How to use hasValue reasoning</a></li>
+<li><a href='#header2-28' title='How to use it from Lisp: a tutorial'>How to use it from Lisp: a tutorial</a>
+<ul>
+<li><a href='#header3-39' title='Deriving default values from type information'>Deriving default values from type information</a></li>
+<li><a href='#header3-44' title='Deriving types from value information'>Deriving types from value information</a></li></ul></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-7' id='header2-7'></a><h2>Introduction</h2><p>In addition to RDFS++ reasoning, AllegroGraph also supports reasoning over <a href="http://www.w3.org/TR/owl-ref/#hasValue-def" class="external" target="_blank">hasValue</a> restrictions in equivalent classes or subclasses. </p><p>For example, here is an owl class definition for <em>AtlantisMission</em>, defined as a <em>SpaceMission</em> where the <code>shuttleUsed</code> property <em>has</em> the <em>value</em> <code>Atlantis</code>. </p>
+<pre><code>&lt;owl:Class rdf:ID="AtlantisMission"&gt;  
+    &lt;rdfs:subClassOf  
+        rdf:resource="http://www.w3.org/2002/07/owl#Thing"/&gt;  
+    &lt;rdfs:label  
+        rdf:datatype="http://www.w3.org/2001/XMLSchema#string"&gt;  
+        Atlantis mission  
+    &lt;/rdfs:label&gt;  
+    &lt;owl:equivalentClass&gt;  
+        &lt;owl:Class&gt;  
+            &lt;owl:intersectionOf rdf:parseType="Collection"&gt;  
+            &lt;rdf:Description rdf:ID="SpaceMission"/&gt;  
+            &lt;owl:Restriction&gt;  
+                &lt;owl:onProperty rdf:resource="#shuttleUsed"/&gt;  
+                &lt;owl:hasValue rdf:resource="#Atlantis"/&gt;  
+            &lt;/owl:Restriction&gt;  
+            &lt;/owl:intersectionOf&gt;  
+        &lt;/owl:Class&gt;  
+    &lt;/owl:equivalentClass&gt;  
+&lt;/owl:Class&gt;  
+</code></pre><p>We can make two types of inferences from this definition. </p>
+<ol>
+<li>We can derive the default value for <code>shuttleUsed</code> when we have an Instance of an AtlantisMission. For example, if a triple-store contains the the ontology definition above and we add the following triple: 
+<pre><code>(add-triple  
+ !m:Mission4 !rdf:type !m:AtlantisMission) </code></pre></li><p>then we can derive that the <code>shuttleUsed</code> property must be <code>Atlantis</code> with the following query. </p>
+<pre><code>(select (?val)  
+  (q !m:Mission3 !m:shuttleUsed ?val)) </code></pre>
+<li>The reasoning also works in reverse: we can derive the type of an instance to be an <code>AtlantisMission</code> if it has the right properties. If we added the following instance properties to a triple-store 
+<pre><code>(add-triple  
+  !m:Mission5 !m:shuttleUsed !m:Atlantis)    
+(add-triple  
+  !m:Mission5 !rdf:type !m:SpaceMission) </code></pre></li><p>then the following query would derive that <code>?x</code> is an <code>AtlantisMission</code>. </p>
+<pre><code>(select (?x)  
+  (q !m:Mission5 !rdf:type ?x)) </code></pre></ol><p><em>hasValue</em> reasoning is not enabled by default. The tutorial below will show how to turn this on.<br />
+</p><a name='header2-21' id='header2-21'></a><h2>How to use hasValue reasoning</h2>
+<dl><dt>From Java </dt>
+<dd>See the description of <a href="javadoc/com/franz/agraph/repository/AGQuery.html#setEntailmentRegime-java.lang.String-">setEntailmentRegime</a>.</dd><dt>From Python </dt>
+<dd>On any Python API where <code>infer</code> or <code>includeInferred</code> is an argument, the values can be the boolean False (which means no reasoning), True, which is the same as "rdfs++", or the strings "rdfs++" (rdf++ reasoning but not hasValue reasoning) or "restriction" ("restriction" turns on hasValue reasoning as well as rdf++ reasoning). </dd><dt>From HTTP </dt>
+<dd>Set the <code>infer</code> parameter to <code>restriction</code> when using the <em>repository</em> interface of the <a href="http-protocol.html">HTTP protocol</a>. </dd></dl><a name='header2-28' id='header2-28'></a><h2>How to use it from Lisp: a tutorial</h2><p>In principle the following code will all run. Just evaluate every expression from top to bottom and you will see the results. </p>
+<pre><code>; load agraph into lisp  
+(require :agraph)  
+ 
+; go into the triple-store-user package  
+(in-package :triple-store-user)  
+ 
+;; make it easier to type URIs  
+(enable-!-reader) </code></pre><p>The following will define the function to load the files <code>SpaceMissions2.ntriples</code> into the triple-store. This file is included in the distribution. It will help you understanding of the contents of this file to inspect it in TopBraid Composer. </p>
+<pre><code>(defun read-sm ()  
+  (create-triple-store  "test11")  
+  (load-ntriples "sys:agraph;tutorial-files;SpaceMissions2.ntriples"))  
+ 
+(time (read-sm))                  ; do the actual read </code></pre><p>We are lazy and don't want to type long namespaces: </p>
+<pre><code>(register-namespace  
+  "m" "http://www.topbraid.org/spacemissions.owl#")  
+ 
+;; lets look at the triples..  
+(print-triples *db* :limit nil :format :terse) </code></pre><p>To use <em>restriction</em> reasoning, we must either <a href="reasoner-tutorial.html#apply-rdfs:2B:2B-reasoner" title="description of apply-rdfs++-reasoner">apply-rdfs++-reasoner</a> and then use <a href="lisp-reference.html#restriction-reasoning-enabled-p" title="description of restriction-reasoning-enabled-p">restriction-reasoning-enabled-p</a> or use the <code>initarg</code>. </p>
+<pre><code>(apply-rdfs++-reasoner)  
+(setf (restriction-reasoning-enabled-p *db*) t) </code></pre><p>or </p>
+<pre><code>(apply-rdfs++-reasoner :restriction-reasoning-enabled t) </code></pre><a name='header3-39' id='header3-39'></a><h3>Deriving default values from type information</h3>
+<ol>
+<li>First we demonstrate how we to derive default values from type information 
+<pre><code>(add-triple  
+  !m:Mission1 !rdf:type !m:SpaceMissionIn2000)  
+(add-triple  
+  !m:Mission1 !m:added-by !m:Jans)  
+ 
+(select (?x ?y)  
+  (q !m:Mission1 !m:startYear ?x)  
+  (q- !m:Mission1 !m:added-by ?y)) </code></pre></li><p>and some more examples: </p>
+<pre><code>(add-triple  
+   !m:Mission3 !rdf:type !m:DiscoveryMission)  
+(add-triple  
+   !m:Mission4 !rdf:type !m:AtlantisMission)  
+ 
+(select (?val)  
+  (q !m:Mission3 !m:shuttleUsed ?val))  
+ 
+(select (?val)  
+  (q !m:Mission4 !m:shuttleUsed ?val))  
+ 
+(select ()  
+  (q !m:Mission4 !m:shuttleUsed !m:Atlantis)  
+  (write 'SUCCESS)) </code></pre></ol><a name='header3-44' id='header3-44'></a><h3>Deriving types from value information</h3>
+<ol>
+<li>Second, we demo how we can derive types from values. We add the <code>shuttleUsed</code> property to <code>Mission5</code> and then we can automatically derive that <code>Mission5</code> is an <code>AtlantisMission</code>. 
+<pre><code>(add-triple  
+  !m:Mission5 !m:shuttleUsed !m:Atlantis) </code></pre></li><p>Now this <code>select</code> query returns two results: </p>
+<pre><code>(select (?x)  
+  (q !m:Mission5 !rdf:type ?x))  
+ 
+(("http://www.topbraid.org/spacemissions.owl#SpaceMission")  
+ ("http://www.topbraid.org/spacemissions.owl#AtlantisMission")) </code></pre><p>The first result is due to the fact that the <code>rdfs:range</code> of the property <code>shuttleUsed</code> is 'SpaceMission'. So by adding the fact <code>shuttleUsed</code> to <code>Mission5</code> the RDFS++ range reasoning will derive that <code>Mission5</code> is a <code>SpaceMission</code>. </p><p>Then the <code>restriction</code> reasoning module uses the fact that <code>Misison5</code> is a <code>SpaceMission</code> <em>and</em> the <code>shuttleUsed</code> is <code>Atlantis</code> to derive that <code>Mission5</code> is an <code>AtlantisMission</code>. </p></ol><p>The following queries are also interesting. The first select will only return <code>Mission4</code> because we use <code>q-</code> and <code>q-</code> looks only at the ground triples. It returns <code>Mission4</code> because we added that triple above: </p>
+<pre><code>(select (?x)  
+  (q- ?x !rdf:type !m:AtlantisMission))  
+-&gt; (("http://www.topbraid.org/spacemissions.owl#Mission4")) </code></pre><p>The following query returns <code>Mission4</code> and also <code>Mission5</code> because of <code>hasValue</code> reasoning. (Note how we use <code>q</code> here to use the reasoner) </p>
+<pre><code>(select (?x)  
+  (q ?x !rdf:type !m:AtlantisMission))  
+-&gt;  
+(("http://www.topbraid.org/spacemissions.owl#Mission4")  
+ ("http://www.topbraid.org/spacemissions.owl#Mission5"))   
+</code></pre><p>Now we can add some more triples: </p>
+<pre><code>(add-triple !m:Mission6 !m:shuttleUsed !m:Columbia)  
+(add-triple !m:Mission6 !rdf:type !m:SpaceMission)  
+ 
+(select (?x)  
+  (q !m:Mission6 !rdf:type ?x))  
+ 
+(select (?x)  
+  (q ?x !rdf:type !m:DiscoveryMission))  
+ 
+(select ()  
+  (q !m:Mission6 !rdf:type !m:DiscoveryMission)  
+  (lisp (print 'SUCCESS)))  
+</code></pre><p>And finally we show that we can do quite complex <code>hasValue</code> restrictions. Please look in TopBraidComposer or any other ontology browser how a <code>MilitarySpaceMission</code> is defined by multiple <code>hasValue</code> restrictions. </p><p>We add some values and everything should work. </p>
+<pre><code>(add-triple !m:Mission7 !rdf:type !m:SpaceMission)  
+(add-triple !m:Mission7 !m:hasMissionType !m:SpecialMissionType)  
+(add-triple !m:Mission7 !m:hasMissionType !m:MilitaryMissionType)  
+ 
+(select (?x ?y)  
+  (q !m:Mission7 ?x ?y))  
+ 
+(select (?type)  
+  (q !m:Mission7 !rdf:type ?type))  
+ 
+(select (?x)  
+  (q ?x !rdf:type !m:MilitarySpaceMission)) </code></pre></div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

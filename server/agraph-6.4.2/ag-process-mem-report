@@ -1,0 +1,171 @@
+#!/usr/bin/perl -w
+
+#############################################################################
+# Copyright (C) 2012-2016 Franz Inc, Oakland, CA - All rights reserved.     #
+#                                                                           #
+# The software, data and information contained herein are proprietary       #
+# to, and comprise valuable trade secrets of, Franz, Inc.  They are         #
+# given in confidence by Franz, Inc. pursuant to a written license          #
+# agreement, and may be stored and used only in accordance with the terms   #
+# of such license.                                                          #
+#                                                                           #
+# Restricted Rights Legend                                                  #
+# ------------------------                                                  #
+# Use, duplication, and disclosure of the software, data and information    #
+# contained herein by any agency, department or entity of the U.S.          #
+# Government are subject to restrictions of Restricted Rights for           #
+# Commercial Software developed at private expense as specified in          #
+# DOD FAR Supplement 52.227-7013 (c) (1) (ii), as applicable.               #
+#############################################################################
+
+# This script reports resident anonymous (non-file-backed) memory
+# usage for agraph processes owned by the current user (or by all
+# users if the script is run by root).
+
+use strict;
+use English;
+
+my $report_interval = 2 ; # seconds
+
+# For the specified process id, returns a list of:
+#  1) The amount of resident anonymous memory (KB)
+sub get_process_mem_info {
+    my ($pid) = @_;
+
+    my $anon=0;
+
+    my $filename="/proc/$pid/smaps";
+
+    if (open(my $fh, $filename)) {
+	while (<$fh>) {
+	    if (/^Anonymous:\s*(\d+)\s+kB/) {
+		$anon+=$1;
+	    }
+	}
+	close($fh);
+    }
+
+    return ($anon);
+    
+}
+
+# Returns a list of process ids of agraph processes owned by the
+# current user (or all users if running as root)
+sub get_agraph_pids {
+    my $a = ($UID == 0 ? "a" : "");
+
+    my $cmd="ps ${a}xh -o pid,comm";
+    
+    open (my $fh, "$cmd|") ||
+	die("$0: Failed to open pipe to $cmd: $!\n");
+
+    my @pids;
+
+    while (<$fh>) {
+	# Trim leading space.
+	s/^\s+//; 
+	
+	my ($pid, $exe) = split;
+	
+	if ($exe eq "agraph") {
+	    push @pids, $pid;
+	}
+
+    }
+	
+    close($fh);
+
+    return @pids;
+}
+
+sub get_process_title {
+    my ($pid) = @_;
+
+    my $filename="/proc/$pid/cmdline";
+
+    my $res;
+    
+    if (open(my $fh, $filename)) {
+	$_=<$fh>;
+
+	# Replace nulls by spaces
+	s/\00/ /g;
+	# Trim trailing spaces
+	s/\s+$//;
+
+	close($fh);
+
+	return $_;
+    }
+}
+
+sub pretty_number {
+    my $text = reverse $_[0];
+    $text =~ s/(\d\d\d)(?=\d)(?!\d*\.)/$1,/g;
+    return scalar reverse $text;
+}
+
+sub pretty_delta {
+    my ($new, $old) = @_;
+
+    my $delta = $new - $old;
+
+    if ($delta == 0) {
+	return undef;
+    } elsif ($delta > 0) {
+	return "+" . pretty_number($delta);
+    } else {
+	return pretty_number($delta);
+    }
+}
+
+sub print_delta {
+    my ($new, $old) = @_;
+
+    if (defined($old)) {
+	my $res = pretty_delta($new, $old);
+	if (defined($res)) {
+	    print " ($res)";
+	}
+    }
+}
+
+my $last_total_anon_rss;
+# Key is pid
+my %last_anon_rss; 
+
+sub report {
+    print "\n", scalar(localtime), ":\n";
+    
+    my @pids = get_agraph_pids();
+
+    my $total_anon_rss=0;
+
+    foreach my $pid (@pids) {
+	my ($anon) = get_process_mem_info($pid);
+	my ($title) = get_process_title($pid);
+
+	printf("%5d: %-40s anon RSS: %8s KiB", $pid, $title, pretty_number($anon));
+	my $last = $last_anon_rss{$pid};
+	print_delta($anon, $last);
+	print "\n";
+	$last_anon_rss{$pid} = $anon;
+
+	$total_anon_rss += $anon
+    }
+
+    printf("Total anon RSS: %s KiB", pretty_number($total_anon_rss));
+    if (defined($last_total_anon_rss)) {
+	print_delta($total_anon_rss, $last_total_anon_rss);
+    }
+    print "\n";
+
+    $last_total_anon_rss = $total_anon_rss;
+}
+
+
+while (1) {
+    report();
+    sleep($report_interval);
+}
+

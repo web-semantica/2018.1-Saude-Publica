@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Solr Text Index</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="solr-index"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>Solr Text Indexing</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-11' title='Other free text indexers in AllegroGraph'>Other free text indexers in AllegroGraph</a></li>
+<li><a href='#header2-13' title='Text indexing with Apache Solr'>Text indexing with Apache Solr</a></li>
+<li><a href='#header2-16' title='Should you use the Solr indexer or the native AllegroGraph text indexer?'>Should you use the Solr indexer or the native AllegroGraph text indexer?</a></li>
+<li><a href='#header2-32' title='Installing Apache Solr'>Installing Apache Solr</a></li>
+<li><a href='#header2-37' title='Important notes on running Solr with AllegroGraph'>Important notes on running Solr with AllegroGraph</a>
+<ul>
+<li><a href='#header3-43' title='Settings for Solr'>Settings for Solr</a></li>
+<li><a href='#header3-51' title='Solr usage'>Solr usage</a></li>
+<li><a href='#header3-61' title='Solr example'>Solr example</a></li>
+<li><a href='#header3-88' title='solr-example.cl'>solr-example.cl</a></li>
+<li><a href='#header3-91' title='Solr and SPARQL 1.1'>Solr and SPARQL 1.1</a></li></ul></li>
+<li><a href='#header2-106' title='Solr and Allegro CL'>Solr and Allegro CL</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>AllegroGraph supports creating free text indices using Apache Solr, which we describe in this document. </p><p>Note that freetext indexing is orthogonal to triple indices like spogi. Freetext indices let you quickly map from words and phrases to triples; triple indices let you quickly find triples that match particular patterns. </p><a name='header2-11' id='header2-11'></a><h2>Other free text indexers in AllegroGraph</h2><p>There is also a native free text indexer, described in <a href="text-index.html">Free Text Indices</a>. </p><a name='header2-13' id='header2-13'></a><h2>Text indexing with Apache Solr</h2><p>Apache Solr is an open-source freetext indexing/searching platform from the Apache Lucene project. Lucene is a Java Based Freetext Indexer with many many features. Solr is an XML database wrapper around Lucene. </p><p>Apache Solr is described on the following website: <a href="http://lucene.apache.org/solr/" title="lucene.apache.org/solr/" class="external" target="_blank">lucene.apache.org/solr/</a>. </p><a name='header2-16' id='header2-16'></a><h2>Should you use the Solr indexer or the native AllegroGraph text indexer?</h2><p>The native free text indexer, described (as said above) in <a href="text-index.html">Free Text Indices</a>, is sufficient for many purposes and has these advantages: </p>
+<ul>
+<li><p>It is generally faster.</p></li>
+<li><p>It has a simpler API (Solr runs as a separate program which must communicate with AllegroGraph).</p></li>
+<li><p>You must keep Solr and AllegroGraph in sync. That is automatic with   the native indexer. </p></li></ul><p>But because Solr is a public project with many users and many contributers, it has many features which are not in the AllegroGraph native free text indexer. Further, it is constantly being enhanced. </p><p>Solr supports: </p>
+<ul>
+<li><p>Many languages</p></li>
+<li><p>Very flexible pipe line architecture for tokenizers, stemmers, etc.</p></li>
+<li><p>External file-based configuration of stopword lists, synonym lists,    and protected word lists </p></li>
+<li><p>Relevancy ranking and word boosting *</p></li>
+<li><p>Finding words close together *</p></li>
+<li><p>Faceted Search *</p></li>
+<li><p>Text clustering *</p></li>
+<li><p>Hit highlighting *</p></li></ul><p>The bullets marked with stars are Solr features not in the native free text indexer. </p><a name='header2-32' id='header2-32'></a><h2>Installing Apache Solr</h2><p>Because it is a separate application, AllegroGraph itself does not start the Apache Solr application. </p><p>Further, the application itself is not part of the AllegroGraph distribution. </p><p>Before using Solr to create indices and do searches, please download and install Solr (which again, is not a Franz Inc. product) as described on the <a href="http://lucene.apache.org/solr/" title="lucene.apache.org/solr/" class="external" target="_blank">Apache Solr website</a>. </p><p><strong>In the rest of this document, we assume you have the Solr server installed and running on your computer.</strong> </p><a name='header2-37' id='header2-37'></a><h2>Important notes on running Solr with AllegroGraph</h2><p>Please note the following: </p>
+<ul>
+<li><p>The Solr database needs to be populated. Adding triples   to a triple store does not automatically adds records to Solr. Nor   does deleting triples delete records from Solr. </p>
+<li><p>The Solr database needs to have a field that contains an integer   document id.  You may use triple ids for it, or you may use your own   numberings, and insert </p>
+<pre><code>(subject !&lt;http://www.franz.com/solrDocId&gt;   document-id) </code></pre></li></li><p>into the triple store to establish the association of the document id with the subject. <code>document-id</code> must be of type <code>xsd:long</code>. </p></ul><a name='header3-43' id='header3-43'></a><h3>Settings for Solr</h3><p>Two database metadata values have been added to keep the information needed to connect to the Solr server: </p>
+<ul>
+<li><p>solr-endpoint : the URL of the solr server.</p></li>
+<li><p>solr-id-field : the name of the solr field that contains docid.</p></li></ul><p>These can be set and retrieved with the following Lisp functions: </p>
+<a name="function.get-solr-parameters" id="function.get-solr-parameters"></a>
+<a name="get-solr-parameters" id="get-solr-parameters"></a>
+<div class="documentation function"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">get-solr-parameters</span>
+<span class="documentation-arguments"><span class="marker">&amp;key</span> &nbsp;<span class="argument">db</span></span>
+</div>
+<span class="documentation-kind">function</span>
+</div>
+<div class="documentation contents"><p>Returns the current Solr connection parameters in a plist. </p><p>Currently it contains two items: </p>
+<ul>
+<li>:endpoint to specify Solr server endpoint.</li>
+<li>:id-field to specify the Solr field name that contains document id.</li></ul>
+</div>
+</div>
+  
+<a name="function.set-solr-parameters" id="function.set-solr-parameters"></a>
+<a name="set-solr-parameters" id="set-solr-parameters"></a>
+<div class="documentation function"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">set-solr-parameters</span>
+<span class="documentation-arguments"><span class="marker">&amp;rest</span> &nbsp;<span class="argument">args</span> &nbsp;<span class="marker">&amp;key</span> &nbsp;<span class="argument">db</span> &nbsp;<span class="argument">endpoint</span> &nbsp;<span class="argument">id-field</span></span>
+</div>
+<span class="documentation-kind">function</span>
+</div>
+<div class="documentation contents"><p>Set Solr connection parameters. </p><p>You can set either :endpoint or :id-field, or both. </p>
+</div>
+</div>
+  <p>These parameters can also be set in AGWebView. </p><a name='header3-51' id='header3-51'></a><h3>Solr usage</h3><p>There are two new prolog functions: </p>
+<ul>
+<li><strong>solrid</strong> <code>?id ?query [?howmany]</code><p> Search the Solr database with ?query, and unify the  docid to ?id.  ?howmany limits the max number of matches.  Its default is 100.  The query is parsed by the Solr server, so you can use the  syntax supported by it.   Multiple words are regarded as an  OR search (by default---it depends on the Solr server config).  The keyword AND can be used for 'and' condition, and  parentheses can be used for grouping.  See the Solr documentation  for more details. </p></li>
+<li><strong>solr-text</strong> <code>?s ?query [?howmany]</code><p> After obtaining Solr docids by solrid, this unifies them  to: </p>
+<pre><code>(q ?s !&lt;http://www.franz.com/solrDocId&gt; ?id)) </code></pre></li></ul><p>The following Lisp function is exported from the db.agrpah.query.solr package: </p>
+<ul>
+<li><strong>get-ids-from-solr-query</strong> <code>(query &amp;optional (howmany 100))</code></li></ul><p>   Issue QUERY to the external Solr server, retrieve the document    ids and return them as a list of integers.  Solr connection    parameters need to be set up by <a href="#set-solr-parameters" title="description of set-solr-parameters">set-solr-parameters</a> before    calling this function. </p><a name='header3-61' id='header3-61'></a><h3>Solr example</h3><p>Here is a simple example. It is difficult to anticipate all the ways the Solr interface will be used and the setup can differ quite a lot depending on what the application wants to index.  And there is great flexibility in setting up the Solr schema, and determining what is a valid Solr query depends on how the Solr schema is set up. </p><p>The Solr schema defines what kind of information is stored for each document.  AllegroGraph requires that the schema at least contain a field which contains a unique number to identify the document. </p>
+<ol>
+<li><p>Download the latest version of Solr if you have not already done    so. We assume the variable $SOLR is the directory into which the Solr    distribution was extracted. </p>
+<li><p>Open $SOLR/example/solr/conf/schema.xml with an editor.  Find the    &lt;fields&gt; element and replace its body with the following    field elements: </p></li>
+<pre><code>&lt;field name="id" type="string" indexed="true" stored="true" required="true" /&gt;  
+&lt;field name="predicate" type="string" indexed="true" stored="true"/&gt;  
+&lt;field name="text" type="text_general" indexed="true" stored="true"/&gt; </code></pre></li><p>In this case, the 'id' field serves to identify the document.  We'll also index the predicate part as the 'predicate' field, and both the object and the subject parts as 'text' fields. </p><p>It is also necessary to comment out the copyField elements. </p>
+<li>In the $SOLR/example directory, run the Solr server. 
+<pre><code>java -Djetty.port=8983 -jar start.jar </code></pre></li><p>The jetty.port parameter specifies the TCP port number on which the Solr server will listen. If you need to run multiple Solr servers on one machine, choose different port numbers for each. (Solr can only have a single repository per server, so you need multiple servers if you want to serve more than one repository). </p><p>This command runs the server in foreground, with tons of debugging messages to stdout.  You may want to run redirect its output elsewhere and/or put the java process background, e.g. </p>
+<pre><code>(java -Djetty.port=8983 -jar start.jar &gt; /dev/null 2&gt;&amp;1)&amp; </code></pre><p>For further customization of Solr server, please consult the Solr documentation. </p>
+<li>From AGWebView, go to a repository page.  In the bottom of the "Store Control" list you will find a link "Manage external Solr free-text indexer". Clicking it brings you to the "External Solr free-text indexer setting" screen: </li></ol><p><img src="solr-config.png" alt="External Solr free-text indexer setting"></img> </p>
+<pre><code>Type "http://localhost:8983/solr" in "Solr endpoint url" box.  Adjust  
+the port number to match the number you used for the jetty.port parameter  
+when you started the Solr server.  
+The "Document id field name" box specifies the Solr field name to be used  
+as the unique document ID.  We set it up as "id" in step 3 above,  
+so you can leave it as "id".  
+ 
+Click the "Set" button to save the settings. </code></pre><p>Now you can query Solr from AllegroGraph's prolog or Lisp interface. However, in the beginning, the Solr database is empty.  You need to populate it. </p><p>AllegroGraph does not handle insert/update/delete operations on the Solr database, since it needs a separate commit from AllegroGraph's own commit.  You can use Solr's REST HTTP API, or one of their language bindings, to populate the Solr database.  The AllegroGraph Lisp client also has a Solr binding.  The Lisp code solr-example.cl, below, shows one way to insert data into Solr as well as adding triples to AllegroGraph. </p><p>Once the Solr database is populated, you can issue a prolog query using solrid/2.  For example, the following query returns a list of characters whose line contains "good". </p>
+<pre><code>(select (?s)  
+  (solrid ?id "good")  
+  (q ?s !&lt;http://www.franz.com/solrDocId&gt; ?id)) </code></pre><p>(You can also use the predicate <code>solr-text</code>. It essentially combines both clauses into one, so <code>(select (?s) (solr-text ?s "good"))</code> has the same effect as the query above.) </p><p>By default, space-separated words in a Solr query means OR.  So the following query returns the doc ids that contain either "good" or "him" or both in their indexed parts: </p>
+<pre><code>(select (?id) (solrid ?id "good him")) </code></pre><p>while the following returns doc ids whose indexed parts contain both "good" and "him" but not those that contain "good" but not "him" or "him" but not "good": </p>
+<pre><code>(select (?id) (solrid ?id "good AND him")) </code></pre><p>Please consult the Solr documentation for advanced queries.  The <strong>solrid</strong> and <strong>solr-text</strong> functions pass the query string to Solr as-is, and it's up to the Solr engine to interpret it.  There is great flexibility on the Solr side to customize how the query string should be parsed. </p><a name='header3-88' id='header3-88'></a><h3>solr-example.cl</h3><p>In many browsers, the long lines will look truncated but the text will cut and paste correctly. </p>
+<pre><code>;; -*-mode:common-lisp, package:db.agraph.user-*-   
+(in-package :db.agraph.user)   
+ 
+(eval-when (compile load eval)  
+  (enable-!-reader))  
+ 
+(register-namespace "names" "http://www.franz.com/names#")  
+(register-namespace "actions" "http://www.franz.com/actions#")  
+(register-namespace "fi" "http://www.franz.com/")  
+ 
+(defvar *solr-endpoint* "http://localhost:8983/solr")   
+ 
+(defvar *solr-test-data*   
+    '(("Master" "Boatswain!")		;1   
+      ("Boatswain" "Here, master: what cheer?") ;3   
+      ("Master" "Good, speak to the mariners: fall to't, yarely,or we run ourselves aground: bestir, bestir.") ;5   
+      ("Boatswain" "Heigh, my hearts! cheerly, cheerly, my hearts! yare, yare! Take in the topsail. Tend to the master's whistle. Blow, till thou burst thy wind, if room enough!")			;7   
+      ("ALONSO" "Good boatswain, have care. Where's the master? Play the men.") ;9   
+      ("Boatswain" "I pray now, keep below.") ;11   
+      ("ANTONIO" "Where is the master, boatswain?") ;13   
+      ("Boatswain" "Do you not hear him? You mar our labour: keep your cabins: you do assist the storm.") ;15   
+      ("GONZALO" "Nay, good, be patient.") ;17   
+      ("Boatswain" "When the sea is. Hence! What cares these roarers for the name of king? To cabin: silence! trouble us not.") ;19   
+      ("GONZALO" "Good, yet remember whom thou hast aboard.") ;21   
+      ("Boatswain" "None that I more love than myself. You are a counsellor; if you can command these elements to silence, and work the peace of the present, we will not hand a rope more; use your authority: if you cannot, give thanks you have lived so long, and make yourself ready in your cabin for the mischance of the hour, if it so hap. Cheerly, good hearts! Out of our way, I say.") ;23   
+      ("GONZALO" "I have great comfort from this fellow: methinks he hath no drowning mark upon him; his complexion is perfect gallows. Stand fast, good Fate, to his hanging: make the rope of his destiny our cable,for our own doth little advantage. If he be not born to be hanged, our case is miserable.") ;25   
+      ("Boatswain" "Down with the topmast! yare! lower, lower! Bring her to try with main-course. A cry within A plague upon this howling! they are louder than the weather or our office.") ;27   
+      ("Boatswain" "Yet again! what do you here? Shall we give o'er and drown? Have you a mind to sink?") ;29   
+      ("SEBASTIAN" "A pox o' your throat, you bawling, blasphemous, incharitable dog!") ;31   
+      ("Boatswain" "Work you then.")	;33   
+      ("ANTONIO" "Hang, cur! hang, you whoreson, insolent noisemaker! We are less afraid to be drowned than thou art.")	;35   
+      ("GONZALO" "I'll warrant him for drowning; though the ship were no stronger than a nutshell and as leaky as a sieve.") ;37   
+      ("Boatswain" "Lay her a-hold, a-hold! set her two courses off to sea again; lay her off.") ;39  
+      ("Mariners" "All lost! to prayers, to prayers! all lost!") ;41   
+      ("Boatswain" "What, must our mouths be cold?") ;43   
+      ("GONZALO" "The king and prince at prayers! let's assist them,For our case is as theirs.") ;45   
+      ("SEBASTIAN" "I'm out of patience.") ;47   
+      ("ANTONIO" "We are merely cheated of our lives by drunkards: This wide-chapp'd rascal--would thou mightst lie drowning The washing of ten tides!") ;49   
+      ("GONZALO" "He'll be hang'd yet,Though every drop of water swear against it And gape at widest to glut him.") ;51   
+      ("ANTONIO" "Let's all sink with the king.") ;53   
+      ("SEBASTIAN" "Let's take leave of him.") ;55   
+      ("GONZALO" "Now would I give a thousand furlongs of sea for an acre of barren ground, long heath, brown furze, any thing. The wills above be done! but I would fain die a dry death.")))   
+ 
+(defun add-test-data ()  
+  (let ((solr (make-instance 'solr:solr :uri *solr-endpoint*)))   
+    (labels ((insert (s p o)   
+               (let ((id (add-triple (resource s "names") (resource p "actions")  
+                                     (literal o))))   
+                 (format t "Adding #~a~%" id)   
+                 (add-triple (resource s "names") !fi:solrDocId   
+                             (value-&gt;upi id :long))  
+                 (solr:solr-add solr `((:id . ,(write-to-string id))   
+                                       (:predicate . ,p)   
+                                       (:text . ,o))))))   
+      (loop for (s o) in *solr-test-data*   
+          do (insert s "says" o))   
+      (commit-triple-store)   
+      (solr:solr-commit solr))   
+    (format t "Added ~s records~%" (length *solr-test-data*))))  
+ 
+;; execute these two forms to run the example:  
+;;(create-triple-store "solr-example")  
+;;(add-test-data)  
+ 
+ 
+</code></pre><a name='header3-91' id='header3-91'></a><h3>Solr and SPARQL 1.1</h3><p>Assuming that you have setup Apache Solr with an AllegroGraph triple-store, you can query it using the SPARQL 1.1 query engine. </p><p>There are two storage strategies. In the first, you add a triple that associates the text with a Solr document ID. For example, if you have a triple like </p>
+<pre><code>-subject- somePredicate "Text you want to index" . </code></pre><p>Then you would add a triple like: </p>
+<pre><code>-subject- &lt;http://www.franz.com/solrDocId&gt; -documentID- . </code></pre><p>And tell Solr to associate the text of the first triple with the ID of the second. You must use <a href="http://www.franz.com/solrDocId">http://www.franz.com/solrDocId</a> as the predicate. The <code>documentID</code> must be an <code>xsd:long</code>. </p><p>The second strategy is applicable for clients that have access to the <a href="lisp-reference.html#ref-simple-reification" title="">triple-id</a>. Here, you tell Solr to associate the text with the triple-id directly. </p><p>To query Solr with SPARQL, you use one of the new magic predicates: </p>
+<ul>
+<li><a href="http://franz.com/ns/allegrograph/4.5/solr/match">http://franz.com/ns/allegrograph/4.5/solr/match</a></li>
+<li><a href="http://franz.com/ns/allegrograph/4.5/solr/matchId">http://franz.com/ns/allegrograph/4.5/solr/matchId</a></li></ul><p>The first predicate corresponds to the indirect storage strategy; the second to the triple-id based strategy. Queries for each storage strategy are similar: </p>
+<pre><code># indirect strategy  
+prefix solr: &lt;http://franz.com/ns/allegrograph/4.5/solr/&gt;  
+select * {  
+  ?s solr:match 'medicate disastrous' .  
+  ?s rdfs:label ?text .  
+  ?s rdfs:comment ?other .  
+}  
+ 
+# triple-id strategy  
+prefix solr: &lt;http://franz.com/ns/allegrograph/4.5/solr/&gt;  
+select * {  
+  ?s solr:matchId 'medicate disastrous' .  
+  ?s rdfs:comment ?other .  
+} </code></pre><p>Note that Solr queries can return <em>many</em> results which can cause excessive query delays. You can use the query option <code>solrQueryLimit</code> to limit the number of results Solr returns. This defaults to 100 but if we wanted to only get 10 results, we could write: </p>
+<pre><code>prefix franzOption_solrQueryLimit: &lt;franz:10&gt;  
+prefix solr: &lt;http://franz.com/ns/allegrograph/4.5/solr/&gt;  
+select * {  
+  ?s solr:match 'medicate disastrous' .  
+  ?s rdfs:label ?text .  
+  ?s rdfs:comment ?other .  
+}  
+</code></pre><a name='header2-106' id='header2-106'></a><h2>Solr and Allegro CL</h2><p>Allegro CL has an interface to Solr. This interface is built into AllegroGraph. It is not part of the regular Allegro CL product but is available on the Franz Inc. Github site at <a href="https://github.com/franzinc/solr/" title="Github" class="external" target="_blank">https://github.com/franzinc/solr</a>. You might wish to download the Allegro CL Solr Interface documentation from that location. That documentation is not included in the AllegroGraph documentation set and is not strictly necessary to create Solr free text indices in AllegroGraph, but it might be useful for other purposes. </p></div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

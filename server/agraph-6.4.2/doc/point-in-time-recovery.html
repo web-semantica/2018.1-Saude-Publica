@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Point-in-Time Recovery</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="pointInTime"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>Point-in-Time Recovery in AllegroGraph 6.4.2</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-13' title='New UUID'>New UUID</a></li>
+<li><a href='#header2-19' title='Listing Commits'>Listing Commits</a></li>
+<li><a href='#header2-30' title='Doing Recovery'>Doing Recovery</a></li>
+<li><a href='#header2-33' title='Reference'>Reference</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>The content of Allegrograph database is the result of a sequence of commits, each commit being recorded in a transaction log as well as in other database files.  You can make a backup of a database (even while it's running) and you then have a copy of the database at a certain point in time.  Meanwhile the original database continues to be used and further commits are done and written to the transaction log. </p><p>If you restore the database backup you can view the state of the database as it was when the backup was done.  This may not be what you want.  You may want to see what it looked like a few hours or a few days later. </p><p>You can use the <strong>recover</strong> utility of the <strong>agtool</strong> program to advance the state of the restored database forward to any later commit that was done to the original (and perhaps still running) database. It is as if you did a backup after every commit. See the <a href="agtool.html">agtool general command utility</a> document for information on the <strong>agtool</strong> program. </p><p>(In earlier releases there was an <strong>agraph-recover</strong> program. That program, along with most other command-line AllegroGraph programs, have been folded into the single <strong>agtool</strong> program.) </p><a name='header2-13' id='header2-13'></a><h2>New UUID</h2><p>If your purpose in doing point-in-time recovery is to bring the database to a certain state and then make use in a way where you'll be making new commits, then you should change the <em>uuid</em> of the database so that the transaction logs for this recovered database do not get confused with the transaction logs for the original database. </p><p>The <strong>agtool agaph-backup</strong> program can change the uuid for a database it is restoring. </p>
+<pre><code>% agtool archive --newuuid restore dbname db.backup </code></pre><p>Since this is a common operation when doing point-in-time recovery, the <strong>agtool archive</strong> option <code>--recover</code> will set both <code>--newuuid</code> and --nocommit. </p><p>When you specify <code>--newuuid</code>, the restored backup has a new uuid and the original uuid is now in a file, parent-uuid, since the parent uuid will be needed by the <strong>agtool recover</strong> program to find the old commits to add to this database. </p><a name='header2-19' id='header2-19'></a><h2>Listing Commits</h2><p>In order to find the point at which you want to advance your restored backup, use the program <strong>agtool recover</strong> to show you all the recovery points. </p>
+<pre><code>% agtool recover --list --tlogdir tlog-archive-dir my-db </code></pre><p>In the command above we are asking for a brief list of commit points for the my-db database.  The <code>--tlogdir</code> argument says that transaction log files we can use for recovery are found in the tlog-archive-dir subdirectory. (There is a current transaction log directory specified by the <code>TransactionLogDir</code> configuration directive and there may be archived transaction log files (see <a href="transaction-log-archiving.html">Transaction Log Archiving</a>). <code>--tlogdir</code> can be specified more than once. </p><p>The output of this command looks like the following: </p>
+<pre><code>Computing the recovery points  
+10 transaction logs available for recovery  
+Recovery can be  
+ from commit 6 at 2010-09-30T12:14:16-07:00  
+   to commit 35 at 2010-09-30T12:23:25-07:00  
+ 
+List of initial commits in each transaction log  
+Log Number  Commit Number    Commit Time  
+        6             6  2010-09-30T12:14:16-07:00  
+        7            10  2010-09-30T12:15:20-07:00  
+        8            14  2010-09-30T12:16:22-07:00  
+       10            16  2010-09-30T12:19:35-07:00  
+       13            26  2010-09-30T12:22:06-07:00  
+ 
+Final Commit  
+Log Number  Commit Number    Commit Time  
+       13            35  2010-09-30T12:23:25-07:00  
+</code></pre><p>We can see that we can advance the database to a commit in the range commit 6 at 12:15:16  to commit 26 at 12:23:25. </p><p>We don't see log files 9, 11, and 12 listed.  These log files contain no commit records. </p><p>We may decide that we want all the commits from log file number 8 listed.  We use the --detail option for that: </p>
+<pre><code>% agtool recover --list --detail 8 --tlogdir tlog-archive-dir my-db  
+ 
+Computing the recovery points  
+10 transaction logs available for recovery  
+Recovery can be  
+ from commit 6 at 2010-09-30T12:14:16-07:00  
+   to commit 35 at 2010-09-30T12:23:25-07:00  
+ 
+List of initial commits in each transaction log  
+Log Number  Commit Number    Commit Time  
+        6             6  2010-09-30T12:14:16-07:00  
+        7            10  2010-09-30T12:15:20-07:00  
+        8            14  2010-09-30T12:16:22-07:00  
+       10            16  2010-09-30T12:19:35-07:00  
+       13            26  2010-09-30T12:22:06-07:00  
+ 
+Final Commit  
+Log Number  Commit Number    Commit Time  
+       13            35  2010-09-30T12:23:25-07:00  
+ 
+Details on transaction log file 8  
+Log Number  Commit Number    Commit Time  
+        8            14  2010-09-30T12:16:22-07:00  
+        8            15  2010-09-30T12:16:38-07:00 </code></pre><p>Now we see the details at the end.   The <code>--detail</code> argument and the <code>--tlogdir</code> argument may be given more than once. </p><a name='header2-30' id='header2-30'></a><h2>Doing Recovery</h2><p>Based on the information above we've decided to advance the database to commit 15. </p>
+<pre><code>% agtool recover --recover 15 --tlogdir tlog-archive-dir my-db  
+Recover commit 6  
+Recover commit 7  
+Recover commit 8  
+Recover commit 9  
+Recover commit 10  
+Recover commit 11  
+Recover commit 12  
+Recover commit 13  
+Recover commit 14  
+Recover commit 15 </code></pre><a name='header2-33' id='header2-33'></a><h2>Reference</h2><p>To plan your recovery strategy: </p>
+<dl><dt><strong>agtool recover</strong> --list [--detail &lt;number&gt;] [--tlogdir &lt;dir&gt;] [--port|-p &lt;port&gt;] [--catalog|-c &lt;catalog&gt;] &lt;dbname&gt; </dt>
+<dd>- Will <em>list</em> the first commit of all applicable transaction logs. <br>  - Will list all the commits in the transaction log specified by <em>--detail</em>.   Note that the detail argument can be given more than once. <br>  - The <em>tlogdir</em> argument specifies a directory to search for transaction   logs for the database that was backed up and restored   to create this data base.  The tlogdir argument may be given   more than once. <br>  - <em>port</em> specifies the listening port for the allegrograph server. this defaults to 10035. </dd></dl><p>To execute recovery: </p>
+<dl><dt><strong>agtool recover</strong>  --recover &lt;number&gt;                 [--tlogdir &lt;dir&gt;] [--port|-p &lt;port&gt;]         [--catalog|-c &lt;catalog&gt;] &lt;dbname&gt; </dt>
+<dd>- Advance the given database to the commit number given to the <em>recover</em> argument <br>  - The <em>tlogdir</em> argument specifies a directory to search for transaction   logs for the database that was backed up and restored   to create this data base.  The tlogdir argument may be given   more than once. <br>  - <em>port</em> specifies the listening port for the allegrograph server. This defaults to 10035. </div> </div> </dd></dl> <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

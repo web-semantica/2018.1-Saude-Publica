@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>AllegroGraph Loader</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="agloader"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>AllegroGraph Loader</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-12' title='Usage'>Usage</a>
+<ul>
+<li><a href='#header3-27' title='More on the FILE argument'>More on the FILE argument</a></li>
+<li><a href='#header3-31' title='Loading files from HDFS filesystems'>Loading files from HDFS filesystems</a></li></ul></li>
+<li><a href='#header2-40' title='File encoding'>File encoding</a></li>
+<li><a href='#header2-43' title='Loading triple attributes'>Loading triple attributes</a></li>
+<li><a href='#header2-49' title='Optimal file types'>Optimal file types</a>
+<ul>
+<li><a href='#header3-53' title='Loading lists of files'>Loading lists of files</a></li></ul></li>
+<li><a href='#header2-59' title='agtool load failure'>agtool load failure</a></li>
+<li><a href='#header2-67' title='A more complex example'>A more complex example</a></li>
+<li><a href='#header2-73' title='Options'>Options</a>
+<ul>
+<li><a href='#header3-76' title='Repository options'>Repository options</a></li>
+<li><a href='#header3-113' title='Loading options'>Loading options</a></li>
+<li><a href='#header3-166' title='Less common options'>Less common options</a></li>
+<li><a href='#header3-205' title='Deprecated and Removed Options'>Deprecated and Removed Options</a></li></ul></li>
+<li><a href='#header2-214' title='Examples using the graph option'>Examples using the graph option</a>
+<ul>
+<li><a href='#header3-239' title='Non-compliant --graph values such as literals'>Non-compliant --graph values such as literals</a></li>
+<li><a href='#header3-249' title='Some --graph examples which likely do not do what is wanted'>Some --graph examples which likely do not do what is wanted</a></li></ul></li>
+<li><a href='#header2-261' title='Notes'>Notes</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>The AllegroGraph Loader is one of the <strong>agtool</strong> utilities. It imports data into a repository quickly and easily. When possible, it makes use of multiple CPU cores to load the data in parallel. </p><p>The <a href="agtool.html">agtool</a> program is the general program for AllegroGraph command-line operations. (In earlier releases, there was a separate <strong>agload</strong> program. A change from earlier releases is the <code>-u</code> option, previously a short version of the <code>--base-uri</code> option, is no longer supported.) </p><p>Bulk data can be loaded with tools besides <strong>agtool load</strong>. <a href="agwebview.html">AGWebView</a> has a loading tool. See also <a href="lisp-reference.html#adding-triples">Adding Triples in the Lisp Reference</a>. </p><a name='header2-12' id='header2-12'></a><h2>Usage</h2><p>Note that <strong>agtool load</strong> must be run on the same machine as the AllegroGraph server, and as the same user as the user who started the AllegroGraph server. That user running on that machine has automatic superuser privileges. Attempting for that user to call <strong>agtool load</strong> from a different machine or for another user to call <strong>agtool load</strong> on the same or a different machine will fail with an error message. </p><p>Further, the version of <strong>agtool</strong> must be the same as the AllegroGraph server (that is, <strong>agtool</strong> must be the one distributed with the server, not from an earlier or later version of AllegroGraph). </p><p>The <strong>agtool load</strong> command line is: </p>
+<pre><code>agtool load [OPTIONS] DB-SPEC SOURCE* </code></pre><p>where </p>
+<ul>
+<li><p>OPTIONS are arguments that identify the AllegroGraph server into which the data should be loaded, the format of the data, the data catalog, the graph to be used when not otherwise specified, and so on. See the several <a href="#options">Options sections</a> below for a complete list. Among the important options are <code>--port</code>, which specifies the server (i.e. the one listening on that port) and <code>--input</code>, which specifies the format of the data. (Files with meaningful extensions, for example <em>nt</em> for N-Triple format and <em>ttl</em> for Turtle format, will be assumed to be of the associated format if <code>--input</code> is not specified.) </p></li>
+<li><p>DBNAME is the name of an AllegroGraph repository. In the examples   below, we assume that DBNAME is <code>my-database</code>. </p></li>
+<li><p>SOURCE is either a file name, a dash (<code>-</code>) or an <code>@</code> followed by a   file name (see <a href="#loading-lists">below</a>). SOURCE can be specified   multiple times. Source files can be in <a href="http://www.w3.org/TR/rdf-syntax-grammar/" class="external" target="_blank">RDF/XML</a>,   <a href="http://www.w3.org/TR/turtle/" class="external" target="_blank">Turtle</a>, <a href="http://www.w3.org/2004/03/trix/" class="external" target="_blank">TriX</a>, <a href="http://www.w3.org/TR/trig/" class="external" target="_blank">TriG</a>,   <a href="http://www.w3.org/TR/n-triples/" class="external" target="_blank">N-Triples</a>, <a href="http://www.w3.org/TR/n-quads/" class="external" target="_blank">N-Quads</a>, or   <a href="#triple-attributes-section">NGX</a> format.  In the examples below, we   assume the source files have names like <em>mydata-1</em> and <em>mydata-2</em>,   with or without extensions. </p></li></ul><p>Here is an <strong>agtool load</strong> command line with the port and input format specified: </p>
+<pre><code>agtool load --port 10035 --input ntriples my-database mydata-1 </code></pre><p>Here we also specify the catalog (which otherwise defaults to root) and multiple input files.  The <em>ttl</em> file extensions indicate the file data formats so <code>--input</code> need not be specified: </p>
+<pre><code>agtool load --port 10035 --catalog mycatalog  my-database mydata-2.ttl mydata-3.ttl </code></pre><p>The specified catalog must already exist on the server. </p><p>If a database named by the DBNAME argument does not exist, it will be created. If the database exists, it will be opened and data from the input files will be added to it. If the <a href="#supersede-option">--supersede option</a> is suppled and the database exists, it will be deleted and a new one created. <strong>Use that option with caution as superseded data is gone and cannot be recovered except from backups</strong>. Also note that DBNAME is affected by the presence of the <code>--catalog</code> option: different catalogs can contain databases with the same names so if you specify a catalog, you are calling for the use or creation of the database DBNAME in that catalog. </p><a name='header3-27' id='header3-27'></a><h3>More on the FILE argument</h3><p>If the character <code>-</code> is given as a SOURCE, it will be interpreted as standard input.  This allows <strong>agtool load</strong> to accept data directly from other programs. For example: </p>
+<pre><code>cat foo.nt bar.nt baz.nt | agtool load --input ntriples test_db - </code></pre><p><a name="hdfs"></a> </p><a name='header3-31' id='header3-31'></a><h3>Loading files from HDFS filesystems</h3><p><strong>agtool load</strong> supports loading files from HDFS (Hadoop Distributed File System). In order for the load to succeed, the following conditions must be met: </p>
+<ul>
+<li><p>There must be a working <em>hdfs</em> program in your PATH.</p></li>
+<li><p>HDFS input files must use the <em>hdfs://</em> prefix when specified on    the <strong>agload</strong> command line </p></li></ul><p>Here is a sample command line for loading the file <em>lubm-50.nt.gz</em>: </p>
+<pre><code>agtool load repo hdfs:///user/bruce/lubm-50.nt.gz </code></pre><p>When those conditions are met, <strong>agtool load</strong> works with HDFS files just as with other files. The command line can mix HDFS files with other files. </p><p>Loading from HDFS file systems has been tested with the <a href="http://www.cloudera.com">Cloudera</a> Hadoop distribution. </p><p><a name="file-encoding"></a> </p><a name='header2-40' id='header2-40'></a><h2>File encoding</h2><p>N-Triples, N-Quad, and NQX files must have character encoding UTF-8, as must Turtle files. RDF/XML, TriG, and TriX files use character encodings as defined by standard XML parsing rules. Conversion programs outside of AllegroGraph (such as <a href="https://en.wikipedia.org/wiki/Iconv">iconv</a>) can be used to convert files to UTF-8 format if necessary. All such conversions must be done prior to processing by <strong>agtool load</strong>. </p><p><a name="triple-attributes-section"></a> </p><a name='header2-43' id='header2-43'></a><h2>Loading triple attributes</h2><p>AllegroGraph supports attributes for triples, as described in the <a href="triple-attributes.html">Triple Attributes</a> document. Attributes are name/value pairs associated with triples. Attributes can only be associated with triples when the triple is added to the repository. Using <strong>agtool load</strong> to load an NQX file is one way to associate attributes with triples. Only Extended N-Quad files (NQX), with type .nqx, can specify different attributes for each triple. Here are two lines from an NQX file specifying attributes: </p>
+<pre><code>&lt;http://dbpedia.org/resource/Arif_Babayev&gt; &lt;http://dbpedia.org/property/placeOfDeath&gt; &lt;http://dbpedia.org/resource/Baku&gt; &lt;http://ex#trans@@1142684573200001&gt; {"color": "red"} .  
+&lt;http://dbpedia.org/resource/Arif_Naqvi&gt; &lt;http://purl.org/dc/terms/subject&gt; &lt;http://dbpedia.org/resource/Category:Businesspeople_from_Karachi&gt; {"color": "blue"} . </code></pre><p>The first includes a graph, the second does not. The loader distinguishes them because it can recognize the JSON input <code>{"color": "red"}</code> and <code>{"color": "blue"}</code>. The "color" attribute name must be defined in the repository prior to loading an NQX file containing these lines. </p><p>The <code>--attributes</code> option (see <a href="#attributes-option">below</a>) allows specification of default attributes that will be applied to every triple that does not have attributes specified. Note that the default attributes will be applied to every triple loaded from any type of file other than an NQX file, since attributes cannot be specified in any such file. </p><p>Attribute names must be defined before use, so all attribute names appearing in an NQX file or as the value of the <code>--attributes</code> option must be already defined. See <a href="triple-attributes.html#defining-attributes">Defining attributes</a> for information on defining attributes. </p><a name='header2-49' id='header2-49'></a><h2>Optimal file types</h2><p><strong>agtool load</strong> is optimized for loading N-Triple and N-Quad files. Loading of files of those types will be spread over multiple cores even if only a single file is specified. <strong>agtool load</strong> will spread loading of multiple files of other types (Turtle, TriX, TriG, RDF/XML) over multiple cores but each single file will be loaded by a single core. Therefore loading a single, large turtle file takes much longer that loading a single, equivalently large N-Triple or N-Quad file on machines with multiple cores. </p><p>The <a href="rapper.html">Rapper</a> program, from <a href="http://librdf.org/raptor/rapper.html" title="rapper" class="external" target="_blank">http://librdf.org/raptor/rapper.html</a>, will convert files from one format to another. </p><p><a name="loading-lists"></a> </p><a name='header3-53' id='header3-53'></a><h3>Loading lists of files</h3><p>Loading entire directories (by specifying the directory as the FILE argument) is not supported, but wildcards may be used. Wildcards will be expanded by the shell, as expected. Also, you can specify a single file which contains a list of files to load, as we describe next. </p><p>If FILE begins with the character <code>@</code>, <strong>agtool load</strong> interprets everything after the <code>@</code> as a file name which contains a list of actual source files. By default the file name items are separated by a CR, LF or CRLF sequence. That is the usual case and covers most actual situations. </p><p>Because UNIX allows newlines to appear in any file name, <strong>agtool load</strong> will permit the files to be separated by NULL characters. If you want this, you must specify the -0 option (the numeral zero, not an uppercase letter o). Here is an example: </p>
+<pre><code>agtool load -0 test_db @null-separated-list-of-sources.txt </code></pre><p>Use the @file-name syntax when there are more source files than the shell will pass to <strong>agtool load</strong> as arguments. <br />
+</p><a name='header2-59' id='header2-59'></a><h2>agtool load failure</h2><p><strong>agtool load</strong> might fail (meaning fail to successfully load all data from all the specified files) for various reasons, including hardware failure and network problems. The most common cause of failure is corrupted or invalid input files. </p><p>If <strong>agtool load</strong> encounters invalid data, its behavior depends on the <code>--error-strategy</code> option desribed below, but by default it will stop loading data. </p><p>Note that <strong>agtool load</strong> adds triples to the database as it works. Therefore, if <strong>agtool load</strong> fails (for whatever reason) after it has begun, you may find some but not all triples added, and you should be prepared for this possibility. Here are some ways to be prepared: </p>
+<ul>
+<li><p>Start with an empty database and do not add triples from other   sources until <strong>agtool load</strong> completes: then if <strong>agtool load</strong> fails, you   can delete the database and start again. </p></li>
+<li><p>Backup the database prior to loading with <strong>agtool load</strong> and do not add   triples from other sources until <strong>agtool load</strong> completes: then if   <strong>agtool load</strong> fails, you can restore the database from the backup and   start again (see <a href="backup-and-restore.html">Backup and Restore</a> for   information on backing up and restoring). </p></li></ul><p>But sometimes you have to load with <strong>agtool load</strong> while triples are being added from other sources, and you must be prepared in that case to deal with an <strong>agtool load</strong> failure. (We do not have specific recommendations as there are many possible cases and equally many ways to deal with them but note that if the graph field is not otherwise used, you can often arrange it so triples loaded with <strong>agtool load</strong> have a different graph than triples from other sources and that makes it easy to tell which were loaded by <strong>agtool load</strong> and which were added by other means.) </p><p>See the <code>--error</code> option below for more information on handling errors. </p><a name='header2-67' id='header2-67'></a><h2>A more complex example</h2><p>The following example loads a single source file into AllegroGraph. </p>
+<pre><code>agtool load --supersede -v --with-indices "ospgi,posgi,spogi" -e ignore -p 10035 lesmisload lesmis.rdf </code></pre><p>In this example, there are several OPTIONS, the DBNAME is <em>lemisload</em> and the SOURCE is <em>lemis.rdf</em>. <strong>agtool load</strong> will load <em>lesmis.rdf</em> into the <code>lesmisload</code> repository on a running AllegroGraph server that is using port 10035.  If there is an existing repository named <code>lesmisload</code>, then it will be deleted (as specified by <code>--supersede</code>). The program will generate verbose messages (<code>-v</code>) and will ignore any errors (<code>-e ignore</code>). The repository will generate three triple indices: ospgi, posgi and spogi. </p><p>The complete list of OPTIONS follows. </p><p><a name="options"></a> </p><a name='header2-73' id='header2-73'></a><h2>Options</h2><p>The following options may be used on the <strong>agtool load</strong> command line. </p><p><a name="triple-store-options"></a> </p><a name='header3-76' id='header3-76'></a><h3>Repository options</h3><p>These options control the creation and settings for the repository. </p>
+<dl><dt><strong>--port PORT, -p PORT</strong> </dt>
+<dd>Set this to the port number of the server you would like to use. As said above, <strong>agtool load</strong> must be run on the same machine as the server and by the same user, and the <strong>agtool load</strong> version must be the same version as the server (that is, distributed with server). The default port value is 10035. </dd><dt><strong>--scheme</strong> SCHEME </dt>
+<dd>Specify the HTTP connection scheme. The value can be <code>http</code> (the default) or <code>https</code>. </dd><dt><strong>--catalog CATALOG,-c CATALOG</strong> </dt>
+<dd>Use this option to assign the database to a catalog. If left off, then the root catalog will be used
+<a name="fnr0-2018-06-08" id="fnr0-2018-06-08"></a>
+<sup><a href="#fn0-2018-06-08">1</a></sup> . </dd></dl><p><a name="supersede-option"></a> </p>
+<dl><dt><strong>--supersede, -s</strong> </dt>
+<dd>If the database DBNAME exists, it will be <em>deleted</em> before loading data. <em>Supersede</em> should be used with care as there is no way to recover the deleted repository other than restoring it from <a href="backup-and-restore.html">backup</a>. If the database DBNAME exists and is open, the <strong>agtool load</strong> command will fail. </dd><dt><strong>--fti NAME, -f NAME</strong> </dt>
+<dd><p>Create a <a href="text-index.html">free-text index</a> named <code>name</code>.</p></dd>
+<dd><p>This index will include both any newly added triples and all existing triples. Managing the free-text index will slow down loading speed somewhat. </p></dd><dt><strong>--with-indices INDICES</strong> </dt>
+<dd>Specify the repsoitory's indices. When supplied, the parameter should be a list of index names separated by commas (for example: <code>spogi,posgi,ospgi,i</code>).  If not specified, newly created repositories will use the standard set of indices and the indices of existing repositories will remain unchanged.
+<a name="fnr1-2018-06-08" id="fnr1-2018-06-08"></a>
+<sup><a href="#fn1-2018-06-08">2</a></sup>  </dd></dl><p><a name="optimize"></a> </p>
+<dl><dt><strong>--optimize</strong> </dt>
+<dd>Perform a full level 2 optimization of all indices after the load completes (default: Do not optimize). Index optimization is discussed in the <a href="triple-index.html#optimize">Optimizing indices</a> section of the <a href="triple-index.html">Triple Indices</a> document. </dd></dl><p><a name="bulk-option"></a> </p>
+<dl><dt><strong>--bulk</strong> </dt>
+<dd><p>Enable bulk mode while processing the loading job.  Bulk mode turns off transaction log processing and can provide considerable performance gain for large jobs. Because an unexpected failure during a bulk load can result in an unrecoverably corrupted database, we recommend you make a <a href="backup-and-restore.html">backup</a> before using this option. </p></dd>
+<dd><p>Specifying this option will cause the load to fail when the repository <code>DBNAME</code> is a replication instance (see the <a href="multi-master.html">Multi-master Replication</a> document) as replication depends on complete transaction logs. </p></dd></dl><p><a name="attributes-option"></a> </p>
+<dl><dt><strong>--attributes</strong> </dt>
+<dd><p>Specifies attributes for any triples which do not have attributes specified in the file being loaded. See the <a href="#triple-attributes-section">Loading triple attributes</a> section above for more information. Since attributes can only be specified in NQX (extended N-Quad) files, attributes specified by this argument will be applied to all triples loaded from files of all other types. Attributes must be already defined within the repository in order to be values of this argument. </p></dd>
+<dd><p>Attributes are specified as a JSON object. Here is an example:</p>
+<pre><code>--attributes '{ "pet": "dog", "key2": [ "red", "blue" ] }' </code></pre></dd>
+<dd>We have surrounded the value with single quotes to avoid interpretation of the braces ({ and }) or the double quotes as shell metacharacters. Three attributes are added, one with name "pet" and and two with name "color". The "pet" attribute has the value "dog", one "color" attribute has the value "red", and the other has the value "blue". </dd></dl><p><a name="parameter-option"></a> </p>
+<dl><dt><strong>--parameter</strong> NAME=VALUE </dt>
+<dd><p>When the action of <strong>agtool load</strong> will create a new repository, either because the <code>DBNAME</code> argument names a repository which does not already exist in the specified catalog (the root catalog if no catalog is specified), or because the <code>--supersede</code> argument is specified, then the repository will be created using the various catalog directives listed in the <a href="daemon-config.html#catalog-directives">Catalog directives</a> section of the <a href="daemon-config.html">Server Configuration and Control</a> document.  Such directives include <code>StringTableSize</code>, <code>StringTableCompression</code>, <code>ExpectedStoreSize</code>, and so on. Many of these directives are inheritable, meaning they can be specified at the top-level and apply to any catalog that does not also specify a value in its definition, so if you are looking in a configuration file for the value which will be used, look at the top-level directives as well as the specific catalog definition. </p></dd>
+<dd><p>Only one directive (NAME=VALUE) can be specified for each occurrence of <code>--parameter</code> but the option can be specified as often as desired. </p></dd></dl><p><a name="automate-nd-datatype-mappings-option"></a> </p>
+<dl><dt><strong>--automate-nd-datatype-mappings</strong> </dt>
+<dd>Causes the loader to check for geospatial datatypes and set up mappings automatically (default: no). </dd></dl><p><a name="loading-options"></a> </p><a name='header3-113' id='header3-113'></a><h3>Loading options</h3><p>These options control how <strong>agtool load</strong> processes data sources. </p><p><a name="input-option"></a> </p>
+<dl><dt><strong>--input FORMAT, -i FORMAT</strong> </dt>
+<dd><p>Specify the input format to use.  The recognized values are: <code>rdfxml</code> (and <code>owl</code>, <code>rdf</code>, <code>rdfs</code>, <code>rdf/xml), </code>ntriples<code> (and </code>ntriple<code>, </code>nt<code>), </code>nquads<code> (and </code>nquad<code>, </code>nq<code>), </code>nqx<code>, </code>trix<code>, </code>trig<code>, </code>turtle<code> (and </code>ttl<code>), and </code>guess`. </p></dd>
+<dd><p>The default is <code>guess</code>.  Use <code>guess</code> if (1) All sources have a recognizable extension, and (2) Every file is actually of the format indicated by its extension. </p>
+<ul>
+<li>Recognized N-Triple extensions:
+<pre><code>.nt, .ntriple, .ntriples, .nt.gz, .ntriple.gz, .ntriples.gz,  
+.nt.bz2, .ntriple.bz2, and .ntriples.bz2. </code></pre></li>
+<li>Recognized N-Quads extensions:
+<pre><code>.nq, .nquad, .nquads, .nq.gz, .nquad.gz, .nquads.gz, .nq.bz2,  
+.nquad.bz2, and .nquads.bz2. </code></pre></li>
+<li>Recognized Extended N-Quad extension (see the <a href="#triple-attributes-section">Loading triple   attributes</a> section above for   information on NQX files): 
+<pre><code>.nqx </code></pre></li>
+<li>Recognized RDF/XML extensions:
+<pre><code>.rdf, .rdfs, .owl, .rdf.gz, .rdfs.gz, .owl.gz, .rdf.bz2,  
+.rdfs.bz2, and .owl.bz2. </code></pre></li>
+<li>Recognized Turtle extensions:
+<pre><code>.ttl, .turtle, .ttl.gz, .turtle.gz, .ttl.bz2, and .turtle.bz2. </code></pre></li>
+<li>Recognized TriX extensions:
+<pre><code>.trix, .trix.gz, and .trix.bz2. </code></pre></li>
+<li>Recognized TriG extensions:
+<pre><code>.trig, .trig.gz, and .trig.bz2. </code></pre></li></ul></dd>
+<dd><p>If a format other than <code>guess</code> is specified, it will take precedence over a file's extension.  For example, if you have an N-Triples file named <code>triples.rdf</code> and specify <code>--input ntriples</code> then <code>triples.rdf</code> will be parsed as an N-Triples file. </p></dd>
+<dd><p>If you use multiple source formats in one <strong>agtool load</strong> command, then you need to ensure that the source file's extensions match their contents. Otherwise, you will need to use multiple command invocations. </p></dd>
+<dd><p>The only two compression formats handled by <strong>agtool load</strong> are <em>gzip</em> and <em>bzip2</em>.  Any files which are compressed must be named with .gz or .bz2 extensions in order to be decompressed. All supported formats permit .[format].gz and .[format].bz2 extensions, allowing <strong>agtool load</strong> to determine the data format from the [format] portion. If a file has extension .gz or .bz2 without also specifying the format, you must use the <code>--input</code> option.  For example, if you are loading a gzip'ed N-Quads file and the file is named <em>btc-2011-chunk-045.gz</em>, then you must specify <code>--input nquads</code>. </p></dd>
+<dd><p>The use of standard input with <strong>agtool load</strong> (by specifying FILE to be <code>-</code>) <em>always</em> requires a non-default value for the input format, since standard input has no file type. </p></dd></dl><p><a name="error-strategy-option"></a> </p>
+<dl><dt><strong>--error-strategy STRATEGY, -e STRATEGY</strong> </dt>
+<dd><p>The available options for error strategy are <code>cancel</code>, <code>ignore</code>, <code>print</code> and <code>save</code>.  Cancel is the default, and will stop the loading process as soon as an error is detected.<br />
+</p></dd>
+<dd><p>Error strategy <code>ignore</code> will attempt to silently continue upon an error, although it will print a warning (and then continue) when an entire file is skipped because its input format could not be determined (usually because the file type is not recognized or is missing). </p></dd>
+<dd><p>Error strategy <code>print</code> is like <code>ignore</code> but will print the error to standard output.  Error strategy <code>save</code> is like <code>print</code> but will also log the error to agload.log in the current working directory. </p></dd>
+<dd><p>Error strategy applies to all recoverable errors, not just parsing errors. </p></dd>
+<dd><p>Remember that if <strong>agtool load</strong> fails for whatever reason, some triples will have been added to the database and some will not have been added (except for very unusual edge cases). </p></dd>
+<dd><p><strong>--error-strategy ignore</strong> will in some cases print warnings even though it will not stop processing files or loading triples. For example, if a file does not have a recognizable type and its format has not been specified with <code>--input</code>, the file will be skipped when the <code>--error-strategy</code> is <code>ignore</code> but a warning will be printed: </p>
+<pre><code>agtool load -e ignore repo wrong-file  
+Cannot guess the format of wrong-file. Use --input to specify it.  
+Load finished 0 sources in 00:00:01 (1.00 seconds).  No triples added.  
+Terminating agtool load processes, please wait... </code></pre></dd></dl><p><a name="loaders-option"></a> </p>
+<dl><dt><strong>--loaders COUNT, -l COUNT</strong> </dt>
+<dd><p>The <code>loaders</code> option specifies the number of processes which will be connecting to AllegroGraph and committing triples. It is for optimization of <strong>agtool load</strong> performance. The system will try to use as many cores as you specify. </p></dd>
+<dd><p>The default depends on the number of cores on your server. If you have 1 or 2 cores, <code>loaders</code> will default to 1. If you have 4 cores, loaders will default to 3. For more cores the default is the number of cores minus one, up to a maximum of 32. <strong>agtool load</strong> also has a task dispatcher process and AllegroGraph has its own processes. </p></dd>
+<dd><p>If you are not getting satisfactory performance for your load, try increasing or decreasing the number of loaders. If your data has no blank nodes, you may want to set the number of loaders to the number of logical cores on the machine and use <code>--blank none</code>. If you have files dense with blank nodes try decreasing the number of loaders to free up machine resources.  For example on an 8 core, 48GB hyperthreaded server, we use <code>--loaders 5</code> for good performance while loading Billion Triple Challenge.  For Lubm-8000 we use <code>--loaders 16</code>. </p></dd><dt><strong>--base-uri URI</strong> </dt>
+<dd>Specify a base URI for formats that support it, such as RDF/XML or Turtle.  Note that if standard input is a source and <code>rdfxml</code> is the input format, <code>--base-uri</code> must be specified. (In earlier releases, <code>-u</code> was accepted as a short version of this option. <code>-u</code> is no longer accepted. You must use <code>--base-uri</code>.) </dd><dt><strong>--graph GRAPH, -g GRAPH</strong> </dt>
+<dd>Specify a default graph for formats that support it, such as N-Triples.  Special values are: 
+<ul>
+<li><code>:default</code>, use the default graph node for the repository (this is the default value for <code>graph</code>). </li>
+<li><code>:source</code>, use the source of the triple (i.e. the filename) as the default graph. This cannot be used if standard-input is used a source. </li>
+<li><code>:blank</code>, generate a blank node before loading triples and use it as the default graph. </li></ul></dd>
+<dd><p>Any other value is interpreted as a resource (URI) or literal and used as the default graph. Note that strict RDF does not allow literals to be used in the graph slot. </p></dd>
+<dd><p>The three special values start with a colon (:) to allow for the usage of <code>default</code>, <code>source</code>, or <code>blank</code> as graph names. See the <a href="#graph-examples">Examples using the graph option</a> section for more information on the use of this option. </p></dd>
+<dd><p>Formats that include the fourth element (like N-Quads) will use the default-graph only for the data that does not explicitly specify it. </p></dd><dt><strong>--external-references, -x</strong> </dt>
+<dd>If specified, then external references in RDF/XML source files will be followed during load. </dd><dt><strong>--metadata FILENAME</strong> </dt>
+<dd>Load attribute definitions and the static filter definition from <em>FILENAME</em>. See <a href="triple-attributes.html">Triple Attributes</a> for information on attributes. </dd></dl><p><a name="less-common-options"></a> </p><a name='header3-166' id='header3-166'></a><h3>Less common options</h3><p>These options are useful in specific circumstances but do not generally need to be used. </p>
+<dl><dt><strong>--host</strong> </dt>
+<dd><strong>agtool load</strong> must be run on the same machine as the AllegroGraph server but it still makes an initial HTTP request to the server to get the information on how to make a direct (non-HTTP) connection to the server. In the default, the AllegroGraph server listens on all IP interfaces, but it can be configured to only listen at a specific IP address by specifying a value for the <code>HostName</code> configuration directive described with other top-level directives in the <a href="daemon-config.html">Server Configuration and Control</a> document. When this directive is used (and its value is not something that resolves to 127.0.0.1), the <code>--host</code> option to <strong>agtool load</strong> must be suppplied with a matching value.  Again, the value must specify the machine running both the AllegroGraph server and <strong>agtool load</strong>. This argument cannot be used to specify a server host which is different from the machine on which <strong>agtool load</strong> is being run. </dd><dt><strong>--help, -h</strong> </dt>
+<dd>Print the command line summary.</dd><dt><strong>--verbose, -v</strong> </dt>
+<dd><p>The presence of the <code>verbose</code> option will cause additional information to be printed to standard output. This argument can be specified multiple times to increase the verbosity. We recommend using <strong>--verbose --verbose</strong> if you encounter a problem with loading, but note <strong>--verbose --verbose</strong> generates a lot of output when loading many files, so it may fill a terminal's scrollback. See also the <code>--debug</code> option which also may be useful when an error occurs during loading.  <code>--debug -v -v</code> provides maximum information about loading. </p></dd>
+<dd><p>Specifically, the verbosity levels are:</p>
+<ul>
+<li><p>0 (-v not supplied): Only report periodic load rate information.</p></li>
+<li><p>1 (-v): As above, plus print the job option summary before starting the operation.</p></li>
+<li><p>2 (-v -v): As above, plus print the name of every file that has been processed.</p></li></ul></dd>
+<dd>Specifying more than two <code>-v</code>s is equivalent to specifying two.</dd><dt><strong>--quiet</strong> </dt>
+<dd>Reduce output (default: no).</dd><dt><strong>--blank STRATEGY, -b STRATEGY</strong> </dt>
+<dd><p>Determine how to handle blank node identifiers in N-Triple and N-Quad files.  STRATEGY must be one of <code>file</code>, <code>job</code> or <code>none</code>.<br />
+</p></dd>
+<dd><p>By default, blank node identifiers are scoped to the source in which they appear. I.e., the blank node <code>_:b1</code> in file <code>file1.nt</code> is considered to be different than the blank node <code>_:b1</code> in file <code>file2.nt</code>. AllegroGraph calls this the <code>file</code> strategy and uses it as the default. </p></dd>
+<dd><p>Blank node strategy <code>job</code> will consider all blank nodes found in N-Triple and N-Quad files to be in the same "scope".  This means that the <code>_:b1</code> in <code>file1.nt</code> will be considered to be the same as the one found in <code>file2.nt</code>. </p></dd>
+<dd><p>Blank node strategy <code>none</code> will cause <strong>agtool load</strong> to error if any sources contains blank nodes. Loading is faster when the blank node strategy is <code>none</code>. </p></dd>
+<dd><p>Note that the blank node strategies of <code>job</code> and <code>file</code> only apply to N-Triple and N-Quad sources.  Other formats such as RDF/XML or Turtle are defined to have a blank node scope of the file and this option is ignored. Using a blank node strategy of <code>none</code> will, however, still signal an error if any source files contains a blank node. </p></dd><dt><strong>--debug</strong> </dt>
+<dd><p>If specified, additional information will be printed when an error occurs.</p></dd>
+<dd><p>Typically, <code>--debug</code> is useful only when <strong>agtool load</strong> returns an exit code of 1, indicating that there was an unhandled error.  If this occurs, re-run <strong>agtool load</strong> using the debug option and send the output to <a href="mailto:allegrograph-support@franz.com">AllegroGraph support</a> for more assistance. The option also causes information to be written to agload.log. See also the <code>--verbose</code> option, which causes other information about loading to be output. <code>--debug -v -v</code> provides maximum information about loading. </p></dd></dl><p><a name="relax-syntax-option"></a> </p>
+<dl><dt><strong>--relax-syntax</strong> </dt>
+<dd>For N-Triples and N-Quad files, this flag tells AllegroGraph to ignore certain syntax errors. In particular: 
+<ul>
+<li>Blank node names may use underscore (_) and dash (-) characters.</li>
+<li>Literals may be used in the Graph position (for N-Quads).</li>
+<li>URIs are not required to include a colon (:).</li></ul></dd><p>This is a non-standard parser extension and should only be used when necessary. </p><dt><strong>--duplicates SETTING, -d SETTING</strong> </dt>
+<dd>Changes the handling of duplicate triples in the repository.  The valid values for SETTING are <code>keep</code> (the default); <code>delete</code>, meaning delete all but one of all groups of triples that match subject, predicate, object, and graph; and <code>delete-spo</code>, meaning delete groups that match subject, predicate, and object, regardless of graph. In AllegroGraph, triples are deleted only by the function <a href="lisp-reference.html#delete-duplicate-triples" title="description of delete-duplicate-triples">delete-duplicate-triples</a>. If duplicate deletion is specified, that function is (in effect) called at the end of data loading with arguments suitable for the specified argument, and the load completes when duplicates are deleted. This argument does not affect things after the load is complete as future duplicate deletions are only done when <a href="lisp-reference.html#delete-duplicate-triples" title="description of delete-duplicate-triples">delete-duplicate-triples</a> is called. </dd><dt><strong>--dry-run</strong> </dt>
+<dd><p>If specified, then print the loading strategy and stop. I.e., no triples will be loaded. </p></dd>
+<dd><p><strong>agtool load</strong> loads N-Triples and N-Quads files most efficiently so it can be faster to convert source files before loading them. More information on using rapper and AllegroGraph is described in our <a href="rapper.html">documentation</a>. </p></dd><dt><strong>--null, -0</strong> </dt>
+<dd>Use to specify that the file specified after an <code>@</code> sign in the SOURCE inputs is a null separated list rather than a newline separated one. This is useful for loading files with newlines or other strange characters in their names. </dd></dl><p><a name="deprecated-options"></a> </p><a name='header3-205' id='header3-205'></a><h3>Deprecated and Removed Options</h3><p>The following option is no longer supported: </p>
+<dl><dt><strong>--encoding ENCODING, -C ENCODING</strong> </dt>
+<dd>In earlier releases, this option could be used to specify the character encoding of the file(s) being loaded. This is no longer supported. N-Triple, N-Quad, NQX, and Turtle files must use UTF-8 encoding. RDF/XML, TriG, and TriX files use character encodings as defined by standard XML parsing rules. There are conversion programs, such as <a href="https://en.wikipedia.org/wiki/Iconv">iconv</a>, which will convert files to UTF-8 character encoding. </dd></dl><p>The use of the following option has been deprecated as it is no longer needed: </p>
+<dl><dt><strong>--dispatch-strategy STRATEGY</strong> </dt>
+<dd><p>STRATEGY must be <code>auto</code> or <code>file</code>.  The dispatch strategy tells <strong>agtool load</strong> how it to parallelize loading. </p></dd>
+<dd><p>The default is <code>auto</code> which is combination of dispatch strategies based on file format. N-Triple and N-Quad files will be broken up and loaded in pieces. <code>--dispatch-strategy file</code> means that no files are broken into pieces for loading. There is no reason to specify <code>file</code> (which was useful in much earlier releases and is kept for backward compatibility).  Note that RDF/XML, Turtle, TriG, and TriX formats are always dispatched on a file basis regardless of the value of this option. </p></dd></dl><p><a name="graph-examples"></a> </p><a name='header2-214' id='header2-214'></a><h2>Examples using the graph option</h2><p>We have an N-Triples file <em>/tmp/test.nt</em> containing the following single line specifying a subject, predicate, and object but no graph: </p>
+<pre><code>&lt;http://franz.com/Node60469&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://franz.com/OFFICER&gt; . </code></pre><p>Here are some examples using various values for the <code>--graph</code> argument. If the triple were displayed in N-Quads format, it would look like: </p>
+<pre><code>&lt;http://franz.com/Node60469&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://franz.com/OFFICER&gt; [graph] . </code></pre><p>with various values of <code>[graph]</code>. In all cases except the first, we only show the value of <code>[graph]</code>. </p><p><strong>RDF compliance:</strong> To be RDF-compliant, graphs must be resources. Other values, such as literals, are not permitted. However AllegroGraph will accept and store non-resource values such as literals. This makes AllegroGraph more flexible with regard to what can be stored, but SPARQL queries which involve graphs will not work with non-compliant graph values. Compliant values are recommended unless there is some good reason to use non-compliant values. </p><p>First, we specify <code>:default</code> as the value of the <code>--graph</code> argument, or we equivalently (since the default is <code>:default</code>) leave the argument out: </p>
+<pre><code>agtool load --graph :default --verbose --supersede foo /tmp/test.nt </code></pre><p>or </p>
+<pre><code>agtool load --verbose --supersede foo /tmp/test.nt </code></pre><p>Either call uses the default graph node for the particular AllegroGraph database, which is not displayed in N-Quads format, so the N-Quads output for the triple is: </p>
+<pre><code>&lt;http://franz.com/Node60469&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://franz.com/OFFICER&gt; . </code></pre><p>Contrast that with this call: </p>
+<pre><code>agtool load --graph :source --verbose --supersede foo /tmp/test.nt </code></pre><p>The graph is the source file and <code>[graph]</code> is then: </p>
+<pre><code>&lt;file:///tmp/test.nt&gt; </code></pre><p>In this next call, <code>--graph</code> is <code>:blank</code>: </p>
+<pre><code>agtool load --graph :blank --verbose --supersede foo /tmp/test.nt </code></pre><p><strong>agtool load</strong> generates a new blank node and uses that as the default graph for the whole job. <code>[graph]</code> is then similar to: </p>
+<pre><code>_:bC87E16D1x1  
+</code></pre><p>Here we use the resource <code>&lt;http://foo.com/abc#123&gt;</code> for the default graph: </p>
+<pre><code>agtool load --graph http://foo.com/abc#123 --verbose --supersede foo /tmp/test.nt  </code></pre><p><code>[graph]</code> is then: </p>
+<pre><code>&lt;http://foo.com/abc#123&gt; </code></pre><a name='header3-239' id='header3-239'></a><h3>Non-compliant --graph values such as literals</h3><p>As said above, AllegroGraph will accept values which are not resources as graph values. Such graph values cannot be used with SPARQL queries (the queries can involve compliant subjects, predicates, and objects even if the graph value is non-compliant). Here are some examples which show how AllegroGraph deals with non-complaint values of <code>--graph</code>: </p><p>The value of <code>--graph</code> is a string with escaped quotation marks: </p>
+<pre><code>agtool load --graph \"abc123\" --verbose --supersede foo /tmp/test.nt  </code></pre><p><code>[graph]</code> is then (<strong>this is not RDF-compliant</strong>): </p>
+<pre><code>"abc123" </code></pre><p>The value of <code>--graph</code> is \"adios\"@es-mx: </p>
+<pre><code>agtool load --graph \"adios\"@es-mx --verbose --supersede foo /tmp/test.nt </code></pre><p><code>[graph]</code> is then (<strong>this is not RDF-compliant</strong>): </p>
+<pre><code>"adios"@es-mx </code></pre><a name='header3-249' id='header3-249'></a><h3>Some --graph examples which likely do not do what is wanted</h3><p>Here are a couple of examples where the result is likely not what is intended. These values are accepted by AllegroGraph despite not being RDF-compliant but may not be what was intended. </p><p>In this example, the value of <code>--graph</code> is a string with unescaped quotation marks. The shell will remove unescaped quotation marks so the resulting value is not a literal: </p>
+<pre><code>agtool load --graph "abc123" --verbose --supersede foo /tmp/test.nt  </code></pre><p><code>[graph]</code> is then: </p>
+<pre><code>&lt;abc123&gt; </code></pre><p><strong>This is not legal RDF</strong>. Just above we show how to specifiy a string   value by escaping the quotation marks. </p><p>In this example, the graph is the word <code>default</code> with no colon: </p>
+<pre><code>agtool load --graph default --verbose --supersede foo /tmp/test.nt </code></pre><p><code>[graph]</code> is then: </p>
+<pre><code>&lt;default&gt; </code></pre><p><strong>This is not legal RDF</strong>. The value <code>:default</code>, described above, is likely what was intended. </p><a name='header2-261' id='header2-261'></a><h2>Notes</h2>
+<ul>
+<li><p><strong>agtool load</strong> may load the sources in a different order than they appear in the command line.<br />
+</p></li>
+<li><p><strong>agtool load</strong> makes an attempt to optimize the dispatching of files for maximum use of loaders. </p></li></ul><hr/><div id="footnotes"> <h2>Footnotes</h2>
+<div class="footnotes">
+<ol>
+<li>
+<a name="fn0-2018-06-08" id="fn0-2018-06-08"></a>
+Note that the root catalog has no name (and so can be specified, if necessary, with the empty string ""). It is <em>not</em> named "root". <a href="#fnr0-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 1 in the text">&#8617;</a></li>
+<li>
+<a name="fn1-2018-06-08" id="fn1-2018-06-08"></a>
+Spaces can also be used as separators but this is deprecated. If spaces are used they must be escaped from the shell in some fashion, such as wrapping the index names in quotation marks (for example: "spogi posgi ospgi i"). <a href="#fnr1-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 2 in the text">&#8617;</a></li>
+</ol>
+</div>  </div>  </div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

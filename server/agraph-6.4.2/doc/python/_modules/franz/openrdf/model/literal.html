@@ -1,0 +1,476 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>franz.openrdf.model.literal &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+    </div>
+  
+    
+  <h1>Source code for franz.openrdf.model.literal</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># pylint: disable-msg=C0103 </span>
+
+<span class="c1">################################################################################</span>
+<span class="c1"># Copyright (c) 2006-2017 Franz Inc.  </span>
+<span class="c1"># All rights reserved. This program and the accompanying materials are</span>
+<span class="c1"># made available under the terms of the MIT License which accompanies</span>
+<span class="c1"># this distribution, and is available at http://opensource.org/licenses/MIT</span>
+<span class="c1">################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">iso8601</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">decimal</span> <span class="k">import</span> <span class="n">Decimal</span>
+
+<span class="kn">from</span> <span class="nn">future.utils</span> <span class="k">import</span> <span class="n">python_2_unicode_compatible</span>
+<span class="kn">from</span> <span class="nn">past.utils</span> <span class="k">import</span> <span class="n">old_div</span>
+
+<span class="kn">from</span> <span class="nn">past.builtins</span> <span class="k">import</span> <span class="n">long</span><span class="p">,</span> <span class="n">unicode</span>
+
+<span class="kn">from</span> <span class="nn">franz.openrdf.vocabulary</span> <span class="k">import</span> <span class="n">canonical_uri_object</span>
+<span class="kn">from</span> <span class="nn">.value</span> <span class="k">import</span> <span class="n">Value</span><span class="p">,</span> <span class="n">URI</span>
+<span class="kn">from</span> <span class="nn">..exceptions</span> <span class="k">import</span> <span class="n">IllegalArgumentException</span>
+<span class="kn">from</span> <span class="nn">..vocabulary.xmlschema</span> <span class="k">import</span> <span class="n">XMLSchema</span>
+<span class="kn">from</span> <span class="nn">..util</span> <span class="k">import</span> <span class="n">strings</span>
+
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+
+
+<span class="c1"># Needed to temporarily convert times to datetimes to do arithmetic.</span>
+<span class="c1"># Python time objects do not support adding/subtracting time deltas,</span>
+<span class="c1"># but datetimes do. We need that operation to normalize times to UTC.</span>
+<span class="n">RANDOM_DAY</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">1984</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">26</span><span class="p">)</span>
+<span class="n">RANDOM_DAY_STRING</span> <span class="o">=</span> <span class="n">RANDOM_DAY</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">datatype_from_python</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datatype</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If &#39;value&#39; is not a string, convert it into one, and infer its</span>
+<span class="sd">    datatype, unless &#39;datatype&#39; is set (i.e., overrides it).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">unicode</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span><span class="p">,</span> <span class="n">datatype</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">),</span> <span class="n">datatype</span>
+
+    <span class="c1">## careful: test for &#39;bool&#39; must precede test for &#39;int&#39;:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">datatype</span> <span class="ow">or</span> <span class="n">XMLSchema</span><span class="o">.</span><span class="n">BOOLEAN</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">datatype</span> <span class="ow">or</span> <span class="n">XMLSchema</span><span class="o">.</span><span class="n">INTEGER</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">long</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">datatype</span> <span class="ow">or</span> <span class="n">XMLSchema</span><span class="o">.</span><span class="n">LONG</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">datatype</span> <span class="ow">or</span> <span class="n">XMLSchema</span><span class="o">.</span><span class="n">DOUBLE</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
+        <span class="c1"># There is an ambiguity for times that occur twice due to</span>
+        <span class="c1"># DST switches, but that is a problem with Python&#39;s standard</span>
+        <span class="c1"># library and there is nothing we can do about it here.</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-</span> <span class="n">value</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>
+        <span class="n">str_value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;Z&#39;</span>
+        <span class="k">return</span> <span class="n">str_value</span><span class="p">,</span> <span class="n">datatype</span> <span class="ow">or</span> <span class="n">XMLSchema</span><span class="o">.</span><span class="n">DATETIME</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">RANDOM_DAY</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="n">dt</span> <span class="o">-=</span> <span class="n">value</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>
+            <span class="c1"># Note: this will strip TZ</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">str_value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;Z&#39;</span>
+        <span class="k">return</span> <span class="n">str_value</span><span class="p">,</span> <span class="n">datatype</span> <span class="ow">or</span> <span class="n">XMLSchema</span><span class="o">.</span><span class="n">TIME</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span> <span class="n">datatype</span> <span class="ow">or</span> <span class="n">XMLSchema</span><span class="o">.</span><span class="n">DATE</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Decimal</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">datatype</span> <span class="ow">or</span> <span class="n">XMLSchema</span><span class="o">.</span><span class="n">DECIMAL</span>
+
+    <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">datatype</span>
+
+
+<div class="viewcode-block" id="Literal"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal">[docs]</a><span class="k">class</span> <span class="nc">Literal</span><span class="p">(</span><span class="n">Value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implementation of the Literal class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="Literal.__init__"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">Value</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        
+        <span class="c1"># Uses the properties to set the real values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">=</span> <span class="n">datatype_from_python</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">datatype</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">language</span> <span class="o">=</span> <span class="n">language</span></div>
+
+<div class="viewcode-block" id="Literal.getDatatype"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.getDatatype">[docs]</a>    <span class="k">def</span> <span class="nf">getDatatype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The URI representing the datatype for this literal, if there is one&quot;&quot;&quot;</span> 
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datatype</span></div>
+    
+<div class="viewcode-block" id="Literal.setDatatype"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.setDatatype">[docs]</a>    <span class="k">def</span> <span class="nf">setDatatype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datatype</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the datatype of the value&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">datatype</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+            <span class="n">datatype</span> <span class="o">=</span> <span class="n">unicode</span><span class="p">(</span><span class="n">datatype</span><span class="p">,</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">datatype</span><span class="p">,</span> <span class="n">unicode</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">datatype</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">:</span>
+                <span class="n">datatype</span> <span class="o">=</span> <span class="n">datatype</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">datatype</span> <span class="o">=</span> <span class="n">canonical_uri_object</span><span class="p">(</span><span class="n">datatype</span><span class="p">)</span> <span class="ow">or</span> <span class="n">URI</span><span class="p">(</span><span class="n">datatype</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">datatype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">datatype</span><span class="p">,</span> <span class="n">URI</span><span class="p">):</span>
+                <span class="n">datatype</span> <span class="o">=</span> <span class="n">URI</span><span class="p">(</span><span class="n">datatype</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">datatype</span><span class="o">.</span><span class="n">uri</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">datatype</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_datatype</span> <span class="o">=</span> <span class="n">datatype</span> <span class="c1"># pylint: disable-msg=W0201</span></div>
+
+    <span class="n">datatype</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">getDatatype</span><span class="p">,</span> <span class="n">setDatatype</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Literal.getLanguage"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.getLanguage">[docs]</a>    <span class="k">def</span> <span class="nf">getLanguage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The language for this Literal&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_language</span></div>
+    
+<div class="viewcode-block" id="Literal.setLanguage"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.setLanguage">[docs]</a>    <span class="k">def</span> <span class="nf">setLanguage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the language for this Literal&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_language</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="n">language</span> <span class="k">else</span> <span class="kc">None</span> <span class="c1"># pylint: disable-msg=W0201</span></div>
+
+    <span class="n">language</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">getLanguage</span><span class="p">,</span> <span class="n">setLanguage</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Literal.getLabel"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.getLabel">[docs]</a>    <span class="k">def</span> <span class="nf">getLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The label/value for this Literal&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label</span></div>
+    
+<div class="viewcode-block" id="Literal.setLabel"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.setLabel">[docs]</a>    <span class="k">def</span> <span class="nf">setLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the label for this Literal&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="n">label</span> <span class="c1"># pylint: disable-msg=W0201</span></div>
+    
+<div class="viewcode-block" id="Literal.getValue"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.getValue">[docs]</a>    <span class="k">def</span> <span class="nf">getValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The label/value&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span></div>
+
+    <span class="n">label</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">getLabel</span><span class="p">,</span> <span class="n">setLabel</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Literal.get_cmp_key"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.get_cmp_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_cmp_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span></div>
+    
+<div class="viewcode-block" id="Literal.intValue"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.intValue">[docs]</a>    <span class="k">def</span> <span class="nf">intValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to int&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Literal.longValue"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.longValue">[docs]</a>    <span class="k">def</span> <span class="nf">longValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to long&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">long</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Literal.floatValue"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.floatValue">[docs]</a>    <span class="k">def</span> <span class="nf">floatValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to float&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Literal.booleanValue"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.booleanValue">[docs]</a>    <span class="k">def</span> <span class="nf">booleanValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to bool&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">==</span> <span class="s1">&#39;true&#39;</span></div>
+    
+<div class="viewcode-block" id="Literal.decimalValue"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.decimalValue">[docs]</a>    <span class="k">def</span> <span class="nf">decimalValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to a decimal&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Decimal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Literal.dateValue"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.dateValue">[docs]</a>    <span class="k">def</span> <span class="nf">dateValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to date&quot;&quot;&quot;</span>
+        <span class="c1"># iso8601 can parse a date, but it will still be</span>
+        <span class="c1"># returned as a datetime.datetime object. So we have</span>
+        <span class="c1"># to extract the date (as a datetime.date object) from it.</span>
+        <span class="k">return</span> <span class="n">iso8601</span><span class="o">.</span><span class="n">parse_date</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Literal.datetimeValue"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.datetimeValue">[docs]</a>    <span class="k">def</span> <span class="nf">datetimeValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to datetime&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">iso8601</span><span class="o">.</span><span class="n">parse_date</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="p">,</span> <span class="n">default_timezone</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Literal.timeValue"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.timeValue">[docs]</a>    <span class="k">def</span> <span class="nf">timeValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to time&quot;&quot;&quot;</span>
+        <span class="c1"># iso8601 can&#39;t parse a time</span>
+        <span class="c1"># We trick it by prepending a random date,</span>
+        <span class="c1"># parsing the result as a datetime and extracting</span>
+        <span class="c1"># the time from that.</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">RANDOM_DAY_STRING</span> <span class="o">+</span> <span class="s1">&#39;T&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label</span>
+        <span class="c1"># Return a naive time if there is no timezone.</span>
+        <span class="c1"># The default is UTC.</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">iso8601</span><span class="o">.</span><span class="n">parse_date</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">default_timezone</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="c1"># Note that time() strips the time zone</span>
+        <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">)</span></div>
+
+    <span class="c1">## Returns the {@link XMLGregorianCalendar} value of this literal. A calendar</span>
+    <span class="c1">## representation can be given for literals whose label conforms to the</span>
+    <span class="c1">## syntax of the following &lt;a href=&quot;http://www.w3.org/TR/xmlschema-2/&quot;&gt;XML</span>
+    <span class="c1">## Schema datatypes&lt;/a&gt;: &lt;tt&gt;dateTime&lt;/tt&gt;, &lt;tt&gt;time&lt;/tt&gt;,</span>
+    <span class="c1">## &lt;tt&gt;date&lt;/tt&gt;, &lt;tt&gt;gYearMonth&lt;/tt&gt;, &lt;tt&gt;gMonthDay&lt;/tt&gt;,</span>
+    <span class="c1">## &lt;tt&gt;gYear&lt;/tt&gt;, &lt;tt&gt;gMonth&lt;/tt&gt; or &lt;tt&gt;gDay&lt;/tt&gt;.</span>
+<div class="viewcode-block" id="Literal.calendarValue"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.calendarValue">[docs]</a>    <span class="k">def</span> <span class="nf">calendarValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;calendarValue not useful for Python.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;calendarValue&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Literal.toNTriples"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.toNTriples">[docs]</a>    <span class="k">def</span> <span class="nf">toNTriples</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an NTriples representation for this Literal.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sb</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">sb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
+        <span class="n">sb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strings</span><span class="o">.</span><span class="n">encode_ntriple_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()))</span>
+        <span class="n">sb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">:</span>
+            <span class="n">sb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">)</span>
+            <span class="n">sb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span><span class="p">:</span>
+            <span class="n">sb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;^^&quot;</span><span class="p">)</span>
+            <span class="n">sb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datatype</span><span class="o">.</span><span class="n">toNTriples</span><span class="p">())</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sb</span><span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1">## Automatic conversion from Literal to Python object</span>
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="Literal.toPython"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal.toPython">[docs]</a>    <span class="k">def</span> <span class="nf">toPython</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a Python object representation of this literal.   </span>
+<span class="sd">        Slightly silly implementation because we implement a conversion table</span>
+<span class="sd">        and then don&#39;t use the conversion functions.     </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">XSDToPython</span><span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datatype</span><span class="p">,</span> <span class="s2">&quot;uri&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)](</span><span class="bp">self</span><span class="p">)</span></div></div>
+
+
+<span class="n">XSDToPython</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Literal</span><span class="o">.</span><span class="n">getValue</span><span class="p">,</span> <span class="p">[</span>
+                <span class="p">(</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">INT</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">Literal</span><span class="o">.</span><span class="n">intValue</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">FLOAT</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">Literal</span><span class="o">.</span><span class="n">floatValue</span><span class="p">),</span> 
+                <span class="p">(</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">DOUBLE</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">Literal</span><span class="o">.</span><span class="n">floatValue</span><span class="p">),</span> 
+                <span class="p">(</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">LONG</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">Literal</span><span class="o">.</span><span class="n">longValue</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">INTEGER</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">Literal</span><span class="o">.</span><span class="n">intValue</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">BOOLEAN</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">Literal</span><span class="o">.</span><span class="n">booleanValue</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">DATETIME</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">Literal</span><span class="o">.</span><span class="n">datetimeValue</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">DATE</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">Literal</span><span class="o">.</span><span class="n">dateValue</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">TIME</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">Literal</span><span class="o">.</span><span class="n">timeValue</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">DECIMAL</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">Literal</span><span class="o">.</span><span class="n">decimalValue</span><span class="p">)])</span>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># Extension to RDF4J API</span>
+<span class="c1">###############################################################################</span>
+
+<span class="k">class</span> <span class="nc">CompoundLiteral</span><span class="p">(</span><span class="n">Literal</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A compound literal represents a range, a geospatial coordinate,</span>
+<span class="sd">    or other useful compound structure.</span>
+<span class="sd">    TODO: FIGURE OUT SYNTAX FOR OTHER TYPES. INSURE THAT</span>
+<span class="sd">    THE SYNTAX FOR A RANGE DOESN&#39;T CONFLICT/OVERLAP</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RANGE_LITERAL</span> <span class="o">=</span> <span class="s1">&#39;rangeLiteral&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">choice</span><span class="p">,</span> <span class="n">lowerBound</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">upperBound</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">choice</span> <span class="o">=</span> <span class="n">choice</span>
+        <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="n">CompoundLiteral</span><span class="o">.</span><span class="n">RANGE_LITERAL</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lowerBound</span> <span class="o">=</span> <span class="n">lowerBound</span> <span class="c1"># should be a LiteralImpl</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">upperBound</span> <span class="o">=</span> <span class="n">upperBound</span> <span class="c1"># should be a LiteralImpl</span>
+        <span class="c1">## other compound types go here.</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">IllegalArgumentException</span><span class="p">(</span><span class="s2">&quot;Can&#39;t interpret the choice &#39;</span><span class="si">%s</span><span class="s2">&#39; of a compound literal.&quot;</span> <span class="o">%</span> <span class="n">choice</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">isRangeLiteral</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">choice</span> <span class="o">==</span> <span class="n">CompoundLiteral</span><span class="o">.</span><span class="n">RANGE_LITERAL</span>
+    
+    <span class="k">def</span> <span class="nf">getLowerBound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lowerBound</span>
+    
+    <span class="k">def</span> <span class="nf">getUpperBound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">upperBound</span>
+    
+<span class="k">class</span> <span class="nc">RangeLiteral</span><span class="p">(</span><span class="n">CompoundLiteral</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A range represents an interval between to scalar values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lowerBound</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">upperBound</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lowerBound</span> <span class="o">=</span> <span class="n">lowerBound</span> <span class="c1"># should be a LiteralImpl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">upperBound</span> <span class="o">=</span> <span class="n">upperBound</span> <span class="c1"># should be a LiteralImpl</span>
+    
+    <span class="k">def</span> <span class="nf">getLowerBound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lowerBound</span>
+    
+    <span class="k">def</span> <span class="nf">getUpperBound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">upperBound</span>
+
+<span class="nd">@python_2_unicode_compatible</span>
+<span class="k">class</span> <span class="nc">GeoCoordinate</span><span class="p">(</span><span class="n">CompoundLiteral</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Define either a cartesian coordinate or a spherical coordinate.  For the</span>
+<span class="sd">    latter, nit can be &#39;km&#39;, &#39;mile&#39;, &#39;radian&#39;, or &#39;degree&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">geoType</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xcoor</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ycoor</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geoType</span> <span class="o">=</span> <span class="n">geoType</span>
+    
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;|COOR|(</span><span class="si">%i</span><span class="s2">, </span><span class="si">%i</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xcoor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ycoor</span><span class="p">)</span>
+    
+
+<span class="k">class</span> <span class="nc">GeoSpatialRegion</span><span class="p">(</span><span class="n">CompoundLiteral</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="nd">@python_2_unicode_compatible</span>
+<span class="k">class</span> <span class="nc">GeoBox</span><span class="p">(</span><span class="n">GeoSpatialRegion</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xMin</span><span class="p">,</span> <span class="n">xMax</span><span class="p">,</span> <span class="n">yMin</span><span class="p">,</span> <span class="n">yMax</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">geoType</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xMin</span> <span class="o">=</span> <span class="n">xMin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xMax</span> <span class="o">=</span> <span class="n">xMax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yMin</span> <span class="o">=</span> <span class="n">yMin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yMax</span> <span class="o">=</span> <span class="n">yMax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geoType</span> <span class="o">=</span> <span class="n">geoType</span>
+    
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="s2">&quot;|Box|</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xMin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xMax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yMin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yMax</span><span class="p">)</span>
+
+
+<span class="nd">@python_2_unicode_compatible</span>
+<span class="k">class</span> <span class="nc">GeoCircle</span><span class="p">(</span><span class="n">GeoSpatialRegion</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">geoType</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geoType</span><span class="o">=</span><span class="n">geoType</span>
+        
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="s2">&quot;|Circle|</span><span class="si">%i</span><span class="s2">,</span><span class="si">%i</span><span class="s2">, radius=</span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
+
+
+<span class="nd">@python_2_unicode_compatible</span>
+<span class="k">class</span> <span class="nc">GeoPolygon</span><span class="p">(</span><span class="n">GeoSpatialRegion</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">uri</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">geoType</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geoType</span> <span class="o">=</span> <span class="n">geoType</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="n">uri</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resource</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">miniPolygon</span> <span class="o">=</span> <span class="kc">None</span>
+        
+    <span class="k">def</span> <span class="nf">getVertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span>
+    
+    <span class="k">def</span> <span class="nf">getResource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span>
+    
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="s2">&quot;|Polygon|</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span>
+</pre></div>
+
+  
+    <div class="nav-links nav-links-footer">
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Connection Pooling | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="connection-pooling"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>      <h1>Connection Pooling in AllegroGraph 6.4.2</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-7' title='Overview'>Overview</a></li>
+<li><a href='#header2-10' title='Client Interactions'>Client Interactions</a></li>
+<li><a href='#cp-params' title='Parameters'>Parameters</a>
+<ul>
+<li><a href='#numtests' title='Validation parameters'>Validation parameters</a></li></ul></li>
+<li><a href='#header2-56' title='Creating a connection pool'>Creating a connection pool</a>
+<ul>
+<li><a href='#header3-57' title='Using the Sesame/RDF4J interface'>Using the Sesame/RDF4J interface</a></li></ul></li>
+<li><a href='#header2-71' title='Multi-threaded environments'>Multi-threaded environments</a></li>
+<li><a href='#header2-83' title='Notes for versions prior to 4.11'>Notes for versions prior to 4.11</a></li>
+<li><a href='#header2-88' title='Connection tuning'>Connection tuning</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-7' id='header2-7'></a><h2>Overview</h2><p>According to <a href="http://en.wikipedia.org/wiki/Connection_pooling" title="Connection Pooling" class="external" target="_blank">Wikipedia</a>, "a connection pool is a cache of database connections maintained so that the connections can be reused when future requests to the database are required. Connection pools are used to enhance the performance of executing commands on a database. Opening and maintaining a database connection for each user, especially requests made to a dynamic database-driven website application, is costly and wastes resources. In connection pooling, after a connection is created, it is placed in the pool and it is used over again so that a new connection does not have to be established." </p><p>The AllegroGraph java client connection pool provides out of the box pooling functionality for AGRepositoryConnection objects. The connection pool functionality is configurable through parameterized initialization values to suit the requirements of client applications. The implementation shields client code from pool lifecycle operations like borrowing and returning operations and provides the same RDF4J interface as in a non-pooled implementation. </p><a name='header2-10' id='header2-10'></a><h2>Client Interactions</h2><p><img src="conn-pool.png" alt="Connection Pooling Overview"></img> </p>
+<ol>
+<li><p>Java client retrieves connection using call <code>getConnection()</code> on the connection pool backed Repository. <strong>Note</strong>: (i) When a connection is available in the pool it is <em>borrowed</em> from the pool (transparently to the client); (ii) the borrowed connection is unavailable to other clients until returned to the pool; (iii) the call to get a connection blocks until a connection is available (or throws an exception if configured timeout occurs) </p></li>
+<li><p>Java client performs desired operations on the connection and then calls <code>close()</code> at the end of the operations. </p></li>
+<li><p>The connection is returned to the pool and made available to the next client. </p></li></ol><a name='cp-params' id='cp-params'></a> <h2>Parameters</h2><p>The connection pool accepts a number of configuration parameters (defined in com.franz.agraph.pool.AGPoolProp) that provide control over the pool's runtime behavior: </p>
+<dl><dt><code>initialSize</code> </dt>
+<dd>The initial number of idle connections that are created when the pool is started (default is 3). Choose a value which will ensure that the pool always starts with a desired number of 'ready' connections. This will limit the time which first client requests will have to wait to obtain (in this case create) connections. </dd><dt><code>maxActive</code> </dt>
+<dd>Default is 8. The maximum number of active connections that can be borrowed from this pool at the same time, or negative for no limit. This setting will mostly depend on the available server and client resources. For environments with limited resources consider lowering the number of active and idle connections to preserve the memory and limit swap file usage. If multiple clients (or different pools) are using the same AllegroGraph Server, this value should be set to something less than the size of the range specified by AllegroGraph server parameter SessionPorts, if that is specified (see <a href="daemon-config.html">Server Configuration</a> for information on that AllegroGraph configuration parameter). </dd><dt><code>maxIdle</code> </dt>
+<dd>Default is 8. The maximum number of connections that can remain idle in the pool, without extra ones being released, or negative for no limit. Like with maxActive, consider lowering for environments with limited resources.</dd><dt><code>minIdle</code> </dt>
+<dd>Default is 0. The minimum number of connections that can remain idle in the pool, without extra ones being created, or zero to create none.</dd><dt><code>maxWait</code> </dt>
+<dd>Default is -1, which means indefinitely. This parameter specifies the maximum number of milliseconds that the pool will wait (when there are no available connections) for a connection to be returned before throwing an exception (NoSuchElementException). The value can be -1, which, as said, means wait indefinitely. Note that if set to -1 and the connection does not become available to the calling client, the code may deadlock and not progress without proper handling.<br />
+</dd><dt><code>shutdownHook</code> </dt>
+<dd>Default is <strong>FALSE</strong>. When the pool is created, if this is true (default is false), a hook will be registered to close the pool. Connections will be closed whether idle or not. When the pool is closed from outside of the hook, the hook will be removed so it is not leaked in the list of hooks. Set to 'TRUE' if your environment has a 'global' shutdown routine, as in most web application environments.</dd><dt><code>testOnBorrow</code> </dt>
+<dd>Default is <strong>TRUE</strong>.  The indication of whether connections will be   tested before being borrowed from the pool. If the connection fails the   test, it will be dropped from the pool, and we will attempt to   borrow another. See <a href="connection-pooling.html#numtests">below</a>   for information on setting this value. </dd><dt><code>testOnReturn</code> </dt>
+<dd>Default is <strong>FALSE</strong>. The indication of whether   connections will be validated before being returned to the pool. Consider   changing the value to 'TRUE' if you notice that connections returned from   the pool are not usable. This may be happening due to the connections   timing out. </dd><dt><code>testWhileIdle</code> </dt>
+<dd>Default is <strong>FALSE</strong>. Indicates whether or not idle connections should   be validated. Connections that fail to validate will be dropped from the   pool. This setting has no effect unless timeBetweenEvictionRunsMill is   &gt; 0. </dd><dt><code>timeBetweenEvictionRunsMillis</code> </dt>
+<dd>Default is -1. The number of milliseconds to sleep between runs of   the idle connection evictor thread. When non-positive, no idle connection   evictor thread will be run. </dd></dl><p>The following parameters are ignored if <code>timeBetweenEvictionRunsMillis</code> is non-positive (so no idle evictor thread is run): </p>
+<dl><dt><code>minEvictableIdleTimeMillis</code> </dt>
+<dd>Default is 1800000 (30 minutes in milliseconds). The minimum amount of time in milliseconds a connection may sit idle in the pool before it is eligible for eviction by the idle connection evictor (if any). If you set <code>minIdle to a positive number, consider setting this value to -1 (disabled) and specifying a positive value for </code>softMinEvictableIdleTimeMillis`.</dd><dt><code>softMinEvictableIdleTimeMillis</code> </dt>
+<dd>Default is -1 (disabled). Specifies the minimum amount of time a connection may sit idle in the pool before it is eligible for eviction by the idle connection evictor (if any), with the extra condition that at least <code>minIdle</code> connection instances remain in the pool. When non-positive, no connections will be evicted from the pool due to idle time alone. This setting has no effect unless <code>timeBetweenEvictionRunsMillis</code> &gt; 0 and it is superseded by <code>minEvictableIdleTimeMillis</code> (that is, if <code>minEvictableIdleTimeMillis</code> is positive, then <code>softMinEvictableIdleTimeMillis</code> is ignored). Consider setting this to a positive value (and setting <code>minEvictableIdleTimeMillis</code> to -1) if you set <code>minIdle</code> to a positive value (otherwise connections may be destroyed because they are idle because of <code>minEvictableIdleTimeMillis</code> and new ones will have to be created immediately because of <code>minIdle</code>).</dd><dt><code>numTestsPerEvictionRun</code> </dt>
+<dd>Default is 3. The number of connections to examine during   each run of the idle connection evictor thread (if any). See <a href="connection-pooling.html#numtests">below</a>   for information on setting this value. </dd></dl><a name='numtests' id='numtests'></a> <h3>Validation parameters</h3><p>Connections in the pool may become invalid due to timeouts, connection errors, or other reasons. A connection can be invalid when borrowed or can become invalid while being used. Processes using a connection should be prepared to handle invalid connections by discarding the invalid connection and requesting a new connection. </p><p>The connection pool can also itself check connections, either when fulfilling a request (testOnBorrow) and/or periodically in the background (numTestsPerEvictionRun). Checking connections itself takes time and a balance must be struck between the cost of checking idle connections and the cost of a process borrowing an invalid connection and having to request a new one, which might have to be established. </p><p>The numTestsPerEvictionRun parameter controls the amount of verification work performed by the eviction thread in each iteration (run). The goal is to balance the performance against connection availability. Other aspects of pooling which should be considered at the same time are: connection timeout value, error handling capabilities, max idle, and connection availability. </p><p>You should consider the following when choosing a value for this parameter: </p>
+<ol>
+<li><p>Connection verification takes time and a high number may result in performance degradation. </p></li>
+<li><p>In cases where the pool maintains a minimum number of connections (when minIdle is greater than 0): evictions that result in new connections being created to maintain the minimum require time for these to be established. If this is happening, it is important to trace the root cause of these evictions and in particular, the timeout value should be reviewed. Incorrectly set values may cause performance degradation due to work needed to establish new connections to fill the pool. </p></li>
+<li><p>A higher number means borrowed connections are more likely to be valid. A high number is more consistent with a false value for testOnBorrow and a low number with a true value. </p></li>
+<li><p>If you find a high number is required for this parameter (meaning that connections often become invalid and must be cleared out), consider what the causes might be, such as whether connection reliability is an issue or timeouts are too short. </p></li></ol><p>The testOnBorrow parameter specifies whether a connection should be validated before being borrowed. Among the things that should be balanced when setting this parameter are: likelihood connections in the pool have become invalid; cost of verifying before assigning (that is cost of the test enabled by this parameter); and the cost of re-establishing failed connections borrowed by the requesting process. </p><a name='header2-56' id='header2-56'></a><h2>Creating a connection pool</h2><a name='header3-57' id='header3-57'></a><h3>Using the Sesame/RDF4J interface</h3>
+<ol>
+<li>Establish variables: 
+<pre><code>String serverUrl   = "http://agraph.example.net:10035";  
+String AG_USER     = "user";  
+String AG_PASSWORD = "password";  
+String CATALOG     = "my-catalog";  
+String REPO        = "test-repo"; </code></pre>
+<li>Create an AGConnPool object, specifying the pool properties: max active, max idle, time to wait: </li>
+<pre><code>AGConnPool pool = AGConnPool.create(  
+        // Connnection properties  
+        AGConnProp.serverUrl,       serverUrl,  
+        AGConnProp.username,        AG_USER,  
+        AGConnProp.password,        AG_PASSWORD,  
+        AGConnProp.catalog,         CATALOG,  
+        AGConnProp.repository,      REPO,  
+        AGConnProp.session,         SESSION_TYPE, // e.g. Session.TX  
+        AGConnProp.sessionLifetime, SESSION_LIFETIME,  
+        // Connection pool properties  
+        AGPoolProp.shutdownHook,    false,  
+        AGPoolProp.testOnBorrow,    true,  
+        AGPoolProp.maxActive,       POOL_MAX_ACTIVE_CONNECTIONS,  
+        AGPoolProp.maxIdle,         POOL_MAX_IDLE_CONNECTIONS,  
+        AGPoolProp.maxWait,         POOL_MAX_TIME_TO_WAIT_FOR_CONNECTION  
+        );  
+/*  
+Note that SESSION_TYPE, SESSION_LIFETIME, POOL_MAX_ACTIVE_CONNECTIONS,  
+POOL_MAX_IDLE_CONNECTIONS, and POOL_MAX_TIME_TO_WAIT_FOR_CONNECTION  
+are placeholders which you should replace with your desired settings.  
+*/ </code></pre>
+<li>Create connection pool backed AGRepository </li></li><p>a. Create new instance of the AGServer and obtain reference to AGCatalog </p>
+<pre><code>AGServer server = new AGServer(serverUrl, AG_USER, AG_PASSWORD);  
+AGCatalog catalog = new AGCatalog(server, CATALOG); </code></pre><p>b. Obtain instance of AGRepository and set repository to use connection pool </p>
+<pre><code> AGRepository repository = catalog.openRepository(REPO);  
+ repository.setConnPool(pool); </code></pre>
+<li>Obtain and close connections (same as in a non-pooled environment) </li>
+<pre><code>AGRepositoryConnection connection = repository.getConnection();  
+ ... perform operations on connection </code></pre>
+<li>Close resources. <strong>Note</strong>: closing the repository shuts down the connection pool and closes all pooled connections whether or not they have been returned (via <code>connection.close()</code> or <code>pool.returnObject(connection)</code>) </li>
+<pre><code>repository.close(); </code></pre></ol><a name='header2-71' id='header2-71'></a><h2>Multi-threaded environments</h2>
+<ol>
+<li>Create an instance of AGRepository and AGConnPool (same as in non-multi-threaded code above (see #1 thru #3). This object will be shared among the executing threads 
+<pre><code>AGRepository repository = catalog.createRepository("my repository id");  
+repository.setConnPool(createConnectionPool()); </code></pre>
+<li>Create worker threads that will perform the operations on the connection.  In this example, using the java's ExecutorService (see <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/ExecutorService.html" title="ExecutorService' class external target _blank">http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/ExecutorService.html</a> to provide the thread pool management </li>
+<pre><code>ExecutorService execService = Executors.newCachedThreadPool(); </code></pre></li><p>a. Pass reference to the shared AGRepository object to each worker thread. </p><p>b. Obtain connection from the AGRepository object in each executing worker (in this example an instance of Runnable). <strong>Note</strong>: the call to getConnection() (borrowing connection from pool) will block until a connection is available. </p>
+<pre><code>for (int i = 0; i &lt; numberOfThreads; i++) {  
+    execService.execute(new Runnable() {  
+                   @Override  
+                   public void run() {  
+                           try {  
+                                 AGRepositoryConnection conn = repository.getConnection();  
+                                 //.. perform opeations on connection  
+                                 conn.close();  
+                           } catch (RepositoryException e) {  
+				e.printStackTrace();  
+                           }  
+                       }  
+ 
+        });  
+        } </code></pre><p>c. Call close() on connection object to return the connection back to the pool.<br />
+</p>
+<li>Create mechanism to wait or interrupt the executing threads to finalize execution.<br />
+</li><p>a. In this example the ExecutorService is shutdown and the process    waits up to 5 minutes for all processes to finish execution. </p>
+<pre><code>execService.shutdown();  
+execService.awaitTermination(5, TimeUnit.MINUTES);  
+</code></pre></ol><a name='header2-83' id='header2-83'></a><h2>Notes for versions prior to 4.11</h2>
+<ol>
+<li>Create AGConnPool object </li>
+<pre><code>AGConnPool pool = AGConnPool.create(  
+    AGConnProp.serverUrl, "my server url",  
+    AGConnProp.username, "user name",  
+    AGConnProp.password, "password",  
+    AGConnProp.catalog, "my catalog id",  
+    AGConnProp.repository, "my repository id",  
+    AGConnProp.session, SESSION_TYPE,  
+    AGConnProp.sessionLifetime, SESSION_LIFETIME,  
+    AGPoolProp.shutdownHook, false,  
+    AGPoolProp.testOnBorrow, true,  
+    AGPoolProp.maxActive, POOL_MAX_ACTIVE_CONNECTIONS,  
+    AGPoolProp.maxIdle, POOL_MAX_IDLE_CONNECTIONS,  
+    AGPoolProp.maxWait, POOL_MAX_TIME_TO_WAIT_FOR_CONNECTION  
+    ); </code></pre>
+<li>Get, use and close connections </li>
+<pre><code>AGRepositoryConnection connection = pool.borrowConnection();  
+ 
+...  perform operations on connection  
+ 
+connection.close(); </code></pre></ol><a name='header2-88' id='header2-88'></a><h2>Connection tuning</h2><p>These parameters are likely candidates for values other than the default, as discussed in <a href="#cp-params">Connection pool parameters</a> above: </p>
+<ul>
+<li><p><code>testOnReturn</code></p></li>
+<li><p><code>initialSize</code></p></li>
+<li><p><code>maxActive</code></p></li>
+<li><p><code>maxIdle</code></p></li>
+<li><p><code>maxWait</code></p></li>
+<li><p><code>shutdownHook</code></p></li></ul></div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

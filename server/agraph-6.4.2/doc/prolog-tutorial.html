@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Using Prolog with AllegroGraph | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="prolog-tutorial"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>      <h1>Using Prolog with AllegroGraph 6.4.2</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-7' title='Introduction'>Introduction</a>
+<ul>
+<li><a href='#header3-18' title='Prolog Notation'>Prolog Notation</a></li>
+<li><a href='#header3-26' title='Sample data and setup'>Sample data and setup</a></li>
+<li><a href='#header3-50' title='Extending Prolog: Defining new predicates'>Extending Prolog: Defining new predicates</a></li>
+<li><a href='#bang-problem' title='Problem with use of ! in Prolog code'>Problem with use of ! in Prolog code</a></li></ul></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-7' id='header2-7'></a><h2>Introduction</h2><p>If you are new to Prolog, we would suggest that you complete this tutorial and then study the Allegro <a href="/support/documentation/current/doc/prolog.html" target="_blank">Prolog documentation</a> if you would like more details. The prolog operators in AllegroGraph are documented in <a href="lisp-reference.html#ref-prolog">the Lisp Reference</a>. A note on the differences between using SPARQL and using Prolog for queries can be found <a href="sparql-reference.html#sparql-v-prolog">in the SPARQL Reference</a>. </p><p>This is a basic tutorial on how to use Prolog with AllegroGraph 6.4.2. It should be enough to get you going but if you have any questions please contact <a href="mailto:support@franz.com">Franz Support</a> for assistance. In this tutorial we will focus mainly on how to use the following constructs: </p>
+<ul>
+<li><a href="lisp-reference.html#select" title="description of select">select</a></li>
+<li><a href="lisp-reference.html#q-" title="description of q-">q-</a></li>
+<li><a href="lisp-reference.html#q" title="description of q">q</a></li>
+<li>&lt;--</li>
+<li>&lt;-</li>
+<li>??</li>
+<li>!</li></ul><p>Because a Prolog query may be used to evaluate arbitrary Lisp code, executing Prolog queries requires <em>eval</em> permission.  User permissions are discussed in the section <a href="agwebview.html#ManagingUsers">Managing Users</a> in the <a href="agwebview.html">WebView</a> document. </p><a name='header3-18' id='header3-18'></a><h3>Prolog Notation</h3><p>When consulting the <a href="lisp-reference.html#ref-prolog">Reference Guide</a>, one should understand the conventions for documenting Prolog predicates (which are Prolog operators, also called <em>functors</em>). Here we repeat some of what we say in the <a href="lisp-reference.html#ref-prolog">Reference Guide</a>, and add an example. </p><p>A Prolog predicate call (in Lisp syntax) looks like a regular Lisp function call; the symbol naming the predicate being the first element of the list and the remaining elements being arguments.  But arguments to a Prolog predicate call can either be supplied as input to the call, or unsupplied (that is specified as a variable rather than a value) so that the clause might return possible values for that argument as a result by unifying some data to it, or may be a tree of nodes containing both ground data and Prolog variables, as shown in the example below. Thus we must distinguish, in the predicate documentation, between arguments which must be specified with a value, those which must be a variable, and those which can be either. We will describe the notation for doing so after an example to show what we mean by specifying values or variables. </p><p>The following example uses the predicate <code>append</code> which has three arguments and succeeds for any solution where the third argument is the same as the first two arguments appended.  The remarkable thing about Prolog semantics is that append is a <em>declarative</em> relation that works regardless of which arguments are supplied as inputs (values) and which are supplied as outputs (specified as variables). The example uses a Prolog interpreter. Results are displayed one at a time. <code>&lt;ret&gt;</code>, indicating the user pressing Return, causes Prolog to find the next result if there is one, or to print <strong>No</strong> if there is not. The symbols whose names start with ? are variables. (This example uses simple expressions to illustrate Prolog calls and what we mean by saying arguments can be specified as values or variables. Calls used in association with AllegroGraph are more complex and generally return lists of result triples rather than results one at a time.) </p>
+<pre><code>    &gt; (?- (append (1 2) (3) ?z))  ;; Asks what values of ?z  
+                                  ;; will satisfy the call  
+    ?z = (1 2 3)  
+    &lt;ret&gt;  
+    No.  
+                                  ;; Only ?z = (1 2 3) works.  
+ 
+    &gt; (?- (append (1 2) ?y (1 2 3))) ;; Asks what values of ?y  
+                                     ;; will satisfy the call  
+    ?y = (3)  
+    &lt;ret&gt;  
+    No.                              ;; Again, only one possibility  
+ 
+    &gt; (?- (append ?x ?y (1 2 3)))    ;; What values of ?x and ?y  
+                                     ;; will work? There are four  
+                                     ;; possibilities:  
+    ?x = ()  
+    ?y = (1 2 3)  
+    &lt;ret&gt;  
+    ?x = (1)  
+    ?y = (2 3)  
+    &lt;ret&gt;  
+    ?x = (1 2)  
+    ?y = (3)  
+    &lt;ret&gt;  
+    ?x = (1 2 3)  
+    ?y = ()  
+    &lt;ret&gt;  
+    No.                    ;; And no more  
+ 
+    &gt; (?- (append ? (1 ?next . ?) (1 2 1 3 4 1 5 1)))  
+    ?next = 2  
+    &lt;ret&gt;  
+    ?next = 3  
+    &lt;ret&gt;  
+    ?next = 5  
+    &lt;ret&gt;  
+    No. </code></pre><p>The last example successively unifies to each element in the list immediately preceded by a <code>1</code>.  It shows the power of unification against a partially ground tree structure. </p><p>Now back to notation: see <a href="lisp-reference.html#ref-prolog">the Prolog section of the Lisp Reference Guide</a> for full details, but in short a <code>+</code> prefix on an argument in the argument list in documentation indicates that the argument must be supplied as a value (it is input to the predicate), a <code>-</code> prefix indicates the argument is output and must not be supplied (should be a variable), and a &plusmn; prefix indicates the argument may be either. </p><p>Also sometimes names ending in a <em>/N</em>, where <em>N</em> is a number, will appear in Prolog documentation and in the debugger: for example <strong>parent/2</strong>. This is the <strong>predicate/arity</strong> syntax. The portion of that notation that is the predicate name, <strong>parent</strong> in this example, is the same as the Lisp symbol naming the predicate.  The non-negative integer after the slash is the <strong>arity</strong>, which is the number of arguments to the predicate.  Two predicates with the same predicate name but different arities are completely different predicates.  In the example later in this tutorial the predicate <strong>parent/1</strong> has no relation to the <strong>parent/2</strong> predicate which it calls. </p><a name='header3-26' id='header3-26'></a><h3>Sample data and setup</h3><p>This tutorial will be based on a tiny genealogy database of the Kennedy family. </p><p>Please open the file <code>kennedy.ntriples</code> that came with this distribution (it will be in the tutorial sub-directory of the Lisp client) in a text editor or with <a href="http://www.topbraidcomposer.com/" class="external" target="_blank">TopBraidComposer</a> and study the contents of the file. Notice that people in this file have a type, sometimes multiple children, multiple spouses, multiple professions, and attended multiple colleges or universities. </p> <p>First let us get AllegroGraph ready to use.  It is assumed here that you have started the AllegroGraph server and know how to load your favorite Lisp client into your running Lisp. (See the <a href="lisp-quickstart.html">Quick Start</a> for more details): </p>
+<pre><code>;; We've removed the output of the following forms  
+&gt; :ld [agraph client directory]/agraph.fasl  
+ 
+&gt; (in-package :triple-store-user)  
+ 
+&gt; (enable-!-reader)  
+ 
+&gt; (enable-print-decoded t)  
+ 
+&gt; (register-namespace "ex" "http://franz.com/simple#" :errorp nil) </code></pre><p>Now we can create a triple-store and load it with data. The function <a href="lisp-reference.html#create-triple-store" title="description of create-triple-store">create-triple-store</a> creates a new triple-store and opens it. If you use the triple-store name "test", then AllegroGraph will create a triple-store named <code>test</code> in the root catalog. The following three forms will create the store and load the data. They work as written only with the direct Lisp client. If you are using a remote client, again see the <a href="lisp-quickstart.html">Quick Start</a> for more details about the :port, :user, and :password arguments to <a href="lisp-reference.html#create-triple-store" title="description of create-triple-store">create-triple-store</a>. </p>
+<pre><code>&gt; (create-triple-store "test" :if-exists :supersede)  
+&gt; (load-ntriples #p"sys:agraph;tutorial-files;kennedy.ntriples")  
+&gt; (commit-triple-store)  
+;; .... output deleted. </code></pre><p>So let us first look at <code>person1</code> in this database: </p>
+<pre><code>&gt; (print-triples  
+   (get-triples-list :s !ex:person1))  
+&lt;http://franz.com/simple#person1&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://franz.com/simple#person&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#first-name&gt; &lt;http://franz.com/simple#Joseph&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#middle-initial&gt; &lt;http://franz.com/simple#Patrick&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#last-name&gt; &lt;http://franz.com/simple#Kennedy&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#birth-year&gt; &lt;http://franz.com/simple#1888&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#death-year&gt; &lt;http://franz.com/simple#1969&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#sex&gt; &lt;http://franz.com/simple#male&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#spouse&gt; &lt;http://franz.com/simple#person2&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#suffix&gt; &lt;http://franz.com/simple#none&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#has-child&gt; &lt;http://franz.com/simple#person9&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#has-child&gt; &lt;http://franz.com/simple#person13&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#has-child&gt; &lt;http://franz.com/simple#person17&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#has-child&gt; &lt;http://franz.com/simple#person4&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#has-child&gt; &lt;http://franz.com/simple#person6&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#has-child&gt; &lt;http://franz.com/simple#person15&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#has-child&gt; &lt;http://franz.com/simple#person11&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#has-child&gt; &lt;http://franz.com/simple#person3&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#has-child&gt; &lt;http://franz.com/simple#person7&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#profession&gt; &lt;http://franz.com/simple#producer&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#profession&gt; &lt;http://franz.com/simple#banker&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#profession&gt; &lt;http://franz.com/simple#ambassador&gt; .  
+&lt;http://franz.com/simple#person1&gt; &lt;http://franz.com/simple#alma-mater&gt; &lt;http://franz.com/simple#Harvard&gt; . </code></pre><p>Now we are ready to try a <a href="lisp-reference.html#select" title="description of select">select</a> statement in combination with the Prolog <strong>q-</strong> predicate.  Let us try to find all the children of <code>person1</code>.  Start by typing the following in the listener (the explanation follows). </p>
+<pre><code>&gt; (select (?x)  
+   (q- !ex:person1 !ex:has-child ?x))  
+ 
+;; produces output:  
+(("http://franz.com/simple#person9")  
+ ("http://franz.com/simple#person13")  
+ ("http://franz.com/simple#person17")  
+ ("http://franz.com/simple#person4")  
+ ("http://franz.com/simple#person6")  
+ ("http://franz.com/simple#person15")  
+ ("http://franz.com/simple#person11")  
+ ("http://franz.com/simple#person3")  
+ ("http://franz.com/simple#person7")) </code></pre><p><a href="lisp-reference.html#select" title="description of select"><code>select</code></a> is a wrapper used around one or more Prolog clauses. The first element after <code>select</code> is a template for the format and variables that you want to bind and return. So in this example we want to bind the Prolog variable <code>?x</code>. The remaining concatenation of clauses tell Prolog how to constrain the binding of <code>?x</code> in the result set. </p><p>This select form has only one clause, namely <code>(q- !ex:person1 !ex:has-child ?x)</code>. </p><p>If you have studied how <a href="lisp-reference.html#get-triples" title="description of get-triples">get-triples</a> works you will have already guessed that <code>q-</code> is its Prolog analogue.  <code>q-</code> calls <code>get-triples</code> and unifies the <code>?x</code> with the objects of all triples with subject <code>!ex:person1</code> and predicate <code>!ex:has-child</code>.
+<a name="fnr0-2018-06-08" id="fnr0-2018-06-08"></a>
+<sup><a href="#fn0-2018-06-08">1</a></sup>  </p><p>To make things more complex, let us find all the children of the children of person1: </p>
+<pre><code>&gt; (select (?y)  
+   (q- !ex:person1 !ex:has-child ?x)  
+   (q- ?x !ex:has-child ?y))  
+ 
+;; produces output:  
+(("http://franz.com/simple#person33")  
+ ("http://franz.com/simple#person26")  
+ ("http://franz.com/simple#person28")  
+ ("http://franz.com/simple#person31")  
+ ("http://franz.com/simple#person25")  
+ ("http://franz.com/simple#person62")  
+ ("http://franz.com/simple#person56")  
+ ("http://franz.com/simple#person42")  
+ ("http://franz.com/simple#person47")  
+ ("http://franz.com/simple#person51") ...) </code></pre><p>Although Prolog is a declarative language, this query is easy to read procedurally: </p><p>   Find all triples that have subject <code>!ex:person1</code> and predicate    <code>!ex:has-child</code>.  For each match unify <code>?x</code> to the object of that    triple; then for each triple that has subject <code>?x</code> and predicate    <code>!ex:has-child</code> return the object. </p><p>Next, we will try to find all the spouses of the grandchildren of <code>!ex:person1</code>. Notice that <code>select</code> does not return information about the variables <code>?x</code> and<code> ?y</code> in the query. The select template will return only the <code>?z</code> because that is what is in the list which is the first argument. </p>
+<pre><code>&gt; (select (?z)  
+   (q- !ex:person1 !ex:has-child ?x)  
+   (q- ?x !ex:has-child ?y)  
+   (q- ?y !ex:spouse ?z))  
+ 
+;; produces output:  
+(("http://franz.com/simple#person34")  
+ ("http://franz.com/simple#person27")  
+ ("http://franz.com/simple#person30")  
+ ("http://franz.com/simple#person32")  
+ ("http://franz.com/simple#person63")  
+ ("http://franz.com/simple#person57")  
+ ("http://franz.com/simple#person43")  
+ ("http://franz.com/simple#person49")  
+ ("http://franz.com/simple#person48")  
+ ("http://franz.com/simple#person52") ...) </code></pre><p>Now if you wanted to you could get the other variables back. Here is the same query that also returns the grandchild. </p>
+<pre><code>&gt; (select (?y ?z)  
+    (q- !ex:person1 !ex:has-child ?x)  
+    (q- ?x !ex:has-child ?y)  
+    (q- ?y !ex:spouse ?z))  
+ 
+;; produces output:  
+(("http://franz.com/simple#person33" "http://franz.com/simple#person34")  
+ ("http://franz.com/simple#person26" "http://franz.com/simple#person27")  
+ ("http://franz.com/simple#person28" "http://franz.com/simple#person30")  
+ ("http://franz.com/simple#person31" "http://franz.com/simple#person32")  
+ ("http://franz.com/simple#person62" "http://franz.com/simple#person63")  
+ ("http://franz.com/simple#person56" "http://franz.com/simple#person57")  
+ ("http://franz.com/simple#person42" "http://franz.com/simple#person43")  
+ ("http://franz.com/simple#person47" "http://franz.com/simple#person49")  
+ ("http://franz.com/simple#person47" "http://franz.com/simple#person48")  
+ ("http://franz.com/simple#person51" "http://franz.com/simple#person52")  
+ ...) </code></pre><p>We have covered <code>select</code> and <code>q-</code> and know how to make basic Prolog queries against a triple-store. Next, we'll see how to use more of Prolog's power: </p><a name='header3-50' id='header3-50'></a><h3>Extending Prolog: Defining new predicates</h3><p>Predicates are defined using <code>&lt;--</code> and <code>&lt;-</code> (we will explain the difference below).  The following defines a predicate that succeeds if its first and only argument is a male, provided the necessary triple is present in the triple store. </p>
+<pre><code>&gt; (&lt;-- (male ?x)  
+    (q- ?x !ex:sex !ex:male))  
+male </code></pre><p>Let us try it out by finding all the sons of person1. </p>
+<pre><code>&gt; (select (?x)  
+    (q- !ex:person1 !ex:has-child ?x)  
+    (male ?x)) ;;; Note how we use NO q here!  
+(("http://franz.com/simple#person13")  
+ ("http://franz.com/simple#person17")  
+ ("http://franz.com/simple#person4")  
+ ("http://franz.com/simple#person3")) </code></pre><p>Note that this is equivalent to the more complex query: </p>
+<pre><code>(select (?x)  
+ (q- !ex:person1 !ex:has-child ?x)  
+ (q- ?x !ex:sex !ex:male)) </code></pre><p>We will define some more useful predicates to expand our useful vocabulary: </p>
+<pre><code>&gt; (&lt;-- (female ?x)  
+    (q- ?x !ex:sex !ex:female))  
+female  
+&gt; (&lt;-- (father ?x ?y)  
+    (male ?x)  
+    (q- ?x !ex:has-child ?y))  
+father  
+&gt; (&lt;-- (mother ?x ?y)  
+    (female ?x)  
+    (q- ?x !ex:has-child ?y))  
+mother </code></pre><p>The <code>female</code>, <code>father</code>, and <code>mother</code> relations are all simple to understand. We can also create more complicated relations that can be satisfied in more than one way. For example, suppose we want to define the <code>parent</code> relation: <code>?x</code> is the parent of <code>?y</code> if </p>
+<ul>
+<li><code>?x</code> is the father of <code>?y</code> <strong>or</strong></li>
+<li><code>?x</code> is the mother of <code>?y.</code></li></ul><p>In Prolog, this can be implemented as </p>
+<pre><code>&gt; (&lt;-- (parent ?x ?y)  
+    (father ?x ?y))  
+parent  
+&gt; (&lt;- (parent ?x ?y)  
+    (mother ?x ?y))  
+parent </code></pre><p>Notice how we define the <code>parent</code> predicate, which is comprised of two rules: the first rule uses <strong><--</strong> and the second rule uses <strong><-</strong>. The reason is that <strong><--</strong> means wipe out all the previous rules and start anew whereas <strong><-</strong> means to add to the existing rules for the predicate. The rules for any particular predicate and arity form an ordered set. When that predicate is called, the rules are tried in order. </p><p>The <code>parent</code> predicate could have been written as a single rule using the <code>or</code> predicate. The two are essentially equivalent and a matter of personal preference. </p>
+<pre><code>&gt; (&lt;-- (parent ?x ?y)  
+    (or (father ?x ?y)  
+        (mother ?x ?y)))  
+parent </code></pre><p>Either way, can we use our new predicate to find the grandchildren of person1: </p>
+<pre><code>&gt; (select (?y)  
+    (parent !ex:person1 ?x)  
+    (parent ?x ?y))  
+ 
+;; produces output  
+(("http://franz.com/simple#person33")  
+ ("http://franz.com/simple#person26")  
+ ("http://franz.com/simple#person28")  
+ ("http://franz.com/simple#person31")  
+ ("http://franz.com/simple#person25")  
+ ("http://franz.com/simple#person62")  
+ ("http://franz.com/simple#person56")  
+ ("http://franz.com/simple#person42")  
+ ("http://franz.com/simple#person47")  
+ ("http://franz.com/simple#person51") ...) </code></pre><p>We could have done the same thing by defining a grandparent predicate. </p>
+<pre><code>&gt; (&lt;-- (grandparent ?x ?y)  
+    (parent ?x ?z)  
+    (parent ?z ?y))  
+grandparent  
+&gt; (&lt;-- (grandchild ?x ?y)  
+    (grandparent ?y ?x))  
+grandchild </code></pre><p>Finally, we can define <code>ancestor</code> which is a recursive predicate (i.e. it is defined in terms of itself). </p>
+<pre><code>&gt; (&lt;-- (ancestor ?x ?y)  
+    (parent ?x ?y))  
+ancestor  
+&gt; (&lt;-  (ancestor ?x ?y)      
+    (parent ?x ?z)  
+    (ancestor ?z ?y))                
+ancestor </code></pre><p>Read the previous two expressions as </p>
+<ul>
+<li><code>?x</code> is the ancestor of <code>?y</code> if
+<ul>
+<li><code>?x</code> is the parent of <code>?y</code> or</li>
+<li><code>?x</code> is the parent of some person <code>?z</code> and <code>?z</code> is the ancestor of <code>?y</code></li></ul></li></ul><p>A descendant is of course the reverse of ancestor </p>
+<pre><code>&gt; (&lt;-- (descendant ?x ?y)  
+    (ancestor ?y ?x))  
+descendant </code></pre><p>So if we want to find all the male descendants of person1 then here is how to do it. </p>
+<pre><code>&gt; (select (?x)  
+    (descendant ?x !ex:person1)  
+    (male ?x))  
+ 
+;; produces output:  
+(("http://franz.com/simple#person13")  
+ ("http://franz.com/simple#person17")  
+ ("http://franz.com/simple#person4")  
+ ("http://franz.com/simple#person3")  
+ ("http://franz.com/simple#person33")  
+ ("http://franz.com/simple#person28")  
+ ("http://franz.com/simple#person31")  
+ ("http://franz.com/simple#person25")  
+ ("http://franz.com/simple#person62")  
+ ("http://franz.com/simple#person47") ...) </code></pre><p>Here are some puzzles that you can work out for yourself. Note the use of <code>not</code> and <a href="lisp-reference.html#functor.part:3D" title="description of functor part=">part=</a> in these statements. 'not' can contain any expression. <code>part=</code> will compare its two arguments as UPIs. </p>
+<pre><code>&gt; (&lt;-- (aunt ?x ?y)  
+    (father ?z ?x)  
+    (female ?x)  
+    (father ?z ?w)  
+    (not (part= ?x ?w))  
+    (parent ?w ?y))  
+aunt  
+&gt; (&lt;-- (uncle ?x ?y)  
+    (father ?z ?x)  
+    (male ?x)  
+    (father ?z ?w)  
+    (not (part= ?x ?w))  
+    (parent ?w ?y))  
+uncle </code></pre><p>And the final query: find all the children of person1 that are uncles </p>
+<pre><code>&gt; (select (?x ?y)  
+    (parent !ex:person1 ?x)  
+    (uncle ?x ?y))  
+(("http://franz.com/simple#person13" "http://franz.com/simple#person33")  
+ ("http://franz.com/simple#person13" "http://franz.com/simple#person26")  
+ ("http://franz.com/simple#person13" "http://franz.com/simple#person28")  
+ ("http://franz.com/simple#person13" "http://franz.com/simple#person31")  
+ ("http://franz.com/simple#person13" "http://franz.com/simple#person25")  
+ ("http://franz.com/simple#person13" "http://franz.com/simple#person62")  
+ ("http://franz.com/simple#person13" "http://franz.com/simple#person56")  
+ ("http://franz.com/simple#person13" "http://franz.com/simple#person42")  
+ ("http://franz.com/simple#person13" "http://franz.com/simple#person47")  
+ ("http://franz.com/simple#person13" "http://franz.com/simple#person51")  
+ ...) </code></pre><p>There is another convenient shorthand to know in Allegro Prolog.  It is often necessary to use small bits of Lisp code inside a series of Prolog clauses.  A typical example is here, where it is necessary inside a sequence of Prolog clauses to retrieve a value from the surrounding Lisp environment.  Here we define a Lisp function that returns the first and last name of every person born in the argument year. </p>
+<pre><code>    &gt; (defun born-in-year (year)  
+        (select0 (?first-name ?last-name)  
+          (lisp ?year (literal (princ-to-string year)))  
+          (q- ?person !ex:birth-year ?year)  
+          (q- ?person !ex:first-name ?first-name)  
+          (q- ?person !ex:last-name ?last-name)))  
+    born-in-year  
+    &gt; (born-in-year 1915)  
+    (({Joseph} {Kennedy}) ({Robert} {Shriver}))  
+    t  
+</code></pre><p>The year argument may be a string or an integer, but we need to convert it to a string since that's the way birth years are stored in this particular database.  Then the argument needs to be interned as a literal.  But the important point is that we need to get the value of year from the surrounding Lisp environments and bind it to a Prolog variable (here named <code>?year</code>) so it can be passed to <code>q-</code>. </p><p>This necessary transfer of data into the Prolog environment clutters the code and makes it harder to read.  The <code>??</code> syntax marker can eliminate much of this: </p>
+<pre><code>    &gt; (defun born-in-year (year)  
+        (select0 (?first-name ?last-name)  
+          (q- ?person !ex:birth-year (?? (literal (princ-to-string year))))  
+          (q- ?person !ex:first-name ?first-name)  
+          (q- ?person !ex:last-name ?last-name))) </code></pre><p>This is nothing more than a syntactic shorthand of the previous example and operates just like it.  It eliminates the need for the Prolog variable to be visible.  The body of <code>??</code> has syntax like Lisp <strong>progn</strong> and substitutes at runtime the value computed by the <strong>progn</strong> body into the Prolog clause. </p><p>Another useful Prolog predicate is <code>optional</code>.  When wrapped around a concatenation of clauses it allows that concatenation to succeed as many times as it would succeed if those clauses had simply been in series at that location.  However, if the concatantation does not succeed at least once, the <code>optional</code> predicate succeeds a single time without establishing any new variable bindings. </p><p>For example, if some of the people in our database did not have first name data, our previous <code>born-in-year</code> predicate would not find those people.  We could improve this and return <code>nil</code> for unknown first names: </p>
+<pre><code>    &gt; (defun born-in-year (year)  
+        (select0 (?first-name ?last-name)  
+          (q- ?person !ex:birth-year (?? (literal (princ-to-string year))))  
+          (optional (q- ?person !ex:first-name ?first-name))  
+          (q- ?person !ex:last-name ?last-name)))  
+ 
+</code></pre><a name='bang-problem' id='bang-problem'></a> <h3>Problem with use of ! in Prolog code</h3><p>There is a conflict between the syntax for the Prolog cut (described in the <a href="/support/documentation/current/doc/prolog.html" target="_blank">Allegro Prolog Manual</a>) and AllegroGraph's future-part notation (see <a href="lisp-reference.html#ref-bang-reader" title="">here</a>).  Prolog uses the exclamation point <strong>!</strong> to denote the cut predicate.  When executed, a cut clears all previous backtracking points within call to the current predicate.  For example, </p>
+<pre><code> &gt; (&lt;-- (parent ?x)  
+      (parent ?x ?)  
+      !) </code></pre><p>defines a predicate that tests whether the argument person is a parent, but if so succeeds only once. (If there are multiple rules for <code>parent/1</code> <strong>!</strong> cuts all the way back through the choice of the current rule.) The <strong>!</strong> is traditional Prolog notation, but AllegroGraph uses the <strong>!</strong> character as a reader macro to create a future part, so the above definition will signal a read error when the AllegroGraph readtable is in effect (see <a href="lisp-reference.html#ref-bang-reader" title="">the !-reader macro</a> section). </p><p>The simplest way to resolve this is to preface the Prolog <strong>!</strong> with a backslash in any code that might be read with the AllegroGraph readtable in effect.  The backslash suppresses any reader macro for the following character.  This adds minimal clutter to the source code, and is completely harmless even when the AllegroGraph readtable is not in effect. </p>
+<pre><code> &gt; (&lt;-- (is-a-parent ?x)  
+      (parent ?x ?)  
+      \!)  
+ 
+</code></pre><hr/><div id="footnotes"> <h2>Footnotes</h2>
+<div class="footnotes">
+<ol>
+<li>
+<a name="fn0-2018-06-08" id="fn0-2018-06-08"></a>
+The <a href="lisp-reference.html#q-" title="description of q-">q-</a> predicate has many variants to handle the graph slot, range queries, etc. See the <a href="lisp-reference.html#ref-prolog">Lisp Reference Prolog documentation</a> for details. <a href="#fnr0-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 1 in the text">&#8617;</a></li>
+</ol>
+</div>  </div>  </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

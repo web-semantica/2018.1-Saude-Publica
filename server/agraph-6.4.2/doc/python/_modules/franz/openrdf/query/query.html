@@ -1,0 +1,533 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>franz.openrdf.query.query &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+    </div>
+  
+    
+  <h1>Source code for franz.openrdf.query.query</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># pylint: disable-msg=C0103</span>
+
+<span class="c1">################################################################################</span>
+<span class="c1"># Copyright (c) 2006-2017 Franz Inc.  </span>
+<span class="c1"># All rights reserved. This program and the accompanying materials are</span>
+<span class="c1"># made available under the terms of the MIT License which accompanies</span>
+<span class="c1"># this distribution, and is available at http://opensource.org/licenses/MIT</span>
+<span class="c1">################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+<span class="kn">from</span> <span class="nn">future.builtins</span> <span class="k">import</span> <span class="nb">object</span>
+<span class="kn">from</span> <span class="nn">past.builtins</span> <span class="k">import</span> <span class="n">basestring</span>
+
+<span class="kn">from</span> <span class="nn">future.utils</span> <span class="k">import</span> <span class="n">iteritems</span><span class="p">,</span> <span class="n">python_2_unicode_compatible</span>
+
+<span class="kn">from</span> <span class="nn">franz.openrdf.rio.rdfformat</span> <span class="k">import</span> <span class="n">RDFFormat</span>
+<span class="kn">from</span> <span class="nn">franz.openrdf.rio.tupleformat</span> <span class="k">import</span> <span class="n">TupleFormat</span>
+<span class="kn">from</span> <span class="nn">franz.openrdf.util.contexts</span> <span class="k">import</span> <span class="n">output_to</span>
+<span class="kn">from</span> <span class="nn">..exceptions</span> <span class="k">import</span> <span class="n">IllegalOptionException</span><span class="p">,</span> <span class="n">QueryMissingFeatureException</span>
+<span class="kn">from</span> <span class="nn">.dataset</span> <span class="k">import</span> <span class="n">ALL_CONTEXTS</span><span class="p">,</span> <span class="n">Dataset</span>
+<span class="kn">from</span> <span class="nn">.queryresult</span> <span class="k">import</span> <span class="n">GraphQueryResult</span><span class="p">,</span> <span class="n">TupleQueryResult</span>
+
+
+<div class="viewcode-block" id="QueryLanguage"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.QueryLanguage">[docs]</a><span class="nd">@python_2_unicode_compatible</span>
+<span class="k">class</span> <span class="nc">QueryLanguage</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">registered_languages</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">SPARQL</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">PROLOG</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="QueryLanguage.__init__"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.QueryLanguage.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">QueryLanguage</span><span class="o">.</span><span class="n">registered_languages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;QueryLanguage.&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+<div class="viewcode-block" id="QueryLanguage.getName"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.QueryLanguage.getName">[docs]</a>    <span class="k">def</span> <span class="nf">getName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+
+<div class="viewcode-block" id="QueryLanguage.values"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.QueryLanguage.values">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">values</span><span class="p">():</span> <span class="k">return</span> <span class="n">QueryLanguage</span><span class="o">.</span><span class="n">registered_languages</span><span class="p">[:]</span></div>
+    
+<div class="viewcode-block" id="QueryLanguage.valueOf"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.QueryLanguage.valueOf">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">valueOf</span><span class="p">(</span><span class="n">name</span><span class="p">):</span> 
+        <span class="k">for</span> <span class="n">ql</span> <span class="ow">in</span> <span class="n">QueryLanguage</span><span class="o">.</span><span class="n">registered_languages</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ql</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="k">return</span> <span class="n">ql</span>
+        <span class="k">return</span> <span class="kc">None</span></div></div>
+    
+<span class="n">QueryLanguage</span><span class="o">.</span><span class="n">SPARQL</span> <span class="o">=</span> <span class="n">QueryLanguage</span><span class="p">(</span><span class="s1">&#39;SPARQL&#39;</span><span class="p">)</span>
+<span class="n">QueryLanguage</span><span class="o">.</span><span class="n">PROLOG</span> <span class="o">=</span> <span class="n">QueryLanguage</span><span class="p">(</span><span class="s1">&#39;PROLOG&#39;</span><span class="p">)</span>
+
+<span class="c1">#############################################################################</span>
+<span class="c1">##</span>
+<span class="c1">#############################################################################</span>
+
+<div class="viewcode-block" id="Query"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query">[docs]</a><span class="k">class</span> <span class="nc">Query</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A query on a {@link Repository} that can be formulated in one of the</span>
+<span class="sd">    supported query languages (for example SeRQL or SPARQL). It allows one to</span>
+<span class="sd">    predefine bindings in the query to be able to reuse the same query with</span>
+<span class="sd">    different bindings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Query.__init__"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queryLanguage</span><span class="o">=</span><span class="n">QueryLanguage</span><span class="o">.</span><span class="n">SPARQL</span><span class="p">,</span>
+                 <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">baseURI</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">queryString</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a query object.</span>
+
+<span class="sd">        :param queryLanguage: Query syntax - the default is SPARQL.</span>
+<span class="sd">        :type queryLanguage: QueryLanguage</span>
+<span class="sd">        :param query: Query text</span>
+<span class="sd">        :type query: string</span>
+<span class="sd">        :param baseURI: Prefix used to relsove relative URIs.</span>
+<span class="sd">                        Default: chosen by the server.</span>
+<span class="sd">        :type baseURI: URI</span>
+<span class="sd">        :param queryString: Legacy name of the &#39;query&#39; parameter.</span>
+<span class="sd">        :type queryString: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">query</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;query argument is missing.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">queryLanguage</span> <span class="o">=</span> <span class="n">Query</span><span class="o">.</span><span class="n">_check_language</span><span class="p">(</span><span class="n">queryLanguage</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">queryString</span> <span class="o">=</span> <span class="n">query</span> <span class="ow">or</span> <span class="n">queryString</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseURI</span> <span class="o">=</span> <span class="n">baseURI</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">includeInferred</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bindings</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">checkVariables</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1">## CommonLogic parameters:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preferred_execution_language</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actual_execution_language</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject_comes_first</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Query.setBinding"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.setBinding">[docs]</a>    <span class="k">def</span> <span class="nf">setBinding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Binds the specified variable to the supplied value. Any value that was</span>
+<span class="sd">        previously bound to the specified value will be overwritten.</span>
+
+<span class="sd">        :param name: Variable name.</span>
+<span class="sd">        :type name: string</span>
+<span class="sd">        :param value: New value for the variable. If a string is passed it will</span>
+<span class="sd">                      be converted to a literal.</span>
+<span class="sd">        :type value: Value|basestring</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_connection</span><span class="p">()</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bindings</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+        
+<div class="viewcode-block" id="Query.setBindings"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.setBindings">[docs]</a>    <span class="k">def</span> <span class="nf">setBindings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set multiple variable bindings.</span>
+
+<span class="sd">        :param dict: A dictionary of bindings.</span>
+<span class="sd">        :type dict: dict[string, Value]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">dict</span><span class="p">:</span> <span class="k">return</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setBinding</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Query.removeBinding"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.removeBinding">[docs]</a>    <span class="k">def</span> <span class="nf">removeBinding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        Removes a previously set binding on the supplied variable. Calling this</span>
+<span class="sd">        method with an unbound variable name has no effect.</span>
+
+<span class="sd">        :param name: Variable name.</span>
+<span class="sd">        :type name: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bindings</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Query.getBindings"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.getBindings">[docs]</a>    <span class="k">def</span> <span class="nf">getBindings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve the bindings that have been set on this query.</span>
+
+<span class="sd">        :return: A dictionary of bindings.</span>
+<span class="sd">        :rtype: dict[string, Value]</span>
+<span class="sd">        &quot;&quot;&quot;</span> 
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bindings</span></div>
+
+<div class="viewcode-block" id="Query.setDataset"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.setDataset">[docs]</a>    <span class="k">def</span> <span class="nf">setDataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Select the dataset against which to evaluate this query, overriding any</span>
+<span class="sd">        dataset that is specified in the query itself.</span>
+
+<span class="sd">        :param dataset: A dataset object.</span>
+<span class="sd">        :type dataset: Dataset</span>
+<span class="sd">        &quot;&quot;&quot;</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span></div>
+     
+<div class="viewcode-block" id="Query.getDataset"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.getDataset">[docs]</a>    <span class="k">def</span> <span class="nf">getDataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the dataset against which this query will operate.</span>
+
+<span class="sd">        :return: Dataset.</span>
+<span class="sd">        :rtype: Dataset</span>
+<span class="sd">        &quot;&quot;&quot;</span> 
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span></div>
+    
+<div class="viewcode-block" id="Query.setContexts"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.setContexts">[docs]</a>    <span class="k">def</span> <span class="nf">setContexts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contexts</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Assert a set of contexts (named graphs) that filter all triples.</span>
+
+<span class="sd">        :param contexts: List of graph URIs.</span>
+<span class="sd">        :type contexts: list[URI|string]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">contexts</span><span class="p">:</span> <span class="k">return</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">cxt</span> <span class="ow">in</span> <span class="n">contexts</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cxt</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span> <span class="n">cxt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_connection</span><span class="p">()</span><span class="o">.</span><span class="n">createURI</span><span class="p">(</span><span class="n">cxt</span><span class="p">)</span>
+            <span class="n">ds</span><span class="o">.</span><span class="n">addNamedGraph</span><span class="p">(</span><span class="n">cxt</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setDataset</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span></div>
+     
+<div class="viewcode-block" id="Query.setIncludeInferred"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.setIncludeInferred">[docs]</a>    <span class="k">def</span> <span class="nf">setIncludeInferred</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">includeInferred</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determine whether evaluation results of this query should include inferred</span>
+<span class="sd">        statements.</span>
+
+<span class="sd">        The default setting is ``True``.</span>
+
+<span class="sd">        :param includeInferred: If ``True`` include inferred triples in query results.</span>
+<span class="sd">        :type includeInferred: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">includeInferred</span> <span class="o">=</span> <span class="n">includeInferred</span></div>
+
+<div class="viewcode-block" id="Query.getIncludeInferred"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.getIncludeInferred">[docs]</a>    <span class="k">def</span> <span class="nf">getIncludeInferred</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check whether this query will return inferred statements.</span>
+<span class="sd">        :return: ``True`` if inferred triples are included, ``False`` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span> 
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">includeInferred</span></div>
+    
+<div class="viewcode-block" id="Query.setCheckVariables"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.setCheckVariables">[docs]</a>    <span class="k">def</span> <span class="nf">setCheckVariables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determine whether the presence of variables in the select clause not referenced</span>
+<span class="sd">        in a triple is flagged.</span>
+
+<span class="sd">        :param setting: ``True`` if variables should be checked, ``False`` otherwise.</span>
+<span class="sd">        :type setting: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">checkVariables</span> <span class="o">=</span> <span class="n">setting</span></div>
+    
+<div class="viewcode-block" id="Query.setConnection"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.setConnection">[docs]</a>    <span class="k">def</span> <span class="nf">setConnection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Internal call to embed the connection into the query.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span></div>
+        
+    <span class="k">def</span> <span class="nf">_get_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span>
+    
+<div class="viewcode-block" id="Query.evaluate_generic_query"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.evaluate_generic_query">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_generic_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">accept</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                               <span class="n">analyze</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">analysisTechnique</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">analysisTimeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                               <span class="n">update</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluate a SPARQL or PROLOG query, which may be a &#39;select&#39;, &#39;construct&#39;, &#39;describe&#39;</span>
+<span class="sd">        or &#39;ask&#39; query (in the SPARQL case). Return an appropriate response.</span>
+
+<span class="sd">        :param count: If ``True`` return only the count of the query results.</span>
+<span class="sd">        :type count: bool</span>
+<span class="sd">        :param accept: Set to ``&#39;application/sparql-results+xml&#39;`` or ``&#39;application/sparql-results+json&#39;``</span>
+<span class="sd">                       to retrieve the result as a string in the specified format.</span>
+<span class="sd">                       The default is to return a :class:`QueryResult` object.</span>
+<span class="sd">        :type accept: string</span>
+<span class="sd">        :param analyze: If ``True`` perform query analysis for SPARQL queries.</span>
+<span class="sd">        :type analyze: bool</span>
+<span class="sd">        :param analysisTechnique: Control the method of analysis. Can be either `&quot;executed&quot;` (default).</span>
+<span class="sd">                                  meaning that the query will be executed to perform dynamic analysis,</span>
+<span class="sd">                                  or ``&quot;static&quot;``.</span>
+<span class="sd">        :type analysisTechnique: string</span>
+<span class="sd">        :param analysisTimeout: Number of second to run the query if executed for analysis.</span>
+<span class="sd">        :type analysisTimeout: float</span>
+<span class="sd">        :param update: If ``True`` this is an update query and the result will be a boolean.</span>
+<span class="sd">        :type update: bool</span>
+<span class="sd">        :return: The result can be either:</span>
+<span class="sd">                    - A boolean (for update queries).</span>
+<span class="sd">                    - A dictionary containing the results.</span>
+<span class="sd">                    - A string (if ``accept`` was passed).</span>
+<span class="sd">                    - An integer (if ``count=True``).</span>
+<span class="sd">        :rtype: dict|string|int|bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_connection</span><span class="p">()</span>
+        <span class="n">namedContexts</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">_contexts_to_ntriple_contexts</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">getNamedGraphs</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">regularContexts</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">_contexts_to_ntriple_contexts</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">getDefaultGraphs</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="k">else</span> <span class="n">ALL_CONTEXTS</span><span class="p">)</span>
+        <span class="n">bindings</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bindings</span><span class="p">:</span>
+            <span class="n">bindings</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">vbl</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bindings</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                <span class="n">bindings</span><span class="p">[</span><span class="n">vbl</span><span class="p">]</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">_convert_term_to_mini_term</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="n">mini</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">_get_mini_repository</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">queryLanguage</span> <span class="o">==</span> <span class="n">QueryLanguage</span><span class="o">.</span><span class="n">SPARQL</span><span class="p">:</span>  
+            <span class="n">response</span> <span class="o">=</span> <span class="n">mini</span><span class="o">.</span><span class="n">evalSparqlQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">queryString</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">regularContexts</span><span class="p">,</span> <span class="n">namedContext</span><span class="o">=</span><span class="n">namedContexts</span><span class="p">,</span> 
+                                            <span class="n">infer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">includeInferred</span><span class="p">,</span> <span class="n">bindings</span><span class="o">=</span><span class="n">bindings</span><span class="p">,</span>
+                                            <span class="n">checkVariables</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">checkVariables</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span>
+                                            <span class="n">accept</span><span class="o">=</span><span class="n">accept</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span>
+                                            <span class="n">analyze</span><span class="o">=</span><span class="n">analyze</span><span class="p">,</span> <span class="n">analysisTechnique</span><span class="o">=</span><span class="n">analysisTechnique</span><span class="p">,</span>
+                                            <span class="n">analysisTimeout</span><span class="o">=</span><span class="n">analysisTimeout</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="n">update</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">queryLanguage</span> <span class="o">==</span> <span class="n">QueryLanguage</span><span class="o">.</span><span class="n">PROLOG</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">namedContexts</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">QueryMissingFeatureException</span><span class="p">(</span><span class="s2">&quot;Prolog queries do not support the datasets (named graphs) option.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">analyze</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">QueryMissingFeatureException</span><span class="p">(</span><span class="s2">&quot;Prolog queries do not support analysis.&quot;</span><span class="p">)</span>
+            <span class="c1"># evalPrologQuery is already always done as if update=True</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">mini</span><span class="o">.</span><span class="n">evalPrologQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">queryString</span><span class="p">,</span>
+                                            <span class="n">infer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">includeInferred</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span> <span class="n">accept</span><span class="o">=</span><span class="n">accept</span><span class="p">,</span>
+                                            <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unsupported query language: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">queryLanguage</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_check_language</span><span class="p">(</span><span class="n">queryLanguage</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">queryLanguage</span> <span class="o">==</span> <span class="s1">&#39;SPARQL&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">QueryLanguage</span><span class="o">.</span><span class="n">SPARQL</span>
+
+        <span class="k">if</span> <span class="n">queryLanguage</span> <span class="o">==</span> <span class="s1">&#39;PROLOG&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">QueryLanguage</span><span class="o">.</span><span class="n">PROLOG</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">queryLanguage</span> <span class="ow">in</span> <span class="p">[</span><span class="n">QueryLanguage</span><span class="o">.</span><span class="n">SPARQL</span><span class="p">,</span> <span class="n">QueryLanguage</span><span class="o">.</span><span class="n">PROLOG</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">IllegalOptionException</span><span class="p">(</span><span class="s2">&quot;Can&#39;t evaluate the query language &#39;</span><span class="si">%s</span><span class="s2">&#39;.  Options are: SPARQL and PROLOG.&quot;</span>
+                                         <span class="o">%</span> <span class="n">queryLanguage</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">queryLanguage</span></div>
+       
+  
+<div class="viewcode-block" id="TupleQuery"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.TupleQuery">[docs]</a><span class="k">class</span> <span class="nc">TupleQuery</span><span class="p">(</span><span class="n">Query</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A query that returns tuples (i.e. sets of variable bindings).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="TupleQuery.evaluate"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.TupleQuery.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">output_format</span><span class="o">=</span><span class="n">TupleFormat</span><span class="o">.</span><span class="n">TABLE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Execute the embedded query against the RDF store.</span>
+
+<span class="sd">        Return an iterator that produces for each step a tuple of values</span>
+<span class="sd">        (resources and literals) corresponding to the variables or</span>
+<span class="sd">        expressions in a &#39;select&#39; clause (or its equivalent).</span>
+
+<span class="sd">        :param count: If ``True`` return the number of result rows</span>
+<span class="sd">                      instead of the usual iterator.</span>
+<span class="sd">        :type count: bool</span>
+<span class="sd">        :param output: A file name, file descriptor or a file-like</span>
+<span class="sd">                       object to save the results to</span>
+<span class="sd">                       (optional). ``True`` can be used as a synonym</span>
+<span class="sd">                       for stdout.</span>
+<span class="sd">        :type output: str|file|int|bool</span>
+<span class="sd">        :param output_format: Serialization format for ``output``.</span>
+<span class="sd">                              The default is TABLE.</span>
+<span class="sd">        :type output_format: RDFFormat</span>
+<span class="sd">        :return: Either an iterator over results, </span>
+<span class="sd">                 an integer (the number of results, if ``count`` is used) </span>
+<span class="sd">                 or ``None`` (if ``output`` is used).</span>
+<span class="sd">        :rtype: TupleQueryResult|int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="n">output_to</span><span class="p">(</span><span class="n">output</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+            <span class="n">callback</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">out</span><span class="o">.</span><span class="n">write</span>
+            <span class="n">accept</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">TupleFormat</span><span class="o">.</span><span class="n">mime_type_for_format</span><span class="p">(</span><span class="n">output_format</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_generic_query</span><span class="p">(</span>
+                <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span> <span class="n">accept</span><span class="o">=</span><span class="n">accept</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">count</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">response</span>
+
+            <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+            <span class="k">return</span> <span class="n">TupleQueryResult</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">],</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="TupleQuery.analyze"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.TupleQuery.analyze">[docs]</a>    <span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysisTechnique</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">analysisTimeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Analyze the query.</span>
+
+<span class="sd">        Analysis is only available for SPARQL queries.</span>
+
+<span class="sd">        :param analysisTechnique: Control the method of analysis. Can be either `&quot;executed&quot;` (default).</span>
+<span class="sd">                                  meaning that the query will be executed to perform dynamic analysis,</span>
+<span class="sd">                                  or ``&quot;static&quot;``.</span>
+<span class="sd">        :type analysisTechnique: string</span>
+<span class="sd">        :param analysisTimeout: Number of second to run the query if executed for analysis.</span>
+<span class="sd">        :type analysisTimeout: float</span>
+<span class="sd">        :return: Analysis result as a dictionary.</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_generic_query</span><span class="p">(</span><span class="n">analyze</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">analysisTechnique</span><span class="o">=</span><span class="n">analysisTechnique</span><span class="p">,</span>
+            <span class="n">analysisTimeout</span><span class="o">=</span><span class="n">analysisTimeout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div></div>
+
+
+<div class="viewcode-block" id="UpdateQuery"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.UpdateQuery">[docs]</a><span class="k">class</span> <span class="nc">UpdateQuery</span><span class="p">(</span><span class="n">Query</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An update query.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="UpdateQuery.evaluate"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.UpdateQuery.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the embedded update against the RDF store.</span>
+
+<span class="sd">        :return: ``True`` if the query changed the store, ``False`` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_generic_query</span><span class="p">(</span><span class="n">update</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="GraphQuery"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.GraphQuery">[docs]</a><span class="k">class</span> <span class="nc">GraphQuery</span><span class="p">(</span><span class="n">Query</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A query that returns statements (see :class:`Statement`).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="GraphQuery.evaluate"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.GraphQuery.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="n">RDFFormat</span><span class="o">.</span><span class="n">TABLE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the embedded query against the RDF store.</span>
+
+<span class="sd">        :param output: A file name, file descriptor or a file-like</span>
+<span class="sd">                       object to save the results to</span>
+<span class="sd">                       (optional). ``True`` can be used as a synonym</span>
+<span class="sd">                       for stdout.</span>
+<span class="sd">        :type output: str|file|int|bool</span>
+<span class="sd">        :param output_format: Serialization format for ``output``.</span>
+<span class="sd">                              The default is TABLE.</span>
+<span class="sd">        :type output_format: RDFFormat</span>
+<span class="sd">        :return: An iterator over statements or None (if ``output`` is used)..</span>
+<span class="sd">        :rtype: GraphQueryResult</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">output_to</span><span class="p">(</span><span class="n">output</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+            <span class="n">callback</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">out</span><span class="o">.</span><span class="n">write</span>
+            <span class="n">accept</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">RDFFormat</span><span class="o">.</span><span class="n">mime_type_for_format</span><span class="p">(</span><span class="n">output_format</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_generic_query</span><span class="p">(</span><span class="n">accept</span><span class="o">=</span><span class="n">accept</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">GraphQueryResult</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span></div></div>
+
+
+<div class="viewcode-block" id="BooleanQuery"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.BooleanQuery">[docs]</a><span class="k">class</span> <span class="nc">BooleanQuery</span><span class="p">(</span><span class="n">Query</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A query that returns a boolean.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="BooleanQuery.evaluate"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.query.BooleanQuery.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the embedded query against the RDF store.</span>
+
+<span class="sd">        :return: A boolean.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_generic_query</span><span class="p">()</span></div></div>
+</pre></div>
+
+  
+    <div class="nav-links nav-links-footer">
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

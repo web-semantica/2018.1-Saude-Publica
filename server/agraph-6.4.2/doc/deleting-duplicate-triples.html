@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Deleting Duplicate Triples | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="deleting-duplicates"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>Deleting duplicate triples 6.4.2</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Deleting duplicate triples introduction'>Deleting duplicate triples introduction</a></li>
+<li><a href='#header2-15' title='Visible triples'>Visible triples</a></li>
+<li><a href='#header2-17' title='Permission to delete duplicates'>Permission to delete duplicates</a></li>
+<li><a href='#header2-19' title='Duplicates in federated stores'>Duplicates in federated stores</a></li>
+<li><a href='#header2-21' title='Listing duplicate triples'>Listing duplicate triples</a></li>
+<li><a href='#header2-36' title='Automating duplicate deletion'>Automating duplicate deletion</a></li>
+<li><a href='#header2-38' title='Purging deleted triples'>Purging deleted triples</a></li>
+<li><a href='#header2-40' title='The AGWebview interface dealing with duplicate triples'>The AGWebview interface dealing with duplicate triples</a>
+<ul>
+<li><a href='#header3-45' title='Getting a file of duplicate triples: Export duplicate statements'>Getting a file of duplicate triples: Export duplicate statements</a></li>
+<li><a href='#header3-49' title='Deleting duplicate triples: Delete duplicate statements'>Deleting duplicate triples: Delete duplicate statements</a></li>
+<li><a href='#header3-53' title='Restoring deleted duplicates'>Restoring deleted duplicates</a></li>
+<li><a href='#header3-55' title='Commits and duplicates: Suppress duplicate statements'>Commits and duplicates: Suppress duplicate statements</a></li></ul></li>
+<li><a href='#header2-58' title='REST interface  to deleting duplicates'>REST interface  to deleting duplicates</a></li>
+<li><a href='#header2-71' title='JAVA interface to deleting duplicates'>JAVA interface to deleting duplicates</a></li>
+<li><a href='#header2-73' title='Python interface to deleting duplicates'>Python interface to deleting duplicates</a></li>
+<li><a href='#header2-77' title='Lisp interface to deleting duplicates'>Lisp interface to deleting duplicates</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Deleting duplicate triples introduction</h2><p>Two triples within a store may be SPO-identical or SPOG-identical. Two different triples are SPO-identical if they have identical subject, predicate, and object. They are SPOG-identical if they also have identical graphs. (All triples also have a unique triple id, which is determined by the system and not under user control. Distinct triples always have distinct triple ids even if they are SPO- or SPOG-identical.) </p><p>SPO-identical and SPOG-identical triples are also called <em>duplicate triples</em>. (The term <em>duplicate triples</em> refers to both SPO- and SPOG-identical triples and so is ambiguous.) </p><p>It is uncommon to deliberately add duplicate triples into a store. It is usually the result of loading data files twice (or loading different files which happen to contain some duplicate data). Uncoordinated hand entry by multiple persons also may result in loading duplicates. There also may be reasons to load duplicates, such as wanting to determine whether separate large data files contain duplicate data. This may be difficult to determine by other means, particularly if the files use different formats. </p><p>Unless duplicate suppression is enabled (see <a href="#duplicate-suppression">below</a>, the AllegroGraph system neither detects nor prevents loading of duplicate triples. It is not an error for a store to contain duplicate triples. </p><p>But duplicate triples do use resources unnecessarily, can cause slowdown of query processing, and may cause misleading results, particularly for queries involving counts of triples with specific components. </p><p>AllegroGraph provides facilities for identifying and for deleting duplicate triples. These facilities are described in this document. We first describe what can be done to identify and delete duplicates in general, and then we describe each interface (webview, REST, etc.) </p><a name='header2-15' id='header2-15'></a><h2>Visible triples</h2><p>A user can be restricted from viewing certain triples (see <a href="security.html">Security Implementation</a>). The triples that can be viewed by a user are <em>visible</em> to that user. When we talk about duplicates in this document, we always mean duplicates among the triples visible to the current user. It may be the store contains a single triple which is visible to the user and additional SPO-identical triples which are not visible (because the user is restricted from seeing triples with the graphs of the other SPO-identical triples). </p><a name='header2-17' id='header2-17'></a><h2>Permission to delete duplicates</h2><p>Even if duplicate triples are visible to a user, the user may not have permission to delete some or all of the duplicates (again, see <a href="security.html">Security Implementation</a>). Any command to delete duplicates issued by the user will not delete duplicates the user does not have permission to delete. </p><a name='header2-19' id='header2-19'></a><h2>Duplicates in federated stores</h2><p>The functionality (described below) for listing and deleting duplicate triples is not supported in federated stores (see <a href="agraph-introduction.html#intro-federation">AllegroGraph Federation in the Introduction</a>). You can list/delete duplicates in each individual store which makes up the federation, but not in the federated store itself. </p><a name='header2-21' id='header2-21'></a><h2>Listing duplicate triples</h2><p>AllegroGraph will generate a list of all SPO-identical or all SPOG-identical duplicates. Thus consider a store that contains (in simplified format): </p>
+<pre><code>PREFIX franz: &lt;http://www.franz.com/&gt;  
+ 
+franz:john franz:has-job franz:baker graph1 4234  
+franz:john franz:has-job franz:baker graph1 4345  
+franz:john franz:has-job franz:baker graph1 4678  
+franz:john franz:has-job franz:baker graph2 2314  
+franz:john franz:has-job franz:baker graph2 2341 </code></pre><p>For each triple, we have shown the Subject, Predicate, Object, Graph, and a notional triple-id. Note that while the triple id of a triple can be accessed progammatically, users have no control over what id is assigned. We provide these made-up values just so we can talk about the triple ids in our example. </p><p>All five triples are SPO-identical. The first three and the last two are also SPOG-identical but none of the first three is SPOG-identical to either of the last two. </p><p>The list of SPO-identical triples will be </p>
+<pre><code>franz:john franz:has-job franz:baker graph1 4234  
+franz:john franz:has-job franz:baker graph1 4345  
+franz:john franz:has-job franz:baker graph1 4678  
+franz:john franz:has-job franz:baker graph2 2341 </code></pre><p>The list of SPOG-identical triples will be </p>
+<pre><code>franz:john franz:has-job franz:baker graph1 4345  
+franz:john franz:has-job franz:baker graph1 4678  
+franz:john franz:has-job franz:baker graph2 2341  
+</code></pre><p>If you delete SPOG-identical triples, then two of the first three triples and one of the last two will be deleted, with these triples remaining: </p>
+<pre><code>franz:john franz:has-job franz:baker graph1 [4234]  
+franz:john franz:has-job franz:baker graph2 [2314] </code></pre><p>If you delete SPO-identical triples, four of the five triples will be deleted, leaving: </p>
+<pre><code>franz:john franz:has-job franz:baker graph2 [2314] </code></pre><p>The triple with the lowest id will remain after duplicate triples are deleted. </p><p><a name="duplicate-suppression"></a> </p><a name='header2-36' id='header2-36'></a><h2>Automating duplicate deletion</h2><p>You can arrange that duplicate triples be deleted at commit time. Then there will never be any new committed duplicates to delete (though any committed duplicates already in the store when you implement this feature will remain until you take action to delete them: enabling duplicate deletion at commit time never affects already committed triples). </p><a name='header2-38' id='header2-38'></a><h2>Purging deleted triples</h2><p>When triples are deleted they are not immediately removed from indices because they must remain in all indices until all transactions which may potentially need to see those triples (such as transactions that started before the triples were deleted) have completed (been committed or rolled back). A triple that cannot possibly be accessed by any live transaction is referred to as an <em>inaccessible triple</em>. AllegroGraph provides a facility to purge inaccessible triples from indices. See <a href="purging-deleted-triples.html">Purging Deleted Triples</a> for a complete discussion of deleted triple purging. </p><a name='header2-40' id='header2-40'></a><h2>The AGWebview interface dealing with duplicate triples</h2><p><a href="agwebview.html">AGWebview</a> is a browser-based interface to AllegroGraph. It is the standard way users interact with AllegroGraph. Duplicate triples are handled on the Repository Overview Page: </p><p><img src="image-duplicates-agwv.jpg" alt="Repository Overview Page"></img> </p><p>The three choices that deal with duplicates are <strong>Export duplicate statements</strong>, <strong>Delete duplicate statements</strong>, and <strong>Suppress duplicate statements</strong>: </p><p><img src="wv-dup-menu-2.jpg" alt="Items concerning duplicate triples"></img> </p><a name='header3-45' id='header3-45'></a><h3>Getting a file of duplicate triples: Export duplicate statements</h3><p>The dropdown menu to the right of the <strong>Export duplicate statements</strong> choice allows you to select whether you are interested in SPOG-identical duplicates or SPO-identical duplicates: </p><p><img src="wv-dup-menu-1.jpg" alt="export-duplicates menu"></img> </p><p>Select which type of duplicates you are interested in, and the click on the <strong>Export duplicate statements</strong> choice. You will be prompted for a filename and location, and the duplicates will be written to that file in Nquads format. Those triples are the triples which will be deleted if you request duplicate deletion. Note that triples which are not visible to the current user will not be written to the file even if they are duplicates. </p><a name='header3-49' id='header3-49'></a><h3>Deleting duplicate triples: Delete duplicate statements</h3><p>If you select this choice, a popup window appears asking whether you want to delete SPO-identical triples or SPOG identical triples: </p><p><img src="delete-duplicates-pop-up.jpg" alt="Delete-duplicate popup window"></img> </p><p>Select the desired deletion mode and click <strong>OK</strong>. The duplicates of the selected type will be deleted from the store. </p><a name='header3-53' id='header3-53'></a><h3>Restoring deleted duplicates</h3><p>If, before deleting duplicate, you wrote a file of duplicates, you can restore the deleted duplicates by loading the file (see <a href="agload.html">Data Loading</a>). </p><a name='header3-55' id='header3-55'></a><h3>Commits and duplicates: Suppress duplicate statements</h3><p>You can have the system automatically delete duplicate triples at commit time. In the Webview interface, you can enable this feature using the <strong>Suppress duplicate statements</strong> choice on the <a href="agwebview.html#RepositoryOverviewPage">Repository page</a>. Clicking on that choice displays a popup window with a menu of three choices: do not suppress duplicates at commit time, suppress SPOG-identical at commit time, suppress SPO-identical duplicates at commit time. </p><p><img src="wv-dup-menu-supp.jpg" alt="Suppress duplicates choices"></img> </p><a name='header2-58' id='header2-58'></a><h2>REST interface  to deleting duplicates</h2><p>The REST interface is described in the <a href="http-protocol.html">REST/HTTP interface</a> document. The commands relating to duplicate triples start <a href="http-protocol.html#get-statements-duplicates">here</a> in that document. In brief, you can get duplicate triples with </p>
+<pre><code>GET /repositories/[name]/statements/duplicates </code></pre><p>The mode argument can be spo or spog (the default). </p><p>You can delete them with </p>
+<pre><code>DELETE /repositories/[name]/statements/duplicates </code></pre><p>The mode argument can be spo or spog (the default). </p><p>You can get the duplicate suppression strategy with </p>
+<pre><code>GET /repositories/[name]/suppressDuplicates </code></pre><p>and set the duplicate suppression strategy with </p>
+<pre><code>PUT /repositories/[name]/suppressDuplicates </code></pre><p>The type argument can be false (no automatic duplicate deletion at commit time), spo, or spog. Disabling automatic duplicate suppression at commit time can also be done with </p>
+<pre><code>DELETE /repositories/[name]/suppressDuplicates </code></pre><a name='header2-71' id='header2-71'></a><h2>JAVA interface to deleting duplicates</h2><p>The JAVA interface is described in the <a href="javadoc/index.html">Javadocs</a>. The relevant class is the <em>AGRepositoryConnection</em> class and the methods are <em>getDuplicateStatements()</em> (for getting duplicates), <em>deleteDuplicates</em> (for deleting). </p><a name='header2-73' id='header2-73'></a><h2>Python interface to deleting duplicates</h2><p>The relevant methods, both are in the <em>RepositoryConnection</em> class, are: </p>
+<pre><code>def getDuplicateStatements(mode)  
+def deleteDuplicateStatements(mode) </code></pre><p>Note you cannot enable supressing duplicates at commit time using the Python interface. See the <a href="python/index.html">Python API</a> document. </p><a name='header2-77' id='header2-77'></a><h2>Lisp interface to deleting duplicates</h2><p>See <a href="lisp-reference.html#ref-deleting-triples">Deleting triples</a>. The function <a href="lisp-reference.html#get-duplicate-triples" title="description of get-duplicate-triples">get-duplicate-triples</a> returns a cursor of duplicates. The function <a href="lisp-reference.html#delete-duplicate-triples" title="description of delete-duplicate-triples">delete-duplicate-triples</a> delete duplicates. The function <a href="lisp-reference.html#duplicate-suppression-strategy" title="description of duplicate-suppression-strategy">duplicate-suppression-strategy</a> controls whether duplicates are deleted at commit time. </p></div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

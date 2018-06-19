@@ -1,0 +1,551 @@
+#!/bin/bash -e
+
+function get_answer {
+    local var_to_set=$1
+    local prompt="$2"
+    local default=$3
+    
+    local res
+    local savedstty
+
+    while [ -z "$res" ]; do
+	echo "$prompt:"
+	if [ "$default" ]; then
+	    echo -n "[$default]: "
+	fi
+	if [ "$password_mode" ]; then
+	    # if this isn't a tty, don't bother 
+	    if tty -s; then
+		savedstty=`stty -g`
+		stty -echo
+	    fi
+	fi
+	read res
+	if [ "$password_mode" ]; then
+	    if tty -s; then
+		stty $savedstty
+	    fi
+	fi
+	
+	if [ -z "$res" ]; then
+	    if [ "$default" ]; then
+		res=$default
+	    else 
+		echo "This question requires a non-blank answer."
+	    fi
+	fi
+
+	if [ -n "$port_mode" ] && ! valid_port_number "$res"; then
+	    res=
+	fi
+    done
+
+    password_mode=
+    # this is the bash built-in printf. binds $var_to_set using the format args,
+    # and avoids unnecessary evaluation of $res. Useful if the password being set
+    # has interesting chars in it.
+    printf -v $var_to_set "%s" $res
+}
+
+function y_or_n {
+    local prompt="$1"
+    local default=$2
+
+    while true; do
+	get_answer y_or_n "$prompt" $default
+	case "$y_or_n" in
+	    y)
+		return 0
+		;;
+	    n)
+		return 1
+		;;
+	    *)
+		echo Please answer either y or n
+		;;
+	esac
+    done
+}
+
+function prompt_for_path_and_create {
+    local mode="$1"
+    local var_to_set="$2"
+    local prompt="$3"
+    local default="$4"
+    local file
+    local dir
+
+    while true; do
+	get_answer $var_to_set "$prompt" "$default"
+	if [ $mode = file ]; then
+	    eval file=\$$var_to_set
+	    default="$file"
+	    dir="`dirname $file`"
+	else 
+	    eval dir=\$$var_to_set
+            if [ "/" == "${dir:(-1)}" ] ; then
+                # remove trailing slash
+                eval $var_to_set="${dir:0:${#dir}-1}"
+            fi
+	    default="$dir"
+	fi	    
+	
+	# don't check for existence of path
+	if [ "$create" = "0" ]; then
+	    return
+	fi
+
+	if [ -d "$dir" ]; then
+	    return
+	elif  [ -e "$dir" ]; then
+	    cat <<EOF
+
+$dir already exists but is not a directory.
+Please choose another location or move 
+$dir out of the way.
+
+EOF
+	else 
+	    echo $dir does not exist.
+	    if y_or_n "Would you like me to create it?" "y"; then
+		    mkdir -p "$dir"
+	    fi
+	    return
+	fi
+    done
+}
+
+function non_interactive_verify_dir {
+    local dir="$1"
+
+    if [ -d "$dir" ]; then
+        :
+    elif  [ -e "$dir" ]; then
+	cat <<EOF
+
+$dir already exists but is not a directory.
+Please choose another location or move 
+$dir out of the way.
+
+EOF
+        exit 1
+    else 
+	mkdir -p "$dir"
+    fi
+}
+
+function valid_port_number {
+    local port="$1"
+
+    # Allows for port number to be 0, in which case the OS will select the port number at runtime.
+    if expr "$port" : '[0-9][0-9]*$' >/dev/null && [ "$port" -ge 0 -a "$port" -lt 65536 ]; then
+	return 0
+    else 
+	echo Invalid port number: $port
+	return 1
+    fi
+}
+    
+
+function create_user {
+    local user=$1
+    local group=$user
+
+    local additional_args
+
+    if getent group $group >/dev/null; then
+	# Group exists already
+	additional_args="-g $group"
+    fi
+    
+    /usr/sbin/useradd -c "AllegroGraph" -d /var/lib/agraph -r $additional_args $user
+}
+
+function setup_superuser {
+    local name=$1
+    local pw=$2
+
+    mkdir -p $settingsdir/user
+    # Bash's built-in echo command will be used so the password
+    # will not appear on in 'ps' output.
+    echo '(#x'`echo -n agraph:$name:$pw | sha1sum | sed 's/\(\S*\).*/\1/'`' (:super) nil nil nil)' > $settingsdir/user/$name
+}
+
+function configure_welcome {
+    cat <<EOF
+
+Welcome to the AllegroGraph configuration program.  This script will
+help you establish a baseline AllegroGraph configuration. 
+
+You will be prompted for a few settings.  In most cases, you can hit return
+to accept the default value.
+
+EOF
+}
+
+function configure_init {
+    if [ -f /usr/bin/configure-agraph  -a "$0" -ef /usr/bin/configure-agraph ]; then
+        rpminstall=t
+    fi
+    
+    if [ `id -u` = 0 ]; then
+        root=t
+    fi
+    
+    if [ "$root" -a "$rpminstall" ]; then
+    # RPM-install, running as root.  Use the standard config
+        configfile=/etc/agraph/agraph.cfg
+        datadir=/var/lib/agraph
+        logdir=/var/log/agraph
+        pidfile=/var/run/agraph/agraph.pid
+    elif [ "$rpminstall" ]; then
+    # RPM-install but not running as root.
+        basedir=~/agraph
+        configfile="$basedir/etc/agraph.cfg"
+        datadir="$basedir/data"
+        logdir="$basedir/log"
+        pidfile="$datadir/agraph.pid"
+    else
+    # Tarball install.  Use the location of this script to determine
+    # default paths.
+        libdir="`dirname $0`"
+        basedir="$libdir/.."
+        pushd $basedir >/dev/null
+        basedir=`pwd`
+        popd >/dev/null
+        configfile="$libdir/agraph.cfg"
+        datadir="$basedir/data"
+        logdir="$basedir/log"
+        pidfile="$datadir/agraph.pid"
+    fi
+    interactive=1
+    superuser=super
+    instancetimeout=604800
+    port=10035
+    create=1
+}
+
+function usage {
+    cat <<EOF
+Usage: $0 [OPTIONS]
+
+This script is typically run without arguments, in which case it will
+prompt you for values to interactively set up an AllegroGraph
+configuration.
+
+To use the script for configuring AllegroGraph without user
+interaction, pass the --non-interactive option, and use the following
+options to set your parameters:
+
+  --config-file <path>
+      Location of the configuration file to create.
+      (defaults to $configfile)
+  --data-dir <path>
+      Directory to store data and settings.
+      (defaults to $datadir)
+  --log-dir <path>
+      Directory to write log files.
+      (defaults to $logdir)
+  --pid-file <path>
+      Where to store the AllegroGraph PID file.
+      (defaults to $pidfile)
+  --port <number>
+      Port number on which AllegroGraph runs its HTTP server.
+      (defaults to 10035)
+  --runas-user <user>
+      Which user to run the server under. Only applicable when
+      starting AllegroGraph as root.
+  --create-runas-user
+      Tells the script to create the user named in --runas-user if it
+      does not already exists.
+  --super-user <name>
+      Name of AllegroGraph-internal user that gets super user
+      privileges. Defaults to 'super'.
+  --super-password <password>
+      Password of this super user.
+  --super-password-file <path>
+      Allows you to specify a file containing the super user password,
+      so that it doesn't appear in the command line.
+  --instance-timeout <seconds>
+      Number of seconds instances linger when no client has the
+      corresponding repository open.
+      (defaults to $instancetimeout seconds)
+  --no-create
+      Do not attempt to create local files/directories as a part
+      of generating agraph.cfg. Useful if generating a config file
+      intended for another host.
+EOF
+    exit 1
+}
+
+function agraph_usage {
+    echo
+    echo "You can start AllegroGraph by running: "
+    if [ "$rpminstall" -a "$root" ]; then
+        echo /sbin/service agraph start
+    elif [ "$rpminstall" ]; then
+        echo /usr/bin/agraph-control --config $configfile start
+    else 
+        echo $basedir/bin/agraph-control --config $configfile start
+    fi
+    
+    echo
+    
+    echo "You can stop AllegroGraph by running: "
+    if [ "$rpminstall" -a "$root" ]; then
+        echo /sbin/service agraph stop
+    elif [ "$rpminstall" ]; then
+        echo /usr/bin/agraph-control --config $configfile stop
+    else 
+        echo $basedir/bin/agraph-control --config $configfile stop
+    fi
+}
+
+if [ $(uname -m) != x86_64 ]; then
+    echo AllegroGraph Server requires 64-bit Linux
+    exit 1
+fi
+
+configure_init
+
+while [ $# -gt 0 ] ; do
+    case "$1" in
+        --config-file)
+            shift
+            configfile="$1"
+            shift
+            ;;
+	# Undocumented. --config-file merely sets the default location
+	# when asking the user where to save the new config file.
+	# --config-file-np (no-prompt) saves the new config to the
+	# indicated location w/o prompting the user.
+	# This command is used by install-agraph for cluster installs,
+	# in order to generate an agraph.cfg in a known location
+	# that it can then copy to each node.
+	--config-file-np)
+	    shift
+	    configfile="$1"
+	    configfilenp="t"
+	    shift
+	    ;;
+        --data-dir)
+            shift
+            datadir="$1"
+            shift
+            ;;
+        --log-dir)
+            shift
+            logdir="$1"
+            shift
+            ;;
+        --pid-file)
+            shift
+            pidfile="$1"
+            shift
+            ;;
+        --port)
+            shift
+            port="$1"
+            shift
+	    if ! valid_port_number "$port"; then
+		usage
+	    fi
+            ;;
+        --runas-user)
+            shift
+            runas="$1"
+            shift
+            ;;
+        --create-runas-user)
+            shift
+            createuser=1
+            ;;
+        --super-user)
+            shift
+            superuser="$1"
+            shift
+            ;;
+        --super-password)
+            shift
+            superpw="$1"
+            shift
+            passwordconfigured=1
+            ;;
+        --super-password-file)
+            shift
+            superpw="`head -1 $1`"
+            shift
+            passwordconfigured=1
+            ;;
+        --instance-timeout)
+            shift
+            instancetimeout="$1"
+            shift
+            ;;
+        --non-interactive)
+            shift
+            interactive=0
+            ;;
+	--no-create)
+	    shift
+	    create=0
+	    ;;
+        *)
+            echo "Unknown option: $1"
+            usage
+            ;;
+    esac
+done
+
+if [ $interactive -eq 1 ]; then
+
+    configure_welcome
+
+    if [ "$configfilenp" != "t" ]; then 
+	prompt_for_path_and_create file configfile \
+             "Location of configuration file to create" "$configfile"
+    fi
+
+    if [ -f "$configfile" ]; then
+        cat <<EOF
+
+It appears that you already have an AllegroGraph configuration file:
+$configfile
+EOF
+        if ! y_or_n "Would you like to overwrite it with a new configuration?" n; then
+	    echo Not overwriting existing configuration\; installation complete.
+            agraph_usage
+	    exit 1
+        fi
+    fi
+
+    prompt_for_path_and_create dir datadir \
+        "Directory to store data and settings" "$datadir"
+    prompt_for_path_and_create dir logdir \
+        "Directory to store log files" "$logdir"
+    prompt_for_path_and_create file pidfile \
+        "Location of file to write server process id" "$pidfile"
+    port_mode=t
+    get_answer port "Port" $port
+    port_mode=
+
+    if [ "$root" ]; then
+        get_answer runas "User to run as" agraph
+    
+        if [ "$create" != "0" ] && ! id $runas >/dev/null 2>&1; then
+	    cat <<EOF
+
+User '$runas' doesn't exist on this system. 
+EOF
+	    while true; do
+	        get_answer create_runas "Create $runas user" y
+	        case "$create_runas" in
+		        y)
+                            createuser=1
+		            break
+		            ;;
+		        n)
+		            break
+		            ;;
+		        *)
+		            echo "Please answer y or n"
+		            ;;
+	        esac
+	    done
+        fi
+    fi
+
+    cat <<EOF
+
+Now you must set up an initial user account for AllegroGraph.  This
+account will have "super user" privileges in AllegroGraph.
+
+EOF
+
+    get_answer superuser "SuperUser account name" super
+    while true; do
+        password_mode=t
+        get_answer superpw  "SuperUser account password"
+        password_mode=t
+        get_answer superpw2  "SuperUser account password (again)"
+        if [ "$superpw" = "$superpw2" ]; then
+	    break
+        else
+	    echo "Passwords must match"
+        fi
+    done
+    passwordconfigured=1
+
+    get_answer instancetimeout "Instance timeout seconds" "$instancetimeout"
+
+else
+    if [ ! "$passwordconfigured" ]; then
+        cat <<EOF
+Please specify one of the --super-password or --super-password-file
+options. These are needed to configure a super user account.
+EOF
+        exit 1
+    fi
+
+    if [ "$root" -a ! "$runas" ]; then
+        cat <<EOF
+To run AllegroGraph as root, you have to specify the --runas-user
+option.
+EOF
+        exit 1
+    fi
+
+    non_interactive_verify_dir "`dirname $configfile`"
+    non_interactive_verify_dir "$datadir"
+    non_interactive_verify_dir "$logdir"
+    non_interactive_verify_dir "`dirname $pidfile`"
+fi # end of [ $interactive -eq 1 ]
+
+settingsdir="$datadir/settings"
+
+if [ -n "$runas" -a -n "$createuser" -a -n "$root" ]; then
+    if ! id $runas >/dev/null 2>&1; then
+        create_user $runas
+    fi
+fi
+if [ "$create" = "1" ] && [ -n "$passwordconfigured" ]; then
+    setup_superuser $superuser $superpw
+fi
+
+echo "# AllegroGraph configuration file" > $configfile
+
+if [ "$runas" ]; then
+    echo RunAs $runas >> $configfile
+fi
+
+if [ "$create" = "0" ] && [ -n "$passwordconfigured" ]; then
+    echo Super $superuser:$superpw >> $configfile
+fi
+
+cat <<EOF >>$configfile
+Port $port
+SettingsDirectory $settingsdir
+LogDir $logdir
+PidFile $pidfile
+InstanceTimeout $instancetimeout
+
+<RootCatalog>
+ Main $datadir/rootcatalog
+</RootCatalog>
+
+<SystemCatalog>
+ Main $datadir/systemcatalog
+ InstanceTimeout 10
+</SystemCatalog>
+EOF
+    
+cat <<EOF
+
+$configfile has been created.  
+
+If desired, you may modify the configuration.  When you are satisfied,
+you may start the agraph service.
+EOF
+
+agraph_usage
+exit 0

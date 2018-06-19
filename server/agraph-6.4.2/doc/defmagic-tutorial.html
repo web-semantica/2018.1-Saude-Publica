@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Defining Magic Properties | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<link rel='stylesheet' href='sparql.css' />
+<body id="defining-magic-properties"><div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>         <h1>Defining Magic Properties</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a>
+<ul>
+<li><a href='#header3-20' title='Details on Arguments'>Details on Arguments</a></li></ul></li>
+<li><a href='#header2-41' title='Magic Property Machinery'>Magic Property Machinery</a>
+<ul>
+<li><a href='#header3-45' title='Datatypes'>Datatypes</a></li>
+<li><a href='#header3-53' title='Body output handling'>Body output handling</a></li></ul></li>
+<li><a href='#header2-75' title='More advanced customization'>More advanced customization</a>
+<ul>
+<li><a href='#header3-77' title='pattern-size-estimator and set-size-estimator'>pattern-size-estimator and set-size-estimator</a></li>
+<li><a href='#header3-81' title='validation-function'>validation-function</a></li>
+<li><a href='#header3-85' title='allow-object-arguments-to-be-unbound?'>allow-object-arguments-to-be-unbound?</a></li></ul></li>
+<li><a href='#header2-87' title='More examples'>More examples</a>
+<ul>
+<li><a href='#header3-88' title='All Pairs'>All Pairs</a></li>
+<li><a href='#header3-99' title='Rest and keyword arguments'>Rest and keyword arguments</a></li>
+<li><a href='#header3-112' title='Connecting an existing function to a Magic Property'>Connecting an existing function to a Magic Property</a></li></ul></li>
+<li><a href='#header2-122' title='Summary'>Summary</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>This tutorial assumes that you already know what <a href="magic-properties.html">SPARQL Magic Properties</a> are and have seen them used in other places in AllegroGraph. </p><p>Recall that a Magic Property associates a predicate URI with Lisp code that executes during a SPARQL query. </p><p>SPARQL syntax means that a Magic Property Looks sort of like a function call with multiple values on the subject side and object side. For example, the freetext index <code>match</code> Magic Property does a freetext search for a phrase (with the search optionally restricted to a particular index) and binds the <code>?subject</code> variable to the subject of each matching triple: </p>
+<pre><code> ?subject fti:match ( 'phrase' 'indexName' ) . </code></pre><p>To define a Magic Property, we need to specify the <em>arguments</em> it takes on the subject side and the object side and the Lisp code that it should execute. As a toy example, suppose we wanted a Magic Property that would iterate over the letters in a string. The SPARQL query would look like: </p>
+<pre><code> select ?letter {  
+   ?letter &lt;http://example.org/lettersOf&gt; 'abc' .  
+ } </code></pre><p>with the expected output being: </p>
+<pre><code>------------  
+| letter   |  
+============  
+| a        |  
+| b        |  
+| c        |  
+------------ </code></pre><p>This Magic Property has one argument on the subject side and one argument on the object side. Here is how to define it: </p>
+<pre><code>(ag.sbqe:defmagic-property !&lt;http://example.org/lettersOf&gt;  
+  :subject-arguments (letter)  
+  :object-arguments (word)  
+  :body (loop for element across word collect element)) </code></pre><p>Note that the <code>subject-argument</code> <code>letter</code> is still used even though <code>body</code> does not reference it. AllegroGraph uses <code>letter</code> both to determine the output of this magic property and to potentially filter the results (see <em>Body Output Handling</em> below for details on automatic filtering). </p><a name='header3-20' id='header3-20'></a><h3>Details on Arguments</h3><p>Both <code>subject-arguments</code> and <code>object-arguments</code> have the form </p>
+<pre><code>(argument* [&amp;rest variable-name] | [&amp;key argument* [&amp;allow-other-keys]]) </code></pre><p>Each <code>argument</code> can be a symbol naming the argument or a list consisting of </p>
+<pre><code>(argument-name [optional] [input] [:type &lt;TYPE&gt;]) </code></pre><p>Where <code>optional</code> indicates that the argument can be left off and <code>input</code> indicates that the value must be bound when the Magic Property executes (i.e., it is only an input). By default, all <code>object-arguments</code> will treated as <code>input</code> (see below for how to change this). Either <code>&amp;rest</code> or <code>&amp;key</code> may be specified but not both. </p><p>Here is an example of a Magic Property with an <code>optional</code> argument: </p>
+<pre><code>(ag.sbqe:defmagic-property !&lt;http://example.org/iterate&gt;  
+  :subject-arguments ((value :type numeric))  
+  :object-arguments (start end (step optional))  
+  :body (loop for index from start to end by (or step 1) collect index)) </code></pre><p>We've also indicated that the <code>type</code> of the subject argument is <code>:numeric</code>. We'll discuss datatypes in more detail below. This property can be used like this </p>
+<pre><code>select ?elt { ?elt &lt;http://example.org/iterate&gt; (1 4) . } </code></pre><p>Which will output: </p>
+<pre><code>---------  
+| elt   |  
+=========  
+| 1     |  
+| 2     |  
+| 3     |  
+| 4     |  
+--------- </code></pre><p>It can also be used like this: </p>
+<pre><code>select ?elt { ?elt &lt;http://example.org/iterate&gt; (1 4 2) . } </code></pre><p>Which will output: </p>
+<pre><code>---------  
+| elt   |  
+=========  
+| 1     |  
+| 3     |  
+--------- </code></pre><p>Note that filtering happens automatically too. Look at the following query: </p>
+<pre><code># We use BIND so that the variable `?elt` will still appear  
+# in the output  
+select ?elt {  
+  bind(1 as ?elt)  
+  ?elt &lt;http://example.org/iterate&gt; (1 4 2) .  
+} </code></pre><p>Which will output: </p>
+<pre><code>---------  
+| elt   |  
+=========  
+| 1     |  
+--------- </code></pre><p>The property still generated <code>3</code> as a binding for <code>?elt</code> but the as <code>?elt</code> was already bound to <code>1</code>, this binding was dropped. </p><a name='header2-41' id='header2-41'></a><h2>Magic Property Machinery</h2><p>The SPARQL query engine uses UPIs internally and bases most of its processing on the AllegroGraph cursor machinery. The <code>defmagic-property</code> macro hides most of these details in two ways: </p><p>1 Depending on the datatype of the argument, it converts UPIs into   Lisp values. For example, an encoded long or double-float UPI will   be converted into a number and a date-time UPI will be converted   into a <code>cons</code> of a Lisp universal time and the timezone information. <br />
+<a name="fnr0-2018-06-08" id="fnr0-2018-06-08"></a>
+<sup><a href="#fn0-2018-06-08">1</a></sup>  </p><p>2 The output of the body is converted back into a cursor that the   query engine can use. </p><a name='header3-45' id='header3-45'></a><h3>Datatypes</h3><p>Each value may be coerced from a UPI to a Lisp datatype depending on the datatype of the variable. If no datatype is specified, then the default behavior is based on the UPI's type-code: </p>
+<ul>
+<li>:numeric - output is a Lisp number,</li>
+<li>:boolean - output is Lisp <code>t</code> or <code>nil</code>,</li>
+<li>:resource, :blank, :default-graph, :gensym - output remains a UPI,</li>
+<li>:literal - Output is a string (using upi-&gt;value)</li>
+<li>Other - Output is via upi-&gt;value.</li></ul><p>Note that the behavior is currently unspecified if the datatype and the actual value clash. E.g., if you claim that an argument has <code>:type</code> <code>:numeric</code> and a non-numeric value is encountered during query processing. </p><a name='header3-53' id='header3-53'></a><h3>Body output handling</h3><p><code>body</code> should return something that AllegroGraph can use to create bindings for the <code>subject-arguments</code>. The result can be one of these four things: </p>
+<ul>
+<li>a single value,</li>
+<li>a list of values,</li>
+<li>a list of lists (of values),</li>
+<li>a generator function (advanced usage and described only briefly in this tutorial).</li>
+<li>a cursor (advanced usage and described only briefly in this tutorial).</li></ul><p>In the first four cases, the output will be transformed into a cursor that can be used by the query engine. Lisp values will be converted back into UPIs as follows: </p>
+<ul>
+<li><code>nil</code> : the boolean false UPI,</li>
+<li><code>t</code>   : the boolean true UPI,</li>
+<li>fixnum : integer UPI,</li>
+<li>other number : double-float UPI,</li>
+<li>string : literal UPI,</li>
+<li>character : literal UPI.</li>
+<li>UPI : will stay a UPI.</li>
+<li><code>:undef</code> : the <code>nil</code> UPI which is treated by the SPARQL engine as unbound.</li></ul><p>If you use a generator function, each call to it should return a row of results. This row will be treated as above where the values in the row will be coerced into UPIs and placed into the appropriate subject arguments. </p><p>Note that any supplied subject arguments will act as filters on the output -- you do not need to worry about this yourself (see the <code>&lt;http://example.org/allPairs&gt;</code> example below). </p><p>The output of <code>body</code> should be able to supply bindings for every <code>subject-argument</code>. This means that when there are multiple <code>subject-arguments</code>, <code>body</code> should output either a cursor or a list of lists with each sublist having the same length as the number of <code>subject-arguments</code>. The entries in the sublists will be bound to each subject argument in order. E.g., if the property has subject arguments: <code>entry</code>, <code>score</code>, <code>weight</code>, then the output of body should look like: </p>
+<pre><code>  entry         score    weight  
+((!&lt;http://test1&gt; 1.1      34.7)  
+ (!&lt;http://test2&gt; 2.3       4.5)  
+ ...  
+) </code></pre><p>and these lists will create bindings for the variables in their column. </p><p>If these sublists are too short, then some subject-arguments will be unbound. If the sublists are too long, then items beyond the number of subject variables will be ignored. </p><a name='header2-75' id='header2-75'></a><h2>More advanced customization</h2><p>These parameters can generally be left off. </p><a name='header3-77' id='header3-77'></a><h3>pattern-size-estimator and set-size-estimator</h3><p>You may supply <code>pattern-size-estimator</code> or <code>set-size-estimator</code> to <code>defmagic-property</code>.  These can either be numbers or symbols naming functions that take </p>
+<pre><code>db implementor method pattern </code></pre><p>as arguments. The <code>pattern-size-estimator</code> should return an estimate of how much work the magic property will require to evaluate <code>pattern</code> in terms of the number of rows a triple cursor would need to examine. The <code>set-size-estimator</code> should return an estimate of how large the resulting set will be. These values are used during query planning when reordering the clauses of a SPARQL BGP. It is often hard to provide good estimates of the work involved. </p><a name='header3-81' id='header3-81'></a><h3>validation-function</h3><p>You may supply a <code>validation-function</code> to <code>defmagic-property</code>.  If supplied, It must be a symbol naming a function with signature: </p>
+<pre><code>magic-property arguments </code></pre><p>This function will be called at plan time and may signal an error if the property cannot function with the supplied arguments. For example, AllegroGraph's <code>fti:match</code> Magic Property will signal an error at plan time if the triple-store has no <code>i</code> index since the lack of such an index will make the query perform exceedingly poorly. </p><a name='header3-85' id='header3-85'></a><h3>allow-object-arguments-to-be-unbound?</h3><p>We mentioned above that all <code>object-arguments</code> will be treated as <code>input</code> which means that an error will be signaled if they are not bound at query time. If the <code>allow-object-arguments-to-be-unbound?</code> parameter is <code>t</code> then this rule will no longer be enforced. This can be useful if the code in the <code>body</code> can handle unbound values.  The <code>&lt;http://franz.com/ns/allegrograph/4.0/tripleId&gt;</code> example below will illustrate this. </p><a name='header2-87' id='header2-87'></a><h2>More examples</h2><a name='header3-88' id='header3-88'></a><h3>All Pairs</h3><p>Here is a Magic Property that iterates over all the pairs of the letters of two strings. E.g., allPairs of 'ab' and 'xyz' will be ('a' 'x'), ('a' 'y'), ('a' 'z'), ('b' 'x'), ('b' 'y'), and ('b' 'z'). It has two subject-arguments and two object arguments: </p>
+<pre><code>(ag.sbqe:defmagic-property !&lt;http://example.org/allPairs&gt;  
+  :subject-arguments (a b)  
+  :object-arguments (word1 word2)  
+  :body (loop for letter1 across word1 append  
+          (loop for letter2 across word2 collect  
+            (list letter1 letter2)))) </code></pre><p>This SPARQL query provdes the same answer as we wrote out above </p>
+<pre><code>select ?a ?b { (?a ?b) &lt;http://example.org/allPairs&gt; ('ab' 'xyz') . }  
+ 
+-------------  
+| a   | b   |  
+=============  
+| a   | x   |  
+| a   | y   |  
+| a   | z   |  
+| b   | x   |  
+| b   | y   |  
+| b   | z   |  
+------------- </code></pre><p>Note what happens if we <em>fill in</em> one of the subject arguments by replacing <code>?b</code> with <code>'y'</code>: </p>
+<pre><code>select ?a ?b {  
+  bind('y' as ?b)  
+  (?a ?b) &lt;http://example.org/allPairs&gt; ('ab' 'xyz') .  
+}  
+-------------  
+| a   | b   |  
+=============  
+| a   | y   |  
+| b   | y   |  
+------------- </code></pre><p>The filtering happened automatically. We could also do </p>
+<pre><code># No bindings for `?b` anymore  
+select ?a {  
+  (?a ?b) &lt;http://example.org/allPairs&gt; ('ab' 'xyz') .  
+} </code></pre><p>to get </p>
+<pre><code>-------  
+| a   |  
+=======  
+| a   |  
+| b   |  
+------- </code></pre><a name='header3-99' id='header3-99'></a><h3>Rest and keyword arguments</h3><p>Here is a magic property that uses keyword arguments: </p>
+<pre><code>(ag.sbqe:defmagic-property !&lt;ex://#divide&gt;  
+    :subject-arguments (answer)  
+    :object-arguments (&amp;key (numerator :type numeric) (denominator :type :numeric))  
+    :body (/ numerator denominator)) </code></pre><p>Keyword arguments are URIs that start with <code>http://franz.com/ns/keyword#</code>. Here are two ways of asking the same question using the <code>&lt;ex://#divide&gt;</code> magic property: </p>
+<pre><code>prefix : &lt;http://franz.com/ns/keyword#&gt;  
+select * {  
+  ?a &lt;ex://#divide&gt; (:numerator 4 :denominator 2) .  
+} </code></pre><p>or </p>
+<pre><code>prefix : &lt;http://franz.com/ns/keyword#&gt;  
+select * {  
+  ?a &lt;ex://#divide&gt; (:denominator 2 :numerator 4 ) .  
+} </code></pre><p>AllegroGraph ensures that <code>numerator</code> and <code>demoninator</code> are bound correctly based on the keyword names. </p><p>Magic properties also support <code>&amp;rest</code> parameters. For example: </p>
+<pre><code>(ag.sbqe:defmagic-property !&lt;ex://#multiply&gt;  
+    :subject-arguments (answer)  
+    :object-arguments (&amp;rest values)  
+    :body (apply #'* values)) </code></pre><p>This can be queried as so: </p>
+<pre><code>select * {  
+  ?answer &lt;ex://#multiply&gt; (1 2 3 4 5)  
+} </code></pre><p>Note that the values from the query will be coerced as if they had an unspecified datatype. See the discussion on datatypes above for details. </p><a name='header3-112' id='header3-112'></a><h3>Connecting an existing function to a Magic Property</h3><p>Suppose we have this function: </p>
+<pre><code>(defun get-github-project-names (user)  
+  ;; returns a list of lists of (&lt;repository name&gt; &lt;description&gt;)  
+  ;; for github user `user`.  
+  (loop for repo across  
+     (db.agraph.parser:read-json-into-lists  
+       (net.aserve.client:do-http-request  
+        (string+ "https://api.github.com/users/" user "/repos")  
+        :user-agent "ACL"))  
+    collect  
+    (list (cdr (assoc :name repo)) (cdr (assoc :description repo))))) </code></pre><p>Here is a Magic Property that will call the function at query time: </p>
+<pre><code>(ag.sbqe:defmagic-property !&lt;http://example.org/githubRepos&gt;  
+    :subject-arguments (project (description optional))  
+    :object-arguments ((user :type :string))  
+    :body (get-github-project-names user)) </code></pre><p>For example: </p>
+<pre><code>select * { ?repo &lt;http://example.org/githubRepos&gt; 'gwkkwg' } </code></pre><p>Will return </p>
+<pre><code>---------------------------  
+| repo                    |  
+===========================  
+| asdf-install            |  
+| asdf-system-connections |  
+| cl-containers           |  
+| cl-graph                |  
+| cl-html-parse           |  
+| cl-markdown             |  
+| cl-mathstats            |  
+| clnuplot                |  
+| dynamic-classes         |  
+| lift                    |  
+...  
+| trivial-shell           |  
+| trivial-timeout         |  
+--------------------------- </code></pre> <a name='header2-122' id='header2-122'></a><h2>Summary</h2><p><code>defmagic-property</code> makes it easy to connect Lisp code into the SPARQL query engine. Your feedback is welcome. </p><p> </p><hr/><div id="footnotes"> <h2>Footnotes</h2>
+<div class="footnotes">
+<ol>
+<li>
+<a name="fn0-2018-06-08" id="fn0-2018-06-08"></a>
+See the discussion of time and timezones in <a href="lisp-reference.html#function.upi-:3Evalue">upi-&gt;value</a>   and <a href="lisp-reference.html#function.value-:3Eupi">value-&gt;upi</a> for more details. <a href="#fnr0-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 1 in the text">&#8617;</a></li>
+</ol>
+</div>  </div>  </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

@@ -1,0 +1,253 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Example 16: Federated repositories &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example 17: Triple attributes" href="example017.html" />
+    <link rel="prev" title="Example 15: Range queries" href="example015.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+        &laquo;<a href="example015.html" title="previous chapter">Example 15: Range queries</a>
+      <a href="example017.html" title="next chapter">Example 17: Triple attributes</a> 
+      &raquo;
+    </div>
+  
+    
+  <div class="section" id="example-16-federated-repositories">
+<span id="example16"></span><h1>Example 16: Federated repositories<a class="headerlink" href="#example-16-federated-repositories" title="Permalink to this headline">¶</a></h1>
+<p>AllegroGraph lets you split up your triples among repositories on
+multiple servers and then search them all in parallel. To do this we
+query a single “federated” repository that automatically distributes
+the queries to the secondary repositories and combines the
+results. From the point of view of your Python code, it looks like you
+are working with a single repository.</p>
+<p>To illustrate this, let us first create two repositories and import
+some data. The data will represent positive numbers below 15. The
+first repository will contain all Fibonacci numbers in that range,
+while the second one will contain all other numbers.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.connect</span> <span class="kn">import</span> <span class="n">ag_connect</span>
+
+<span class="k">with</span> <span class="n">ag_connect</span><span class="p">(</span><span class="s1">&#39;python_fib&#39;</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">@prefix</span><span class="w"> </span><span class="nn">:</span><span class="w"> </span><span class="nv">&lt;ex://&gt;</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+
+<span class="w">        </span><span class="nn">:</span><span class="nt">one</span><span class="w"> </span><span class="nn">:</span><span class="nt">value</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">        </span><span class="nn">:</span><span class="nt">two</span><span class="w"> </span><span class="nn">:</span><span class="nt">value</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">        </span><span class="nn">:</span><span class="nt">three</span><span class="w"> </span><span class="nn">:</span><span class="nt">value</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">        </span><span class="nn">:</span><span class="nt">five</span><span class="w"> </span><span class="nn">:</span><span class="nt">value</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">        </span><span class="nn">:</span><span class="nt">eight</span><span class="w"> </span><span class="nn">:</span><span class="nt">value</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">        </span><span class="nn">:</span><span class="nt">thirteen</span><span class="w"> </span><span class="nn">:</span><span class="nt">value</span><span class="w"> </span><span class="mi">13</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">ag_connect</span><span class="p">(</span><span class="s1">&#39;python_boring&#39;</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">@prefix</span><span class="w"> </span><span class="nn">:</span><span class="w"> </span><span class="nv">&lt;ex://&gt;</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+
+<span class="w">        </span><span class="nn">:</span><span class="nt">four</span><span class="w"> </span><span class="nn">:</span><span class="nt">value</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">        </span><span class="nn">:</span><span class="nt">six</span><span class="w"> </span><span class="nn">:</span><span class="nt">value</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">        </span><span class="nn">:</span><span class="nt">seven</span><span class="w"> </span><span class="nn">:</span><span class="nt">value</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">        </span><span class="nn">:</span><span class="nt">nine</span><span class="w"> </span><span class="nn">:</span><span class="nt">value</span><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">        </span><span class="nn">:</span><span class="nt">ten</span><span class="w"> </span><span class="nn">:</span><span class="nt">value</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">        </span><span class="nn">:</span><span class="nt">eleven</span><span class="w"> </span><span class="nn">:</span><span class="nt">value</span><span class="w"> </span><span class="mi">11</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">        </span><span class="nn">:</span><span class="nt">twelve</span><span class="w"> </span><span class="nn">:</span><span class="nt">value</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">        </span><span class="nn">:</span><span class="nt">fourteen</span><span class="w"> </span><span class="nn">:</span><span class="nt">value</span><span class="w"> </span><span class="mi">14</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">        </span><span class="nn">:</span><span class="nt">fifteen</span><span class="w"> </span><span class="nn">:</span><span class="nt">value</span><span class="w"> </span><span class="mi">15</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To create a federated repository, we first have to connect to the
+server that will be used to aggregate results. We do this by creating
+an <a class="reference internal" href="../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer"><code class="xref py py-class docutils literal"><span class="pre">AllegroGraphServer</span></code></a> instance.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.sail.allegrographserver</span> <span class="kn">import</span> <span class="n">AllegroGraphServer</span>
+
+<span class="n">server</span> <span class="o">=</span> <span class="n">AllegroGraphServer</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We are using default server address and credentials, as described in
+the <a class="reference internal" href="setup.html#setup"><span class="std std-ref">Setting the environment for the tutorial</span></a> section of the tutorial.</p>
+<p>The next step is to use the <a class="reference internal" href="../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.openFederated" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.openFederated"><code class="xref py py-meth docutils literal"><span class="pre">openFederated()</span></code></a>
+method to create a federated session. We will pass the list of
+repositories to federate as an argument. Elements of this list could
+be</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository" title="franz.openrdf.repository.repository.Repository"><code class="xref py py-class docutils literal"><span class="pre">Repository</span></code></a> objects</li>
+<li><a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection"><code class="xref py py-class docutils literal"><span class="pre">RepositoryConnection</span></code></a> objects</li>
+<li>strings (naming a store in the root catalog, or the URL of a
+store)</li>
+<li>(storename, catalogname) tuples.</li>
+</ul>
+</div></blockquote>
+<p>We’ll use the third option</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">conn</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">openFederated</span><span class="p">([</span><span class="s1">&#39;python_fib&#39;</span><span class="p">,</span> <span class="s1">&#39;python_boring&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Now we can query the combined repository.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">prepareTupleQuery</span><span class="p">(</span><span class="na">query</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+    <span class="k">select</span> <span class="p">(</span><span class="nf">avg</span><span class="p">(</span><span class="nv">?v</span><span class="p">)</span> <span class="k">as</span> <span class="nv">?avg</span><span class="p">)</span>
+           <span class="p">(</span><span class="nf">min</span><span class="p">(</span><span class="nv">?v</span><span class="p">)</span> <span class="k">as</span> <span class="nv">?min</span><span class="p">)</span>
+           <span class="p">(</span><span class="nf">max</span><span class="p">(</span><span class="nv">?v</span><span class="p">)</span> <span class="k">as</span> <span class="nv">?max</span><span class="p">)</span> <span class="k">where</span> <span class="p">{</span>
+       <span class="nv">?number</span> <span class="nl">&lt;ex://value&gt;</span> <span class="nv">?v</span> <span class="p">.</span>
+    <span class="p">}</span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="n">query</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As we can see, data from both repositories has been returned and
+aggregates have been correctly computed over the whole dataset.</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>-------------------
+| avg | min | max |
+===================
+| 8.0 | 1   | 15  |
+-------------------
+</pre></div>
+</div>
+<p>Another example of using federated repositories, this time with
+multiple server machines, can be found in <a class="reference internal" href="fedex.html#fedex"><span class="std std-ref">Running AG on AWS EC2</span></a>.</p>
+</div>
+
+
+  
+    <div class="nav-links nav-links-footer">
+        &laquo;<a href="example015.html" title="previous chapter">Example 15: Range queries</a>
+      <a href="example017.html" title="next chapter">Example 17: Triple attributes</a> 
+      &raquo;
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#setting-the-environment-for-the-tutorial">Setting the environment for the tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#terminology">Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#creating-users-with-webview">Creating Users with WebView</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example001.html">Example 1: Creating a repository and triple indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example002.html">Example 2: Asserting and retracting triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example003.html">Example 3: A SPARQL query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example004.html">Example 4: Statement matching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example005.html">Example 5: Literal values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example006.html">Example 6: Importing triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example007.html">Example 7: Querying multiple contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example008.html">Example 8: Exporting triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example009.html">Example 9: Exporting query results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example010.html">Example 10: Graphs in SPARQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example011.html">Example 11: Namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example012.html">Example 12: Free Text indexing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example013.html">Example 13: SPARQL query forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example014.html">Example 14: Parametric queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example015.html">Example 15: Range queries</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Example 16: Federated repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example017.html">Example 17: Triple attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example018.html">Example 18: Pandas support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fedex.html">Running AG on AWS EC2</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../tutorial.html">Tutorial</a><ul>
+      <li>Previous: <a href="example015.html" title="previous chapter">Example 15: Range queries</a></li>
+      <li>Next: <a href="example017.html" title="next chapter">Example 17: Triple attributes</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/tutorial/example016.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

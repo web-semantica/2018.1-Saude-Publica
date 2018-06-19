@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Server configuration and control | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="daemon-config"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>      <h1>AllegroGraph 6.4.2 Server Configuration and Control</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-5' title='Introduction'>Introduction</a>
+<ul>
+<li><a href='#header3-8' title='Argument notation'>Argument notation</a></li></ul></li>
+<li><a href='#header2-20' title='Server configuration'>Server configuration</a></li>
+<li><a href='#header2-26' title='BaseDir directive'>BaseDir directive</a></li>
+<li><a href='#header2-31' title='Top-level directives'>Top-level directives</a>
+<ul>
+<li><a href='#header3-116' title='Session directives'>Session directives</a></li>
+<li><a href='#header3-133' title='Top-level directives for SSL client certificate authentication'>Top-level directives for SSL client certificate authentication</a></li>
+<li><a href='#header3-151' title='Top-level directives for account management'>Top-level directives for account management</a></li>
+<li><a href='#header3-192' title='Top-level directives for multi-master replication clusters'>Top-level directives for multi-master replication clusters</a></li>
+<li><a href='#header3-203' title='More on controlling memory usage'>More on controlling memory usage</a></li>
+<li><a href='#header3-218' title='CORS directives'>CORS directives</a></li></ul></li>
+<li><a href='#header2-251' title='Catalog definitions'>Catalog definitions</a></li>
+<li><a href='#header2-262' title='Catalog directives'>Catalog directives</a></li>
+<li><a href='#header2-315' title='Example Configuration'>Example Configuration</a></li>
+<li><a href='#header2-319' title='Changing database parameters'>Changing database parameters</a></li>
+<li><a href='#header2-327' title='Server control'>Server control</a></li>
+<li><a href='#header2-335' title='agraph-control'>agraph-control</a>
+<ul>
+<li><a href='#header3-339' title='Control options'>Control options</a></li>
+<li><a href='#header3-352' title='Control commands'>Control commands</a>
+<ul>
+<li><a href='#header4-365' title='AllegroGraph service daemon signal handling'>AllegroGraph service daemon signal handling</a></li>
+<li><a href='#header4-371' title='Exit Status'>Exit Status</a></li></ul></li>
+<li><a href='#header3-375' title='The agraph program'>The agraph program</a></li></ul></li>
+<li><a href='#header2-405' title='Troubleshooting'>Troubleshooting</a>
+<ul>
+<li><a href='#header3-406' title='Shared memory size and permission to use /dev/shm'>Shared memory size and permission to use /dev/shm</a></li></ul></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-5' id='header2-5'></a><h2>Introduction</h2><p>The AllegroGraph server is the running program which manages the various AllegroGraph repositories (also occasionally referred to as triple-stores or databases). The server must be set up as described in <a href="server-installation.html">Server Installation</a>. </p><p>This document describes server configuration <a href="daemon-config.html#server-configuration">below</a> and server control <a href="daemon-config.html#server-control">further below</a>. </p><a name='header3-8' id='header3-8'></a><h3>Argument notation</h3><p>The directives that go in the configuration file generally require an argument. We generally show the type of argument expected. Here are some common argument types: </p>
+<ul>
+<li><p>BOOLEAN: allowable values are <code>yes</code> and <code>no</code> (and also <code>y</code>, <code>t</code>, <code>true</code>,   or <code>1</code> for <code>yes</code> and <code>n</code>, <code>nil</code>, <code>false</code> or <code>0</code> for <code>no</code>). Values are   case-insensitive. </p></li>
+<li><p>PATHNAME: a pathname, usually to a directory and usually an absolute   pathname. </p></li>
+<li><p>FILE-PATHNAME: a pathname (usually absolute) of a file.</p></li>
+<li><p>INTEGER: an integer indicating the number permitted (such as for <code>Backends</code>)   or a numeric label (such as for <code>Port</code>). Negative integers and 0 are   not allowed unless the description says otherwise. </p></li>
+<li><p>TIME: a non-negative integer, which can be labeled with a units   indicator. An unlabeled integer is interpreted as a number of   seconds. Units indicators are 's', 'h', and 'd', meaning seconds,   hours, and days. So 100 and 100s both mean one hundred seconds, 25h is   twenty-five hours and 3d is three days. </p></li>
+<li><p>REGEXP: a regular expression.  Regular expression syntax is   described   <a href="https://franz.com/support/documentation/current/doc/regexp.htm#regexp-new-summary-2">here</a>. Regular   expressions can be specified to make case-insensitive matches. </p></li>
+<li><p>VALUE: a value specified in the directive description.</p></li></ul><p>Some directives (usually those identifying things) can be specified multiple times meaning any of the specified values can be used. The directive description will say whether it can be specified more than once. A few directives can have multiple values on one line, usually comma separated. </p><p>Directive values must not be quoted. Spaces are not allowed in directive values. </p><p><a name="server-configuration"></a> </p><a name='header2-20' id='header2-20'></a><h2>Server configuration</h2><p>The AllegroGraph server requires a configuration file in order to start up. Usually, this file is specified using the <code>--config</code> command-line argument. A minimal file could look like this: </p>
+<pre><code>SettingsDirectory /tmp/ag4/settings  
+SuperUser test:xyzzy  
+ 
+&lt;RootCatalog&gt;  
+  Main /tmp/ag4/root  
+&lt;/RootCatalog&gt; </code></pre><p>An AllegroGraph configuration file consists of a set of top-level directives, and one or more catalog definitions. The syntax is straight-forward: directives (both top-level and within a catalog definition) consist of an alphanumeric word, whitespace, and then the value of the directive. Indentation is ignored. A directive can span multiple lines by escaping newlines with a back-slash, in which case both the newline and the backslash will be treated as if they are not there. Catalog definitions are delimited by pseudo-XML markers like <code>&lt;RootCatalog&gt;</code>. Lines starting with a <code>#</code> are treated as comments. Each directive defining a parameter must be on its own single line (or multiple lines joined by backslashes as described above). Specifying more than one parameter on a single line will result in an error, or, possibly, in the first parameter being defined incorrectly and the remaining ones on the line not being defined at all. </p><p>The directories named in this file must either already exist and be writeable by the user running the server, or that user must be able to create them himself. You'll usually not want to use temporary paths as in the example, of course. </p><p><a name="BaseDir"></a> </p><a name='header2-26' id='header2-26'></a><h2>BaseDir directive</h2><p>Any relative path in the config file is initially resolved with respect to the directory containing the config file. If you specify another directory using the BaseDir directive, all subsequent relative paths are resolved relative to that directory. BaseDir can be specified as often as you like and can itself be a relative pathname (which will be resolved with using the BaseDir value in use, or, if not previously specified, with respect to the directory containing the config file). If BaseDir is specified multiple times, relative pathnames in other directives are resolved with respect to the most recent BaseDir value. </p>
+<dl><dt><code>BaseDir</code> PATHNAME </dt>
+<dd>A directory pathname which will be used to resolve relative pathnames in   subsequent directives in the config file. Can be specified multiple   times in the config file, with new values replacing older ones. See just   above for more details. </dd></dl><p><a name="TopLevel"></a> </p><a name='header2-31' id='header2-31'></a><h2>Top-level directives</h2>
+<dl><dt><code>SettingsDirectory</code> PATHNAME </dt>
+<dd>Required setting. Specifies the directory in which the server   stores persistent information such as user accounts. </dd><dt><code>AccessLogEnabled</code> BOOLEAN </dt>
+<dd>A boolean (<code>yes</code>/<code>no</code>) that can be used to enable logging of successful   HTTP(S) requests to a dedicated log file. </dd><dt><code>AccessLogDir</code> PATHNAME </dt>
+<dd>Directory in which the HTTP access log files are written.   Default is <code>LogDir</code>. </dd><dt><code>AccessLogFilePattern</code> VALUE </dt>
+<dd>A file name pattern with <code>strftime</code> style directives, to set up log rotation   for the HTTP access log. The pattern may contain spaces.   Default is <code>access-%Y%m%d.log</code> containing year, month and date. </dd><dt><code>AccessLogEntryFormat</code> VALUE </dt>
+<dd>A log format pattern using Apache style directives.   See <a href="http://httpd.apache.org/docs/current/mod/mod_log_config.html#formats">Apache documentation</a>   for a list of possible directives, most of which are supported.   The pattern may contain spaces. In case of invalid or unsupported   directives a warning will be logged to <code>agraph.log</code>. The logged value   for unsupported directives (e.g. <code>%l</code>) is a dash: <code>-</code>.   Default is the NCSA extended/combined log format:   `%h - %u %t "%r" %&gt;s %b "% i" "% i"` </dd><dt><code>AllowHTTP</code> BOOLEAN </dt>
+<dd>A boolean (<code>yes</code>/<code>no</code>) that can be used to turn off HTTP access to   the server. Default is <code>yes</code>. </dd><dt><code>Auditing</code> BOOLEAN </dt>
+<dd>A boolean (<code>yes</code>/<code>no</code>) that can be used to turn on <a href="audit.html">auditing</a>.   Default is <code>no</code>. </dd><dt><code>Backends</code> INTEGER </dt>
+<dd>Specifies the maximum number of processes spawned to handle HTTP   requests (note that session processes do not count toward this   limit). Default is 10. </dd><dt><code>EvalAllowed</code> BOOLEAN </dt>
+<dd>A switch to turn off <em>Evaluate arbitrary code</em> permissions globally.   If it is <code>yes</code> (the default), then the <em>Evaluate arbitrary code</em>   permission bits are in effect. If it is <code>no</code>, then arbitrary code   evaluation is disabled for all users (including superuser)   regardless of the value of a user's actual permissions. </dd><dt><code>HostName</code> HOST </dt>
+<dd>Determines the host on which the HTTP server listens. Can be left   out to have the server listen on all interfaces. Set to <code>localhost</code>   to listen only locally. </dd><dt><code>HTTPProxy</code> VALUE </dt>
+<dd>This parameter can be used to make HTTP requests made <em>by</em> the   server (for example, when a SPARQL query loads data from an external   URL) go through a proxy. The VALUE syntax is [USER:PASSWORD@]HOST[:PORT],   where the square brackets indicate optional portions. PORT defaults to 80.   A USER and PASSWORD are necessary when the proxy requires authentication. </dd><dt><code>HTTPNoProxy</code> VALUE </dt>
+<dd>When proxying is enabled with the <code>HTTPProxy</code> directive, this   parameter can be used to list exceptions. HTTP requests made by the   server to domains that match one of the suffixes specified with   HTTPNoProxy are never proxied. HTTPNoProxy can be specified multiple   times, for example: 
+<pre><code>HTTPNoProxy mydomain.com  
+HTTPNoProxy otherdomain.com </code></pre></dd>
+<dd><p>With the above configuration, requests made by the server for   <code>mydomain.com</code>, <code>otherdomain.com</code>, <code>sub.mydomain.com</code> or   <code>notmydomain.com</code> will not be proxied. </p></dd>
+<dd><p>IP addresses can be specified and they are subject to the same   string suffix matching rule as domain names are. Crucially, that   means that a request made for a particular domain name will <em>not</em>   match a rule that specified an IP address even if the domain name   resolves to the IP address. It is usually the best to use entire IP   addresses: </p>
+<pre><code>HTTPNoProxy 192.168.0.1 </code></pre></dd>
+<dd>Requests to <code>localhost</code> and <code>127.0.0.1</code> are never proxied.</dd><dt><code>HTTPWorkers</code> INTEGER </dt>
+<dd>The number of initial HTTP workers to be started by the   AllegroGraph server. The default is 50. The number should be larger   than the number of backends (see <code>Backends</code> above) plus anticipated   frontend sessions (used, for example, by Webview). Too few workers may cause   long-running requests (like opening a repository) to delay   other concurrent requests. </dd></dl><p><a name="LogDir"></a> </p>
+<dl><dt><code>LogDir</code> PATHNAME </dt>
+<dd>Specifies the directory where the server log files are written. The   primary log file is agraph.log, the secondary file is   agraph-fallback.log. The secondary is only used when writing to the   primary fails. The secondary file is preallocated to a size of 1MiB,   so some log messages can be written even if the filesystem is full.   On server startup or if writing to the primary becomes possible   again, the contents of the secondary log file are automatically   appended to the primary and the secondary log file is reinitialized. </dd><dt><code>MemoryCheckWhen</code> VALUE </dt>
+<dd>A 'memory release specification'. It can be used multiple times.   Each description must be in the form <code>name:value</code> where name can   be <code>query</code>, <code>transaction</code> or <code>time</code> and value must be a number of   items to run between checks (for query and transaction) or a delay   in seconds (for time). </dd><dt><code>MemoryReleaseThreshold</code> INTEGER </dt>
+<dd>A size specifying the threshold at which a memory release will   occur. The size can be specified in gigabytes (e.g. <code>3</code>"), megabytes   (e.g. <code>3000m</code>), kilobytes (e.g. <code>3000000k</code>) or bytes (e.g.   <code>3000000000</code>). </dd></dl><p><a name="PidFile"></a> </p>
+<dl><dt><code>PidFile</code> FILE-PATHNAME </dt>
+<dd>A file to which the server writes out its process id.</dd><dt><code>Port</code> INTEGER </dt>
+<dd>If supplied, must be an integer. Used to set the port on which the daemon runs   its HTTP server. When not given, this defaults to <code>10035</code>. </dd><dt><code>QueryEngine</code> ENGINE-SPECIFIER </dt>
+<dd>Specifies the query processor used for SPARQL   queries. This parameter can be overridden for specific queries (in an   API specific manner). See the <a href="sparql-reference.html#sparql-queryengine">discussion</a> in the   SPARQL documentation for more details on the available engines and on   how to choose amongst them. </dd></dl><p><a name="QueryOption"></a> </p>
+<dl><dt><code>QueryOption</code> NAME=VALUE </dt>
+<dd>A query option specification. It can be used multiple times. Each   specification is equivalent to a query prefix option. The global   configuration directive "QueryOption NAME=VALUE" is the same as the   query prefix option "PREFIX franzOption_NAME: <franz:VALUE>". See   <a href="sparql-reference.html#sparql-queryoptions">here in the SPARQL Reference</a>   for a list of SPARQL query options. An example is 
+<pre><code>QueryOption logQuery=yes </code></pre></dd><dt><code>ReplicationPorts</code> INTEGER-RANGE </dt>
+<dd>If given, must be an integer range (e.g. 13000-13020). When using   replicas (see <a href="warm-standby.html">Replication and Warm Standby</a>), the   replication primary requires a separate listening port for each   replica. The operating system will choose an available port for each   replica (when the replica is set up) if no value is given for this   option, and that will always work. However, if there is a firewall   between the replication primary and (any of) the replicas, the   firewall administrator may need to configure the firewall to allow   incoming connections from the replicas to the primary. That   configuration process can be aided by limiting the range of ports   which can be used, and that is what this parameter does. If a range   is specified, only those ports will be used by replicas. Any replica   which might become a primary should have this parameter also   specified in its configuration exactly as it is for the primary.   Note that if no port in the range is available when setting up a   replica, setting up the replica will fail. Therefore, the size of   the range of ports should be at least the maximum expected number of   replicas. </dd></dl><p><a name="RunAs"></a> </p>
+<dl><dt><code>RunAs</code> USERNAME </dt>
+<dd>Have the server, if started by root, run as the given user instead   (defaults to <code>agraph</code>). </dd></dl><p><a name="HttpTrace"></a> </p>
+<dl><dt><code>HttpTrace</code> FILE-PATHNAME </dt>
+<dd>If given, it is the name of the log file to which HTTP traffic is to   be dumped. </dd></dl><p><a name="HttpTraceOptions"></a> </p>
+<dl><dt><code>HttpTraceOptions</code> OPTIONS </dt>
+<dd>If given, it is a comma separated list of options. Options starting   with the character + turn on the corresponding log category. Those   starting with - turn them off. Use the max-message-size= option to   truncate overly long messages. The default is   <code>+xmit,max-message-size=1000</code>. The available log categories are listed   in the <a href="http://franz.com/support/documentation/current/doc/aserve/aserve.html#debugging">AllegroServe   documentation</a>. </dd><dt><a name="SMTPHost"></a> <code>SMTPHost</code> SMTP-CONFIGURATION </dt>
+<dd><p>Defines a named SMTP configuration which can be used to send emails.   Multiple <code>SMTPHost</code> definitions are allowed. </p></dd>
+<dd><p>With <code>SMTPHost</code> one can associate a login name, password, port, etc   with a server. The following example defines the <code>SMTPHost</code> named   <code>gmail</code>: </p>
+<pre><code>SMTPHost gmail \  
+  server="smtp.gmail.com", ssl=true, starttls=false,\  
+  from="me@gmail.com", login="me@gmail.com", \  
+  password="somepassword" </code></pre></dd>
+<dd>The following options are supported by <code>SMTPHost</code>:
+<ul>
+<li><p><strong>server</strong> (<em>string</em>): the hostname or IP address of the server (example: <code>"smtp.gmail.com"</code>, or <code>"127.0.0.1"</code>). This is a required parameter. </p></li>
+<li><p><strong>port</strong> (<em>integer</em>): defaults 25 for non-SSL, 465 for SSL (example: <code>993</code>) </p></li>
+<li><p><strong>ssl</strong> (<em>boolean</em>): defaults to false (example: <code>true</code>)</p></li>
+<li><p><strong>starttls</strong> (<em>boolean</em>): defaults to false (example: <code>true</code>)</p></li>
+<li><p><strong>from</strong> (<em>string</em>): the email address to which the <code>From:</code> header of emails sent via this SMTPHost will be set. This is a required parameter. </p></li>
+<li><p><strong>login</strong> (<em>string</em>): the user on the remote server (example: <code>"john@gmail.com"</code>) </p></li>
+<li><p><strong>password</strong> (<em>string</em>): the password corresponding to <code>login</code></p></li>
+<li><p><strong>password-command</strong> (<em>string</em>): a string suitable to be   executed as a shell command. The specified command should output   a single line containing the password to stdout. This is   intended to avoid storing plaintext passwords in the   configuration file. </p></li></ul></dd><dt><code>SPARQLBaseURL</code> URL </dt>
+<dd>If given, the HTTP server will use this value as the base-url when   parsing SPARQL queries. When not given, the URL of the request is   used instead. </dd></dl><p><a name="SuperUser"></a> </p>
+<dl><dt><code>SuperUser</code> NAME:PASSWORD </dt>
+<dd>If given, must be a string in <code>name:password</code> format. The server   will ensure, on startup, that a superuser with this name and   password exists. Note that this means anyone that can read your   configuration file has full access to the server. It is recommended   to use the server setup script to create a superuser instead, or if   you do use this directive, remove it after the first run of the   server has created the user. </dd><dt><a name="TempDir"></a> <code>TempDir</code> PATHNAME </dt>
+<dd>Specifies the directory in which AllegroGraph may create temporary   files. Defaults to the system's designated temporary directory   (typically <code>/tmp</code>). </dd></dl><p><a name="TransactionSemantics"></a> </p>
+<dl><dt><code>TransactionSemantics</code> VALUE </dt>
+<dd>Either <code>sesame-2.6</code> (the default) or <code>sesame-2.7</code>. It controls   whether a new transaction is started automatically or an explicit   <a href="http-protocol.html#post-begin">begin</a> is necessary. See <a href="http-protocol.html#transaction-handling-semantics">Transaction   handling semantics</a> for more information. </dd></dl><p><a name="session-values"></a> </p><a name='header3-116' id='header3-116'></a><h3>Session directives</h3><p>A session is a user-specific connection to the AllegroGraph server. Because it is controlled by a single user, it can be transactional (changes are not permanently added to the database until committed and rollbacks are supported) and it is suitable for loading user-specific scripts. Sessions can also access several stores in a federation. </p><p>Sessions can only be created by users who have persmission to start sessions (see <a href="agwebview.html#ManagingUsers">Managing Users</a> in the <a href="agwebview.html">WebView</a> Guide for information on user permissions). </p><p>Those users can start sessions from <a href="agwebview.html#SessionSpecifications">AGWebView</a> using the <a href="http-protocol.html#sessions">HTTP/REST interface</a>, in <a href="python/api.html#transactions">Python</a>), and in <a href="javadoc/com/franz/agraph/repository/AGRepositoryConnection.html">Java</a>. </p><p>The following configuration directives affect sessions: </p>
+<dl><dt><code>SessionHost</code> VALUE </dt>
+<dd>If given, must be the server's host name or IP address   for use in the URLs returned upon session creation. Useful   when deploying a load balancer (like Amazon's Elastic Load Balancer)   for sending the SessionHost string in the returned session URL instead of   echoing the load balancer's host name from the client request. </dd><dt><code>SessionPorts</code> INTEGER-RANGE </dt>
+<dd>If given, must be an integer range like <code>8000-8020</code>. Defines the   ports that will be used for sessions. Useful when these need to be   opened in a firewall or similar. When not specified, random ports   will be used. </dd></dl><p><a name="DefaultSessionTimeout"></a> </p><p><a name="MaximumSessionTimeout"></a> </p><p>The next two directives control how long a session can be idle before it is terminated by the system. When starting a session with AGWebView (described <a href="agwebview.html#SessionSpecifications">here</a>), a timeout cannot be specified, so the value of <code>DefaultSessionTimeout</code> is the idle timeout for any AGWebView session. Idle timeouts can be specified for sessions started with the <a href="http-protocol.html#sessions">HTTP/REST interface</a>, <a href="python/api.html#transactions">Python</a>, or <a href="javadoc/com/franz/agraph/repository/AGRepositoryConnection.html">Java</a> (in all cases setting the <code>lifetime</code> parameter/argument). The value specified must be less or equal to than the <code>MaximumSessionTimeout</code>. Neither <code>DefaultSessionTimeout</code> nor <code>MaximumSessionTimeout</code> can be determined programmatically so users should ask the database administrator for those values if needed. </p>
+<dl><dt><code>DefaultSessionTimeout</code> INTEGER </dt>
+<dd>Sets the idle timeout (aka lifetime) to use   for sessions which are created without specifying one. The default   value is 300 seconds (5 minutes). This value is used by all sessions   created in AGWebView (described here)   because AGWebView does not permit specifying a different value. </dd><dt><code>MaximumSessionTimeout</code> INTEGER </dt>
+<dd>Sets the maximum idle timeout (aka lifetime) that may be specified   when creating a session. Any attempt to create a session with a   timeout larger than this value will fail. The default value   is 21600 seconds (6 hours). </dd></dl><p><a name="TopLevelSSL"></a> </p><a name='header3-133' id='header3-133'></a><h3>Top-level directives for SSL client certificate authentication</h3><p>In addition to authenticating remote users via HTTP Basic authentication, users can also be authenticated using SSL certificates. See the comments about authenticating users in the introduction of the <a href="security.html">Security Implementation</a> document. </p><p>The following directives are used to enable SSL client authentication. </p>
+<dl><dt><code>SSLCertificate</code> FILE-PATHNAME </dt>
+<dd>This must be the path of a file   containing a server certificate and private key, PEM-encoded.   This parameter is required when <code>SSLPort</code> is set. </dd><dt><code>SSLPort</code> INTEGER </dt>
+<dd>An integer specifying a port number. If given, an SSL HTTP server will be run on this port. </dd><dt><code>SSLCAFile</code> FILE-PATHNAME </dt>
+<dd>This must point to a file containing one or more PEM-encoded   certificates of trusted certificate authorities (CAs).  A client   certificate will be trusted if it has been signed by a CA within this   file.  This setting is required to enable certificate-based client   authentication. </dd><dt><code>SSLCRLFile</code> FILE-PATHNAME </dt>
+<dd>If supplied, this must point to a file containing a PEM-encoded   certificate recovation list (CRL).  If a client certificate is   received which has a serial number matching one in the CRL, the   certificate (and therefore the entire SSL connection) will be   rejected.  This setting is optional. </dd><dt><code>SSLClientAuthUsernameField</code> VALUE </dt>
+<dd>The "Subject" field of a client certificate supplies the identity of   the client.  The subject is typically composed of several parts, for   example: 
+<pre><code>Subject: C=US, ST=California, L=Oakland, O=Franz Inc., OU=Developers,  
+     CN=Joe Smith, emailAddress=joe.smith@franz.com </code></pre></dd>
+<dd>This setting specifies which part of the <em>Subject</em> field of the   client certificate should be used to identify the user to   AllegroGraph. The setting may be <em>CN</em> (the default) or   <em>emailAddress</em>. The value of the specified part will be used to   perform a lookup in the user database (e.g., <em>Joe Smith</em> or   <em>joe.smith@franz.com</em> depending on the <code>SSLClientAuthUsernameField</code>   setting). </dd><dt><code>SSLClientAuthRequired</code> BOOLEAN </dt>
+<dd>This setting determines if client certificate validation is required   or optional.  If <em>yes</em>, all SSL requests must contain a valid client   certificate.  If <em>no</em> (the default), then SSL requests without a   client certificate are allowed.  In this case, AllegroGraph falls   back to HTTP Basic authentication. </dd></dl><p><a name="TopLevelAccount"></a> </p><a name='header3-151' id='header3-151'></a><h3>Top-level directives for account management</h3><p><a name="AuditEventsToEmail"></a> </p>
+<dl><dt><code>AuditEventsToEmail</code> VALUE </dt>
+<dd><p>A directive that instructs the system to send notification emails   to a specified address when various audit events occur. This option   can be specified multiple times to cause emails to be sent to multiple   addresses. </p></dd>
+<dd><p>The format for this directive is</p>
+<pre><code>AuditEventsToEmail to="email", [smtphost="smtp-host-name"], \  
+  events="comma-separated events" </code></pre>
+<ul>
+<li><p><code>smtp-host-name</code> - The name of the <a href="#SMTPHost"><code>SMTPHost</code></a> definition to be used.   If only one SMPTHost is defined, this   option can be left unspecified. </p></li>
+<li><p><code>email</code> is an email address. Events can be   any audit events (see <a href="audit.html#audit-events">Audit event types</a>). </p></li></ul></dd>
+<dd>For example, here is a valid specification, assuming an <code>SMTPHost</code>   named <em>gmail</em> has been defined: 
+<pre><code>AuditEventsToEmail to="agadmin@gmail.com", smtphost="gmail", \  
+  events="expirePassword,addUser,deleteUser" </code></pre></dd>
+<dd>If there is only one <code>SMPHost</code> defined, <em>smtphost</em>  can be left unspecified:
+<pre><code>AuditEventsToEmail to="agadmin@gmail.com", \  
+  events="expirePassword,addUser,deleteUser" </code></pre></dd>
+<dd>See <a href="audit.html#audit-email">Auditing email notifications</a> for more information.</dd><dt><code>AccountExpiry</code> </dt>
+<dd>The time since the last authenticated activity of a user after which   the account is permanently deleted. This option does not affect   users with superuser permission. The default is that accounts do not   expire. </dd></dl><p><a name="AccountUnsuspendTimeout"></a> </p>
+<dl><dt><code>AccountUnsuspendTimeout</code> </dt>
+<dd>The time after which suspended accounts are unsuspended   automatically. See <a href="#MaxFailedLogins"><code>MaxFailedLogins</code></a>. </dd><dt><code>LoginTimeout</code> </dt>
+<dd>A time (value like <code>10s</code>, <code>5m</code>, <code>1h</code>). If set, AGWebView login   sessions are timed out after this amount of idle time. The default   is no timeout. </dd></dl><p><a name="MaxFailedLogins"></a> </p>
+<dl><dt><code>MaxFailedLogins</code> </dt>
+<dd>The number of failed logins in a row after which the account is   suspended. Suspended accounts can be unsuspended explicitly by   superuser or automatically if   <a href="#AccountUnsuspendTimeout"><code>AccountUnsuspendTimeout</code></a> is set. </dd></dl><p><a name="PasswordChangeAllowed"></a> </p>
+<dl><dt><code>PasswordChangeAllowed</code> </dt>
+<dd>A boolean (<code>yes</code>/<code>no</code>) that can be used to control whether users can   change their own password. The default is <code>yes</code>. If <code>no</code>, then   only superuser can change passwords. </dd><dt><code>PasswordExpiry</code> </dt>
+<dd>The time since the last password change after which the password   will be expired. One cannot login with an expired password, it can   only be used to change the password. </dd><dt><code>PasswordExpiryGrace</code> </dt>
+<dd>The time since password expiry after which the account is disabled.   It's not possible to log in or change the password with a disabled   account. Only the administrator can reenable accounts. This option   does not affect users with superuser permission. </dd><dt><code>PasswordMinLength</code> </dt>
+<dd>The minimum number of characters all new passwords must have. The   default is 0. </dd><dt><code>PasswordMinUppercaseChars</code> </dt>
+<dd>The minimum number of uppercase characters all new passwords must   have. The default is 0. </dd><dt><code>PasswordMinDigitChars</code> </dt>
+<dd>The minimum number of digit characters all new passwords must have.   The default is 0. </dd><dt><code>PasswordMinSpecialChars</code> </dt>
+<dd>The minimum number of non-alphanumeric characters all new passwords   must have. The default is 0. </dd><dt><code>SuperUserCanAccessAllData</code> </dt>
+<dd>A boolean (<code>yes</code>/<code>no</code>) that controls whether superuser bypasses   normal permission checks for triples data. If it is on (the   default), then superuser will have read/write access to all   repositories. If it is turned off, then superuser needs to be   granted access to repositories. This is most useful when auditing is   enabled and any change to user permissions is logged. </dd></dl><p><a name="multi-master-directives"></a> </p><a name='header3-192' id='header3-192'></a><h3>Top-level directives for multi-master replication clusters</h3><p>Four top-level directives affect multi-master replication clusters, described in the <a href="multi-master.html">Multi-master Replication</a> document. There are settings which affect how replication cluster instances are kept in sync. These directives specify the default values of these settings. Setting values may be overridden by commands which create a replication cluster and settings can also be changed once a replication cluster exists. The meaning and effect of a setting is described in the <a href="multi-master.html#instance-settings">Instance Settings</a> section of the <a href="multi-master.html">Multi-master Replication</a> document. Changing the settings after a cluster has been created is also described in that section. The directives are: </p>
+<dl><dt><code>durability</code> </dt>
+<dd>See the description of the <a href="multi-master.html#durability-setting">Durability setting</a> for information on this directive. </dd><dt><code>distributedTransactionTimeout</code> </dt>
+<dd>See the description of the <a href="multi-master.html#distributed-transaction-timeout-setting">Distributed Transaction Timeout setting</a> for information on this directive. </dd><dt><code>transactionLatencyCount</code> </dt>
+<dd>See the description of the <a href="multi-master.html#transaction-latency-count-setting">Transaction Latency Count setting</a> for information on this directive. </dd><dt><code>transactionLatencyTimeout</code> </dt>
+<dd>See the description of the <a href="multi-master.html#transaction-latency-timeout-setting">Transaction Latency Timeout setting</a> for information on this directive. </dd></dl><p><a name="mem-usage"></a> </p><a name='header3-203' id='header3-203'></a><h3>More on controlling memory usage</h3><p>While processing a query, backend processes may allocate memory from the operating system. When a previously allocated memory area is no longer used, the processes normally do not return it to the operating system, in hopes of reusing it for subsequent queries. However, it may be advantageous to periodically return idle memory to the operating system. The MemoryCheckWhen and MemoryReleaseThreshold configuration parameters allow for this. </p><p>Note that while returning memory to the OS makes memory available to other processes, it also incurs the overhead of minor page faults on subsequent allocations in the same process. </p><p>Each shared backend and dedicated session tracks its own memory usage. When a check is made the <a href="http://en.wikipedia.org/wiki/Resident_set_size">resident set size</a> (RSS) of the backend or session process is compared to MemoryReleaseThreshold. If the RSS is greater than MemoryReleaseThreshold then an effort is made to give back as much memory to the OS as possible. </p><p>Since this kind of check is fairly expensive, performing it too often can have a detrimental effect on overall performance. The MemoryCheckWhen directive specifies under what circumstances it should be done. Let's see a couple of examples. </p><p>Perform memory check after every 7 queries: </p>
+<pre><code>MemoryCheckWhen query:7 </code></pre><p>Perform memory check after every 2 <a href="agraph-introduction.html#ACID">transactions</a>: </p>
+<pre><code>MemoryCheckWhen transaction:2 </code></pre><p>Perform memory check every 10 seconds: </p>
+<pre><code>MemoryCheckWhen time:10 </code></pre><p>Finally, a complete configuration that would check whether the memory was above the threshold every 10 seconds and after every 2 transactions: </p>
+<pre><code>MemoryReleaseThreshold 2g  
+MemoryCheckWhen time:10  
+MemoryCheckWhen transaction:2 </code></pre><p>Note that MemoryReleaseThreshold must be specified whenever MemoryCheckWhen is. If neither of two are specified, then no checks are ever performed. </p><p><a name="cors"></a> </p><a name='header3-218' id='header3-218'></a><h3>CORS directives</h3><p>CORS (Cross-Origin Resource Sharing), if enabled, allows scripts run on a web page from one server to make HTTP requests to the (different) server where AllegroGraph is running. CORS is not enabled by default because if not configured properly, it can introduce security holes. The following directives enable CORS limited as the various options allow. A general tutorial on CORS is available at <a href="http://www.html5rocks.com/en/tutorials/cors/">http://www.html5rocks.com/en/tutorials/cors/</a>. See <a href="http-protocol.html#cors">here</a> in the <a href="http-protocol.html">REST/HTTP interface</a> document for more information. </p><p>You may want to use CORS to communicate with the AllegroGraph server if you are writing a web application that will be accessing AllegroGraph but will not be served from the same domain that the server uses. This image shows a possible configuration: </p><p><img src="image-cors-schema.jpg" alt="A potential use of CORS and AllegroGraph"></img> </p><p>CORS support is enabled if the configuration file contains at least one of the following directives: <code>CorsAllowAll</code>, <code>CorsAllowOrigin</code>, <code>CorsAllowRegex</code>. </p><p>The following configuration file directives are used to configure CORS: </p>
+<dl><dt><code>CorsAllowAll</code> BOOLEAN </dt>
+<dd>If set to 'yes' then requests from all origins will be accepted.   When <code>yes</code>, values for <code>CorsAllowOrigin</code> and <code>CorsAllowRegex</code> are   ignored. The default is <code>no</code>. </dd><dt><code>CorsAllowOrigin</code> DOMAIN </dt>
+<dd>Allow the specified origin (i.e. domain) to issue cross-site requests.   Only one domain can be specified per entry but this directive can be   specified multiple times. Domain names are case-insensitive. </dd><dt><code>CorsAllowRegex</code> REGEX </dt>
+<dd>Allow all origins that match the given regular expresion to issue cross-site   requests. Only one regular expression is allowed per entry but this   directive can be specified multiple   times. Regular expression syntax is described   <a href="https://franz.com/support/documentation/current/doc/regexp.htm#regexp-new-summary-2">here</a>. Regular expressions can specified to make    case-insensitive matches. </dd></dl><p>The following directives affect how CORS requests are handled when they are allowed. </p>
+<dl><dt><code>CorsUrlRegex</code> REGEX </dt>
+<dd>Only enable CORS for target URLs that match the given regular expression.   If this option is not specified, all URLs are allowed. If it is specified   then the associated regular expression is compared to URLs being   requested and allowed only if they match. This directive can be   specified multiple times and if it is,   CORS will be enabled for URLs that match at least   one of the supplied regexes. Regular expression syntax is described   <a href="https://franz.com/support/documentation/current/doc/regexp.htm#regexp-new-summary-2">here</a>. Regular expressions can specified to make   case-insensitive matches. </dd><dt><code>CorsAllowMethods</code> METHOD-LIST </dt>
+<dd>A space or comma separated list of allowed methods for cross-origin requests.   List values are case-insensitive.   The default is: DELETE GET OPTIONS PATCH POST PUT </dd><dt><code>CorsAllowMethod</code> METHOD </dt>
+<dd>A single HTTP method to be added to <code>CorsAllowMethods</code> (defined above).   The <code>CorsAllowMethod</code> directive can be specified multiple times. </dd><dt><code>CorsAllowHeaders</code> HEADERS-LIST </dt>
+<dd>A space or comma separated list of headers allowed in cross-site   requests. Headers are case-insensitive. The default list is: <p>Accept Accept-encoding Authorization Content-type Dnt Origin User-agent </p></dd><dt><code>CorsAllowHeader</code> HEADER </dt>
+<dd>A single HTTP header to be added to <code>CorsAllowHeaders</code> (defined above).   This directive can be specified multiple times. </dd><dt><code>CorsExposeHeaders</code> HEADER-LIST </dt>
+<dd>A space or comma separated list of custom response headers that    should be readable by cross-site requests. The default is empty. </dd><dt><code>CorsExposeHeader</code> HEADER </dt>
+<dd>A single HTTP header to be added to <code>CorsExposeHeaders</code> (defined above).   This directive can be specified multiple times. </dd><dt><code>CorsPreflightMaxAge</code> INTEGER </dt>
+<dd>Specifies how long (in seconds) a response to a preflight   request should be cached by the browser. The default is 86400 (24 hours).   If set to zero the corresponding HTTP header   <code>Access-Control-Max-Age</code> will not be sent. </dd><dt><code>CorsAllowCredentials</code> BOOLEAN </dt>
+<dd>If set to 'yes' then cross-origin requests will be allowed to   contain authentication info, such as cookies and auth headers.   The default is 'no'. </dd></dl><p><a name="catalog"></a> </p><a name='header2-251' id='header2-251'></a><h2>Catalog definitions</h2><p>Catalogs are locations on disk where AllegroGraph keeps its repositories. These locations are specified in the configuration file, along with some optional default settings for stores in the catalogs. Most of the time, you will want to specify all catalogs directly in the configuration file, but it is also possible to enable dynamic catalogs, which can be created and deleted through the HTTP interface (as <a href="http-protocol.html#put-catalog">described</a> in <a href="http-protocol.html">HTTP Protocol - SPARQL Endpoint</a>). </p><p>Catalog definitions in the server configuration files serve as templates for creating databases.  The parameters defined in the catalog definition will be copied to the database when it is created. Changes to the catalog definition do not influence the settings of existing databases.  In order to modify parameters of existing databases, the file 'parameters.dat' in the database 'Main' directory must be edited and the database be restarted. </p><p>There are three types of catalog definitions that can occur in an AllegroGraph configuration file: a root catalog, named catalogs, and a dynamic catalog specification. The first was seen in the example above (<code>&lt;RootCatalog&gt; ... &lt;/RootCatalog&gt;</code>), and is used to determine where stores live that do not have a catalog specified. Named catalog specifications look similar: </p>
+<pre><code>&lt;Catalog temporary&gt;  
+  Main /tmp/catalog  
+&lt;/Catalog&gt; </code></pre><p>The first entry specifies the catalog name, <em>temporary</em> in the example. Catalog names can contain any characters except slashes, backslashes, colons, and tildes. The names <strong>root</strong> and <strong>system</strong> are reserved and may not be used. (<code>root</code> causes conflicts with the RootCatalog already described. <code>system</code> is reserved for certain system recording purposes.) </p><p>The catalog name can then be used to specify the catalog when creating or accessing repositories. </p><p><a name="DynamicCatalog"></a> Finally, a dynamic catalog definition is used to provide the settings for catalogs created over HTTP. If no dynamic catalog is defined, this feature is disabled. </p>
+<pre><code>&lt;DynamicCatalogs&gt;  
+  Main /tmp/dynamic  
+&lt;/DynamicCatalogs&gt; </code></pre><p>The directory (as well as any other catalog directories, see below) given for dynamic catalogs will be extended with a catalog name when such a catalog is created. For example, given the above configuration, a dynamic catalog named <code>scratch</code> would end up in <code>/tmp/dynamic/scratch</code>. </p><p><a name="catalog-directives"></a> </p><a name='header2-262' id='header2-262'></a><h2>Catalog directives</h2><p>Some of the directives allowed within a catalog definition (those marked as <em>inheritable</em>) can also be specified at the top-level, where they act as a default value inherited by catalogs which don't explicitly specify that setting. </p>
+<dl><dt><code>Main</code> PATHNAME </dt>
+<dd>Required for every catalog. Specifies the directory in which the   repositories for the catalog are stored. </dd></dl><p><a name="transactionlogdir"></a> </p>
+<dl><dt><code>TransactionLogDir</code> PATHNAME </dt>
+<dd><p>Specifies the directory in which transaction log subdirectories will   be created for repositories in this catalog.  The directory will be   extended with the name of a repository.  For example, if   <code>TransactionLogDir</code> is <code>/tmp/tlogs</code>, then transaction logs for   repository <code>example</code> will be stored in <code>/tmp/tlogs/example</code>.  This   parameter is optional and defaults to the value supplied for the   <code>Main</code> parameter. </p></dd>
+<dd><p>See the line in the example below</p>
+<pre><code> TransactionLogDir /mnt/disk3/ag4-transaction-logs </code></pre></dd>
+<dd><p>which says transaction logs should be placed in the /mnt/disk3/ag4-transaction-logs/[repository-name]/ directory.</p></dd>
+<dd><p>The value   of this directive can affect performance. See   <a href="performance-tuning.html#tra-log-dir">the discussion in the Performance Tuning   document</a>. </p></dd></dl><p><a name="stringtabledir"></a> </p>
+<dl><dt><code>StringTableDir</code> PATHNAME </dt>
+<dd>Specifies the directory in which string table subdirectories will   be created for repositories in this catalog.  See <code>TransactionLogDir</code>   for information on how directory names are constructed.  This   parameter is optional and defaults to the value supplied for the   <code>Main</code> parameter. The value   of this directive can affect performance. See   <a href="performance-tuning.html#str-tab-dir">the discussion in the Performance Tuning   document</a>. </dd></dl><p><a name="stringtablesize"></a> </p>
+<dl><dt><code>StringTableSize</code> INTEGER </dt>
+<dd>the value must be an integer, optionally followed by a multiplier   (k=2^10 or m=2^20). The value determines the minimum number of slots   to use for the hash table used to map   <a href="agraph-introduction.html#upi-def">UPI</a>s   to their corresponding strings.   The actual number of slots configured is   the supplied value rounded up to the nearest power of two, with a   <strong>minimum</strong> of 1M (1,048,576). The <strong>default</strong> number of slots is   16,777,216 (16M). The <strong>maximum</strong> possible number of slots is   536,870,912 (512M).  Increasing the number of slots may result in   better insert and lookup performance for repositories with a lot of   unique strings.  Each slot takes 4 bytes of memory. Checkpoints will   take longer the more slots there are as the information stored in   the slots is recorded in the transaction log during checkpoints.   As said, the value   of this directive can affect performance. See   the discussion of directives that affect performance in <a href="performance-tuning.html#CatalogParameters">this section   of the Performance Tuning   document</a>. </dd></dl><p><a name="stringtablecompress"></a> </p>
+<dl><dt><code>StringTableCompression</code> VALUE <em>inheritable</em> </dt>
+<dd>If given, the value must be one of <code>none</code> (the default), <code>lzo</code> (same as <code>lzo999</code>), <code>lzo1</code>, <code>lzo999</code> (same as <code>lzo</code>), or <code>zlib</code>.  <code>lzo999</code> compresses more than <code>lzo1</code> but takes more time. The string table compression method can only be set when a repository is created.  See the discussion of this directive <a href="performance-tuning.html#string-table-compression">here</a> in the <a href="performance-tuning.html">Performance Tuning</a> document. </dd></dl><p><a name="expectedstoresize"></a> </p>
+<dl><dt><code>ExpectedStoreSize</code> INTEGER <em>inheritable</em> </dt>
+<dd>This is the number of triples one expects to have in the   store. It is used by the server to select suitable values for things   like internal table sizes. Most of the time, you should only worry   about this when trying to squeeze out more performance. Setting it   too high can lead to some wasted resources, setting it too low can   result in sub-optimal performance and setting it much low (much less   than the maximum effective value and less than one 25th of the real   size) can cause enormous index management overhead and lead to   extreme loss of performance on a continuously evolving store. The   maximum effective value is one billion triples.   Stores can be much bigger, of course, but   values larger than one billion do not affect initial internals.   As said, the value   of this directive can affect performance. See   the discussion of directives that affect performance in <a href="performance-tuning.html#CatalogParameters">this section   of the Performance Tuning   document</a>. </dd><dt><code>MaxRecoveryTime</code> TIME <em>inheritable</em> </dt>
+<dd>A time (with a value like <code>10s</code>, <code>5m</code>, <code>1h</code>).  This parameter, if set,   enables dynamic checkpointing for a database.  By default,   AllegroGraph will write a checkpoint in regular intervals, as   configured by the <code>CheckpointInterval</code> parameter.  If dynamic   checkpointing is enabled, a checkpoint will be written whenever   recovery from the transaction log file would exceed the time to   which <code>MaxRecoveryTime</code> is set.  This is useful on databases with   little write activity.  Note that the <code>MinimumCheckpointInterval</code> is   still observed. </dd></dl><p><a name="checkpointinterval"></a> </p>
+<dl><dt><code>CheckpointInterval</code> TIME <em>inheritable</em> </dt>
+<dd>A time (with a value like <code>10s</code>, <code>5m</code>, <code>1h</code>) that is used to determine the   amount of time between checkpoint writes for the store. A higher   value increases the recovery time but might make checkpoints happen   less frequently. The value   of this directive can affect performance. See   <a href="performance-tuning.html#che-int">the discussion in the Performance Tuning   document</a>. </dd><dt><code>MinimumCheckpointInterval</code> TIME <em>inheritable</em> </dt>
+<dd><p>A time (with a value like <code>10s</code>, <code>5m</code>, <code>1h</code>) that is used to determine   the minimum period that must elapse between two checkpoints.  This   parameter defaults to whatever <code>CheckpointInterval</code> has been set to   or, if <code>MaxRecoveryTime</code> has been set, to 5m (five minutes). </p></dd>
+<dd><p>Regardless of the value of <code>MinimumCheckpointInterval</code>   and <code>CheckpointInterval</code>, a checkpoint will always occur after a new   transaction log file is created (see <code>TransactionLogSize</code> setting). </p></dd><dt><code>TransactionLogSize</code> INTEGER <em>inheritable</em> </dt>
+<dd>A size (an integer, perhaps labeled with 'k' for kilobytes, 'm' for   megabytes, or 'g' for gigabytes, for example <code>10m</code> for ten megabytes)   that determines how big individual   transaction log files are allowed to grow.  When a transaction log   size meets or exceeds this size, a new transaction log file will be   created.  The maximum is just under 4g. </dd><dt><code>TlogSyncMethod</code> VALUE </dt>
+<dd>This parameter specifies the synchronized writing method for transaction   logs. Three methods are supported: ODIRECT, SYNC, and fsync. The default   (if this parameter is unspecified) is ODIRECT and that is the recommended   choice on ext3 file systems. For catalogs residing on non-ext3 file   systems, the other choices may yield performance benefits. (You will   potentially see performance degradation in checkpointing. If that takes   longer than expected and you are using a non-ext3 filesystem, try   the other allowable values.) </dd><dt><code>DesiredTlogFiles</code> INTEGER </dt>
+<dd><p>This parameter specifies the number of transaction log files which should be   preallocated at database creation time.  The default value is 2.   Specifying a larger value helps lower the probability of additional   transaction log files being created during commits. </p></dd>
+<dd><p><strong>Note</strong>: The circumstances under which the number of tlog files may   grow larger than <code>DesiredTlogFiles</code> are if there is a long-running   backup, transaction log archiving is running slowly, or if warm   standby replication is running slowly or stalled. When possible,   AllegroGraph will reduce the number of transaction log files back   down to DesiredTlogFiles. </p></dd><dt><code>InstanceTimeout</code> TIME <em>inheritable</em> </dt>
+<dd>The time (a value like <code>10s</code>, <code>5m</code>, <code>1h</code>) a database instance will   stay open without being accessed. The default is one hour. Starting   a database instance can be time consuming. By keeping idle instances   around this directive allows for trading off memory for lower worst   case latency on database access. Note that this value is advisory;   AllegroGraph checks for idle database instances intermittently so a   given instance may linger longer than the <code>instanceTimeout</code>. </dd></dl><p><a name="style2indices"></a> </p>
+<dl><dt><code>Style2Indices</code> INDEX-NAME-LIST </dt>
+<dd>The value must be a single index name (e.g. <code>psogi</code>) or several space or comma-separated index names, or <code>none</code>. This line, for example, specifies two indices to be of style 2: 
+<pre><code>Style2Indices spogi gspoi </code></pre></dd>
+<dd>Index styles are discussed <a href="triple-index.html#styles">here</a> in   <a href="triple-index.html">AllegroGraph Indices</a>. Style 2 indices are better for   queries that result in a single triple while style 1 indices are   better for more general queries. Any index specified on this line will   be a style 2 index while all other indices will be a style   1 index. <a href="lisp-reference.html#add-index" title="description of add-index">add-index</a> and the REST interface do allow for specifying the   style of the index being created regardless of the value of this   directive. There are no style 2 indices by default.   Unless specified in the directive or explicitly created as a style 2 index   by <a href="lisp-reference.html#add-index" title="description of add-index">add-index</a> or the REST interface, all indices are style 1 indices. </dd></dl><p><a name="TransLog"></a> </p>
+<dl><dt><code>TransactionLogArchive</code> PATHNAME </dt>
+<dd>This directive specifies a directory for storing archived transaction log files. See <a href="transaction-log-archiving.html">Transaction Log Archiving</a> for more details. </dd><dt><code>TransactionLogRetain</code> </dt>
+<dd>This directive is no longer used and a warning will be signaled   if it appears in a configuration file. See   <a href="transaction-log-archiving.html">Transaction Log Archiving</a> for   more details and how to achieve what used to be done by this directive. </dd><dt><code>TransactionLogReplicationJobname</code> </dt>
+<dd>This directive is no longer used and a warning will be signaled   if it appears in a configuration file. See   <a href="transaction-log-archiving.html">Transaction Log Archiving</a> for   more details and how to achieve what used to be done by this directive. </dd></dl><p><a name="Example"></a> </p><a name='header2-315' id='header2-315'></a><h2>Example Configuration</h2><p>What follows is a more complete example to demonstrate the various configuration options in more detail. </p>
+<pre><code># Don't allow normal HTTP access, only SSL  
+Port 10035  
+AllowHTTP no  
+SSLPort 10036  
+SSLCertificate /var/lib/ag4/server.cert  
+ 
+SettingsDirectory /var/lib/ag4/settings  
+ 
+Backends 5  
+# You can actually remove this after the first server run, to  
+# reduce the risk of someone finding it here.  
+SuperUser test:xyzzy  
+ 
+ExpectedStoreSize 100000  
+SessionPorts 8080-8083  
+ 
+&lt;RootCatalog&gt;  
+  Main /var/lib/ag4/root  
+&lt;/RootCatalog&gt;  
+ 
+&lt;Catalog fast&gt;  
+  ExpectedStoreSize 2000000  
+  CheckpointInterval 1h       
+  Main /var/lib/ag4/fast  
+  StringTableDir /mnt/disk2/ag4-string-tables  
+  TransactionLogDir /mnt/disk3/ag4-transaction-logs  
+&lt;/Catalog&gt;  
+ 
+&lt;DynamicCatalogs&gt;  
+  Main /var/lib/ag4/dynamic  
+&lt;/DynamicCatalogs&gt; </code></pre><p><a name="Change-Param"></a> </p><a name='header2-319' id='header2-319'></a><h2>Changing database parameters</h2><p>In some circumstances, it is desirable to modify the settings of an existing database by editing the 'parameters.dat' file in the database main directory.  The syntax of this file is similar to that of the server configuration file, but only the parameters that are normally present inside of a catalog definition are allowed. </p><p>For example, the 'parameters.dat' file for a database 'demo' created with the 'fast' catalog definition above would look like this: </p>
+<pre><code>CheckpointInterval 1h  
+Main /var/lib/ag4/fast  
+StringTableDir /mnt/disk2/ag4/fast </code></pre><p>It might be edited to change the CheckpointInterval.  It is also possible to add new file placement rules.  When modifying any of the file placement related parameters of a database, care must be taken to make sure that all files that constitute the current database state are still visible to the database.  For example, if the StringTableDir directory in the database above should be removed, all files in /mnt/disk2/ag4/fast/demo/ would need to be manually moved into the main directory of the database, /var/lib/ag4/fast/demo/. </p><p>Note that resetting some parameters in 'parameters.dat' has no effect. In particular, changing <code>ExpectedStoreSize</code> in parameters.dat does nothing. The only way to change that is to set the option in the configuration file and recreate the database. </p><p>When moving around database files, it is important to know that some of these files are sparse, i.e. they contain holes (unallocated blocks). Many file management utilities (like 'cp' and 'tar') can optionally preserve file sparseness, but care should be taken to make sure that copies of database files don't become unexpectedly large after a manual manipulation. </p><p><a name="server-control"></a> </p><a name='header2-327' id='header2-327'></a><h2>Server control</h2><p>The method used to start and stop the AllegroGraph server depends on the type of install: an RPM install or installation from a tar.gz file (see <a href="server-installation.html">Server Installation</a>). The RPM install places files in specific locations. The configuration file <em>agraph.cfg</em> is placed in <em>/etc/agraph/</em> and you can use <em>/sbin/service</em> to start and stop Allegrograph: </p>
+<pre><code>You can start AllegroGraph by running:  
+/sbin/service agraph start  
+ 
+You can stop AllegroGraph by running:  
+/sbin/service agraph stop </code></pre><p>In addition, <strong>chkconfig</strong> can be used to make AllegroGraph start when the system boots. For example: </p>
+<pre><code>chkconfig agraph on </code></pre><p>You can also use <strong>agraph-control</strong> with an RPM install. </p><p>The tar.gz installation is more flexible, and you choose the AllegroGraph directory as part of the installation process (again, see <a href="server-installation.html">Server Installation</a>). The typical way to start and stop AllegroGraph installed from a tar.gz file is to use <strong>agraph-control</strong>. </p><p><a name="agraph-control"></a> </p><a name='header2-335' id='header2-335'></a><h2>agraph-control</h2><p><strong>agraph-control</strong> is a script that can be used to start and stop AllegroGraph. It also can process other commands, as described below. <strong>agraph-control</strong> is located in the <em>bin/</em> subdirectory of the AllegroGraph directory. The calling template is </p>
+<pre><code>agraph-control [options] &lt;command&gt; </code></pre><p><a name="control-options"></a> </p><a name='header3-339' id='header3-339'></a><h3>Control options</h3><p>The one option to <strong>agraph-control</strong> is <code>--config</code>. Its value should be the path of the configuration file. The usual location of that file in a tar.gz install is the <em>lib/</em> subdirectory of the AllegroGraph directory. The usual location in an RPM install is <em>/etc/agraph/</em>. The default name is <em>agraph.cfg</em>. </p><p>Thus, with a tar.gz install, you can start the AllegroGraph server with </p>
+<pre><code>[Agraph dir]/bin/agraph-control --config [Agraph dir]/lib/agraph.cfg start </code></pre><p>If <code>--config</code> is not specified, the behavior is as follows: </p>
+<ul>
+<li><p>For an RPM install when not running as root, there is no default and   <code>--config</code> must have a value. </p></li>
+<li><p>For an RPM install when running as root, the default is   <em>/etc/agraph/agraph.cfg</em>. </p></li>
+<li><p>For a tar.gz install, the default is <em>agraph.cfg</em> in <em>lib/</em>   subdirectory of the AllegroGraph directory. </p></li></ul><p>If the file specified as the value of <code>--config</code> is not found, the AllegroGraph server is not started and a message like the following is printed: </p>
+<pre><code>Cannot locate configuration file (tried &lt;supplied path&gt;). </code></pre><p>If <code>--config</code> is unspecified, and the <em>agraph.cfg</em> file is not found in the default location or you are not running as root with an RPM install, the AllegroGraph server is not started and the following message is printed: </p>
+<pre><code>Cannot determine location of configuration file.  Please use --config </code></pre><p><a name="control-commands"></a> </p><a name='header3-352' id='header3-352'></a><h3>Control commands</h3><p>The commands to <strong>agraph-control</strong> are: </p>
+<dl><dt><em>status</em> </dt>
+<dd>Writes to stdout, "up" if the server is running and "down" if not.</dd><dt><em>start</em> </dt>
+<dd>Start the AllegroGraph server. This has no effect if the server is already running. </dd><dt><em>stop</em> </dt>
+<dd>Stop the AllegroGraph server. This is the normal stop command and it attempts to perform a clean shutdown of all open databases. </dd><dt><em>force-stop</em> </dt>
+<dd>Stop the AllegroGraph server. This is the emergency stop command and open databases may not be cleanly closed. </dd><dt><em>restart</em> </dt>
+<dd>Requests that the server shut itself down, if running, and then start back up again. </dd></dl><p><a name="ag-control-signals"></a> </p><a name='header4-365' id='header4-365'></a><h4>AllegroGraph service daemon signal handling</h4><p>The signals used by the AllegroGraph service daemon are: </p>
+<dl><dt><em>SIGTERM</em> </dt>
+<dd>for normal stopping, used by the <strong>stop</strong> command.</dd><dt><em>SIGQUIT</em> </dt>
+<dd>for emergency stopping, used by the <strong>force-stop</strong> command.</dd></dl><a name='header4-371' id='header4-371'></a><h4>Exit Status</h4><p>For the <em>status</em> command, a 0 exit status is returned if the server is up, non-zero if the server is down. </p><p>For all other commands, the exit status is 0 if the command was executed succesfully, and non-zero if an error is reported during command execution. </p><p><a name="agraph-program"></a> </p><a name='header3-375' id='header3-375'></a><h3>The agraph program</h3><p><strong>agraph-control</strong> is a script which launches the actual program, named <strong>agraph</strong>. While <strong>agraph-control</strong> is recommended when starting the server, you can use agraph, particularly when you wish to invoke options not available to <strong>agraph-control</strong>. <strong>agraph</strong> accepts the following command-line arguments: </p>
+<dl><dt><code>--config</code> file </dt>
+<dd>The location of the configuration file. Defaults to   <code>agraph.cfg</code> in the executable's directory, or, failing that,   <code>/etc/agraph/agraph.cfg</code>. (If the configuration file cannot be found,   AllegroGraph does not start and prints the message <em>No configuration   file found.</em> </dd><dt><code>--log-dir</code> directory </dt>
+<dd>Specify where the server log files are written. Overrides the <code>LogDir</code>   <a href="daemon-config.html#LogDir">directive</a>. </dd><dt><code>--debug</code> </dt>
+<dd>Start the server in debug mode, which means logging will be more   verbose. </dd><dt><code>--log-level</code> level </dt>
+<dd>Set an explicit log-level (debug, info, warn, or error), or specify   log-levels per category, for example:   <code>debug,daemon:info,storage:warn</code>. </dd><dt><code>--http-trace</code> file </dt>
+<dd>Write a log of all HTTP traffic to the file specified.</dd><dt><code> --http-trace-options</code> options </dt>
+<dd>A comma separated list of options. Options starting with the   character + turn on the corresponding log category. Those starting   with - turn them off. Use the max-message-size= option to truncate   overly long messages. The default is +xmit,max-message-size=1000.   The available log categories are listed in the <a href="http://franz.com/support/documentation/current/doc/aserve/aserve.html#debugging" title="Aserve" target="_blank">AllegroServe   documentation</a>. </dd><dt><code>--pid-file</code> file </dt>
+<dd>Determines where the process id of the server is written. Overrides   the <code>PidFile</code> <a href="daemon-config.html#PidFile">directive</a>. </dd><dt><code>--run-as</code> user </dt>
+<dd>If started as root, run AllegroGraph as the specified user.   Overrides the <code>RunAs</code> <a href="daemon-config.html#RunAs">directive</a>. </dd><dt><code>--no-daemonize</code> </dt>
+<dd>If specified, then the service daemon will run in the foreground.</dd><dt><code>--stop-server</code> </dt>
+<dd>Stop the AllegroGraph server.  Either the --pid-file or --config parameter must also be specified to identify the server instance that should be stopped. </dd><dt><code>--stop-timeout</code> seconds </dt>
+<dd>Specifies how long to wait before giving up on a <code>--stop-server</code> request. Must be an integer greater than 0.  If <code>--force</code> has also been supplied, then the default value is 10; otherwise the default value is 60. </dd><dt><code>--version</code> </dt>
+<dd>Print version information (such as the version number and build date).</dd><dt><code>--short-version</code> </dt>
+<dd>Print just the version number.</dd><dt><code>--help</code> </dt>
+<dd>Print information about these arguments.</dd></dl><a name='header2-405' id='header2-405'></a><h2>Troubleshooting</h2><a name='header3-406' id='header3-406'></a><h3>Shared memory size and permission to use /dev/shm</h3><p>AllegroGraph uses POSIX shared memory for inter-process communication. </p><p>Each AllegroGraph instance requires a certain amount of shared memory (depending on the <a href="daemon-config.html#expectedstoresize">ExpectedStoreSize</a> setting). The actual size is reported in agraph.log when an instance is started. </p><p>On Linux, the shared memory comes from tmpfs, which is typically mounted on <code>/dev/shm</code>. Default size is half of RAM. To resize, issue a command like the following as the root user: </p>
+<pre><code>mount -o remount,size=&lt;size&gt; &lt;shm-device-file&gt; </code></pre><p>For example: </p>
+<pre><code>mount -o remount,size=8G /dev/shm </code></pre><p>To make the change permanent, <code>/etc/fstab</code> needs to be updated or the above command must be run from a startup script such as <code>/etc/rc.local</code>. </p><p><code>/dev/shm</code> is usually mounted with permissions that allow any process to use it, for example: </p>
+<pre><code>$ ls -ld /dev/shm  
+drwxrwxrwt 2 root root 40 Oct 17 16:31 /dev/shm/ </code></pre><p>However, sites with strict security policies may have <code>/dev/shm</code> mounted with tight permissions (for example, to only allow root to use shared memory).  For AllegroGraph to operate, <code>/dev/shm</code> must have permissions which allow at least the <a href="daemon-config.html#RunAs">RunAs</a> user to read and write to it.  Consult with your systems administrator if AllegroGraph fails to start up due to the permissions on <code>/dev/shm</code>. </p><p>If a previously-working instance doesn't start due to shared memory problem, then there may be a lingering process which still has a handle on a shared memory segment. </p>
+<pre><code>$ &lt;stop-allegrograph&gt;  
+# Check total size, available and used size.  
+$ df -h /dev/shm  
+# If the 'Used' column shows a non-trivial amount,  
+# look for processes that use /dev/shm.  
+$ lsof /dev/shm  
+# Maybe kill offending processes  
+$ kill -9 &lt;pid1&gt; &lt;pid2&gt; ...  
+$ &lt;start-allegrograph&gt; </code></pre></div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

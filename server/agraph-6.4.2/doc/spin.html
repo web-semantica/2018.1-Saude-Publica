@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>SPIN in AllegroGraph | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="spin-api"><div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>SPIN in AllegroGraph</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-18' title='HTTP API'>HTTP API</a></li>
+<li><a href='#header2-27' title='Other clients'>Other clients</a></li>
+<li><a href='#header2-29' title='Lisp API'>Lisp API</a>
+<ul>
+<li><a href='#header3-31' title='SPIN Functions'>SPIN Functions</a></li>
+<li><a href='#header3-33' title='SPIN magic properties'>SPIN magic properties</a></li></ul></li>
+<li><a href='#header2-35' title='Example SPIN session'>Example SPIN session</a>
+<ul>
+<li><a href='#header3-38' title='SPIN functions'>SPIN functions</a></li>
+<li><a href='#header3-46' title='SPIN Magic Properties'>SPIN Magic Properties</a></li></ul></li>
+<li><a href='#header2-56' title='limitations'>limitations</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <p><a href="http://www.w3.org/Submission/spin-overview/" class="external" target="_blank">SPIN</a> provides a representation for rules and constraints using SPARQL. The full SPIN implementation allows customers to: </p>
+<ul>
+<li>Encode SPARQL queries in RDF (i.e., as triples).</li>
+<li>Use SPARQL to define rules and constraints.</li>
+<li>Use SPARQL to define new functions that can be used as filters    and in binding expressions. </li>
+<li>Store reusable SPARQL queries as templates,</li>
+<li>Use SPARQL to define <a href="magic-properties.html">magic properties</a> that    extend query pattern matching semantics beyond simple subgraph pattern    matching. </li></ul><p>AllegroGraph provides partial support for SPIN functions and magic-properties when using the <code>sparql-1.1</code> <a href="sparql-reference.html#sparql-queryengine">SPARQL query engine</a>. We will be continuing to expand our support in subsequent releases. </p><p>The SPIN API allows you to define a function in terms of a SPARQL query and then call that function in other SPARQL queries. These SPIN functions can appear in FILTERs and can also be used to compute values in assignment and select expressions. </p><p>Secondly, the API lets you associate a URI with a SPARQL query. You can use the URI in other queries as a <code>magic property</code> which can introduce additional bindings into the result set. These magic properties can implement complex rules. </p><p>Note that these SPIN associations are defined in the context of a triple-store session and that they do <em>not</em> persist when a triple-store is closed. This means that you currently need to re-define them each time you re-open a store. </p><a name='header2-18' id='header2-18'></a><h2>HTTP API</h2>
+<ul>
+<li>GET /spin/function/uri - returns the query associated    with the function </li>
+<li>PUT /spin/function/uri?query?arguments - defines a spin    function for URI </li>
+<li>DELETE /spin/function/uri - removes the function</li>
+<li><p>GET /spin/function - returns a list of defined SPIN functions</p></li>
+<li><p>GET /spin/magicproperty/uri - returns the query associated    with the magic property </p></li>
+<li>PUT /spin/magicproperty/uri?query?arguments - defines a spin    magic property and associates it with URI </li>
+<li>DELETE /spin/magicproperty/uri - removes the magic property</li>
+<li>GET /spin/magicproperty - returns a list of defined SPIN magic properties</li></ul><a name='header2-27' id='header2-27'></a><h2>Other clients</h2><p>SPIN APIs for AllegroGraph's other clients are in progress. See the Javadocs for a description or the Java API. </p><a name='header2-29' id='header2-29'></a><h2>Lisp API</h2><p>The functions in Lisp API are all exported from the db.agraph.spin package. </p><a name='header3-31' id='header3-31'></a><h3>SPIN Functions</h3>
+<a name="function.register-spin-function" id="function.register-spin-function"></a>
+<a name="register-spin-function" id="register-spin-function"></a>
+<div class="documentation function"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">register-spin-function</span>
+<span class="documentation-arguments"><span class="argument">uri</span> &nbsp;<span class="argument">query</span> &nbsp;<span class="argument">argument-names</span> &nbsp;<span class="marker">&amp;key</span> &nbsp;<span class="argument">db</span></span>
+</div>
+<span class="documentation-kind">function</span>
+</div>
+<div class="documentation contents"><p>Create a spin-function structure and associate it with <code>uri</code>. </p><p>This creates a new <code>spin-function</code> structure whose query is <code>query</code> and whose arguments are named <code>argument-names</code>. The structure is then associated with <code>uri</code>. </p><p>For example: </p>
+<pre><code>(ag.spin:register-spin-function  
+    (resource "age" "ex")  
+    "prefix kennedy: &lt;http://www.example.com/kennedy#&gt;  
+     select ( (2011 - xs:int(?birthYear)) as ?age ) {  
+       ?who kennedy:birth-year ?birthYear .  
+     }"  
+    '(?who)) </code></pre><p>creates a function to compute the age of a subject (assuming that it is 2011!) and links it to ex:age. I can then use this in another query. For example: </p>
+<pre><code>select ?first ?last ?age ?birthYear {  
+  ?person kennedy:first-name ?first .  
+  ?person kennedy:last-name ?last .  
+  ?person kennedy:birth-year ?birthYear .  
+  bind( ex:age( ?person ) as ?age ) .  
+} order by ?age limit 5 </code></pre>
+</div>
+</div>
+ 
+ 
+<a name="function.unregister-spin-function" id="function.unregister-spin-function"></a>
+<a name="unregister-spin-function" id="unregister-spin-function"></a>
+<div class="documentation function"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">unregister-spin-function</span>
+<span class="documentation-arguments"><span class="argument">uri</span> &nbsp;<span class="marker">&amp;key</span> &nbsp;<span class="argument">db</span></span>
+</div>
+<span class="documentation-kind">function</span>
+</div>
+<div class="documentation contents"><p>Removes the association between <code>uri</code> and its SPIN function. </p><p>This signals a warning if <code>uri</code> is not currently associated with a SPIN function. </p>
+</div>
+</div>
+  
+<a name="function.spin-functions" id="function.spin-functions"></a>
+<a name="spin-functions" id="spin-functions"></a>
+<div class="documentation function"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">spin-functions</span>
+<span class="documentation-arguments"><span class="marker">&amp;key</span> &nbsp;<span class="argument">db</span></span>
+</div>
+<span class="documentation-kind">function</span>
+</div>
+<div class="documentation contents"><p>Returns a list of SPIN functions. </p><p>Each item in the list will be a sublist with two items: the <code>uri</code> (in N-Triples format) and its <code>spin-function</code> structure. </p>
+</div>
+</div>
+  
+<a name="function.lookup-spin-function" id="function.lookup-spin-function"></a>
+<a name="lookup-spin-function" id="lookup-spin-function"></a>
+<div class="documentation function"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">lookup-spin-function</span>
+<span class="documentation-arguments"><span class="argument">uri</span> &nbsp;<span class="marker">&amp;key</span> &nbsp;<span class="argument">db</span></span>
+</div>
+<span class="documentation-kind">function</span>
+</div>
+<div class="documentation contents"><p>Find the SPIN function associated with <code>uri</code>. </p><p>Returns the <code>spin-function</code> structure for <code>uri</code> or <code>nil</code> if there is no associations. </p>
+</div>
+</div>
+  <a name='header3-33' id='header3-33'></a><h3>SPIN magic properties</h3>
+<a name="function.register-spin-magic-property" id="function.register-spin-magic-property"></a>
+<a name="register-spin-magic-property" id="register-spin-magic-property"></a>
+<div class="documentation function"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">register-spin-magic-property</span>
+<span class="documentation-arguments"><span class="argument">uri</span> &nbsp;<span class="argument">query</span> &nbsp;<span class="argument">argument-names</span> &nbsp;<span class="marker">&amp;key</span> &nbsp;<span class="argument">db</span></span>
+</div>
+<span class="documentation-kind">function</span>
+</div>
+<div class="documentation contents"><p>Create a spin-magic-property structure and associate it with <code>uri</code>. </p><p>This creates a new <code>spin-magic-property</code> structure whose query is <code>query</code> and whose arguments are named <code>argument-names</code>. The structure is then associated with <code>uri</code>. </p><p>For example: </p>
+<pre><code>;; my uncle is a male person who has the same parent as my parent  
+(ag.spin:register-spin-magic-property  
+  (resource "uncle" "ex")  
+  "  
+  prefix kennedy: &lt;http://www.example.com/kennedy#&gt;  
+  select ?uncle {  
+    ?parent kennedy:has-child ?child .  
+    ?grand kennedy:has-child ?parent .  
+    ?grand kennedy:has-child ?uncle .  
+    filter( ?parent != ?uncle )  
+    ?uncle kennedy:sex kennedy:male .  
+  }")  
+  '(?child)) </code></pre><p>creates a query to generate bindings for uncle from child (or from child to uncle) and links it with ex:uncle. </p>
+</div>
+</div>
+  
+<a name="function.unregister-spin-magic-property" id="function.unregister-spin-magic-property"></a>
+<a name="unregister-spin-magic-property" id="unregister-spin-magic-property"></a>
+<div class="documentation function"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">unregister-spin-magic-property</span>
+<span class="documentation-arguments"><span class="argument">uri</span> &nbsp;<span class="marker">&amp;key</span> &nbsp;<span class="argument">db</span></span>
+</div>
+<span class="documentation-kind">function</span>
+</div>
+<div class="documentation contents"><p>Removes the association between <code>uri</code> and its SPIN magic property. </p><p>This signals a warning if <code>uri</code> is not currently associated with a SPIN magic property. </p>
+</div>
+</div>
+  
+<a name="function.spin-magic-properties" id="function.spin-magic-properties"></a>
+<a name="spin-magic-properties" id="spin-magic-properties"></a>
+<div class="documentation function"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">spin-magic-properties</span>
+<span class="documentation-arguments"><span class="marker">&amp;key</span> &nbsp;<span class="argument">db</span></span>
+</div>
+<span class="documentation-kind">function</span>
+</div>
+<div class="documentation contents"><p>Returns a list of SPIN magic properties. </p><p>Each item in the list will be a sublist with two items: the <code>uri</code> (in N-Triples format) and its <code>spin-magic-property</code> structure. </p>
+</div>
+</div>
+  
+<a name="function.lookup-spin-magic-property" id="function.lookup-spin-magic-property"></a>
+<a name="lookup-spin-magic-property" id="lookup-spin-magic-property"></a>
+<div class="documentation function"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">lookup-spin-magic-property</span>
+<span class="documentation-arguments"><span class="argument">uri</span> &nbsp;<span class="marker">&amp;key</span> &nbsp;<span class="argument">db</span></span>
+</div>
+<span class="documentation-kind">function</span>
+</div>
+<div class="documentation contents"><p>Find the SPIN magic property associated with <code>uri</code>. </p><p>Returns the <code>spin-magic property</code> structure for <code>uri</code> or <code>nil</code> if there is no associations. </p>
+</div>
+</div>
+  <a name='header2-35' id='header2-35'></a><h2>Example SPIN session</h2><p>This example uses the Lisp API with the <code>kennedy</code> dataset included in the tutorial sources. We will define a SPIN function and some SPIN magic properties and then use them in some example queries. First, some setup: </p>
+<pre><code>(enable-!-reader)  
+(enable-print-decoded t)  
+(create-triple-store "kennedy")  
+(load-ntriples "kennedy.ntriples")  
+(register-namespace "kennedy" "http://www.franz.com/simple#")  
+(register-namespace "ex" "http://franz.examples#") </code></pre><a name='header3-38' id='header3-38'></a><h3>SPIN functions</h3><p>A SPIN function allows you to use a SPARQL query to compute a value based on the values of other variables in your query. We will use a very contrived example to illustrate the mechanics. </p><p>Suppose we want a query that returns the age of the youngest five people in our triplestore. If we had function like <code>age</code>, then this would be easy: </p>
+<pre><code>(sparql:run-sparql "  
+    prefix ex: &lt;http://franz.examples#&gt;  
+    prefix kennedy: &lt;http://www.franz.com/simple#&gt;  
+    select ?first ?last ?age ?birthYear {  
+      ?person kennedy:first-name ?first .  
+      ?person kennedy:last-name ?last .  
+      ?person kennedy:birth-year ?birthYear .  
+      bind( ex:age( ?person ) as ?age ) .  
+    } order by ?age limit 5  
+" :results-format :lists) </code></pre><p>Trying this now, however, leads to an error message because we have not provided any association between <code>ex:age</code> and a function. We can ask AllegroGraph to define an age function and to implement it with a SPARQL query using <code>register-spin-function</code>: </p>
+<pre><code>(ag.spin:register-spin-function  
+    !ex:age  
+    "prefix kennedy: &lt;http://www.franz.com/simple#&gt;  
+     prefix xs: &lt;http://www.w3.org/2001/XMLSchema#&gt;  
+     select ( (2011 - xs:int(?birthYear)) as ?age ) {  
+       ?who kennedy:birth-year ?birthYear .  
+     }"  
+    '(?who)) </code></pre><p>Which connects the first argument (ex:age) to the query in the second argument and uses <code>?who</code> as the variable
+<a name="fnr0-2018-06-08" id="fnr0-2018-06-08"></a>
+<sup><a href="#fn0-2018-06-08">1</a></sup> .  When we call the function in our query, AllegroGraph will use the value of <code>?person</code> (from the query) as a variable binding for <code>?who</code> and evalute the SPIN function's SPARQL query. It will return the value computed for the first row selected (as if the function's query had <code>LIMIT 1</code>). If we now re-evaluate our first query, we will get results: </p>
+<pre><code>(({Kym} {Smith} {39} {1972})  
+ ({Molly} {Stark} {43} {1968})  
+ ({Rory} {Kennedy} {43} {1968})  
+ ({Douglas} {Kennedy} {44} {1967})  
+ ({Mark} {Bailey} {44} {1967})) </code></pre><a name='header3-46' id='header3-46'></a><h3>SPIN Magic Properties</h3><p>Suppose we now want explore the relationships amongst the people in the <code>kennedy</code> dataset. In particular, we would like to know who is the uncle of whom. For example, we might want to know the uncles of all of the children of <code>person1</code>: </p>
+<pre><code>(sparql:run-sparql  
+  "  
+  prefix ex: &lt;http://franz.examples#&gt;  
+  prefix kennedy: &lt;http://www.franz.com/simple#&gt;  
+  select distinct ?child ?uncle {  
+    kennedy:person1 kennedy:has-child ?child .  
+    ?uncle ex:uncle ?child .  
+  }"  
+  :results-format :lists) </code></pre><p>This query will return no results since uncle isn't defined as part of our dataset. To remedy this, we will need to do some computations. SPIN lets us do these computations using SPARQL. We can define someone's uncle as the brother of one of their parents. </p>
+<pre><code>(ag.spin:register-spin-magic-property  
+  !ex:uncle  
+  "  
+  prefix ex: &lt;http://franz.examples#&gt;  
+  prefix kennedy: &lt;http://www.franz.com/simple#&gt;  
+  select ?uncle {  
+    ?parent kennedy:has-child ?child .  
+    ?parent ex:brother ?uncle .  
+  }"  
+  '(?child)) </code></pre><p>Since <code>ex:brother</code> is also not defined in our base dataset, we need an additional rule. A person's brother is a male child that shares a parent and is not the same person: </p>
+<pre><code>(ag.spin:register-spin-magic-property  
+  !ex:brother  
+  "  
+  prefix ex: &lt;http://franz.examples#&gt;  
+  prefix kennedy: &lt;http://www.franz.com/simple#&gt;  
+  select ?brother {  
+    ?parent kennedy:has-child ?child .  
+    ?parent kennedy:has-child ?brother .  
+    filter( ?child != ?brother )  
+    ?brother kennedy:sex kennedy:male .  
+  }"  
+  '(?child))           </code></pre><p>In both cases, we use <code>register-spin-magic-property</code> to associate a URI (like !ex:uncle) with a SPARQL query string that contains placeholders (like ?child) that will vary when we invoke the property. Once we register the magic properties, we can ask our query again and now we will get results: </p>
+<pre><code>(sparql:run-sparql  
+  "  
+  prefix ex: &lt;http://franz.examples#&gt;  
+  prefix kennedy: &lt;http://www.franz.com/simple#&gt;  
+  select distinct ?child ?uncle {  
+    kennedy:person1 kennedy:has-child ?child .  
+    ?uncle ex:uncle ?child .  
+  }"  
+  :results-format :lists)  
+ 
+(({person3} {person24}) ({person3} {person22}) ({person3} {person20})  
+ ({person3} {person33}) ({person3} {person31}) ({person3} {person28})  
+ ({person3} {person26}) ({person3} {person25}) ({person3} {person41})  
+ ({person3} {person39}) ...)     </code></pre><p>Note that to answer this query, AllegroGraph is first finding the children of <code>kennedy:person1</code>. Then for each child, it evaluates the query that looks for the that child's uncle. To do this, it must evaluate the query that find's the child's parent's brothers. </p><a name='header2-56' id='header2-56'></a><h2>limitations</h2><p>There are several limitations in this first implementation. To wit: </p>
+<ul>
+<li><p>there is room for much optimization and caching of    query information. </p>
+<li><p>AllegroGraph does not check for mutually recursive and    non-terminating rules. I.e., if magic property A uses magic    property B and magic propery B uses magic property A, then    AllegroGraph may enter a cycle that will run until resources are    exhausted. </p></li>
+<li><p>only object "arguments" are supported. I.e., you can</p>
+<pre><code>?x ex:magic (?a ?b ?c) . </code></pre></li></li><p>but not </p>
+<pre><code> (?x ?y) ex:magic ?a . </code></pre></ul><p>Note that this initial implementation of SPIN functions and magic properties may fail to operate correctly in all circumstances. This will be corrected in subsequent release. We welcome your bug reports and feedback. </p><hr/><div id="footnotes"> <h2>Footnotes</h2>
+<div class="footnotes">
+<ol>
+<li>
+<a name="fn0-2018-06-08" id="fn0-2018-06-08"></a>
+This function has several problems in its own right in that it only works during 2011 and does not take the month of the year into account. It does, however, show how SPIN functions can be used. <a href="#fnr0-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 1 in the text">&#8617;</a></li>
+</ol>
+</div>  </div>  </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

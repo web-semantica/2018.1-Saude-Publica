@@ -1,0 +1,902 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>franz.openrdf.query package &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="franz.openrdf.repository package" href="franz.openrdf.repository.html" />
+    <link rel="prev" title="franz.openrdf.model package" href="franz.openrdf.model.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+        &laquo;<a href="franz.openrdf.model.html" title="previous chapter">franz.openrdf.model package</a>
+      <a href="franz.openrdf.repository.html" title="next chapter">franz.openrdf.repository package</a> 
+      &raquo;
+    </div>
+  
+    
+  <div class="section" id="franz-openrdf-query-package">
+<h1>franz.openrdf.query package<a class="headerlink" href="#franz-openrdf-query-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-franz.openrdf.query.dataset">
+<span id="franz-openrdf-query-dataset-module"></span><h2>franz.openrdf.query.dataset module<a class="headerlink" href="#module-franz.openrdf.query.dataset" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="franz.openrdf.query.dataset.Dataset">
+<em class="property">class </em><code class="descclassname">franz.openrdf.query.dataset.</code><code class="descname">Dataset</code><span class="sig-paren">(</span><em>contexts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/dataset.html#Dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.dataset.Dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Records a set of default and named graphs that can restrict 
+the scope of a query.</p>
+<dl class="method">
+<dt id="franz.openrdf.query.dataset.Dataset.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>contexts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/dataset.html#Dataset.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.dataset.Dataset.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.dataset.Dataset.addDefaultGraph">
+<code class="descname">addDefaultGraph</code><span class="sig-paren">(</span><em>uri</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/dataset.html#Dataset.addDefaultGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.dataset.Dataset.addDefaultGraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.dataset.Dataset.addNamedGraph">
+<code class="descname">addNamedGraph</code><span class="sig-paren">(</span><em>uri</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/dataset.html#Dataset.addNamedGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.dataset.Dataset.addNamedGraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.dataset.Dataset.asQuery">
+<code class="descname">asQuery</code><span class="sig-paren">(</span><em>excludeNullContext</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/dataset.html#Dataset.asQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.dataset.Dataset.asQuery" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.dataset.Dataset.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/dataset.html#Dataset.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.dataset.Dataset.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.dataset.Dataset.getDefaultGraphs">
+<code class="descname">getDefaultGraphs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/dataset.html#Dataset.getDefaultGraphs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.dataset.Dataset.getDefaultGraphs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.dataset.Dataset.getNamedGraphs">
+<code class="descname">getNamedGraphs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/dataset.html#Dataset.getNamedGraphs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.dataset.Dataset.getNamedGraphs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.dataset.Dataset.removeDefaultGraph">
+<code class="descname">removeDefaultGraph</code><span class="sig-paren">(</span><em>uri</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/dataset.html#Dataset.removeDefaultGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.dataset.Dataset.removeDefaultGraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.dataset.Dataset.removeNamedGraph">
+<code class="descname">removeNamedGraph</code><span class="sig-paren">(</span><em>uri</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/dataset.html#Dataset.removeNamedGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.dataset.Dataset.removeNamedGraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-franz.openrdf.query.query">
+<span id="franz-openrdf-query-query-module"></span><h2>franz.openrdf.query.query module<a class="headerlink" href="#module-franz.openrdf.query.query" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="franz.openrdf.query.query.BooleanQuery">
+<em class="property">class </em><code class="descclassname">franz.openrdf.query.query.</code><code class="descname">BooleanQuery</code><span class="sig-paren">(</span><em>queryLanguage=QueryLanguage.SPARQL</em>, <em>query=None</em>, <em>baseURI=None</em>, <em>queryString=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#BooleanQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.BooleanQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#franz.openrdf.query.query.Query" title="franz.openrdf.query.query.Query"><code class="xref py py-class docutils literal"><span class="pre">franz.openrdf.query.query.Query</span></code></a></p>
+<p>A query that returns a boolean.</p>
+<dl class="method">
+<dt id="franz.openrdf.query.query.BooleanQuery.evaluate">
+<code class="descname">evaluate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#BooleanQuery.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.BooleanQuery.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the embedded query against the RDF store.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A boolean.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="franz.openrdf.query.query.GraphQuery">
+<em class="property">class </em><code class="descclassname">franz.openrdf.query.query.</code><code class="descname">GraphQuery</code><span class="sig-paren">(</span><em>queryLanguage=QueryLanguage.SPARQL</em>, <em>query=None</em>, <em>baseURI=None</em>, <em>queryString=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#GraphQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.GraphQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#franz.openrdf.query.query.Query" title="franz.openrdf.query.query.Query"><code class="xref py py-class docutils literal"><span class="pre">franz.openrdf.query.query.Query</span></code></a></p>
+<p>A query that returns statements (see <code class="xref py py-class docutils literal"><span class="pre">Statement</span></code>).</p>
+<dl class="method">
+<dt id="franz.openrdf.query.query.GraphQuery.evaluate">
+<code class="descname">evaluate</code><span class="sig-paren">(</span><em>output=None</em>, <em>output_format=RDFFormat.TABLE: Table</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#GraphQuery.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.GraphQuery.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the embedded query against the RDF store.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>output</strong> (<em>str|file|int|bool</em>) – A file name, file descriptor or a file-like
+object to save the results to
+(optional). <code class="docutils literal"><span class="pre">True</span></code> can be used as a synonym
+for stdout.</li>
+<li><strong>output_format</strong> (<a class="reference internal" href="franz.openrdf.rio.html#franz.openrdf.rio.rdfformat.RDFFormat" title="franz.openrdf.rio.rdfformat.RDFFormat"><em>RDFFormat</em></a>) – Serialization format for <code class="docutils literal"><span class="pre">output</span></code>.
+The default is TABLE.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">An iterator over statements or None (if <code class="docutils literal"><span class="pre">output</span></code> is used)..</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#franz.openrdf.query.queryresult.GraphQueryResult" title="franz.openrdf.query.queryresult.GraphQueryResult">GraphQueryResult</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="franz.openrdf.query.query.Query">
+<em class="property">class </em><code class="descclassname">franz.openrdf.query.query.</code><code class="descname">Query</code><span class="sig-paren">(</span><em>queryLanguage=QueryLanguage.SPARQL</em>, <em>query=None</em>, <em>baseURI=None</em>, <em>queryString=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#Query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.Query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A query on a <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> Repository} that can be formulated in one of the
+supported query languages (for example SeRQL or SPARQL). It allows one to
+predefine bindings in the query to be able to reuse the same query with
+different bindings.</p>
+<dl class="method">
+<dt id="franz.openrdf.query.query.Query.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>queryLanguage=QueryLanguage.SPARQL</em>, <em>query=None</em>, <em>baseURI=None</em>, <em>queryString=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#Query.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.Query.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a query object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>queryLanguage</strong> (<a class="reference internal" href="#franz.openrdf.query.query.QueryLanguage" title="franz.openrdf.query.query.QueryLanguage"><em>QueryLanguage</em></a>) – Query syntax - the default is SPARQL.</li>
+<li><strong>query</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Query text</li>
+<li><strong>baseURI</strong> (<a class="reference internal" href="franz.openrdf.model.html#franz.openrdf.model.URI" title="franz.openrdf.model.URI"><em>URI</em></a>) – Prefix used to relsove relative URIs.
+Default: chosen by the server.</li>
+<li><strong>queryString</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Legacy name of the ‘query’ parameter.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.query.Query.evaluate_generic_query">
+<code class="descname">evaluate_generic_query</code><span class="sig-paren">(</span><em>count=False</em>, <em>accept=None</em>, <em>callback=None</em>, <em>analyze=False</em>, <em>analysisTechnique=None</em>, <em>analysisTimeout=None</em>, <em>update=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#Query.evaluate_generic_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.Query.evaluate_generic_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate a SPARQL or PROLOG query, which may be a ‘select’, ‘construct’, ‘describe’
+or ‘ask’ query (in the SPARQL case). Return an appropriate response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>count</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – If <code class="docutils literal"><span class="pre">True</span></code> return only the count of the query results.</li>
+<li><strong>accept</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Set to <code class="docutils literal"><span class="pre">'application/sparql-results+xml'</span></code> or <code class="docutils literal"><span class="pre">'application/sparql-results+json'</span></code>
+to retrieve the result as a string in the specified format.
+The default is to return a <code class="xref py py-class docutils literal"><span class="pre">QueryResult</span></code> object.</li>
+<li><strong>analyze</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – If <code class="docutils literal"><span class="pre">True</span></code> perform query analysis for SPARQL queries.</li>
+<li><strong>analysisTechnique</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Control the method of analysis. Can be either <cite>“executed”</cite> (default).
+meaning that the query will be executed to perform dynamic analysis,
+or <code class="docutils literal"><span class="pre">&quot;static&quot;</span></code>.</li>
+<li><strong>analysisTimeout</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – Number of second to run the query if executed for analysis.</li>
+<li><strong>update</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – If <code class="docutils literal"><span class="pre">True</span></code> this is an update query and the result will be a boolean.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The result can be either:
+- A boolean (for update queries).
+- A dictionary containing the results.
+- A string (if <code class="docutils literal"><span class="pre">accept</span></code> was passed).
+- An integer (if <code class="docutils literal"><span class="pre">count=True</span></code>).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict|string|int|bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.query.Query.getBindings">
+<code class="descname">getBindings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#Query.getBindings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.Query.getBindings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the bindings that have been set on this query.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A dictionary of bindings.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a>[<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)">string</a>, <a class="reference internal" href="franz.openrdf.model.html#franz.openrdf.model.Value" title="franz.openrdf.model.Value">Value</a>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.query.Query.getDataset">
+<code class="descname">getDataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#Query.getDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.Query.getDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the dataset against which this query will operate.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dataset.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#franz.openrdf.query.dataset.Dataset" title="franz.openrdf.query.dataset.Dataset">Dataset</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.query.Query.getIncludeInferred">
+<code class="descname">getIncludeInferred</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#Query.getIncludeInferred"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.Query.getIncludeInferred" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether this query will return inferred statements.
+:return: <code class="docutils literal"><span class="pre">True</span></code> if inferred triples are included, <code class="docutils literal"><span class="pre">False</span></code> otherwise.
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.query.Query.removeBinding">
+<code class="descname">removeBinding</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#Query.removeBinding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.Query.removeBinding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a previously set binding on the supplied variable. Calling this
+method with an unbound variable name has no effect.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Variable name.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.query.Query.setBinding">
+<code class="descname">setBinding</code><span class="sig-paren">(</span><em>name</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#Query.setBinding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.Query.setBinding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Binds the specified variable to the supplied value. Any value that was
+previously bound to the specified value will be overwritten.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Variable name.</li>
+<li><strong>value</strong> (<em>Value|basestring</em>) – New value for the variable. If a string is passed it will
+be converted to a literal.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.query.Query.setBindings">
+<code class="descname">setBindings</code><span class="sig-paren">(</span><em>dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#Query.setBindings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.Query.setBindings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set multiple variable bindings.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dict</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a><em>, </em><a class="reference internal" href="franz.openrdf.model.html#franz.openrdf.model.Value" title="franz.openrdf.model.Value"><em>Value</em></a><em>]</em>) – A dictionary of bindings.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.query.Query.setCheckVariables">
+<code class="descname">setCheckVariables</code><span class="sig-paren">(</span><em>setting</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#Query.setCheckVariables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.Query.setCheckVariables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine whether the presence of variables in the select clause not referenced
+in a triple is flagged.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>setting</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – <code class="docutils literal"><span class="pre">True</span></code> if variables should be checked, <code class="docutils literal"><span class="pre">False</span></code> otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.query.Query.setConnection">
+<code class="descname">setConnection</code><span class="sig-paren">(</span><em>connection</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#Query.setConnection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.Query.setConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Internal call to embed the connection into the query.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.query.Query.setContexts">
+<code class="descname">setContexts</code><span class="sig-paren">(</span><em>contexts</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#Query.setContexts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.Query.setContexts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assert a set of contexts (named graphs) that filter all triples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>contexts</strong> (<em>list</em><em>[</em><em>URI|string</em><em>]</em>) – List of graph URIs.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.query.Query.setDataset">
+<code class="descname">setDataset</code><span class="sig-paren">(</span><em>dataset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#Query.setDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.Query.setDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select the dataset against which to evaluate this query, overriding any
+dataset that is specified in the query itself.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset</strong> (<a class="reference internal" href="#franz.openrdf.query.dataset.Dataset" title="franz.openrdf.query.dataset.Dataset"><em>Dataset</em></a>) – A dataset object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.query.Query.setIncludeInferred">
+<code class="descname">setIncludeInferred</code><span class="sig-paren">(</span><em>includeInferred</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#Query.setIncludeInferred"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.Query.setIncludeInferred" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine whether evaluation results of this query should include inferred
+statements.</p>
+<p>The default setting is <code class="docutils literal"><span class="pre">True</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>includeInferred</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – If <code class="docutils literal"><span class="pre">True</span></code> include inferred triples in query results.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="franz.openrdf.query.query.QueryLanguage">
+<em class="property">class </em><code class="descclassname">franz.openrdf.query.query.</code><code class="descname">QueryLanguage</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#QueryLanguage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.QueryLanguage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="attribute">
+<dt id="franz.openrdf.query.query.QueryLanguage.PROLOG">
+<code class="descname">PROLOG</code><em class="property"> = QueryLanguage.PROLOG</em><a class="headerlink" href="#franz.openrdf.query.query.QueryLanguage.PROLOG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.query.query.QueryLanguage.SPARQL">
+<code class="descname">SPARQL</code><em class="property"> = QueryLanguage.SPARQL</em><a class="headerlink" href="#franz.openrdf.query.query.QueryLanguage.SPARQL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.query.QueryLanguage.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#QueryLanguage.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.QueryLanguage.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.query.QueryLanguage.getName">
+<code class="descname">getName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#QueryLanguage.getName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.QueryLanguage.getName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.query.query.QueryLanguage.registered_languages">
+<code class="descname">registered_languages</code><em class="property"> = [QueryLanguage.SPARQL, QueryLanguage.PROLOG]</em><a class="headerlink" href="#franz.openrdf.query.query.QueryLanguage.registered_languages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="franz.openrdf.query.query.QueryLanguage.valueOf">
+<em class="property">static </em><code class="descname">valueOf</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#QueryLanguage.valueOf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.QueryLanguage.valueOf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="franz.openrdf.query.query.QueryLanguage.values">
+<em class="property">static </em><code class="descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#QueryLanguage.values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.QueryLanguage.values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="franz.openrdf.query.query.TupleQuery">
+<em class="property">class </em><code class="descclassname">franz.openrdf.query.query.</code><code class="descname">TupleQuery</code><span class="sig-paren">(</span><em>queryLanguage=QueryLanguage.SPARQL</em>, <em>query=None</em>, <em>baseURI=None</em>, <em>queryString=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#TupleQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.TupleQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#franz.openrdf.query.query.Query" title="franz.openrdf.query.query.Query"><code class="xref py py-class docutils literal"><span class="pre">franz.openrdf.query.query.Query</span></code></a></p>
+<p>A query that returns tuples (i.e. sets of variable bindings).</p>
+<dl class="method">
+<dt id="franz.openrdf.query.query.TupleQuery.analyze">
+<code class="descname">analyze</code><span class="sig-paren">(</span><em>analysisTechnique=None</em>, <em>analysisTimeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#TupleQuery.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.TupleQuery.analyze" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analyze the query.</p>
+<p>Analysis is only available for SPARQL queries.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>analysisTechnique</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Control the method of analysis. Can be either <cite>“executed”</cite> (default).
+meaning that the query will be executed to perform dynamic analysis,
+or <code class="docutils literal"><span class="pre">&quot;static&quot;</span></code>.</li>
+<li><strong>analysisTimeout</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – Number of second to run the query if executed for analysis.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Analysis result as a dictionary.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.query.TupleQuery.evaluate">
+<code class="descname">evaluate</code><span class="sig-paren">(</span><em>count=False</em>, <em>output=None</em>, <em>output_format=TupleFormat.TABLE: Table</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#TupleQuery.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.TupleQuery.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the embedded query against the RDF store.</p>
+<p>Return an iterator that produces for each step a tuple of values
+(resources and literals) corresponding to the variables or
+expressions in a ‘select’ clause (or its equivalent).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>count</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – If <code class="docutils literal"><span class="pre">True</span></code> return the number of result rows
+instead of the usual iterator.</li>
+<li><strong>output</strong> (<em>str|file|int|bool</em>) – A file name, file descriptor or a file-like
+object to save the results to
+(optional). <code class="docutils literal"><span class="pre">True</span></code> can be used as a synonym
+for stdout.</li>
+<li><strong>output_format</strong> (<a class="reference internal" href="franz.openrdf.rio.html#franz.openrdf.rio.rdfformat.RDFFormat" title="franz.openrdf.rio.rdfformat.RDFFormat"><em>RDFFormat</em></a>) – Serialization format for <code class="docutils literal"><span class="pre">output</span></code>.
+The default is TABLE.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Either an iterator over results, 
+an integer (the number of results, if <code class="docutils literal"><span class="pre">count</span></code> is used) 
+or <code class="docutils literal"><span class="pre">None</span></code> (if <code class="docutils literal"><span class="pre">output</span></code> is used).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TupleQueryResult|int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="franz.openrdf.query.query.UpdateQuery">
+<em class="property">class </em><code class="descclassname">franz.openrdf.query.query.</code><code class="descname">UpdateQuery</code><span class="sig-paren">(</span><em>queryLanguage=QueryLanguage.SPARQL</em>, <em>query=None</em>, <em>baseURI=None</em>, <em>queryString=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#UpdateQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.UpdateQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#franz.openrdf.query.query.Query" title="franz.openrdf.query.query.Query"><code class="xref py py-class docutils literal"><span class="pre">franz.openrdf.query.query.Query</span></code></a></p>
+<p>An update query.</p>
+<dl class="method">
+<dt id="franz.openrdf.query.query.UpdateQuery.evaluate">
+<code class="descname">evaluate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/query.html#UpdateQuery.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.query.UpdateQuery.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the embedded update against the RDF store.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">True</span></code> if the query changed the store, <code class="docutils literal"><span class="pre">False</span></code> otherwise.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-franz.openrdf.query.queryresult">
+<span id="franz-openrdf-query-queryresult-module"></span><h2>franz.openrdf.query.queryresult module<a class="headerlink" href="#module-franz.openrdf.query.queryresult" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="franz.openrdf.query.queryresult.Binding">
+<em class="property">class </em><code class="descclassname">franz.openrdf.query.queryresult.</code><code class="descname">Binding</code><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#Binding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.Binding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#franz.openrdf.query.queryresult.Binding" title="franz.openrdf.query.queryresult.Binding"><code class="xref py py-class docutils literal"><span class="pre">franz.openrdf.query.queryresult.Binding</span></code></a></p>
+<dl class="method">
+<dt id="franz.openrdf.query.queryresult.Binding.getName">
+<code class="descname">getName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#Binding.getName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.Binding.getName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the name of the binding (e.g. the variable name).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.queryresult.Binding.getValue">
+<code class="descname">getValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#Binding.getValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.Binding.getValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the value of the binding. The returned value is never equal to
+None, such a “binding” is considered to be unbound.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="franz.openrdf.query.queryresult.GraphQueryResult">
+<em class="property">class </em><code class="descclassname">franz.openrdf.query.queryresult.</code><code class="descname">GraphQueryResult</code><span class="sig-paren">(</span><em>string_tuples</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#GraphQueryResult"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.GraphQueryResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#franz.openrdf.query.repositoryresult.RepositoryResult" title="franz.openrdf.query.repositoryresult.RepositoryResult"><code class="xref py py-class docutils literal"><span class="pre">franz.openrdf.query.repositoryresult.RepositoryResult</span></code></a>, <a class="reference internal" href="#franz.openrdf.query.queryresult.QueryResult" title="franz.openrdf.query.queryresult.QueryResult"><code class="xref py py-class docutils literal"><span class="pre">franz.openrdf.query.queryresult.QueryResult</span></code></a></p>
+<p>A graph query result is an iterator over the Statements.</p>
+<dl class="method">
+<dt id="franz.openrdf.query.queryresult.GraphQueryResult.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>string_tuples</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#GraphQueryResult.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.GraphQueryResult.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="franz.openrdf.query.queryresult.ListBindingSet">
+<em class="property">class </em><code class="descclassname">franz.openrdf.query.queryresult.</code><code class="descname">ListBindingSet</code><span class="sig-paren">(</span><em>variable_names</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#ListBindingSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.ListBindingSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A BindingSet is a set of named value bindings, which is used to
+represent a single query solution. Values are indexed by name of
+the binding which typically corresponds to the names of the
+variables used in the projection of the original query.</p>
+<p>ListBindingSet emulates an RDF4J BindingSet, a Python dictionary
+and a list simultaneously.  The internal datastructure is a pair
+of lists.</p>
+<dl class="method">
+<dt id="franz.openrdf.query.queryresult.ListBindingSet.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>variable_names</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#ListBindingSet.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.ListBindingSet.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.queryresult.ListBindingSet.getBinding">
+<code class="descname">getBinding</code><span class="sig-paren">(</span><em>bindingName</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#ListBindingSet.getBinding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.ListBindingSet.getBinding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the binding with the specified name from this BindingSet.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.queryresult.ListBindingSet.getBindingNames">
+<code class="descname">getBindingNames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#ListBindingSet.getBindingNames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.ListBindingSet.getBindingNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the names of the bindings in this BindingSet.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.queryresult.ListBindingSet.getRow">
+<code class="descname">getRow</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#ListBindingSet.getRow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.ListBindingSet.getRow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of strings representing the values of the current row.
+This exists mostly for debugging (otherwise, we would return terms instead of strings).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.queryresult.ListBindingSet.getValue">
+<code class="descname">getValue</code><span class="sig-paren">(</span><em>bindingName</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#ListBindingSet.getValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.ListBindingSet.getValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the value of the binding with the specified name from this BindingSet.
+Throws exception if ‘bindingName’ is not legal.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.queryresult.ListBindingSet.hasBinding">
+<code class="descname">hasBinding</code><span class="sig-paren">(</span><em>bindingName</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#ListBindingSet.hasBinding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.ListBindingSet.hasBinding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether this BindingSet has a binding with the specified name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.queryresult.ListBindingSet.iterator">
+<code class="descname">iterator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#ListBindingSet.iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.ListBindingSet.iterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an iterator over the bindings in this BindingSet. This only
+returns bindings with non-null values. An implementation is free to return
+the bindings in arbitrary order.</p>
+<p>Currently, we only support Python-style iteration over BindingSet dictionaries,
+so this (Java-style) iterator method is not implemented.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.queryresult.ListBindingSet.size">
+<code class="descname">size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#ListBindingSet.size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.ListBindingSet.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of bindings in this BindingSet.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="franz.openrdf.query.queryresult.QueryResult">
+<em class="property">class </em><code class="descclassname">franz.openrdf.query.queryresult.</code><code class="descname">QueryResult</code><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#QueryResult"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.QueryResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Super type of all query result types (TupleQueryResult, GraphQueryResult, etc.
+Evaluates as a Python iterator</p>
+<dl class="method">
+<dt id="franz.openrdf.query.queryresult.QueryResult.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#QueryResult.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.QueryResult.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Release resources used by this query result.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="franz.openrdf.query.queryresult.TupleQueryResult">
+<em class="property">class </em><code class="descclassname">franz.openrdf.query.queryresult.</code><code class="descname">TupleQueryResult</code><span class="sig-paren">(</span><em>variable_names</em>, <em>string_tuples</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#TupleQueryResult"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.TupleQueryResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#franz.openrdf.query.queryresult.QueryResult" title="franz.openrdf.query.queryresult.QueryResult"><code class="xref py py-class docutils literal"><span class="pre">franz.openrdf.query.queryresult.QueryResult</span></code></a></p>
+<p>A representation of a variable-binding query result as a sequence of
+BindingSet objects. Each query result consists of zero or more
+solutions, each of which represents a single query solution as a set of
+bindings. Note: take care to always close a TupleQueryResult after use to
+free any resources it keeps hold of.</p>
+<dl class="method">
+<dt id="franz.openrdf.query.queryresult.TupleQueryResult.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>variable_names</em>, <em>string_tuples</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#TupleQueryResult.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.TupleQueryResult.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.queryresult.TupleQueryResult.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#TupleQueryResult.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.TupleQueryResult.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.queryresult.TupleQueryResult.getBindingNames">
+<code class="descname">getBindingNames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#TupleQueryResult.getBindingNames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.TupleQueryResult.getBindingNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the names of the bindings, in order of projection.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of names.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list[<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)">string</a>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.queryresult.TupleQueryResult.rowCount">
+<code class="descname">rowCount</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#TupleQueryResult.rowCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.TupleQueryResult.rowCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.queryresult.TupleQueryResult.toPandas">
+<code class="descname">toPandas</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/queryresult.html#TupleQueryResult.toPandas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.queryresult.TupleQueryResult.toPandas" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-franz.openrdf.query.repositoryresult">
+<span id="franz-openrdf-query-repositoryresult-module"></span><h2>franz.openrdf.query.repositoryresult module<a class="headerlink" href="#module-franz.openrdf.query.repositoryresult" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="franz.openrdf.query.repositoryresult.RepositoryResult">
+<em class="property">class </em><code class="descclassname">franz.openrdf.query.repositoryresult.</code><code class="descname">RepositoryResult</code><span class="sig-paren">(</span><em>string_tuples</em>, <em>subjectFilter=None</em>, <em>tripleIDs=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/repositoryresult.html#RepositoryResult"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.repositoryresult.RepositoryResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>An iterable collection of statements.</p>
+<p>A RepositoryResult is a result collection of objects (for example
+<code class="xref py py-class docutils literal"><span class="pre">org.openrdf.model.Statement</span></code>,
+<code class="xref py py-class docutils literal"><span class="pre">org.openrdf.model.Namespace</span></code>, or
+<code class="xref py py-class docutils literal"><span class="pre">org.openrdf.model.Resource</span></code> objects) that can be iterated
+over. It keeps an open connection to the backend for lazy
+retrieval of individual results. Additionally it has some utility
+methods to fetch all results and add them to a collection.</p>
+<p>By default, a RepositoryResult is not necessarily a (mathematical)
+set: it may contain duplicate objects. Duplicate filtering can be
+<a class="reference external" href="mailto:{{&#37;&#52;&#48;link">{{<span>&#64;</span>link</a> #enableDuplicateFilter() switched on}, but this should not
+be used lightly as the filtering mechanism is potentially
+memory-intensive.</p>
+<p>A RepositoryResult needs to be <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> #close() closed} after use
+to free up any resources (open connections, read locks, etc.) it
+has on the underlying repository.</p>
+<dl class="method">
+<dt id="franz.openrdf.query.repositoryresult.RepositoryResult.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>string_tuples</em>, <em>subjectFilter=None</em>, <em>tripleIDs=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/repositoryresult.html#RepositoryResult.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.repositoryresult.RepositoryResult.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.repositoryresult.RepositoryResult.addTo">
+<code class="descname">addTo</code><span class="sig-paren">(</span><em>collection</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/repositoryresult.html#RepositoryResult.addTo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.repositoryresult.RepositoryResult.addTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add all objects of this RepositoryResult to the supplied collection.</p>
+<p>The RepositoryResult is fully consumed and automatically closed by this
+operation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>collection</strong> (<em>set|list</em>) – The collection to add the results to.
+It can be a list or a set.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.repositoryresult.RepositoryResult.asList">
+<code class="descname">asList</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/repositoryresult.html#RepositoryResult.asList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.repositoryresult.RepositoryResult.asList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list containing all objects of this RepositoryResult in
+order of iteration.</p>
+<p>The RepositoryResult is fully consumed and automatically closed by this operation.
+:return: List of statements.
+:rtype: list[Statement]</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.repositoryresult.RepositoryResult.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/repositoryresult.html#RepositoryResult.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.repositoryresult.RepositoryResult.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shut down the iterator to be sure the resources are freed up.</p>
+<p>It is safe to call this method multiple times.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.repositoryresult.RepositoryResult.enableDuplicateFilter">
+<code class="descname">enableDuplicateFilter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/repositoryresult.html#RepositoryResult.enableDuplicateFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.repositoryresult.RepositoryResult.enableDuplicateFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switch on duplicate filtering while iterating over objects.</p>
+<p>The RepositoryResult will keep track of the previously returned objects in a set
+and on calling next() will ignore any objects that already occur in this set.</p>
+<p>Caution: use of this filtering mechanism is potentially memory-intensive.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="franz.openrdf.query.repositoryresult.RepositoryResult.normalize_quad">
+<em class="property">static </em><code class="descname">normalize_quad</code><span class="sig-paren">(</span><em>stringTuple</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/repositoryresult.html#RepositoryResult.normalize_quad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.repositoryresult.RepositoryResult.normalize_quad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="franz.openrdf.query.repositoryresult.RepositoryResult.normalize_quint">
+<em class="property">static </em><code class="descname">normalize_quint</code><span class="sig-paren">(</span><em>stringTuple</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/repositoryresult.html#RepositoryResult.normalize_quint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.repositoryresult.RepositoryResult.normalize_quint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.repositoryresult.RepositoryResult.rowCount">
+<code class="descname">rowCount</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/repositoryresult.html#RepositoryResult.rowCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.repositoryresult.RepositoryResult.rowCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of statements in this result object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of results in this iterator.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.query.repositoryresult.RepositoryResult.toPandas">
+<code class="descname">toPandas</code><span class="sig-paren">(</span><em>include_graph=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/query/repositoryresult.html#RepositoryResult.toPandas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.query.repositoryresult.RepositoryResult.toPandas" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-franz.openrdf.query">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-franz.openrdf.query" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+  
+    <div class="nav-links nav-links-footer">
+        &laquo;<a href="franz.openrdf.model.html" title="previous chapter">franz.openrdf.model package</a>
+      <a href="franz.openrdf.repository.html" title="next chapter">franz.openrdf.repository package</a> 
+      &raquo;
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">AllegroGraph Python API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="modules.html">src</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#allegrographserver-class">AllegroGraphServer class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#catalog-class">Catalog class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-franz.openrdf.sail.spec">Spec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#repository-class">Repository class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utility-connection-functions">Utility connection functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#repositoryconnection-class">RepositoryConnection class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#query-class-and-subclasses">Query Class (and Subclasses)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#queryresult-class">QueryResult Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#repositoryresult-class">RepositoryResult class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#statement-class">Statement Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#valuefactory-class">ValueFactory Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../api.html">AllegroGraph Python API Reference</a><ul>
+  <li><a href="modules.html">src</a><ul>
+  <li><a href="franz.html">franz package</a><ul>
+  <li><a href="franz.openrdf.html">franz.openrdf package</a><ul>
+      <li>Previous: <a href="franz.openrdf.model.html" title="previous chapter">franz.openrdf.model package</a></li>
+      <li>Next: <a href="franz.openrdf.repository.html" title="next chapter">franz.openrdf.repository package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/_gen/franz.openrdf.query.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

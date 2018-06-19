@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>JavaScript API | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="javascript"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>      <h1>AllegroGraph 6.4.2 JavaScript API</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-10' title='Overview'>Overview</a></li>
+<li><a href='#header2-15' title='Parts and Triples'>Parts and Triples</a></li>
+<li><a href='#header2-43' title='The Triple Store'>The Triple Store</a></li>
+<li><a href='#header2-79' title='Cursors'>Cursors</a></li>
+<li><a href='#header2-94' title='Namespace Management'>Namespace Management</a></li>
+<li><a href='#header2-108' title='Geospatial Part Encoding'>Geospatial Part Encoding</a></li>
+<li><a href='#header2-119' title='Graph/Network Operations'>Graph/Network Operations</a></li>
+<li><a href='#header2-134' title='UPI Hash Tables'>UPI Hash Tables</a></li>
+<li><a href='#header2-146' title='Custom Service Definitions'>Custom Service Definitions</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <p>The AllegroGraph server can be scripted using Common Lisp or <a href="http://en.wikipedia.org/wiki/JavaScript">JavaScript</a>. The easiest way to get started with Javascript is to open a repository in WebView and select 'Utilities-&gt;Scripts' from the navigation bar. </p><p>This document describes the programming interface available to JavaScript programs running in an AllegroGraph server. </p><p><a name="overview"></a> </p><a name='header2-10' id='header2-10'></a><h2>Overview</h2><p><a name="contentneg"></a> </p><p>The simplest way to run scripts is to use the <a href="http-protocol.html#post-eval"><code>/eval</code></a> HTTP service, using a <code>text/javascript</code> content-type for your request. This will cause the body of the request to be evaluated as JavaScript. If an error is raised, it will be returned as an HTTP error. If not, the result of evaluating the code is returned. Usually, you'll want to specify that you accept <code>application/json</code> responses, and receive the result in that form. If your code returns a cursor, you can also specify one of the formats suitable for that kind of cursor (like <code>application/trix</code> for triple cursors, or <code>application/sparql-results+xml</code> for SPARQL SELECT cursors). </p><p>It is also possible to define <a href="http-protocol.html#custom">custom HTTP services</a> using JavaScript. Here, you'll probably want to put your code in a <a href="http-protocol.html#scripting">server-side script</a> file, with a <code>.js</code> extension, and use the <code>x-scripts</code> header to ensure your service is available. See the <a href="#defineService"><code>server.defineService</code></a> API function described below. </p><p>Note that, unless you are using a session, each <code>/eval</code> request will run in its own environment, and thus not see variables and state created by previous requests. </p><a name='header2-15' id='header2-15'></a><h2>Parts and Triples</h2><p>The <code>Part</code> function, when given a string, tries to parse it using N-Triples syntax, and returns a part value. This constructor has the following properties, used for constructing parts in other ways: </p>
+<dl><dt><code>literal(string [, language])</code> </dt>
+<dd>Create a literal.</dd><dt><code>literalTyped(string, type)</code> </dt>
+<dd>Create a typed literal.</dd><dt><code>resource(string [, namespace])</code> </dt>
+<dd>Create a resource. If namespace is given, it is looked up (see   <a href="#namespaces">namespaces</a>) and prepended to the resource name. </dd><dt><code>fromInt(int)</code>, <code>fromUnsignedInt(int)</code>, <code>fromLong(long)</code>, <code>fromUnsignedLong(long)</code> </dt>
+<dd>Create an encoded part from an integer value.</dd><dt><code>fromFloat(float)</code>, <code>fromDouble(double)</code> </dt>
+<dd>Create an encoded part from a floating-point value.</dd><dt><code>fromSeconds(seconds)</code> </dt>
+<dd>When given an amount of seconds relative to 1900, encodes the time as a part.</dd><dt><code>fromDate(milliseconds)</code> </dt>
+<dd>Like <code>fromSeconds</code>, but divides its argument by 1000, and uses 1970   as reference point. This can be used to convert JavaScript <code>Date</code>   objects to parts, since those (when converted to number, which this   function implicitly does) will return an amount of milliseconds   since 1970. </dd></dl><p>Part values themselves have the following properties: </p>
+<dl><dt><code>toString()</code> </dt>
+<dd>Returns an N-Triples representation of the part.</dd><dt><code>value</code> </dt>
+<dd>The main value of the part. For resources, this is the URI, for   literals, the string, for encoded values, usually a number. </dd><dt><code>type</code> </dt>
+<dd>A string, such as <code>"literal"</code> or <code>"resource"</code>, which identifies the   type of the part. </dd><dt><code>language</code> </dt>
+<dd>The language of a literal, or <code>null</code> if no language is specified.</dd><dt><code>datatype</code> </dt>
+<dd>The datatype of a literal, or <code>null</code> if no language is specified.</dd></dl><p><code>Triple</code> objects, as returned by, for example, <code>store.getTriples</code>, have <code>object</code>, <code>predicate</code>, <code>subject</code>, and <code>graph</code> properties, which will return parts, and an <code>id</code> property, which will return an integer. </p><a name='header2-43' id='header2-43'></a><h2>The Triple Store</h2><p>The top-level <code>store</code> variable provides an interface to the current triple store (as determined by the URL from which the request is made). It is an instance of the the <code>Store</code> type, and has the following properties: </p>
+<dl><dt><code>name</code> </dt>
+<dd>The name of the store.</dd><dt><code>getTriples(subject, predicate, object, graph)</code> </dt>
+<dd>Returns a triple cursor containing the triples in the store that   match the given query. Each of the arguments can be left as null (or   not given) to specify a wildcard. The arguments may be <code>Part</code>s or   arrays of two <code>Part</code>s. The latter case is used to specify range   queries. Note that only one range query can be specified at a time. </dd><dt><code>getTriplesArray(subject, predicate, object, graph [, limit])</code> </dt>
+<dd>Like getTriples, but returns an array instead of a cursor. If   <code>limit</code> is given, it provides a maximum length for the returned array. </dd><dt><code>deleteTriples(subject, predicate, object, graph)</code> </dt>
+<dd>Deletes all matching triples. As in <code>getTriples</code>, null and undefined count as   wildcards and arrays can be used to specify a range query. </dd><dt><code>addTriple(subject, predicate, object [, graph])</code> </dt>
+<dd>Adds a new triple. Graph is optional.</dd><dt><code>size</code> </dt>
+<dd>The amount of triples in the store.</dd><dt><code>commit()</code>, <code>rollback()</code> </dt>
+<dd>Commit or roll back the store.</dd><dt><code>newBlankNode()</code> </dt>
+<dd>Returns a newly allocated blank node.</dd><dt><code>runSparql(query)</code> </dt>
+<dd>Evaluates the given SPARQL query, and returns, depending on the type   of query, a boolean, a triple cursor, or a row cursor. SPARQL/Update   is supported (when the user has write access). </dd><dt><code>runProlog(query)</code> </dt>
+<dd>Evaluates the given Prolog query. Will typically return an array of   arrays of parts, but the exact format returned depends on the form   of the query. </dd><dt><code>textIndices</code> </dt>
+<dd>A list of names, corresponding to the full text indices present in   the store. </dd><dt><code>createTextIndex(name [, options])</code> </dt>
+<dd>Create a text index. <code>options</code>, if given, is an object containing   options for the store. The properties <code>predicates</code>, <code>indexFields</code>,   <code>indexResources</code>, <code>indexLitrals</code>, <code>minimumWordSize</code>, <code>stopWords</code>,   and <code>wordFilters</code> are supported, and accept values similar to those   in the Lisp API. </dd><dt><code>dropTextIndex(name)</code> </dt>
+<dd>Drop a text index.</dd><dt><code>textSearch(query [, index])</code> </dt>
+<dd>Search the given text index (or all of them, when <code>index</code> is left   off) for the given query string. Returns a triple cursor. </dd><dt><code>indices</code> </dt>
+<dd>A list of indices present in the store.</dd><dt><code>addIndex(type)</code> </dt>
+<dd>Add a new index. Type must be a <code>posgi</code>-style specifier.</dd><dt><code>dropIndex(type)</code> </dt>
+<dd>Delete an index.</dd></dl><a name='header2-79' id='header2-79'></a><h2>Cursors</h2><p>Cursors have the following properties: </p>
+<dl><dt><code>next()</code> </dt>
+<dd>Returns the next value from the cursor, or <code>null</code> if the cursor is   exhausted. For triple cursors, this will return a triple. For row   cursors, you get an array of parts. </dd><dt><code>close()</code> </dt>
+<dd>Closes the cursor, freeing any resources it holds. Note that all   cursors are closed automatically after a script runs, so you only   need this when you expect to be creating a large amount of cursors. </dd><dt><code>forEach(func)</code> </dt>
+<dd>Calls <code>func</code> on each row in the cursor.</dd><dt><code>collect([limit])</code> </dt>
+<dd>Returns an array holding all the rows in the cursor. If <code>limit</code> is   given, it limits the amount of rows that are collected. </dd><dt><code>count()</code> </dt>
+<dd>Counts the amount of rows in the cursor (and exhausts it).</dd><dt><code>names</code> </dt>
+<dd>Only available for row cursor. Returns an array of strings, the   names of the rows. </dd></dl><p><a name="namespaces"></a> </p><a name='header2-94' id='header2-94'></a><h2>Namespace Management</h2><p>There is a toplevel <code>namespaces</code> object with these methods: </p>
+<dl><dt><code>collect()</code> </dt>
+<dd>Returns an array of <code>{name, uri}</code> objects representing the   namespaces. </dd><dt><code>register(name, uri)</code> </dt>
+<dd>Register a new namespace.</dd><dt><code>unregister(name)</code> </dt>
+<dd>Remove a namespace.</dd><dt><code>clear()</code> </dt>
+<dd>Remove all namespaces.</dd><dt><code>reset()</code> </dt>
+<dd>Go back to the standard namespaces.</dd><dt><code>lookup(name)</code> </dt>
+<dd>Return the URI associated with the given name, or <code>null</code> if the   namespace is not defined. </dd></dl><a name='header2-108' id='header2-108'></a><h2>Geospatial Part Encoding</h2><p>The <code>GeoType</code> constructor provides an interface to geospatial encodings. Instances are created through these methods: </p>
+<dl><dt><code>cartesian(store, xmin, xmax, ymin, ymax, strip-width)</code> </dt>
+<dd>Defines a cartesian geospatial system for the given store.</dd><dt><code>spherical(store, strip-width [, unit])</code> </dt>
+<dd>Defines a spherical system. <code>unit</code> can be one of degree, radian, km,   or mile, and defaults to degree. </dd></dl><p><code>GeoType</code> instances have these properties: </p>
+<dl><dt><code>datatype</code> </dt>
+<dd>The RDF datatype associated with this type.</dd><dt><code>encode(x, y)</code> </dt>
+<dd>Encode a geospatial part in this system. For spherical systems, <code>x</code>   takes the longitude, and <code>y</code> the latitude. </dd></dl><a name='header2-119' id='header2-119'></a><h2>Graph/Network Operations</h2><p>All graph operations are modeled around 'generators', which, conceptually, are functions that take a node, and produce a set of 'neighbors', by some definition of neighbor. The <code>Generator</code> constructor can be called in two ways. In both, it takes a store as its first argument. When its second argument is a function, it wraps that function as a generator. The function should take a single part as an argument, and return an array of parts. When the second argument is not a function, the signature of the constructor is <code>(store, objects, subjects, undirected)</code>, where each of the last tree arguments can be <code>null</code>, a predicate part, or an array of predicates. The set of predicates indicated by the <code>objects</code> parameter causes relations with those predicates to be followed from the starting node to any objects. The <code>subjects</code> parameter does the reverse—it follows relations from object to subject. Finally, the <code>undirected</code> parameter causes both of these to happen for the given predicates. </p><p>Generator instances have the following methods: </p>
+<dl><dt><code>asMatrix(group, maxdepth)</code> </dt>
+<dd>Converting a generator to a matrix returns a new generator which is   a pre-computed version of the original generator. The <code>group</code>   parameter should be an array of parts, and <code>maxdepth</code> an integer,   indicating how many 'jumps' (starting from this group) should be   pre-computed. The return value is again an instance of <code>Generator</code>,   and supports all the methods listed below. </dd><dt><code>breadthFirstPath(from, to [, maxdepth])</code> <code>depthFirstPath(from, to [, maxdepth])</code> <code>bidirectionalPath(from, to [, maxdepth])</code> </dt>
+<dd>These three methods try to compute and return a path between two   parts, giving up after <code>maxdepth</code> jumps (or not giving up if no   maximum depth is given). The return value will be an array of parts,   or <code>null</code> if no path was found. </dd><dt><code>breadthFirstPaths(from, to [, maxdepth])</code> <code>bidirectionalPaths(from, to [, maxdepth])</code> </dt>
+<dd>These work just like the methods described above, but will return an   array containing all the shortest paths found, or the empty array if   no path was found. </dd><dt><code>neighbors(node [, maxdepth])</code> </dt>
+<dd>Returns an array containing all the parts that can be reached within   <code>maxdepth</code> jumps from <code>node</code>. If not given, <code>maxdepth</code> defaults to 1. </dd><dt><code>cliques(node [, minsize [, maxsize]])</code> </dt>
+<dd>Finds and returns any cliques (completely connected subgraphs) that   <code>node</code> is part of. <code>minsize</code> defaults to 3. </dd><dt><code>isClique(nodes)</code> </dt>
+<dd>Given an array of parts, returns a boolean that indicates whether   this group is a clique. </dd></dl><a name='header2-134' id='header2-134'></a><h2>UPI Hash Tables</h2><p>Hash tables specialized for UPIs are exposed through the <code>UPIHash</code> constructor. These are <em>much</em> faster than using regular JavaScript objects to keep a mapping on triple parts. The constructor takes an optional size argument. Instances have the following methods: </p>
+<dl><dt><code>set(key, value)</code> </dt>
+<dd>Store <code>value</code> under the part given as <code>key</code>.</dd><dt><code>get(key)</code> </dt>
+<dd>Retrieve the value stored under this key.</dd><dt><code>del(key)</code> </dt>
+<dd>Remove the given key from the table.</dd><dt><code>keys()</code> </dt>
+<dd>Returns an array holding all the keys in the table.</dd><dt><code>forEach(func)</code> </dt>
+<dd>Calls <code>func</code> with <code>(key, value)</code> arguments for every entry in the   table. </dd></dl><a name='header2-146' id='header2-146'></a><h2>Custom Service Definitions</h2><p><a name="defineService"></a> </p><p>The <code>server</code> variable exposes a method <code>defineService(method, name, func)</code> which can be used to define a JavaScript custom service. <code>method</code> must be a string (one of <code>"get"</code>, <code>"post"</code>, <code>"put"</code>, and <code>"delete"</code>), or an array of such strings. <code>name</code> is a string that will name the service, and finally, <code>func</code> must be a JavaScript function of one argument. </p><p>The service will be exposed at <code>/catalogs/CATALOG/repositories/REPO/custom/NAME</code> and <code>/repositories/REPO/custom/NAME</code>.<br />
+</p><p>When the service is called, this function will be applied to a request object, and its return value will be returned to the user, using the same content-negotiation process that was used for <code>/eval</code> (as <a href="#contentneg">described</a> before). </p><p>The request object can be used to get information about the request. It has the following properties: </p>
+<dl><dt><code>url</code> </dt>
+<dd>The URL to which this request was made.</dd><dt><code>method</code> </dt>
+<dd>The method used for the request, as a lowercase string.</dd><dt><code>param(name)</code> </dt>
+<dd>Retrieves the value of a parameter. This includes url-query ('get')   parameters, and parameters found in the request body if it has a   content-type of <code>application/x-www-form-urlencoded</code>. Returns <code>null</code>   if the parameter was not given. </dd><dt><code>paramArray(name)</code> </dt>
+<dd>Works like <code>param</code>, but returns an array, allowing you to see   whether a parameter has been given multiple times. </dd><dt><code>params</code> </dt>
+<dd>An object with the parameter names as property names, their values   as property values. </dd><dt><code>body</code> </dt>
+<dd>The body of the request, as a string, or <code>null</code> if no body was   given. </dd><dt><code>header(name)</code> </dt>
+<dd>Retrieves the value of a request header.</dd></dl></div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Purging Deleted Triples | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="purging-deleted-triples"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>Purging deleted triples 6.4.2</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-13' title='Rate limiting'>Rate limiting</a></li>
+<li><a href='#header2-15' title='Interaction with index optimization'>Interaction with index optimization</a></li>
+<li><a href='#header2-17' title='Permission to purge deleted triples'>Permission to purge deleted triples</a></li>
+<li><a href='#header2-20' title='AGWebView interface'>AGWebView interface</a></li>
+<li><a href='#header2-26' title='HTTP interface'>HTTP interface</a></li>
+<li><a href='#header2-31' title='Lisp interface'>Lisp interface</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>When triples are deleted they are not immediately removed from indices because they must remain in all indices until all transactions which may potentially need to see those triples (such as transactions that started before the triples were deleted) have completed (been committed or rolled back).  A triple that cannot possibly be accessed by any live transaction is referred to as an <em>inaccessible triple</em>. </p><p>The existence of inaccessible triples in indices wastes space and impacts query performance.  Therefore AllegroGraph provides a facility to purge these triples from indices. </p><p>AllegroGraph indices are composed of chunks, each of which contains some number of triples.  The purge operation scans all chunks of an index and rewrites those chunks which have inaccessible triples.  The rewritten chunks exclude the inaccessible triples.  The datafile space associated with the old chunks becomes reusable after the next checkpoint completes. By default, maximum time between checkpoints is controlled by the <a href="daemon-config.html#catalog-directives">CheckpointInterval</a> catalog directive. </p><p><a name="rate-limiting"></a> </p><a name='header2-13' id='header2-13'></a><h2>Rate limiting</h2><p>For large triple stores the purge operation can put a heavy load on the system, particularly if it has to read index chunks from disk. Heavy disk read activity can negatively impact running queries. To address this the purge operation supports rate limiting in terms of read IOs per second. The rate limit can be adjusted at any time during the operation. The rate limit must be 0 (meaning no limit) or a positive integer between 1 and 4,294,967,295, inclusive. The rate limit is reset to 0 (no limit) each time a database instance is started. </p><a name='header2-15' id='header2-15'></a><h2>Interaction with index optimization</h2><p>When an AllegroGraph database instance is started, multiple (4 by default) index optimizer processes are started.  Index optimizers perform index maintenance operations which are triggered automatically or by explicit DBA request.  Deleted triple purge is one of these operations.  Standard index optimization operations have higher priority than deleted triple operations.  A given index optimizer will operate on one index at a time. </p><a name='header2-17' id='header2-17'></a><h2>Permission to purge deleted triples</h2><p>Any Direct Lisp Client user can initiate the purging of deleted triples (only the user who started the server can run the Direct Lisp Client). </p><p>Remote Lisp Client users can only initiate the purging of deleted triples if they have superuser permission. See the <a href="managing-users.html#general-user-permissions">General permissions</a> section of the <a href="managing-users.html">Managing Users</a> document for information on user permissions including superuser permission. </p><a name='header2-20' id='header2-20'></a><h2>AGWebView interface</h2><p>In the <strong>Repository Control</strong> section of the [Repository overview page](agwebview.html#RepositoryOvervewPage], there is a link to <strong>Manage triple indices</strong>. </p><p><img src="agwebview-purge-deleted.jpg" alt="Purge Deleted Triples link and dialog"></img> </p><p>Clicking on that link displays the <a href="agwebview.html#manage-indices-page">Manage triple indices page</a>: </p><p><img src="image-manage-triple-indices-page.jpg" alt="Manage triple indices page"></img> </p><p>If the current user has superuser privileges, the <strong>Purge deleted triples</strong> button will be active and clicking it purges the deleted triples for the selected indices (more than one index can be selected at a time). The <a href="#rate-limiting">purge rate</a> is set by the <strong>Settings</strong> button on the same page.  The rate limit displayed by <strong>Settings</strong> is the current rate limit and can be changed at any time. Changes to the value take effect immediately (if the value is valid). </p><a name='header2-26' id='header2-26'></a><h2>HTTP interface</h2><p>The following are all repository URLs, meaning that <em>[repo]</em> must be replaced by <em>/repositories/[name]</em> or a dedicated backend URL prefix: </p> 
+<pre><code>POST [repo]/jobs/purge-deleted-triples  
+Start a purge operation  
+Optional parameters:  
+   index (multiple allowed): names an index flavor to operate on.  If not specified, operates on all indices.  
+ 
+DELETE [repo]/jobs/purge-deleted-triples  
+Cancels a purge operation  
+Optional parameters:  
+   index (multiple allowed): names an index flavor to cancel purge on.  If not specified, cancels for all indices  
+ 
+GET [repo]/settings/purge-rate-limit  
+Returns the deleted triple purge operation rate limit (average read IOs per second).   
+0 means no limit  
+ 
+POST [repo]/settings/purge-rate-limit  
+Required parameter: rate=N  
+Sets the purge rate average read IO limit to N.  0 means no limit.  The maximum limit is 4,294,967,295. (The limit is reset to 0 each time a database instance is started.)  
+Requires superuser privileges. </code></pre><p><a name="purge-lisp-interface"></a> </p><a name='header2-31' id='header2-31'></a><h2>Lisp interface</h2><p>See <a href="lisp-reference.html#purging-deleted-triples">Purging Deleted Triples</a> in the <a href="lisp-reference.html">Lisp Reference</a> manual. The three relevant functions are: </p>
+<ul>
+<li><p><a href="lisp-reference.html#purge-deleted-triples"><strong>purge-deleted-triples</strong></a></p></li>
+<li><p><a href="lisp-reference.html#cancel-purge-deleted-triples"><strong>cancel-purge-deleted-triples</strong></a></p></li>
+<li><p><a href="lisp-reference.html#purge-rate-limit"><strong>purge-rate-limit</strong></a></p></li></ul> </div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

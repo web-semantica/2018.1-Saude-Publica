@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Replication in AllegroGraph</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="warmStandby"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>Replication in AllegroGraph 6.4.2</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-11' title='Why replication is useful'>Why replication is useful</a></li>
+<li><a href='#header2-16' title='Common uses for replication'>Common uses for replication</a>
+<ul>
+<li><a href='#header3-19' title='High availability/disaster recovery'>High availability/disaster recovery</a></li>
+<li><a href='#header3-33' title='Real time reporting'>Real time reporting</a></li>
+<li><a href='#header3-40' title='Data distribution and migration'>Data distribution and migration</a></li></ul></li>
+<li><a href='#header2-45' title='How replication works'>How replication works</a>
+<ul>
+<li><a href='#header3-57' title='A single AllegroGraph server with no replicas'>A single AllegroGraph server with no replicas</a></li>
+<li><a href='#header3-71' title='A server with replicas'>A server with replicas</a></li></ul></li>
+<li><a href='#rep-config' title='Replication configuration'>Replication configuration</a>
+<ul>
+<li><a href='#header3-87' title='Useful references'>Useful references</a></li>
+<li><a href='#header3-92' title='Single primary/replica pair'>Single primary/replica pair</a></li>
+<li><a href='#header3-99' title='Single primary with multiple replica instances'>Single primary with multiple replica instances</a></li></ul></li>
+<li><a href='#header2-102' title='Making a replica into a primary'>Making a replica into a primary</a></li>
+<li><a href='#header2-113' title='Further replication details'>Further replication details</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>AllegroGraph Replication is a real-time transactionally consistent data replication and data synchronization solution. It allows businesses to move and synchronize their semantic data across the enterprise. This facilitates real-time reporting, load balancing, disaster recovery, and high availability configurations. </p><p>AllegroGraph Replication is extremely reliable and best represents its capabilities in the most catastrophic situations. Current uses include keeping semantic data moving between North Sea Oil partners and managing the student success at the largest post-secondary educational institution in the US. </p><a name='header2-11' id='header2-11'></a><h2>Why replication is useful</h2><p>Organizations face more challenging technology landscapes than they did in the past.  With the need to add semantic stores in a Big Data environment, they cannot afford to put this new and valuable data at risk. </p><p>Additionally, the need to use and distribute semantically sourced data throughout the organization is growing exponentially, even though budgets have been held flat or even declined in recent years. </p><p>Data thus must be protected and recoverable in case of system failures. Unexpected downtime must be minimized or eliminated. </p><p>AllegroGraph Replication is an enterprise class product that offers real-time replication and access to the semantic data, regardless of the quantity or location of the data. Replication can protect against data loss and can be a cost effective way to meet the challenges of maintaining data and access. </p><a name='header2-16' id='header2-16'></a><h2>Common uses for replication</h2><p>Replication of semantic databases in a new Big Data world addresses the need to manage the requirements of high availability, disaster recovery, real-time reporting, distributed query load, and transactional data synchronization. AllegroGraph Replication is more than up to these tasks and provides the performance to handle the use cases of the modern enterprise. </p><p><img src="replication.png" alt="Replication diagram"></img> </p><a name='header3-19' id='header3-19'></a><h3>High availability/disaster recovery</h3><p>Every enterprise has the mission critical need to provide data as continuously as possible. Yet disaster can threaten or stop ongoing and continuous operations. It is imperative, when the unforeseen does happen, that data is promptly recovered and put back into production use. </p><p>AllegroGraph Replication addresses high availability of semantic data in three areas: </p>
+<ul>
+<li>Managing planned downtime</li>
+<li>Protecting semantic data during unplanned downtime</li>
+<li>Providing disaster recovery</li></ul><p>Without a proper system in place, database failure can cause: </p>
+<ul>
+<li>Lost revenue</li>
+<li>Damaged reputation</li>
+<li>Relationship issues with partners and customers</li>
+<li>Supply chain problems</li>
+<li>Legal liability</li>
+<li>Decisions on how to store data come under question</li></ul><p>AllegroGraph Replication ensures not only that semantic enterprise data is never lost during downtime, but also that the data is always readily available. With AllegroGraph Replication, a standby database is always available, preventing data loss. </p><a name='header3-33' id='header3-33'></a><h3>Real time reporting</h3><p>Modern organizations have a common need to provide tools for creating, modifying and viewing Big Data, and to make these tools work with a large customer base. This requires real-time dashboards and reporting. All too frequently, this need has only been provided at the expense of application performance.  The arrival of Big Data and its challenges have just made the problem more prone to negative side effect and additional costs. The exception for semantic data is when AllegroGraph Replication is used. </p><p>As part of an overall reporting solution for your enterprise Big Data semantic replication solution, AllegroGraph Replication: </p>
+<ul>
+<li>Minimizes the impact of reporting on the primary database by generating a transactionally consistent version for reporting. </li>
+<li>Enables query load balancing across a set of AllegroGraph database servers.</li>
+<li>Reduces information latency for queries and reporting.</li>
+<li>Optimizes batch reporting for the available window.</li></ul><a name='header3-40' id='header3-40'></a><h3>Data distribution and migration</h3><p>As IT and Web infrastructures struggle to grow and manage Big Data complexities, there is a greater need for semantic data to be synchronized, integrated, consolidated and migrated to where it is needed. AllegroGraph Replication enables distribution of information within and across such environments by replicating data to and from different dedicated system and semantic data sources while maintaining full transactional integrity. </p><p>AllegroGraph Replication: </p>
+<ul>
+<li>Delivers data quickly and efficiently across the organization or web.</li>
+<li>Allows synchronization of data across multiple geographies.</li></ul><a name='header2-45' id='header2-45'></a><h2>How replication works</h2><p>In the next two subsections, we present a schematic view of how AllegroGraph handles changes to the database (committed additions and deletions of triples). In this section, we define the basic terms. </p><p>Note that the exact implementation details cannot be inferred from this description. Things simply work as if they were implemented as we describe. </p><p><strong>Terms</strong> </p>
+<ul>
+<li><p><strong>Permanent index files</strong>: AllegroGraph can store data in index   files. These files survive unexpected or unplanned   AllegroGraph server termination (such as server machine   crashes). These files contain committed data only. If a repository   is small, the system may choose not to create index files on disk   but rather just keep them in memory (and rebuild them when   needed). In that case, the transaction log files (described below)   store the data on disk. </p></li>
+<li><p><strong>In-memory data in the server</strong>: Copies of some committed data,   perhaps also in the transaction log files (described next) and/or in   the permanent index files, also are in memory accessible by the   server. This data does <strong>not</strong> survive unexpected or unplanned   AllegroGraph server termination (but does survive in the transaction   log files or the permanent index files). Queries operate on a   combination of data in memory and in permanent files. </p></li>
+<li><p><strong>Transaction log files</strong>: These are files where all committed database changes (triple additions and deletions) are recorded, along with some other information. As we say below, as soon as a change is made and committed by a user, the change is recorded in a transaction log file. These files do survive unexpected or unplanned AllegroGraph server termination. </p></li>
+<li><p><strong>Checkpoint</strong>: The purpose of a checkpoint is to provide a known   good starting point for restart recovery. When a checkpoint occurs,   the system updates and cleans up repository information so that the   respository is in a known state.  When recovering from server   terminations, the system starts at the most recent complete   checkpoint and works through to the current   (uncheckpointed) state. We do not give the exact list of things done   during a checkpoint because these may change from release to   release, but it includes things like writing internal database   information (e.g., triple count, generation number, the list of   indices, duplicate suppression mode, configuration, sequences, text   index state, etc) to the transaction log, writing the string table state   to the transaction log, flushing non-transient files to   stable storage, releasing space occupied by inactive objects, and   updating the checkpoint indicator file (a file indicating the   position of the checkpoint records in the transaction log stream). </p></li>
+<li><p><strong>Backup</strong>: A backup is a copy of the permanent data files. A checkpoint is done before a backup occurs so a backup includes all (previously) in-memory data present at the time the backup was initiated. </p></li>
+<li><p><strong>Primary</strong>: The main AllegroGraph server. This server accepts changes to the database (committed triple additions and deletions). </p></li>
+<li><p><strong>Replica</strong>: An AllegroGraph server separate from the primary (and often running on a different machine than the primary) which contains a copy of the data of the primary. The issue with replicas is ensuring that all committed changes to the primay database are captured by the replicas. Of necessity, replicas are often behind the primary but there must be a machanism for them to catch up. No permanent changes can be made to replicas directly (that is, no commits). All committed changes come from the primary. </p></li></ul><p>In the next section, we describe how a single AllegroGraph server (no replicas) maintains its data. In the section after that, we describe how replicas capture changes made to the primary. </p><a name='header3-57' id='header3-57'></a><h3>A single AllegroGraph server with no replicas</h3><p>Suppose you have an AllegroGraph server AG-1 with a repository RP-1. Suppose all the data of that repository is in the permanent index files. What happens when a user make changes by adding or deleting triples and committing the changes? </p><p>Let us look at a single change, C-1 (say, adding a single triple and committing the change). The user calls for C-1 to occur (perhaps by clicking on <strong>Add a statement</strong> in AGWebView and entering the triple). The following events happen: </p>
+<ol>
+<li><p>Information sufficient to redo C-1 is written to the current transaction log file and that file is saved. At this point, the data is in the database and will survive unexpected server termination. </p></li>
+<li><p>The same information is written as in-memory data in the server. Now C-1 is complete and the user may see an indication that the change has been made (such as a fresh prompt or a visual change in WebView). </p></li>
+<li><p>At some future time, a checkpoint occurs. We give a partial list above saying what happens during a checkpoint. </p></li></ol><p>We describe 1, 2, and 3 as happening without an intervening unexpected server termination. Let us look at the effect of such a termination on these steps: </p>
+<ul>
+<li><p>If the termination happens after the user has issued the command to   change data but before step 1: the data is lost. There is no way   that data can be recovered if it is not recorded somewhere. </p></li>
+<li><p>If the termination happens after step 1 and before step 2: when the   server restarts, there is no in-memory data (it all disappeared when   the server terminated) and anyway the change never made it to   in-memory data. Committed changes that need to be remade are   remade. Things are now back to where they were after step 2. </p></li>
+<li><p>If the termination happens after step 2 but before step 3: this is   in fact the same situation as the termination happening after step   1: the in-memory data was there but then was lost in the   termination. The system checks the transaction log files and remakes   any necessary changes. </p></li>
+<li><p>If the termination happens after step 3: there is nothing to do. The   checkpoint record shows change C-1 was done and checkpointed. </p></li></ul><p>From the point of view of the user of a single server with no replicas, these implementation details are perhaps interesting but not important. All such a user needs to know is that data accepted by the system (step 1 completes) will be available even if the server unexpectedly terminates and is restarted. But to the user who has a server with replicas, understanding these steps is important because the replicas mimic these steps, but with some important differences. </p><p>A transaction log file (and there can be many, with new ones being created according to an internal algorithm) becomes stale when all the commits it records have been checkpointed. When a transaction log file is stale, the system will move it to an archive directory (if there is one specified) or delete it. In any case, once moved or deleted, it is not longer available to the system. </p><p>We describe elsewhere (in <a href="transaction-log-archiving.html">Transaction Log Archiving</a>) how to cause stale transaction log files to be achived rather than deleted. You might want them archived because, combined with a database backup, you can run the database forward to a particular point in time using the backup and subsequent transaction log files (this is called point-in-time recovery and is described in detail in the <a href="point-in-time-recovery.html">Point-in-Time Recovery</a> document). Not all users will want to do that, of course. Transaction log files take up as at least as much space as the associated data and so they can impose a significant space cost if saved but not really needed. </p><a name='header3-71' id='header3-71'></a><h3>A server with replicas</h3><p>Now let us consider the case where a server has replicas. As said in the introduction above, replicas can preserve data in the face of hardware failure (if the storage device holding the permanent data files is destroyed, the permanent data files are gone too), they can provide local access to the data for faster querying (allowing for the fact that the local data may be slightly out of date). And they can provide the ability to recover quickly (perhaps with slightly out of date data) in the event of the primary server failing. So there are many reason to have replicas. In this section, we describe how they work. </p><p>Here are some facts about replicas: </p>
+<ul>
+<li><p>A replica is always equivalent to or behind the primary. Changes   made to the primary must propagate to the replicas and this takes   time. </p></li>
+<li><p>Data commits can only be done in the primary. A replica can accept   changes to the database only from the primary. </p></li>
+<li><p>All changes are communicated to replicas via transaction log   files. In the server with replica case, transaction log files are   required for the replicas to get data. </p></li>
+<li><p>When a replica terminates (whether planned or unexpected) and then   restarts, it gets all data not in its permanent files by accessing   the tranaction log files (its own and the primary's) and loading the   needed data. The system keeps track of what is needed from transaction   log files both by the primary and the replicas. </p></li></ul><p>With all that in mind, here are the steps for starting a replica (see the <a href="warm-standby.html#replication-section">Replication section</a> in <a href="warm-standby.html">Replication Details</a> for exact instructions): </p>
+<ol>
+<li><p>Register the replication job with the primary. This tells the primary to start keeping transaction log files from the point of registration on until it knows the replication job has what it needs from them. </p></li>
+<li><p>Backup the primary. This does a checkpoint of the primary and provides a base to use to start the replica. </p></li>
+<li><p>Start the replica using the backup and specifying the replication job. The replica is now going. It asks the primary server to send commits starting at a certain point. When a change is stored in the replica, that fact is noted so the associated transaction log file can be archived if desired (once all commits recorded in the file have been seen by the replica). </p></li></ol><p>Now the replica is going. It can be stopped and restarted just like any database. </p><p>A transaction log file goes stale only when every replica has seen all the changes in the file. This means that transaction log files may stay around much longer than in the server with no replica case. Note that if a replica server stops running and is not restarted but remains registered with the primary, no current or new transaction log file will go stale because the non-running replica server will never mark changes as received. </p><a name='rep-config' id='rep-config'></a> <h2>Replication configuration</h2><p>The following provides the detailed steps for deploying two different types of AllegroGraph Replication clusters.  The first is a single primary/replica pair; the second, a single primary with multiple replica instances. </p><a name='header3-87' id='header3-87'></a><h3>Useful references</h3><p>The following documents will be referred to in this discussion: </p>
+<ul>
+<li><a href="server-installation.html">Server Installation</a>: this is the Allegrograph installation documentation</li>
+<li><a href="daemon-config.html">Server Configuration and Control</a>: this document lists all configuration options and describes how to add a catalog to the configuration file </li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a>: this document describes important configuration options relating to transaction logging </li></ul><a name='header3-92' id='header3-92'></a><h3>Single primary/replica pair</h3>
+<ol>
+<li>Install and Setup agraph.cfg for Primary </li>
+<li>Register a replication job on Primary </li>
+<li>Create and Backup repository on Primary </li>
+<li>Install and Setup agraph.cfg for Replica </li>
+<li>Transfer and Restore Primary Backup to Replica </li>
+<li>Start Replication job on Replica. </li></ol><a name='header3-99' id='header3-99'></a><h3>Single primary with multiple replica instances</h3><p>Set up a replication job for each desired replica (step 2 above), create a backup on Primary (step 3), and then step 4 thorugh 6 for each replica. </p><p>See <a href="warm-standby.html">Replication Details</a> for detailed instructions. </p><a name='header2-102' id='header2-102'></a><h2>Making a replica into a primary</h2><p>Suppose your primary fails. And by failure here, we mean totally fails, such as might happen when a meteor falls to earth and destroys the machine running the primary and all its associated disks. But the replica is still running, luckily on a machine in a different location unaffected by the meteor. </p><p>Here are the steps to turn the replica into the primary: </p>
+<ol>
+<li>Turn off replication. The replica is likely in a state where it is    waiting for the Primary to return. Run the following command to    temporarily stop replication. 
+<pre><code> agtool replicate --secondary-host &lt;host&gt; --secondary-port &lt;port&gt; --catalog &lt;catalog&gt; --name &lt;replica-repository-name&gt; --user &lt;user&gt; --password &lt;password&gt; --stop </code></pre>
+<li>While the above command stops replication, it does not allow the    Replica to accept commits. The second step is to turn off no-commit    mode. The command below uses a commonly available http client called    <strong>curl</strong> to make the appropriate request to the Replica. </li>
+<pre><code>curl -X DELETE -u &lt;user&gt;:&lt;passwd&gt; 'http://&lt;replica-host&gt;:&lt;port&gt;/catalogs/&lt;catalog&gt;/repositories/&lt;name&gt;/noCommit' </code></pre>
+<li>You should now be able to add statements to the replica. The final    step is to find and remove the following file: </li>
+<pre><code>rm &lt;Catalog main&gt;/&lt;name&gt;/restart-ws-client </code></pre></li><p> &lt;Catalog main&gt; is the path specified as Main directory of the catalog  your repository is located. &lt;name&gt; is the name of the repository  itself.  If this file is not removed, the next time the Replica is  restarted, it will attempt to resume replication with the Primary. </p></ol><p>Note that even if the Primary is restored, if the Replica has added any new statements, resuming replication would likely be fatal or could corrupt the data in the repository. </p><a name='header2-113' id='header2-113'></a><h2>Further replication details</h2><p>See <a href="warm-standby.html">Replication Details</a> for further information on replication functionality. </p></div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

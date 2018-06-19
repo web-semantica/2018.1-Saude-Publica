@@ -1,0 +1,248 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>franz.openrdf.rio.formats &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+    </div>
+  
+    
+  <h1>Source code for franz.openrdf.rio.formats</h1><div class="highlight"><pre>
+<span></span><span class="c1">################################################################################</span>
+<span class="c1"># Copyright (c) 2006-2017 Franz Inc.</span>
+<span class="c1"># All rights reserved. This program and the accompanying materials are</span>
+<span class="c1"># made available under the terms of the MIT License which accompanies</span>
+<span class="c1"># this distribution, and is available at http://opensource.org/licenses/MIT</span>
+<span class="c1">################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">object</span>
+<span class="kn">from</span> <span class="nn">past.builtins</span> <span class="k">import</span> <span class="n">basestring</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># A metaclass that converts static dicts inside a Format to instances</span>
+<span class="kn">from</span> <span class="nn">six</span> <span class="k">import</span> <span class="n">add_metaclass</span>
+
+
+<div class="viewcode-block" id="FormatMeta"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.rio.html#franz.openrdf.rio.formats.FormatMeta">[docs]</a><span class="k">class</span> <span class="nc">FormatMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+<div class="viewcode-block" id="FormatMeta.__init__"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.rio.html#franz.openrdf.rio.formats.FormatMeta.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dct</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FormatMeta</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dct</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">dct</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">isupper</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">value</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="Format"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.rio.html#franz.openrdf.rio.formats.Format">[docs]</a><span class="nd">@add_metaclass</span><span class="p">(</span><span class="n">FormatMeta</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Format</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents the concept of a data serialization format. Data formats are</span>
+<span class="sd">    identified by a {@link #getName() name} and can have one or more associated</span>
+<span class="sd">    MIME types, zero or more associated file extensions and can specify a</span>
+<span class="sd">    default character encoding.</span>
+
+<span class="sd">    This is a base class used by format subclasses for specific types of data,</span>
+<span class="sd">    such as triples and tuples</span>
+
+<span class="sd">    When a subclass of this class is declared all upper case static fields</span>
+<span class="sd">    that are dictionaries are converted to class instances. Data in the</span>
+<span class="sd">    dictionary is passed as arguments to the constructor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># A global dictionary mapping extensions to formats.</span>
+    <span class="c1"># Subclasses should override this.</span>
+    <span class="n">_ext_map</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="Format.register"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.rio.html#franz.openrdf.rio.formats.Format.register">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fmt</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Register a format object.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">fmt</span><span class="o">.</span><span class="n">file_extensions</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_ext_map</span><span class="p">[</span><span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">ext</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">fmt</span></div>
+
+<div class="viewcode-block" id="Format.format_for_file_name"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.rio.html#franz.openrdf.rio.formats.Format.format_for_file_name">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">format_for_file_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        Try to guess appropriate RDF format from a file name.</span>
+<span class="sd">        Return a pair (format, compression) where format is</span>
+<span class="sd">        an RDF format or None (if no matching format was found)</span>
+<span class="sd">        and compression is a supported compression method</span>
+<span class="sd">        (currently either None or &quot;gzip&quot;).</span>
+
+<span class="sd">        :param filename: File path.</span>
+<span class="sd">        :type filename: string</span>
+<span class="sd">        :return: Format (or ``None``) and compression type.</span>
+<span class="sd">        :rtype: (RDFFormat|None, string|None)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">compression</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">root</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ext</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;.gz&quot;</span><span class="p">:</span>
+            <span class="n">compression</span> <span class="o">=</span> <span class="s2">&quot;gzip&quot;</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_ext_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">compression</span></div>
+
+<div class="viewcode-block" id="Format.mime_type_for_format"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.rio.html#franz.openrdf.rio.formats.Format.mime_type_for_format">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">mime_type_for_format</span><span class="p">(</span><span class="n">output_format</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the preferred MIME type for a data format.</span>
+<span class="sd">        Raise an error if the format is `None`.</span>
+<span class="sd">        The format can be a string, in which case it is returned as-is.</span>
+
+<span class="sd">        :param output_format: the format to get the MIME type for.</span>
+<span class="sd">        :type output_format: franz.openrdf.rio.formats.Format|str</span>
+<span class="sd">        :return: A MIME type.</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">output_format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Unable to determine file format.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_format</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">output_format</span>
+        <span class="k">return</span> <span class="n">output_format</span><span class="o">.</span><span class="n">mime_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Format.__init__"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.rio.html#franz.openrdf.rio.formats.Format.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">mime_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">charset</span><span class="o">=</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">,</span>
+                 <span class="n">file_extensions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">register</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a new format object.</span>
+
+<span class="sd">        :param name: Human-readable name of the format.</span>
+<span class="sd">        :param mime_types: A list of MIME types used for this format.</span>
+<span class="sd">                           The first element of this list will be used</span>
+<span class="sd">                           as the content-type header during uploads.</span>
+<span class="sd">        :param charset: Character set used by the format.</span>
+<span class="sd">        :param file_extensions: List of file extensions for this format.</span>
+<span class="sd">        :param register: If True file extensions will be added to the map</span>
+<span class="sd">                         used by :func:`Format.format_for_file_name`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mime_types</span> <span class="o">=</span> <span class="n">mime_types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">charset</span> <span class="o">=</span> <span class="n">charset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_extensions</span> <span class="o">=</span> <span class="n">file_extensions</span>
+        <span class="k">if</span> <span class="n">register</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+    <span class="c1"># This is used by Sphinx when rendering default values,</span>
+    <span class="c1"># so it should display something readable.</span>
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">self</span><span class="p">:</span>
+                <span class="c1"># We could use inspect.mro to find</span>
+                <span class="c1"># where the thing is really defined,</span>
+                <span class="c1"># but it&#39;s not worth the effort.</span>
+                <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{cls}</span><span class="s1">.</span><span class="si">{name}</span><span class="s1">: </span><span class="si">{display_name}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">cls</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">display_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;Format: </span><span class="si">{name}</span><span class="s1">&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+</pre></div>
+
+  
+    <div class="nav-links nav-links-footer">
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

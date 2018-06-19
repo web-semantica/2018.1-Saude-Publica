@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>agtool general command utility | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="agtool"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>        <h1>AllegroGraph 6.4.2 agtool general command utility</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-7' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-13' title='Help'>Help</a></li>
+<li><a href='#header2-18' title='Utilities'>Utilities</a></li>
+<li><a href='#header2-52' title='The archive utility'>The archive utility</a></li>
+<li><a href='#header2-61' title='The materializer utility'>The materializer utility</a></li>
+<li><a href='#header2-66' title='The query utility'>The query utility</a></li>
+<li><a href='#header2-71' title='The export utility'>The export utility</a></li>
+<li><a href='#header2-79' title='The load utility'>The load utility</a></li>
+<li><a href='#header2-90' title='The recover utility'>The recover utility</a></li>
+<li><a href='#header2-95' title='The repl utility'>The repl utility</a></li>
+<li><a href='#header2-99' title='The replicate utility'>The replicate utility</a></li>
+<li><a href='#header2-105' title='The upgrade utility'>The upgrade utility</a></li>
+<li><a href='#header2-111' title='Managing users and roles'>Managing users and roles</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-7' id='header2-7'></a><h2>Introduction</h2><p>The <strong>agtool</strong> command-line utility combines most individual command-line programs into one. Its general calling sequence is </p>
+<pre><code>% agtool &lt;utility&gt; [options] </code></pre><p>So for example, to load an Ntriples file <em>my-ntrips.nt</em> into the <code>my-database</code> store, the command might be </p>
+<pre><code> % agtool load --port 10035 --input ntriples my-database mydata-1.nt </code></pre><p>There were individual programs for the various utilities in releases prior to 6.2.0. Those programs still exist (although they are now mostly scripts that call <strong>agtool</strong>). Most utilities are documented in separate documents linked to from this document. </p><a name='header2-13' id='header2-13'></a><h2>Help</h2>
+<pre><code>% agtool --help </code></pre><p>displays a help string giving a brief description of each utility. </p>
+<pre><code>% agtool UTILITY --help </code></pre><p>displays a help string for the specific UTILITY. </p><a name='header2-18' id='header2-18'></a><h2>Utilities</h2><p><strong>agtool</strong> can run the following utilities. Use <strong>agtool UTILITY   --help</strong> to get more information on any utility. </p>
+<ul>
+<li><a href="#agbackup">archive</a> -- see <a href="backup-and-restore.html">Backup and Restore</a></li>
+<li>cancel-purge-deleted-triples</li>
+<li>create-db</li>
+<li><a href="#attributes">define-attribute</a></li>
+<li><a href="#attributes">delete-attribute-definition</a></li>
+<li><a href="#attributes">delete-static-attribute-filter</a></li>
+<li><a href="#export">export</a> -- see <a href="agexport.html">Data Export</a></li>
+<li>get-metadata</li>
+<li><a href="#load">load</a> -- see <a href="agload.html">Data Loading</a></li>
+<li><a href="#attributes">lookup-attribute-definitions</a></li>
+<li><a href="#materialize">materialize</a> -- see <a href="materializer.html">Materializer</a></li>
+<li>memory-lock</li>
+<li>memory-unlock</li>
+<li>purge-deleted-triples</li>
+<li>purge-rate-limit</li>
+<li><a href="#query">query</a> -- see <a href="agquery.html">Querying</a></li>
+<li><a href="#recover">recover</a> -- see <a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="#repl">repl</a> -- see <a href="multi-master.html">Multi-master Replication</a></li>
+<li><a href="#replicate">replicate</a> -- see <a href="replication.html">Replication</a></li>
+<li><a href="#users-roles">role</a> -- see <a href="managing-users.html">Managing Users</a></li>
+<li><a href="#convert">upgrade</a> -- see <a href="upgrade-guide.html#convertdb">the agtool upgrade program</a> in the <a href="upgrade-guide.html">Database Upgrading</a> document.</li>
+<li><a href="#users-roles">user</a> -- see <a href="managing-users.html">Managing Users</a></li>
+<li>view-tlog</li></ul><p>There are additional <strong>agtool</strong> utilities that are not documented here. Some provide information useful for dealing with problem reports and user may be asked to run those as part of dealing with a problem report. Others are associated with other AllegroGraph features and should only be run as part of using those features. Those utilities are documented with the feature rather than here. </p><p>Most <strong>agtool</strong> utilities take the same options as the program they are replacing, but some have either new options or no longer accept previous options (usually the abbreviation is not accepted but the long form is). These changes are noted for each relevant utility. </p><p><a name="attributes"></a> </p><p>AllegroGraph supports triple attributes (key/value pairs associated with individual triples) and static filters (statements that can restrict access to triples based on their attribute values. These features are described in the <a href="triple-attributes.html">Triple Attributes</a> document. </p><p>Attributes can only be associated with a triple when the attribute has been defined. <strong>agtool</strong> can be used to define attributes (<strong>agtool define-attribute</strong>), delete attribute definitions (<strong>agtool delete-attribute-definition</strong>), lookup attribute definitions (<strong>agtool lookup-attribute-definitions</strong>), and set and delete a static attribute filter (<strong>agtool set-static-attribute-filter</strong> and <strong>agtool delete-static-attribute-filter</strong>). To see the calling sequence for these commands, execute </p>
+<pre><code>% agtool COMMAND --help </code></pre><p>For example </p>
+<pre><code>% agtool define-attribute --help </code></pre><p><a name="agbackup"></a> </p><a name='header2-52' id='header2-52'></a><h2>The archive utility</h2><p>Command calling template: </p>
+<pre><code>% agtool archive [options] command [command-args] </code></pre><p><em>options</em> are prefixed with double dashes (single dash in some cases) and may also take arguments. To get usage information, enter </p>
+<pre><code>% agtool archive --help </code></pre><p>The commands which write to or read from files (<strong>backup</strong>, <strong>backup-all</strong>, <strong>backup-settings</strong>, <strong>restore</strong>, <strong>restore-all</strong>, and <strong>restore-settings</strong>) are passed a directory and perhaps additional information like a database name. The specific files are located and named within that directory following standard rules (described <a href="backup-and-restore.html#archive-dir">here</a>. Unless the <code>--supersede</code> option is specified to backup commands, the archive directory must either not exist or be empty. </p><p><strong>agtool archive</strong> can be used to upgrade a database from the format on one AllegroGraph release to the format of a later release. This is the recommended way to upgrade since it provides a backup copy of the database in the earlier format which allows easy recovery if there are problems with the later version. The <a href="#convert">agtool upgrade</a> utility does not (by itself) backup a database before upgrading. </p><p>See the <a href="backup-and-restore.html">Backup and Restore</a> document for a complete list of commands and options. </p><p><a name="materialize"></a> </p><a name='header2-61' id='header2-61'></a><h2>The materializer utility</h2><p>Command calling template: </p>
+<pre><code>% agtool materialize [options] command [command-args] </code></pre><p>See the <a href="materializer.html#mat-command-line">Command Line Interface</a> section in the <a href="materializer.html">Materializer</a> document for details on the options. </p><p><a name="query"></a> </p><a name='header2-66' id='header2-66'></a><h2>The query utility</h2><p>Command calling template: </p>
+<pre><code>% agtool query [options] DBNAME [QUERY-FILE]* </code></pre><p>See the <a href="agquery.html">Querying tool</a> document for details on the arguments and options. </p><p><a name="export"></a> </p><a name='header2-71' id='header2-71'></a><h2>The export utility</h2><p>Command calling template: </p>
+<pre><code>% agtool export [options] DBNAME FILE </code></pre><p>This will export the data in the store DBNAME to FILE. For example, </p>
+<pre><code>% agtool export --port 10035 --output rdfxml lesmis lesmis.rdf </code></pre><p>exports the data in the <strong>lesmis</strong> store (in the root catalog, since no catalog is specified) to the file <em>lesmis.rdf</em>. The format is <code>rdfxml</code>. </p><p>See the <a href="agexport.html">Data export tool</a> document for details on the options. </p><p><a name="load"></a> </p><a name='header2-79' id='header2-79'></a><h2>The load utility</h2><p>The <strong>agtool load</strong> utility (previously the program <strong>agload</strong>) can be used to load data into a store from a file or a collection of files. See the <a href="agload.html">Data Loading</a> document for details. </p><p>The utility calling template is: </p>
+<pre><code>% agtool load [options] DBNAME SOURCE* </code></pre><p>where DBNAME is the name of the store into which the data should be loaded (the catalog can be specified as one of the options). The SOURCEs are the file(s) to be loaded. The SOURCE can be standard input. Numerous options control the loading process. All are described in the <a href="agload.html">Data loading tool</a> document for details on the options. </p><p>Here are a couple of examples of typical uses: </p>
+<pre><code>% agtool load --port 10035 --input ntriples my-database mydata-1 </code></pre><p>Load the Ntriples file <em>mydata-1</em> into the store <em>my-database</em> in the root catalog. The server listening on port 10035. </p>
+<pre><code>% agtool load --port 10035 --catalog mycatalog  my-store2 mydata-2.ttl mydata-3.ttl </code></pre><p>Load the turtle format files <em>mydata-2.ttl</em> and <em>mydata-3.ttl</em> (the format determined by the file extensions) into the store <em>my-store2</em> in the catalog <em>mycatalog</em>. The server listening on port 10035. </p><p><a name="recover"></a> </p><a name='header2-90' id='header2-90'></a><h2>The recover utility</h2><p>Command calling template: </p>
+<pre><code>% agtool recover [options] archive database </code></pre><p>See the <a href="point-in-time-recovery.html">Point-in-Time Recovery</a> document for details on the options and general usage. </p><p><a name="repl"></a> </p><a name='header2-95' id='header2-95'></a><h2>The repl utility</h2><p>The repl utility allows you to manage a multi-master replication cluster. See <a href="multi-master.html#agtool-repl">Using the agtool repl command</a> in the <a href="multi-master.html">Multi-master Replication</a> document for more information. </p><p>A multi-master cluster should not be confused with single-master replication described <a href="#replicate">below</a>. Single-master replication allows for one master repository, where modifications (adding and deleting triples) can be made and replicas which cannot make modifications. Multi-master replication allows each replica to make modifications. </p><p><a name="replicate"></a> </p><a name='header2-99' id='header2-99'></a><h2>The replicate utility</h2><p>The replication utility allows you to set up single-master replication where you have several identical instances of AllegroGraph running simultaneously, so if one fails one of the others can take over. The replicate command calling template is: </p>
+<pre><code>% agtool replicate [options] </code></pre><p>See <a href="warm-standby.html">Replication Details</a> document and also the <a href="replication.html">Replication</a> document for more information on <strong>agtool replicate</strong> and its options. </p><p>Single-master replication should not be confused with multi-master replication, described <a href="#repl">above</a>. </p><p><a name="convert"></a> </p><a name='header2-105' id='header2-105'></a><h2>The upgrade utility</h2><p><strong>agtool ugrade</strong> will do an in-place upgrade of a single database from an earlier release to the current release (the release containing the <strong>agtool</strong> being run). The upgrade is done <em>without</em> backing the database up. Backing up databases prior to upgrading is strongly recommended. See <a href="backup-and-restore.html">Backup and Restore</a>. </p><p>Command calling template: </p>
+<pre><code>% agtool upgrade [--port|-p port] [--catalog|-c catalog] dbname </code></pre><p>See see <a href="upgrade-guide.html#convertdb">the agtool upgrade program</a> in the <a href="upgrade-guide.html">Database Upgrading</a> document for further details. Be sure to backup any database before upgrading. </p><p><a name="users-roles"></a> </p><a name='header2-111' id='header2-111'></a><h2>Managing users and roles</h2><p><strong>agtool user</strong> can be used to add and remove users and to set user   permissions and access rights. <strong>agtool role</strong> can be used to create and manage roles. See <a href="managing-users.html">Managing Users</a> for information on managing users with <em>*agtool</em> and with <a href="agwebview.html">AGWebView</a>. </p></div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

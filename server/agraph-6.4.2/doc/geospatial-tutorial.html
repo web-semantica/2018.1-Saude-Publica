@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>2D-Geospatial Tutorial | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="geospatial-tutorial">  <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>2D-Geospatial Tutorial for AllegroGraph 6.4.2</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-10' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-16' title='The strategy behind the geospatial UPI representation.'>The strategy behind the geospatial UPI representation.</a>
+<ul>
+<li><a href='#header3-20' title='What advantage does this provide?'>What advantage does this provide?</a></li></ul></li>
+<li><a href='#header2-24' title='Defining geospatial subtypes'>Defining geospatial subtypes</a></li>
+<li><a href='#header2-34' title='An Extended Example'>An Extended Example</a></li>
+<li><a href='#header2-53' title='Polygons'>Polygons</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-10' id='header2-10'></a><h2>Introduction</h2><p>This tutorial is for the older two-dimensional (2D) geospatial facility developed in releases of AllegroGraph prior to version 5.0. That older facility is deprecated and will be removed in a future release. A new, N-dimensional geospatial facility was introduced in version 5.0. It is much more powerful and we recommend that new application and projects start with it and old ones be upgraded. It is documented in the <a href="geospatial-nd.html">N-dimensional Geospatial</a> document. </p><p>For information about using AllegroGraph's geospatial capabilities from SPARQL, see <a href="magic-properties.html#sparql-magic-geo-2d">SPARQL Magic Properties for geospatial</a>, which describes the newer SPARQL geospatial interface. </p><p>AllegroGraph provides a novel mechanism for efficient storage and retrieval of two-dimensional data such as geospatial coordinates. We often refer to this kind of data as <em>geospatial</em> although that term refers specifically to positions on or around the earth's surface.  AllegroGraph supports a more-general notion of two-dimensional coordinates: coordinate systems defined on a flat plane such as the surface of a silicon chip (Cartesian) or on a sphere such as the earth's surface (spherical).
+<a name="fnr0-2018-06-08" id="fnr0-2018-06-08"></a>
+<sup><a href="#fn0-2018-06-08">1</a></sup>   In fact, <code>geospatial</code> data does not even need to represent a location.  The UPI type can be used for any encoding of data tuples that can be mapped onto points in a two-dimensional region, as if a graph (the kind of graph that is plotted on a flat sheet of paper, not an RDF triple store).  One could, for instance, encode in this way a data set of temperature against time-of-day, and do efficient searches within bounding boxes on this plot.  We will use the term geospatial for all of these kinds of <em>co-ordinate</em> data when there is no danger of ambiguity. </p><p>The added UPI type is <code>:geospatial</code> with type code <code>+geospatial+</code>.  A geospatial UPI encodes X and Y ordinates in a way that allows efficient searching.  The geospatial UPI type supports up to 256 subtypes which specify how the external numeric ordinates (e.g. degrees, radians, meters, or nanometers) are converted to and from the geospatial UPI's internal representation.  There are helper functions for defining particular geospatial subtypes of general interest, i.e. X-Y positions within regions of a Cartesian plane, and latitude-longitude positions in spherical coordinates. </p><p>For using geospatial UPIs from Java, see the several examples in the <a href="http://agraph.franz.com/support/learning/" target="_blank">learning center</a>. </p><a name='header2-16' id='header2-16'></a><h2>The strategy behind the geospatial UPI representation.</h2><p>More than a half century of computer science research has conquered the problem if sorting, storing, searching, and retrieving data that can be ordered in a single dimension.  Using various sort algorithms and retrieval techniques (e.g. B-trees and binary search) computers can deal with linear data very efficiently.  Most linear sort and retrieval tasks can be devised to scale with the log of the size of the data set.  The whole concept behind AllegroGraph is to exploit these strengths. </p><p>Not so for data in two dimensions.  The naive way to sort coordinate data would be to use the two ordinates as major and minor sort fields. If one wants to examine each datum within a bounding box, and if Y is the major sort field, one needs to scan the entire database within the Y ordinate range of interest.  There is no efficient way to eliminate the coordinates with an X ordinate outside the X ordinate range of interest.  Retrieval time increases linearly with the size of the store. </p><p>AllegroGraph uses a different strategy.  First, it combines X and Y ordinates into a single UPI datum.  (Every datum in an AllegroGraph store is a UPI, and consuming only a single UPI for an XY coordinate increases the efficiency of storage.)  It also divides the Y range into strips of a known width, with the strip size being chosen to be similar to the expected typical dimension of a search region.  In other words, if we expect to be searching for all coordinates within a 1 kilometer bounding box, the width of the Y strips would be chosen as 1 kilometer.  Geospatial UPIs are linearly sorted first on the Y strip, then on the X ordinate, and finally on the Y ordinate. </p><a name='header3-20' id='header3-20'></a><h3>What advantage does this provide?</h3><p>Suppose we have stored our data using 10 km strips.  If we want to examine all data within a 5 km by 5 km bounding box, we need examine triples within at most two strips, and within those strips we need only traverse a linear section of the X range within that strip.  If we want to examine data within a 17 km square bounding box, we need examine four strips.  For a 99 km square bounding box, we need examine only ten or eleven strips.  Examining data with a known X range within a single strip is linear and easily optimized by AllegroGraph, like any other kind of linear range query.  So the geospatial UPI representation transforms an area search into a small number of linear searches, and linear searches are what computers are very efficient at doing.  Performance is best if the strip width is similar to the bounding-box height, but degrades only gently (i.e. linearly) with the number of strips that must be examined, or similarly if the strip width is much smaller than the strip width. </p><p>The effect on performance is that retrieval speed for all data within a local region is proportionate to the number of data to be returned, and is relatively independent of the size of the whole store. </p><p>The limitation of the strip design of the geospatial UPI datatype is that the programmer creating the data know in advance something about how the data will be used, i.e., the typical width of regions of interest.  There is no free lunch.  But fortunately, this estimate does not need to be exact.  Even an order of magnitude error will not reduce performance so severely as to make the data unusable.  If expected use covers a larger spread of ranges, then the data could also be saved multiple times with different strip widths. </p><a name='header2-24' id='header2-24'></a><h2>Defining geospatial subtypes</h2><p>Geospatial data can be Cartesian or spherical, and it can range over the surface of a country or of a silicon chip.  To accommodate all the possibilities, user code must define the specific geospatial subtype (the range and strip width) that embodies the translation between the external coordinate data and the internal UPIs. </p><p>The current implementation of a geospatial UPI stores X and Y ordinates as 32-bit unsigned integers.  Dividing the circumference of the earth by 2^32 reveals that the resolution of a 32-bit integer longitude is slightly better than 1 cm. at the equator.  It is the job nof a geospatial subtype implementation to convert these integers from and to the desired external representation an to compute the strip number.  There are functions in the interface for defining the two important types of representations, namely, latitude and longitude for spherical coordinates, and arbitrary finite XY ranges of the infinite Cartesian plane. </p><p>Suppose we want to search a triple store for geospatial UPIs that are close to a certain XY, i.e., within a bounding box [X1,Y1,X2,Y2].  In a traditional RDF store (perhaps using :latitude and :longitude types) the X and Y would be in separate triples.  Even if combined into fields of a single part (as above, but without the Y strip) it would still only be possible to search over a range of {X1,X2}, but within that range <em>every</em> Y value must be retrieved and range tested.  As the size of the data increases, and therefore the total number of UPIs within the X range {X1,X2} increases, this scales badly. </p><p>How does the Y strip help?  In any of the AllegroGraph indexes, UPIs in any particular one of the SPOG are sorted as 12-byte unsigned integers.  Within any index, all geospatial UPIs of a given subtype will sort together, first sorted on Y strip, then on the unsigned 32-bit integer X, then finally on the unsigned 32-bit integer Y.  The Y strip is a decimation of the Y value.  In other words, the Y values are divided into narrow strips.  UPIs (within a given subtype) are sorted first on the strip, then the X, then the Y.  If we expect searches to be concerned with regions (or radii) about R in size, and if the strip width is chosen to be within an order of magnitude of the search size, it helps the search tremendously. </p><p>Suppose we have a large number of GPS latitude and longitude information of cell phone locations.  The data points have a resolution around 10 meters.  Suppose we are interested in searching over a radius of 100 meters.  If we store the latitude-longitude UPIs using a strip width of 100 meters, then to find all candidates within the bounding box [X-100,Y-100,X+100,Y+100] requires scanning short regions of two strips.  Each candidate within those regions can be further filtered for exact distance.  The proportion of entries that must be filtered out is <code>1-(pi/4)</code>. </p><p>Suppose our strips are larger, 500 meters.  In that case our 100 meter radius search needs scan at most only two strips, and frequently only one, but the scan overall is somewhat less efficient because number of entries that must be filtered is greater.  Even if the Y region lies completely within a single strip, the proportion of undesired entries that must be filtered is approximately <code>1-(pi/(4*5))</code>.  If the Y region of interest spans two strips, the proportion of entries that must be examined and rejected by the filter is <code>10-(pi/(4*10))</code>. </p><p>If we err in the other direction and make the strips significantly smaller than the typical search radius, the proportion of entries that must be examined and filtered is not much affected, but the number of Y strips that must be scanned over the range [X1,X2] increases, causing more cursor creation and scans of disjoint sections of the index file.  For example, if the strip width were 10 meters, the 100-meter radius query would have to examine 10 or 11 strips.  This requires more cursor initialization and accessing multiple separate regions of the index. </p><p>In practice, even if the strip size for a particular geospatial subtype is as much as an order of magnitude away from the Y range used in a particular search, the strip approach is tremendously more efficient than direct X-Y search even for huge databases.  If it is anticipated that data will be searched using widely different ranges at different times, then the data can be duplicated in the database using multiple subtypes with different strip sizes.  For example, if we sometimes wanted to find cell phones records within a 100 meter radius of a location, and other times wanted to find calls within a 10 kilometer radius of a location, then it might make sense to record the data with multiple separate triples (or perhaps use both the object and graph UPIs of a single triple) with strip widths appropriate for each of the expected types of searches. </p><p>This points out the limitation of the strip design of the geospatial UPI datatype.  It requires that the program creating the data know in advance something about how the data will be used, i.e., the typical width of regions of interest.  Fortunately, this estimate does not need to be exact.  Even an order of magnitude error will not make the data unusable. </p><a name='header2-34' id='header2-34'></a><h2>An Extended Example</h2><p>This example illustrates creation and querying of a geospatial database using the Common Lisp client.  Real geospatial databases are often huge, so to avoid having to download large files we will construct a pretend database within the example.  The example randomly places 250,000 Pizzerias within a limited geographical region, then queries for Pizzerias with a specified distance from a given coordinate. </p><p>The following forms load AllegroGraph and create an empty database. See the <a href="lisp-quickstart.html">AllegroGraph Lisp Quick Start</a> for more details. As usual, we assume that the server is running and you have started Allegro Common Lisp. </p><p> (In the example snippets below, the the value returned by a form is omitted when it is not of particular interest.) </p>
+<pre><code>&gt; (require :agraph)  
+ 
+&gt; (in-package :db.agraph.user)  
+ 
+&gt; (enable-!-reader)  
+ 
+&gt; (register-namespace "g" "http://franz.com/geo#")  
+ 
+&gt; (create-triple-store "geospatial-example") </code></pre><p>Before adding any geospatial data into a store, it is necessary to define the geospatial subtypes the store will use. This requires two steps: defining the subtype and then registering it with the store. A geospatial subtype is either spherical or Cartesian, has specific X and Y ranges, and a specific Y strip width (see above).  For this example we will define two spherical subtypes, one with 5 mile strips and the other with 100 mile strips. </p>
+<pre><code>&gt; (defparameter *lat-lon-100* (register-latitude-striping-in-miles 100.0))  
+ 
+&gt; (defparameter *lat-lon-5*  
+      (register-latitude-striping-in-miles 5.0 :lat-min 35.0 :lat-max 40.0)) </code></pre><p>The 100-mile-strip subtype covers the entire Earth surface, as the longitude and latitude ranges default to the entire sphere.  The 5-mile-strip subtype covers only latitudes between 35 and 40 degrees North.  This limitation can provide error checking on the expected data and would also allow thinner strips to be specified. </p><p>Before geospatial UPIs can be stored in a triple store it is necessary to tell the store that it should support that particular subtype. This is done by the function <a href="lisp-reference.html#add-geospatial-subtype-to-db" title="description of add-geospatial-subtype-to-db">add-geospatial-subtype-to-db</a>. </p>
+<pre><code>&gt; (add-geospatial-subtype-to-db *lat-lon-5*  *db*)  
+"21e6000c-0b43-11dd-a684-000bcdce3e4b-[-180.0,180.0][35.0,40.0]-5.0-miles"  
+&gt; (add-geospatial-subtype-to-db *lat-lon-100* *db*)  
+"21e6000c-0b43-11dd-a684-000bcdce3e4b-[-180.0,180.0][-90.0,90.0]-100.0-miles" </code></pre><p>The returned values are the UUIDs for the two subtypes. </p><p>Now let's create some data.  Since programmers like pizza, we will populate a rectangular area around the Franz Inc. office with a quarter million pizza shops, each with a name and a random longitude and latitude.  (If this is run as interpreted code it could take a minute or two to execute.) </p>
+<pre><code>(loop repeat 250000  
+    with random-state = (make-random-state t)  
+    with first-name = 0 with last-name = 1  
+    as lat = (+ 35.0 (random 5.0 random-state))  
+    as lon = (- -120.0 (random 10.0 random-state))  
+    as name = (progn (if (&lt; first-name 1000)  
+                         (list last-name (incf first-name))  
+                       (list (incf last-name) (setf first-name 1)))  
+                     (intern-resource   ; Generate a unique name for each Pizzaria.  
+                      (format nil "http://franz.com/geo#Pizzaria_~{~:@r_~:@r~}"  
+                              (list first-name last-name))))  
+    do (add-triple name  
+                   !g:isAt5  
+                   (longitude-latitude-&gt;upi *lat-lon-5* lon lat))  
+       (add-triple name  
+                   !g:isAt100  
+                   (longitude-latitude-&gt;upi *lat-lon-100* lon lat))) </code></pre><p>Now let's find all the pizzerias within 2 miles and within 5 miles of the Franz Inc. office.  Since geospatial UPIs are sorted separately by subtype, we need to tell the query the predicate we are interested in using, the subtype to search, the longitude, and latitude around which to search, and the radius of the search.  The Lisp function <a href="lisp-reference.html#get-triples-haversine-miles" title="description of get-triples-haversine-miles">get-triples-haversine-miles</a> and the Prolog functor <a href="lisp-reference.html#triple-inside-haversine-miles" title="description of triple-inside-haversine-miles">triple-inside-haversine-miles</a> perform <code>Haversine</code> search for a radius given in miles.  The Haversine equation computes the <code>great circle</code> distance between to points specified by longitude and latitude.  See <a href="http://en.wikipedia.org/wiki/Great-circle_distance">Great-circle distance</a> on the Wikipedia for background.  It is little different from Pythagorean for small distances (such as in this example) but is important for larger distances. </p>
+<pre><code>&gt; (pprint  
+   (select0 ?name  
+     (triple-inside-haversine-miles ?triple  
+                                    (?? *lat-lon-5*)  
+                                    !g:isAt5  
+                                    -122.275  
+                                    37.8036  
+                                    2.0)  
+     (lisp ?name (subject ?triple))))  
+ 
+({Pizzaria_DCCCXII_CLXXVIII} {Pizzaria_CCLXXIIII_LXXXVII} {Pizzaria_CIIII_LXXXXII}  
+ {Pizzaria_DCCCLXXXIIII_XXXVI} {Pizzaria_I_CCXXXIII} {Pizzaria_DCLVIIII_CCXVII}  
+ {Pizzaria_DCCCCXXXXII_CX} {Pizzaria_CCLXXXXIIII_CXXXVIIII} {Pizzaria_LX_CXIIII}  
+ {Pizzaria_CCCCVII_I} {Pizzaria_DCXXXV_XXI} {Pizzaria_CCCCXXXXVIII_LXXXXI}  
+ {Pizzaria_DCCCI_CCXXXXV} {Pizzaria_DLIII_CCXXXIII} {Pizzaria_LXXXXIIII_CCXVII}  
+ {Pizzaria_XXXII_CXXVIIII} {Pizzaria_CC_CLXXXXVIIII} {Pizzaria_DCCXXXV_XXXIII}  
+ {Pizzaria_CLXXI_CXXXIII} {Pizzaria_DCLXXXIII_LXXVIIII} {Pizzaria_DCLVIIII_VII}  
+ {Pizzaria_LXXXVIII_XXXVIIII})  
+ 
+&gt; (pprint  
+   (select0 ?name  
+     (triple-inside-haversine-miles ?triple (?? *lat-lon-5*) !g:isAt5 -122.275 37.8036 5.0)  
+     (lisp ?name (subject ?triple))))  
+ 
+({Pizzaria_CCXXI_CCXXXIIII} {Pizzaria_DCCXXXVI_CCXXVI} {Pizzaria_DCLXXXVII_CLXXXX}  
+ {Pizzaria_CCCCLXXVII_CLXVIIII} {Pizzaria_CCCXXXIII_CVII} {Pizzaria_DLXXXI_LVIII}  
+ {Pizzaria_CLXVIII_LXXI} {Pizzaria_CLXXXI_CL} {Pizzaria_DCLXXXXVI_VIIII}  
+ {Pizzaria_DCLXI_LXXXXVII} {Pizzaria_CCCLIII_XXXII} {Pizzaria_DCCCCLIII_CCXXII}  
+ {Pizzaria_CCLVIIII_CCXXI} {Pizzaria_CCCXXVIIII_CC} {Pizzaria_DCXXIIII_LVIIII}  
+ {Pizzaria_XXVII_CLXVIIII} {Pizzaria_CCVII_LXXXIII} {Pizzaria_CCCCXXXX_CXVII}  
+ {Pizzaria_DCCLXXXII_LXXIIII} {Pizzaria_LXXXVIIII_CCXXV} {Pizzaria_CCCCLVI_LXXIIII}  
+ {Pizzaria_DCCCVI_CXXVI} {Pizzaria_DCIIII_LVIII} {Pizzaria_DLI_XXVI} {Pizzaria_CCXX_CCXX}  
+ {Pizzaria_CCCLVIII_XXXXII} {Pizzaria_CLXXXIIII_CCXXXXII} {Pizzaria_DCCCLV_XII}  
+ {Pizzaria_CCCCVI_CLXII} {Pizzaria_CXV_CXXVI} {Pizzaria_DCCCCLVII_LXIII}  
+ {Pizzaria_LXXXII_CXXVI} {Pizzaria_DCCCXII_CLXXVIII} {Pizzaria_CCLXXIIII_LXXXVII}  
+ {Pizzaria_CCCLXXV_CXXXVII} {Pizzaria_CCLVIIII_CXXXXVII} {Pizzaria_CCCLXXXXVI_LVII}  
+ {Pizzaria_CCCC_XXXVIII} {Pizzaria_CIIII_LXXXXII} {Pizzaria_DCCCLXXXIIII_XXXVI}  
+ {Pizzaria_CLXXXVII_CLXXIIII} {Pizzaria_DCCLXXXXIIII_CCXXXXI} {Pizzaria_I_CCXXXIII}  
+ {Pizzaria_DCLVIIII_CCXVII} {Pizzaria_DCCCCXXXXII_CX} {Pizzaria_CXXXXI_CC}  
+ {Pizzaria_CCLXXXXIIII_CXXXVIIII} {Pizzaria_LX_CXIIII} {Pizzaria_CCCCVII_I}  
+ {Pizzaria_DCXXXV_XXI} {Pizzaria_CCCCXXXXVIII_LXXXXI} {Pizzaria_DCCCI_CCXXXXV}  
+ {Pizzaria_DLIII_CCXXXIII} {Pizzaria_CCCCXXXXIII_CXXXII} {Pizzaria_LXXXXIIII_CCXVII}  
+ {Pizzaria_XXXII_CXXVIIII} {Pizzaria_DCIII_CLXXXXII} {Pizzaria_CC_CLXXXXVIIII}  
+ {Pizzaria_DCCXXXV_XXXIII} {Pizzaria_CLXXI_CXXXIII} {Pizzaria_CLXXXXI_LXXVII}  
+ {Pizzaria_DXXXVI_XXVII} {Pizzaria_DCLXXXIII_LXXVIIII} {Pizzaria_DXVIIII_LXXXV}  
+ {Pizzaria_DCCCCLXXXI_CXIII} {Pizzaria_DCCXX_CXXVIII} {Pizzaria_CCCLXXXXI_XVIII}  
+ {Pizzaria_DCXX_CCXV} {Pizzaria_DCCVIIII_CLXXV} {Pizzaria_DCCCCLXV_CCXX}  
+ {Pizzaria_CCCCXVI_XVIII} {Pizzaria_DCCCXXV_CCXIIII} {Pizzaria_DCCCLXII_LVIIII}  
+ {Pizzaria_DCXX_CCVIII} {Pizzaria_CCLX_XXXXIII} {Pizzaria_XXVIII_XXIIII}  
+ {Pizzaria_CCCCLII_XXI} {Pizzaria_CCCXXXXII_CCXXXI} {Pizzaria_DCCCCXXXXIIII_CLXXXX}  
+ {Pizzaria_DLVIII_XXXIII} {Pizzaria_DLXXVIII_LXI} {Pizzaria_DCCXXXVI_CXXXXII}  
+ {Pizzaria_LXIIII_CXXXIII} {Pizzaria_DCCCXI_CXXXXVII} {Pizzaria_CCXXXX_CLXXV}  
+ {Pizzaria_DCCLXXXII_CCXVI} {Pizzaria_XXXII_CXXXXVIII} {Pizzaria_DCCCCLXIII_CLXXXXIIII}  
+ {Pizzaria_CCXXXXVIIII_LXXXIIII} {Pizzaria_CCXXV_CXXXVII} {Pizzaria_CCLXIII_LXXXXVII}  
+ {Pizzaria_DCLVIIII_VII} {Pizzaria_DLXVIIII_LXXIII} {Pizzaria_LXXXVIII_XXXVIIII}  
+ {Pizzaria_CCCCLXXIII_VIII} {Pizzaria_CCCXXXX_CCVI} {Pizzaria_LXV_XXXIII}  
+ {Pizzaria_DCLXXIIII_CLXXXVI} {Pizzaria_DCCCCXXVII_CXXIIII} {Pizzaria_DCCCLXVII_XXXX}  
+ {Pizzaria_DCCCXXXXVIIII_XXIIII} {Pizzaria_CCCCLII_CLXXVI} {Pizzaria_DXXXXI_CLXXVI}  
+ {Pizzaria_CCCXXIII_XXXVI}) </code></pre><p>The function <a href="lisp-reference.html#get-triples-haversine-miles" title="description of get-triples-haversine-miles">get-triples-haversine-miles</a> returns a cursor that can be used with all the usual AllegroGraph operators: </p>
+<pre><code>;; How many pizzarias are within 50 or 100 miles?  
+&gt; (count-cursor  
+    (get-triples-haversine-miles *lat-lon-100* !g:isAt100 -122.275 37.8036 50.0))  
+10521  
+&gt; (count-cursor  
+    (get-triples-haversine-miles *lat-lon-100* !g:isAt100 -122.275 37.8036 100.0))  
+42098 </code></pre><p>You can also write your own functions and functors to reduce typing in forming application-specific queries. </p>
+<pre><code>&gt; (&lt;-- (pizzaria-name-within-range ?name ?lon ?lat ?miles)  
+    (triple-inside-haversine-miles ?triple  
+                                   (?? *lat-lon-5*)  
+                                   !g:isAt5  
+                                   ?lon ?lat ?miles)  
+    (lisp ?name (subject ?triple)))  
+ 
+&gt; (&lt;-- (pizzaria-locations-within-range ?location ?lon ?lat ?miles)  
+    (triple-inside-haversine-miles ?triple  
+                                   (?? *lat-lon-5*)  
+                                   !g:isAt5  
+                                   ?lon ?lat ?miles)  
+    (lisp ?location (object ?triple))) </code></pre><a name='header2-53' id='header2-53'></a><h2>Polygons</h2><p>The geospatial facility also has support for polygonal regions.  Let's define the crude boundaries of our area of interest as a polygon with five vertexes and five sides. </p>
+<pre><code>&gt; (defparameter *my-city* '((-122.293 37.8213)  
+                            (-122.261 37.8420)  
+                            (-122.253 37.7990)  
+                            (-122.292 37.7476)  
+                            (-122.285 37.8144))) </code></pre><p>We can use this polygon as the Lisp datum it is (a 5-element list) but we can also store the polygon in the database.  Since vertexes are an ordered set, there is a special +subscript+ UPI type devised to carry the ordering. </p>
+<pre><code>&gt; (loop for (lon lat) in *my-city*  
+      for subscript from 1 by 1  
+      do (add-triple !g:my-city  
+                     (value-&gt;upi subscript :subscript)  
+                     (geospatial-&gt;upi *lat-lon-5* lon lat))  
+      finally (index-all-triples :wait t)) </code></pre><p>This violates strict RDF conventions, since it uses this special :subscript UPI as a predicate.  But this extension is convenient and efficient for carrying the ordered vertexes of a polygon. </p>
+<pre><code>&gt; (polygon-vertexes !g:my-city)  
+ 
+((-122.29299924242424d0 . 37.8213005050505d0)  
+ (-122.26100151515152d0 . 37.84199903198653d0)  
+ (-122.25299831649832d0 . 37.798999747474745d0)  
+ (-122.29199974747475d0 . 37.74760054713805d0)  
+ (-122.28500361952862d0 . 37.8143997053872d0)) </code></pre><p>Now we can use the functor <a href="lisp-reference.html#triple-inside-polygon" title="description of triple-inside-polygon">triple-inside-polygon</a> or the Lisp function <a href="lisp-reference.html#get-triples-inside-polygon" title="description of get-triples-inside-polygon">get-triples-inside-polygon</a> to retrieve the pizzerias inside My City. </p>
+<pre><code>&gt; (pprint  
+   (select0 (?name ?location)  
+     (triple-inside-polygon ?triple  
+                            (?? *lat-lon-5*)  
+                            !g:isAt5  
+                            (?? (polygon-vertexes !g:my-city)))  
+     (lisp ?name (subject ?triple))  
+     (lisp ?location (object ?triple))))  
+ 
+(({Pizzaria_CLXXXV_XXXX} {+374611.39727-1221719.91061})  
+ ({Pizzaria_CVI_CCI} {+374837.32318-1221705.46364})  
+ ({Pizzaria_DCCCVII_CCXXXXVII} {+374704.95561-1221702.57970})  
+ ({Pizzaria_DCCCCLXXIIII_CXXVI} {+374705.75212-1221646.62212})  
+ ({Pizzaria_DCXXXVII_LXXVIII} {+374656.72970-1221629.92303})  
+ ({Pizzaria_CCCCXXI_LXXVI} {+374659.20152-1221622.39727})  
+ ({Pizzaria_DCCCCLXXXI_CCXXXXIIII} {+374702.14045-1221617.72818})  
+ ({Pizzaria_CLXXXXIIII_LX} {+374707.40015-1221609.13121})  
+ ({Pizzaria_DCCCCXXXXVI_XXXVIIII} {+374818.79757-1221549.08121})  
+ ({Pizzaria_DXXXI_XV} {+374852.97879-1221535.48576})  
+ ({Pizzaria_DCLXXXXII_CCXIIII} {+374946.07015-1221557.40333})) </code></pre><p>Now for some fun, here is a silly function that plots the My City polygon and the locations of all the pizzerias using ASCII.  Remember, the data is random so your results will be different. </p>
+<pre><code>&gt; (defun ascii-graph (x-y-points polygon  
+                      &amp;key x-min x-max cols y-min y-max rows)  
+    (unless (and x-min x-max cols y-min y-max rows)  
+      (error "All of x-min x-max cols y-min y-max rows) must be specified."))  
+    (let* ((x-range (- x-max x-min))  
+           (y-range (- y-max y-min))  
+           (x-y-rounded  
+             (mapcar (lambda (point)  
+                       (list (round (* cols (/ (- (first  point) x-min) x-range)))  
+                             (round (* rows (/ (- (second point) y-min) y-range)))))  
+                     x-y-points)))  
+      ;;(format t "~&amp;~a ~a~% ~a~% ~a~%" x-range y-range x-y-points x-y-rounded)  
+      (loop for row from rows downto 0  
+          for y from y-max downto y-min by (/ y-range rows)  
+          do (loop for col from 0 to cols  
+                 for x from x-min to x-max by (/ x-range cols)  
+                 do (write-char (if (member (list col row) x-y-rounded :test 'equal)  
+                                    #\X  
+                                  (if (point-inside-polygon-p polygon x y) #\^ #\.))))  
+             (terpri))  
+      (values)))  
+ 
+&gt; (ascii-graph  
+    (select0 ?location  
+             (triple-inside-polygon ?triple  
+                                    (?? *lat-lon-5*)  
+                                    !g:isAt5  
+                                    (?? (polygon-vertexes !g:my-city)))  
+             (lisp ?location  
+                   (multiple-value-list  
+                     (upi-&gt;longitude-latitude (object ?triple)))))  
+    (polygon-vertexes !g:my-city)  
+    :y-min 37.74 :y-max 37.85 :cols 50  
+    :x-min -122.293 :x-max -122.25 :rows 20)  
+ 
+..................................................  
+..................................................  
+................................^^^^^^............  
+......................^^^^^^^^^^^^^^^^^...........  
+.............^^^^^^^^^^^^^^^^^^X^^^^^^^^^.........  
+...^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^........  
+......^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^X^^^.......  
+.........X^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^......  
+.........^^^^^^^^^^^^^^^^^^^^^^^^^X^^^^^^^^^^.....  
+........^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^...  
+.......^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^.......  
+.......^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^...........  
+......^^^^X^^^^^X^^^^X^X^X^^X^^^^^................  
+.....^^^^^^^^^^^^^^^^^^^^^^^^.....................  
+.....^^^^^^^^^^^^^^^^^^^..........................  
+....^X^^^^^^^^^^^^^...............................  
+...^^^^^^^^^^^....................................  
+...^^^^^^.........................................  
+..^^^.............................................  
+.................................................. </code></pre><p>The polygon facility works similarly for Cartesian coordinates.  For both Cartesian and spherical coordinates there are also a few utility functions such as <a href="lisp-reference.html#point-inside-polygon-p" title="description of point-inside-polygon-p">point-inside-polygon-p</a> which tests whether a point is inside a polygon and <a href="lisp-reference.html#polygon-inside-polygon-p" title="description of polygon-inside-polygon-p">polygon-inside-polygon-p</a> which tests whether one polygon is entirely contained within another. </p></div> <hr/><div id="footnotes"> <h2>Footnotes</h2>
+<div class="footnotes">
+<ol>
+<li>
+<a name="fn0-2018-06-08" id="fn0-2018-06-08"></a>
+If ever needed, unusual two-dimensional coordinate systems (e.g. helical) could be implemented by writing additional server-side code. <a href="#fnr0-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 1 in the text">&#8617;</a></li>
+</ol>
+</div>  </div>  </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

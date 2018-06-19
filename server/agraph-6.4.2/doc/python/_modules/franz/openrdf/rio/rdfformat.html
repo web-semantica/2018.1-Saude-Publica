@@ -1,0 +1,234 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>franz.openrdf.rio.rdfformat &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+    </div>
+  
+    
+  <h1>Source code for franz.openrdf.rio.rdfformat</h1><div class="highlight"><pre>
+<span></span><span class="c1">################################################################################</span>
+<span class="c1"># Copyright (c) 2006-2017 Franz Inc.  </span>
+<span class="c1"># All rights reserved. This program and the accompanying materials are</span>
+<span class="c1"># made available under the terms of the MIT License which accompanies</span>
+<span class="c1"># this distribution, and is available at http://opensource.org/licenses/MIT</span>
+<span class="c1">################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+
+<span class="kn">from</span> <span class="nn">franz.openrdf.rio.formats</span> <span class="k">import</span> <span class="n">Format</span>
+
+
+<div class="viewcode-block" id="RDFFormat"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.rio.html#franz.openrdf.rio.rdfformat.RDFFormat">[docs]</a><span class="k">class</span> <span class="nc">RDFFormat</span><span class="p">(</span><span class="n">Format</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents the concept of an RDF data serialization format. RDF formats are</span>
+<span class="sd">    identified by a name and can have one or more associated</span>
+<span class="sd">    MIME types, zero or more associated file extensions and can specify a</span>
+<span class="sd">    default character encoding. Some formats are able to encode context</span>
+<span class="sd">    information while others are not; this is indicated by the value of</span>
+<span class="sd">    supports_contexts field. Similaraly, formats for which the</span>
+<span class="sd">    supports_attributes flag is `True` are capable of encoding triple </span>
+<span class="sd">    attributes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># A global dictionary mapping extensions to formats</span>
+    <span class="c1"># Used by Format.format_for_file_name</span>
+    <span class="n">_ext_map</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="RDFFormat.__init__"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.rio.html#franz.openrdf.rio.rdfformat.RDFFormat.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">mime_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">charset</span><span class="o">=</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">,</span>
+                 <span class="n">file_extensions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">supports_namespaces</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">supports_contexts</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">supports_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">register</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a new RDF format object.</span>
+
+<span class="sd">        :param name: Human-readable name of the format.</span>
+<span class="sd">        :param mime_types: A list of MIME types used for this format.</span>
+<span class="sd">                           The first element of this list will be used</span>
+<span class="sd">                           as the content-type header during uploads.</span>
+<span class="sd">        :param charset: Character set used by the format.</span>
+<span class="sd">        :param file_extensions: List of file extensions for this format.</span>
+<span class="sd">        :param supports_namespaces: If true, the format supports namespaces</span>
+<span class="sd">                                    and qualified names. This has no impact</span>
+<span class="sd">                                    on the Python API.</span>
+<span class="sd">        :param supports_contexts: If True the format can store quads</span>
+<span class="sd">                                  (and not just triples).</span>
+<span class="sd">        :param supports_attributes: If True the format can represent triple</span>
+<span class="sd">                                    attributes.</span>
+<span class="sd">        :param register: If True file extensions will be added to the map</span>
+<span class="sd">                         used by :meth:`Format.format_for_file_name`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Format</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">mime_types</span><span class="p">,</span> <span class="n">charset</span><span class="p">,</span> <span class="n">file_extensions</span><span class="p">,</span> <span class="n">register</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">supports_namespaces</span> <span class="o">=</span> <span class="n">supports_namespaces</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">supports_contexts</span> <span class="o">=</span> <span class="n">supports_contexts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">supports_attributes</span> <span class="o">=</span> <span class="n">supports_attributes</span></div>
+
+    <span class="c1"># These will be automatically converted to RDFFormat instances</span>
+        
+    <span class="n">RDFXML</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;RDF/XML&quot;</span><span class="p">,</span>
+        <span class="n">mime_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;application/rdf+xml&quot;</span><span class="p">,</span> <span class="s2">&quot;application/xml&quot;</span><span class="p">],</span>
+        <span class="n">file_extensions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;rdf&quot;</span><span class="p">,</span> <span class="s2">&quot;rdfs&quot;</span><span class="p">,</span> <span class="s2">&quot;owl&quot;</span><span class="p">,</span> <span class="s2">&quot;xml&quot;</span><span class="p">],</span>
+        <span class="n">supports_namespaces</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">supports_contexts</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">NTRIPLES</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;N-Triples&quot;</span><span class="p">,</span>
+        <span class="n">mime_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;application/n-triples&quot;</span><span class="p">,</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">],</span>
+        <span class="n">file_extensions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nt&quot;</span><span class="p">,</span> <span class="s2">&quot;ntriples&quot;</span><span class="p">],</span>
+        <span class="n">supports_namespaces</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">supports_contexts</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">NQUADS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;N-Quads&quot;</span><span class="p">,</span>
+        <span class="n">mime_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;application/n-quads&quot;</span><span class="p">],</span>
+        <span class="n">file_extensions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nq&quot;</span><span class="p">,</span> <span class="s2">&quot;nquads&quot;</span><span class="p">],</span>
+        <span class="n">supports_namespaces</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">supports_contexts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">NQX</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Extended N-Quads (with attributes)&quot;</span><span class="p">,</span>
+        <span class="n">mime_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;application/x-extended-nquads&quot;</span><span class="p">],</span>
+        <span class="n">file_extensions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nqx&quot;</span><span class="p">],</span>
+        <span class="n">supports_namespaces</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">supports_contexts</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">supports_attributes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">TURTLE</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Turtle&quot;</span><span class="p">,</span>
+        <span class="n">mime_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;text/turtle&quot;</span><span class="p">],</span>
+        <span class="n">file_extensions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ttl&quot;</span><span class="p">,</span> <span class="s2">&quot;turtle&quot;</span><span class="p">],</span>
+        <span class="n">supports_namespaces</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">supports_contexts</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">TRIG</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;TriG&quot;</span><span class="p">,</span>
+        <span class="n">mime_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;application/trig&quot;</span><span class="p">],</span>
+        <span class="n">file_extensions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;trig&quot;</span><span class="p">],</span>
+        <span class="n">supports_namespaces</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">supports_contexts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">TRIX</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;TriX&quot;</span><span class="p">,</span>
+        <span class="n">mime_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;application/trix&quot;</span><span class="p">],</span>
+        <span class="n">file_extensions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;trix&quot;</span><span class="p">],</span>
+        <span class="n">supports_namespaces</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">supports_contexts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">TABLE</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Table&quot;</span><span class="p">,</span>
+        <span class="n">mime_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;text/table&quot;</span><span class="p">],</span>
+        <span class="n">file_extensions</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">supports_namespaces</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">supports_contexts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+</pre></div>
+
+  
+    <div class="nav-links nav-links-footer">
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

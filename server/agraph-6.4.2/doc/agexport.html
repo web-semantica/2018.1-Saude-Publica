@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>AllegroGraph Exporter</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="agexport"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>AllegroGraph Exporter</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-11' title='Usage'>Usage</a>
+<ul>
+<li><a href='#header3-16' title='the FILE argument'>the </a></li></ul></li>
+<li><a href='#header2-24' title='Options'>Options</a>
+<ul>
+<li><a href='#header3-26' title='Triple-store options'>Triple-store options</a></li>
+<li><a href='#header3-37' title='Main options'>Main options</a></li>
+<li><a href='#header3-55' title='Other options:'>Other options:</a></li></ul></li>
+<li><a href='#header2-64' title='Notes and examples:'>Notes and examples:</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>The AllegroGraph Exporter (<strong>agtool export</strong>) is a command-line utility for exporting data from a triple-store. It can use multiple CPU cores to export in parallel. </p><p>The <a href="agtool.html">agtool</a> program is the general program for AllegroGraph command-line operations. (In earlier releases, there was a separate <strong>agexport</strong> program. A change from earlier releases is the <code>--username</code> option is now the <code>--user</code> option.) </p><a name='header2-11' id='header2-11'></a><h2>Usage</h2>
+<pre><code>agtool export [OPTIONS] DBNAME FILE </code></pre><p>where <code>DBNAME</code> is an AllegroGraph triple store name, and <code>FILE</code> is a file name. </p><p>For example, this command exports the triples from the <code>lesmis</code> triple-store into a file named <code>lesmis.rdf</code> using the <a href="http://www.w3.org/TR/rdf-syntax-grammar/" class="external" target="_blank">RDF/XML</a> format: </p>
+<pre><code>agtool export --port 10035 --output rdfxml lesmis lesmis.rdf </code></pre><a name='header3-16' id='header3-16'></a><h3>the <code>FILE</code> argument</h3><p>Note that if you use a dash (<code>-</code>) for the <code>FILE</code> argument, then <code>agtool export</code> will send the data to standard output. Parallel export is not possible in this case. </p><p>If exporting in parallel, then the <code>FILE</code> argument is used as a template for the output file names. For example, if exporting with 5 workers to <code>/data/output/lubm.nt</code>, then <code>agtool export</code> will send data to: </p>
+<ul>
+<li>/data/output/lubm-0.nt</li>
+<li>/data/output/lubm-1.nt</li>
+<li>/data/output/lubm-2.nt</li>
+<li>/data/output/lubm-3.nt</li>
+<li>/data/output/lubm-4.nt</li></ul><a name='header2-24' id='header2-24'></a><h2>Options</h2><p>The following options may be used with <strong>agtool export</strong>: </p><a name='header3-26' id='header3-26'></a><h3>Triple-store options</h3>
+<dl><dt><strong>-c CATALOG, --catalog CATALOG</strong> </dt>
+<dd>Specify the <code>catalog</code> name of the triple-store; If the store is in the root catalog, then either omit this option or use the empty string ("")
+<a name="fnr0-2018-06-08" id="fnr0-2018-06-08"></a>
+<sup><a href="#fn0-2018-06-08">1</a></sup> . The default is to use the root catalog. </dd><dt><strong>--server SERVER</strong> </dt>
+<dd>Specify the name of the server where the triple-store resides.</dd><dt><strong>-p PORT, --port PORT</strong> </dt>
+<dd>Set this to the front-end port of the server where the triple-store resides. <code>agtool export</code> can run either on the server in which the  triple-store resides or remotely. If run remotely, then you must also specify a <code>username</code> and <code>password</code>. The default value for the port is 10035. </dd><dt><strong>-u USERNAME, --user USERNAME</strong> </dt>
+<dd>Specify a username for the triple-store when accessing it remotely; use with <code>--password</code>. (The long form of this option was <code>--username</code> in earlier releases.)</dd><dt><strong>--password PASSWORD</strong> </dt>
+<dd>Specify the password for the triple-store when accessing it remotely; use with <code>--user</code>.</dd></dl><a name='header3-37' id='header3-37'></a><h3>Main options</h3>
+<dl><dt><strong>--save-metadata FILENAME</strong> </dt>
+<dd>Save attribute definitions and the static filter to <em>FILENAME</em>. See <a href="triple-attributes.html">Triple Attributes</a> for information on attributes. </dd><dt><strong>--blank-node-handling STYLE</strong> </dt>
+<dd>Determine how blank nodes are treated when exporting in parallel.<p>This can be <em>together</em> or <em>distribute</em>. The first places all triples with blank nodes into the same export file whereas the second allows blank nodes to be distributed to multiple files. Note that if blank nodes are distributed, then the import process must be told to treat them as if they all come from the same context (cf. <a href="agload.html">agtool load's</a> job based bulk node strategy). The default is <em>together</em>. </p></dd><dt><strong>-i IF-EXISTS, --if-exists IF-EXISTS</strong> </dt>
+<dd>Controls how agtool export behaves when output files already exist. append       If an export file exists, then append the new data to it. overwrite    If an export file exists, then delete it and write the new data. fail         If an export file exists, then do <em>not</em> export any data. <p>The default is to <em>fail</em> if any export files exist. Note that when exporting in parallel all of the output files are checked and the <code>if-exists</code> behavior applies to them as a group. I.e., if <code>if-exists</code> is <em>fail</em> then the export will fail if <em>any</em> of the output files already exists. </p></dd><dt><strong>-o FORMAT, --output FORMAT</strong> </dt>
+<dd>Set the output format. This can be one of:
+<ul>
+<li>rdfxml:      <a href="http://www.w3.org/TR/rdf-syntax-grammar/" class="external" target="_blank">RDF/XML</a></li>
+<li>ntriples:    <a href="http://www.w3.org/TR/n-triples/" class="external" target="_blank">N-Triples</a></li>
+<li>nquads:      <a href="http://www.w3.org/TR/n-quads/" class="external" target="_blank">N-Quads</a></li>
+<li>nqx:      Extended N-Quad format (including attributes, see <a href="triple-attributes.html">Triple Attributes</a>)</li>
+<li>trig:        <a href="http://www.w3.org/TR/trig/" class="external" target="_blank">TriG</a></li>
+<li>trix:        <a href="http://www.w3.org/2004/03/trix/" class="external" target="_blank">TriX</a></li>
+<li>turtle:      <a href="http://www.w3.org/TR/turtle/" class="external" target="_blank">Turtle</a></li></ul></dd></dl><a name='header3-55' id='header3-55'></a><h3>Other options:</h3>
+<dl><dt><strong>--compress</strong> </dt>
+<dd>If specified, then the output file or files will be compressed using <a href="http://en.wikipedia.org/wiki/Gzip" class="external" target="_blank">gzip</a>. The default is to have no compression. </dd><dt><strong>-n, --namespaces</strong> </dt>
+<dd>Use namespace abbreviations when exporting (for Turtle and RDF/XML). The default is to not use namespaces. </dd><dt><strong>--parallel</strong> </dt>
+<dd>Use multiple output files and export workers (see <code>--workers</code> for greater control). The default is to export to a single file. </dd><dt><strong>--workers COUNT</strong> </dt>
+<dd>Specify the number of workers to use when exporting in parallel. The default value depends on the number of CPU cores in the machine doing the export. </dd></dl><a name='header2-64' id='header2-64'></a><h2>Notes and examples:</h2><p>Export the <code>lubm-50</code> triple-store in <code>turtle</code> format in parallel with 15 workers. Any triples with a blank node will be written to the same file: </p>
+<pre><code>agtool export --port 9002 --output turtle --workers 15 lubm-50 /disk1/gwking/DATA/l50.nt </code></pre><p>Export the <code>lubm-50</code> triple-store on <code>http://www.example.com:10035</code> in parallel with blank nodes distributed across multiple files. Because the number of workers is not specified, <code>agtool export</code> will make its own determination based on the number of CPU cores. Any existing output files will be overwritten. Output data will be compressed. </p>
+<pre><code>agtool export --if-exists overwrite --server http://www.example.com \  
+   --output rdfxml \  
+   --parallel \  
+   --blank-node-handling distribute \  
+   --compress \  
+   lubm-50 /disk1/gwking/DATA/l50.nt.gz  
+</code></pre><hr/><div id="footnotes"> <h2>Footnotes</h2>
+<div class="footnotes">
+<ol>
+<li>
+<a name="fn0-2018-06-08" id="fn0-2018-06-08"></a>
+Note that the <code>root</code> catalog is not <em>named</em> 'root'; rather, it is the catalog with no name. <a href="#fnr0-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 1 in the text">&#8617;</a></li>
+</ol>
+</div>  </div>  </div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

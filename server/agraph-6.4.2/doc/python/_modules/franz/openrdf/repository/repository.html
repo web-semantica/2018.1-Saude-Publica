@@ -1,0 +1,364 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>franz.openrdf.repository.repository &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+    </div>
+  
+    
+  <h1>Source code for franz.openrdf.repository.repository</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># pylint: disable-msg=C0103</span>
+
+<span class="c1">################################################################################</span>
+<span class="c1"># Copyright (c) 2006-2017 Franz Inc.  </span>
+<span class="c1"># All rights reserved. This program and the accompanying materials are</span>
+<span class="c1"># made available under the terms of the MIT License which accompanies</span>
+<span class="c1"># this distribution, and is available at http://opensource.org/licenses/MIT</span>
+<span class="c1">################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+<span class="kn">from</span> <span class="nn">past.builtins</span> <span class="k">import</span> <span class="n">basestring</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">object</span>
+<span class="kn">from</span> <span class="nn">future</span> <span class="k">import</span> <span class="n">standard_library</span>
+<span class="n">standard_library</span><span class="o">.</span><span class="n">install_aliases</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">..exceptions</span> <span class="k">import</span> <span class="n">IllegalArgumentException</span>
+<span class="kn">from</span> <span class="nn">..model</span> <span class="k">import</span> <span class="n">URI</span><span class="p">,</span> <span class="n">ValueFactory</span>
+<span class="kn">from</span> <span class="nn">.repositoryconnection</span> <span class="k">import</span> <span class="n">RepositoryConnection</span>
+<span class="kn">from</span> <span class="nn">..vocabulary.xmlschema</span> <span class="k">import</span> <span class="n">XMLSchema</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+
+
+<div class="viewcode-block" id="Repository"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository">[docs]</a><span class="k">class</span> <span class="nc">Repository</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A repository contains RDF data that can be queried and updated. Access</span>
+<span class="sd">    to the repository can be acquired by opening a connection to it. This</span>
+<span class="sd">    connection can then be used to query and/or update the contents of the</span>
+<span class="sd">    repository.</span>
+
+<span class="sd">    Please note that a repository needs to be initialized before it can be</span>
+<span class="sd">    used and that it should be shut down before it is discarded/garbage</span>
+<span class="sd">    collected. Forgetting the latter can result in loss of data (depending</span>
+<span class="sd">    on the Repository implementation)!</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Modes for Catalog.getRepository()</span>
+    <span class="n">RENEW</span> <span class="o">=</span> <span class="s1">&#39;RENEW&#39;</span>
+    <span class="n">ACCESS</span> <span class="o">=</span> <span class="s1">&#39;ACCESS&#39;</span>
+    <span class="n">OPEN</span> <span class="o">=</span> <span class="s1">&#39;OPEN&#39;</span>
+    <span class="n">CREATE</span> <span class="o">=</span> <span class="s1">&#39;CREATE&#39;</span>
+    <span class="n">REPLACE</span> <span class="o">=</span> <span class="s1">&#39;REPLACE&#39;</span>
+
+<div class="viewcode-block" id="Repository.__init__"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">catalog</span><span class="p">,</span> <span class="n">database_name</span><span class="p">,</span> <span class="n">repository</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Invoke through :meth:`~franz.openrdf.sail.allegrographserver.Catalog.getRepository`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mini_repository</span> <span class="o">=</span> <span class="n">repository</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_name</span> <span class="o">=</span> <span class="n">database_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">catalog</span> <span class="o">=</span> <span class="n">catalog</span>
+        <span class="c1"># system state fields:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span> <span class="o">=</span> <span class="kc">None</span></div>
+         
+<div class="viewcode-block" id="Repository.getDatabaseName"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.getDatabaseName">[docs]</a>    <span class="k">def</span> <span class="nf">getDatabaseName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the name of the database (remote triple store) that this repository is</span>
+<span class="sd">        interfacing with.</span>
+<span class="sd">        &quot;&quot;&quot;</span> 
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_name</span></div>
+
+<div class="viewcode-block" id="Repository.getSpec"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.getSpec">[docs]</a>    <span class="k">def</span> <span class="nf">getSpec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a session spec string for this repository.</span>
+
+<span class="sd">        See :meth:`~franz.openrdf.sail.allegrographserver.AllegroGraphServer.openSession`.</span>
+<span class="sd">        :return: A session spec.</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mini</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mini_repository</span>
+        <span class="n">urlstart</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;^https?://&quot;</span><span class="p">,</span> <span class="n">mini</span><span class="o">.</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;&lt;</span><span class="si">%s%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">@</span><span class="si">%s</span><span class="s2">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">urlstart</span><span class="p">,</span> <span class="n">mini</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">mini</span><span class="o">.</span><span class="n">password</span><span class="p">,</span>
+            <span class="n">mini</span><span class="o">.</span><span class="n">url</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">urlstart</span><span class="p">):])</span>
+
+        <span class="k">return</span> <span class="n">url</span></div>
+        
+<div class="viewcode-block" id="Repository.initialize"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes this repository. A repository must be initialized before</span>
+<span class="sd">        it can be used.</span>
+
+<span class="sd">        It is recommended to take advantage of the fact that repositories</span>
+<span class="sd">        are context managers and use the ``with`` statement to ensure that</span>
+<span class="sd">        :meth:`initialize` and :meth:`shutDown` are called:</span>
+
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">           with catalog.getRepository() as repo:</span>
+<span class="sd">               # No need to call initialize or shutDown inside.</span>
+<span class="sd">               ...</span>
+
+<span class="sd">        :return: ``self`` (to allow call chaining).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># We&#39;ve only kept this method for RDF4J compatibility, we do not actually</span>
+        <span class="c1"># need to do anything here.</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Repository.registerDatatypeMapping"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.registerDatatypeMapping">[docs]</a>    <span class="k">def</span> <span class="nf">registerDatatypeMapping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nativeType</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Register an inlined datatype.</span>
+
+<span class="sd">        This allows some literals to be stored in an optimized form</span>
+<span class="sd">        on the server.</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">           http://franz.com/agraph/support/documentation/current/lisp-reference.html#ref-type-mapping</span>
+<span class="sd">              More detailed discussion of type mappings in the Lisp API documentation.</span>
+
+<span class="sd">        You must supply ``nativeType`` and either ``predicate`` or ``datatype``.</span>
+
+<span class="sd">        If ``predicate`` is supplied, then object arguments to triples with that</span>
+<span class="sd">        predicate will use an inlined encoding of type `nativeType` in their internal</span>
+<span class="sd">        representation on the server.</span>
+
+<span class="sd">        If ``datatype`` is supplied, then typed literal objects with a datatype matching</span>
+<span class="sd">        ``datatype`` will use an inlined encoding of type `nativeType`.</span>
+
+<span class="sd">        Duplicated in the :class:`.RepositoryConnection` class for Python user convenience.</span>
+
+<span class="sd">        :param predicate: The URI of a predicate used in the triple store.</span>
+<span class="sd">        :param datatype: May be one of: ``XMLSchema.INT``, ``XMLSchema.LONG``,</span>
+<span class="sd">                         ``XMLSchema.FLOAT``, ``XMLSchema.DATE`` and ``XMLSchema.DATETIME``.</span>
+<span class="sd">        :param nativeType: may be ``int``, ``datetime``, or ``float``.</span>
+<span class="sd">        :type nativeType: string|type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">predicate</span> <span class="o">=</span> <span class="n">predicate</span><span class="o">.</span><span class="n">getURI</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">predicate</span><span class="p">,</span> <span class="n">URI</span><span class="p">)</span> <span class="k">else</span> <span class="n">predicate</span>
+        <span class="n">datatype</span> <span class="o">=</span> <span class="n">datatype</span><span class="o">.</span><span class="n">getURI</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">datatype</span><span class="p">,</span> <span class="n">URI</span><span class="p">)</span> <span class="k">else</span> <span class="n">datatype</span>
+
+        <span class="k">if</span> <span class="n">nativeType</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">nativeType</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+            <span class="n">nativeType</span><span class="o">=</span><span class="n">nativeType</span><span class="o">.</span><span class="vm">__name__</span>
+
+        <span class="k">def</span> <span class="nf">translate_inlined_type</span><span class="p">(</span><span class="n">the_type</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">the_type</span> <span class="o">==</span> <span class="s1">&#39;int&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">XMLSchema</span><span class="o">.</span><span class="n">LONG</span><span class="o">.</span><span class="n">toNTriples</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">the_type</span> <span class="o">==</span> <span class="s1">&#39;datetime&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">XMLSchema</span><span class="o">.</span><span class="n">DATETIME</span><span class="o">.</span><span class="n">toNTriples</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">the_type</span> <span class="o">==</span> <span class="s1">&#39;time&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">XMLSchema</span><span class="o">.</span><span class="n">TIME</span><span class="o">.</span><span class="n">toNTriples</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">the_type</span> <span class="o">==</span> <span class="s1">&#39;date&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">XMLSchema</span><span class="o">.</span><span class="n">DATE</span><span class="o">.</span><span class="n">toNTriples</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">the_type</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">XMLSchema</span><span class="o">.</span><span class="n">DOUBLE</span><span class="o">.</span><span class="n">toNTriples</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">the_type</span> <span class="o">==</span> <span class="s2">&quot;bool&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">XMLSchema</span><span class="o">.</span><span class="n">BOOLEAN</span><span class="o">.</span><span class="n">toNTriples</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="n">IllegalArgumentException</span><span class="p">(</span><span class="s2">&quot;Unknown inlined type &#39;</span><span class="si">%s</span><span class="s2">&#39;</span><span class="se">\n</span><span class="s2">.  Legal types are &quot;</span>\
+                    <span class="s2">&quot;int, float, bool, datetime, time, and date.&quot;</span> <span class="o">%</span> <span class="n">the_type</span><span class="p">)</span>
+            
+        <span class="k">if</span> <span class="n">predicate</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">nativeType</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">IllegalArgumentException</span><span class="p">(</span><span class="s2">&quot;Missing &#39;nativeType&#39; parameter in call to &#39;registerDatatypeMapping&#39;&quot;</span><span class="p">)</span>
+            <span class="n">xsdType</span> <span class="o">=</span> <span class="n">translate_inlined_type</span><span class="p">(</span><span class="n">nativeType</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mini_repository</span><span class="o">.</span><span class="n">addMappedPredicate</span><span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2">&gt;&quot;</span> <span class="o">%</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">xsdType</span><span class="p">)</span>            
+        <span class="k">elif</span> <span class="n">datatype</span><span class="p">:</span> 
+            <span class="n">xsdType</span> <span class="o">=</span> <span class="n">translate_inlined_type</span><span class="p">(</span><span class="n">nativeType</span> <span class="ow">or</span> <span class="n">datatype</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mini_repository</span><span class="o">.</span><span class="n">addMappedType</span><span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2">&gt;&quot;</span> <span class="o">%</span> <span class="n">datatype</span><span class="p">,</span> <span class="n">xsdType</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="Repository.shutDown"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.shutDown">[docs]</a>    <span class="k">def</span> <span class="nf">shutDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shuts the store down, releasing any resources that it keeps hold of.</span>
+<span class="sd">        Once shut down, the store can no longer be used.</span>
+
+<span class="sd">        It is recommended to take advantage of the fact that repositories</span>
+<span class="sd">        are context managers and use the ``with`` statement to ensure that</span>
+<span class="sd">        :meth:`initialize` and :meth:`shutDown` are called:</span>
+
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">           with catalog.getRepository() as repo:</span>
+<span class="sd">               # No need to call initialize or shutDown inside.</span>
+<span class="sd">               ...</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mini_repository</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Repository.isWritable"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.isWritable">[docs]</a>    <span class="k">def</span> <span class="nf">isWritable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks whether this store is writable, i.e. if the data contained in</span>
+<span class="sd">        this store can be changed. The writability of the store is</span>
+<span class="sd">        determined by the writability of the Sail that this store operates</span>
+<span class="sd">        on.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO maybe remove this, it&#39;s nonsense in 4.0.</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Repository.getConnection"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.getConnection">[docs]</a>    <span class="k">def</span> <span class="nf">getConnection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Opens a connection to this store that can be used for querying and</span>
+<span class="sd">        updating the contents of the store. Created connections need to be</span>
+<span class="sd">        closed to make sure that any resources they keep hold of are released.</span>
+<span class="sd">        The best way to ensure this is to use a ``with`` statement:</span>
+
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">           with repo.getConnection() as conn:</span>
+<span class="sd">               ...</span>
+
+<span class="sd">        :return: A :class:`RepositoryConnection` object.</span>
+<span class="sd">        :rtype: RepositoryConnection</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">RepositoryConnection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Repository.getValueFactory"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.getValueFactory">[docs]</a>    <span class="k">def</span> <span class="nf">getValueFactory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a ValueFactory for this store.</span>
+
+<span class="sd">        This is present for RDF4J compatibility, but in the Python API all ValueFactory</span>
+<span class="sd">        functionality has been duplicated or subsumed in the :class:`.RepositoryConnection` class.</span>
+<span class="sd">        It isn&#39;t necessary to manipulate the :class:`.ValueFactory` class at all.</span>
+
+<span class="sd">        :return: A ValueFactory instance.</span>
+<span class="sd">        :rtype: ValueFactory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span> <span class="o">=</span> <span class="n">ValueFactory</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span></div>
+
+    <span class="k">def</span> <span class="nf">_set_bulk_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">on</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mini_repository</span><span class="o">.</span><span class="n">setBulkMode</span><span class="p">(</span><span class="n">on</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_bulk_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mini_repository</span><span class="o">.</span><span class="n">getBulkMode</span><span class="p">()</span>
+
+    <span class="n">bulk_mode</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span>
+        <span class="n">_get_bulk_mode</span><span class="p">,</span> <span class="n">_set_bulk_mode</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Turn BulkMode on with True or off with False.</span>
+
+<span class="s2">               In bulk mode, all modifications to the triple-store are made without</span>
+<span class="s2">               writing to the transaction log. There is overhead to switching</span>
+<span class="s2">               in and out of bulk-mode, and it is a global repository state, so all</span>
+<span class="s2">               clients are affected.&quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="k">del</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shutDown</span><span class="p">()</span></div>
+</pre></div>
+
+  
+    <div class="nav-links nav-links-footer">
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

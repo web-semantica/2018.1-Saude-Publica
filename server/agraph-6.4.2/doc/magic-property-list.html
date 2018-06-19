@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>SPARQL Magic Property List | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<link rel='stylesheet' href='sparql.css' />
+<body id="sparql-magic-property-list"><div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>         <h1>SPARQL Magic Properties</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p><h3>nD Geospatial</h3> 
+<ul>
+<li><a href='http://franz.com/ns/allegrograph/5.0/geo/nd#inBoundingBox'>&lt;http://franz.com/ns/allegrograph/5.0/geo/nd#inBoundingBox&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/5.0/geo/nd#inCircle'>&lt;http://franz.com/ns/allegrograph/5.0/geo/nd#inCircle&gt;</a></li></ul><h3>Attributes</h3> 
+<ul>
+<li><a href='http://franz.com/ns/allegrograph/6.2.0/attributes'>&lt;http://franz.com/ns/allegrograph/6.2.0/attributes&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/6.2.0/attributesNameValue'>&lt;http://franz.com/ns/allegrograph/6.2.0/attributesNameValue&gt;</a></li></ul><h3>Reification</h3> 
+<ul>
+<li><a href='http://franz.com/ns/allegrograph/4.0/tripleId'>&lt;http://franz.com/ns/allegrograph/4.0/tripleId&gt;</a></li></ul><h3>Social Network Analysis</h3> 
+<ul>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/actorBetweennessCentrality'>&lt;http://franz.com/ns/allegrograph/4.11/sna/actorBetweennessCentrality&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/actorClosenessCentrality'>&lt;http://franz.com/ns/allegrograph/4.11/sna/actorClosenessCentrality&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/actorDegreeCentrality'>&lt;http://franz.com/ns/allegrograph/4.11/sna/actorDegreeCentrality&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/bidirectionalSearch'>&lt;http://franz.com/ns/allegrograph/4.11/sna/bidirectionalSearch&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/bidirectionalSearchPaths'>&lt;http://franz.com/ns/allegrograph/4.11/sna/bidirectionalSearchPaths&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/breadthFirstSearch'>&lt;http://franz.com/ns/allegrograph/4.11/sna/breadthFirstSearch&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/breadthFirstSearchPaths'>&lt;http://franz.com/ns/allegrograph/4.11/sna/breadthFirstSearchPaths&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/cliquesOf'>&lt;http://franz.com/ns/allegrograph/4.11/sna/cliquesOf&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/depthFirstSearch'>&lt;http://franz.com/ns/allegrograph/4.11/sna/depthFirstSearch&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/depthFirstSearchPaths'>&lt;http://franz.com/ns/allegrograph/4.11/sna/depthFirstSearchPaths&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/egoGroup'>&lt;http://franz.com/ns/allegrograph/4.11/sna/egoGroup&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/groupBetweennessCentrality'>&lt;http://franz.com/ns/allegrograph/4.11/sna/groupBetweennessCentrality&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/groupClosenessCentrality'>&lt;http://franz.com/ns/allegrograph/4.11/sna/groupClosenessCentrality&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/groupDegreeCentrality'>&lt;http://franz.com/ns/allegrograph/4.11/sna/groupDegreeCentrality&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/groupMember'>&lt;http://franz.com/ns/allegrograph/4.11/sna/groupMember&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/isClique'>&lt;http://franz.com/ns/allegrograph/4.11/sna/isClique&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/members'>&lt;http://franz.com/ns/allegrograph/4.11/sna/members&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/neighborCache'>&lt;http://franz.com/ns/allegrograph/4.11/sna/neighborCache&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/nodalNeighbors'>&lt;http://franz.com/ns/allegrograph/4.11/sna/nodalNeighbors&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/size'>&lt;http://franz.com/ns/allegrograph/4.11/sna/size&gt;</a></li></ul><h3>Temporal</h3> 
+<ul>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalAfter'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalAfter&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalAfterDatetime'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalAfterDatetime&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalBefore'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalBefore&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalBeforeDatetime'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalBeforeDatetime&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalContains'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalContains&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalContainsTime'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalContainsTime&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalCotemporal'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalCotemporal&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalDuring'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalDuring&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalFinishedBy'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalFinishedBy&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalFinishes'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalFinishes&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalMeets'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalMeets&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalMetBy'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalMetBy&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalOverlappedBy'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalOverlappedBy&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalOverlaps'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalOverlaps&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalStartedBy'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalStartedBy&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalStarts'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalStarts&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointAfter'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointAfter&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointAfterDatetime'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointAfterDatetime&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointAfterInterval'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointAfterInterval&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointBefore'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointBefore&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointBeforeDatetime'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointBeforeDatetime&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointBeforeInterval'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointBeforeInterval&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointDuringInterval'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointDuringInterval&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointEndsInterval'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointEndsInterval&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointSimultaneous'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointSimultaneous&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointStartsInterval'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointStartsInterval&gt;</a></li></ul><h3>Text Indexing</h3> 
+<ul>
+<li><a href='http://franz.com/ns/allegrograph/2.2/textindex/match'>&lt;http://franz.com/ns/allegrograph/2.2/textindex/match&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/2.2/textindex/matchExpression'>&lt;http://franz.com/ns/allegrograph/2.2/textindex/matchExpression&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.5/solr/match'>&lt;http://franz.com/ns/allegrograph/4.5/solr/match&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.5/solr/matchId'>&lt;http://franz.com/ns/allegrograph/4.5/solr/matchId&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.7/mongo/find'>&lt;http://franz.com/ns/allegrograph/4.7/mongo/find&gt;</a></li></ul><h3>2D Geospatial</h3> 
+<ul>
+<li><a href='http://franz.com/ns/allegrograph/3.0/geospatial/inBoundingBox'>&lt;http://franz.com/ns/allegrograph/3.0/geospatial/inBoundingBox&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/geospatial/inBoundingBoxXY'>&lt;http://franz.com/ns/allegrograph/3.0/geospatial/inBoundingBoxXY&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/geospatial/inCircle'>&lt;http://franz.com/ns/allegrograph/3.0/geospatial/inCircle&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/geospatial/inCircleKilometers'>&lt;http://franz.com/ns/allegrograph/3.0/geospatial/inCircleKilometers&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/geospatial/inCircleMiles'>&lt;http://franz.com/ns/allegrograph/3.0/geospatial/inCircleMiles&gt;</a></li></ul>  </p></div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

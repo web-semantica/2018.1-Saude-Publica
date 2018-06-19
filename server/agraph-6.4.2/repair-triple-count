@@ -1,0 +1,55 @@
+#!/bin/bash
+
+#############################################################################
+# Copyright (C) 2012-2016 Franz Inc, Oakland, CA - All rights reserved.     #
+#                                                                           #
+# The software, data and information contained herein are proprietary       #
+# to, and comprise valuable trade secrets of, Franz, Inc.  They are         #
+# given in confidence by Franz, Inc. pursuant to a written license          #
+# agreement, and may be stored and used only in accordance with the terms   #
+# of such license.                                                          #
+#                                                                           #
+# Restricted Rights Legend                                                  #
+# ------------------------                                                  #
+# Use, duplication, and disclosure of the software, data and information    #
+# contained herein by any agency, department or entity of the U.S.          #
+# Government are subject to restrictions of Restricted Rights for           #
+# Commercial Software developed at private expense as specified in          #
+# DOD FAR Supplement 52.227-7013 (c) (1) (ii), as applicable.               #
+#############################################################################
+
+# This script will repair an inaccurate triple count on a store in
+# case it somehow got out of sync with reality.
+
+# The supplied user must be a super user.
+
+set -e
+
+function usage {
+    cat <<EOF
+Usage: $0 [ --host HOST ] [ --port PORT ] --user USER --password PASSWORD [ --catalog CATALOG ] repo
+
+HOST defaults to localhost
+PORT defaults to 10035
+CATALOG defaults to the root catalog
+
+EOF
+    exit 1
+}
+
+source `dirname $0`/scripts-common.sh
+
+if [ $# -ne 1 ]; then
+    usage
+fi
+
+repo="$1"
+base=`make_base_url`
+    
+# Verify that something basic works
+do_curl $base/size >/dev/null
+
+new_count=`do_curl -X PUT $base/size`
+
+echo Triple count is now $new_count
+

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Introduction | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="agraph-introduction"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>      <h1>AllegroGraph 6.4.2 Introduction</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#ai-overview' title='Overview'>Overview</a>
+<ul>
+<li><a href='#header3-10' title='The Semantic Web'>The Semantic Web</a></li>
+<li><a href='#header3-21' title='A Block diagram of an AllegroGraph database'>A Block diagram of an AllegroGraph database</a></li>
+<li><a href='#header3-46' title='Graph databases'>Graph databases</a></li></ul></li>
+<li><a href='#ai-acid' title='Transactions'>Transactions</a>
+<ul>
+<li><a href='#header3-58' title='Atomicity'>Atomicity</a></li>
+<li><a href='#header3-61' title='Consistency'>Consistency</a></li>
+<li><a href='#header3-65' title='Isolation'>Isolation</a></li>
+<li><a href='#header3-69' title='Durability'>Durability</a></li></ul></li>
+<li><a href='#triple-store' title='Modifying a Database'>Modifying a Database</a>
+<ul>
+<li><a href='#header3-75' title='Adding triples'>Adding triples</a></li>
+<li><a href='#header3-78' title='Getting Triples back'>Getting Triples back</a></li>
+<li><a href='#header3-103' title='Duplicate triples'>Duplicate triples</a></li></ul></li>
+<li><a href='#ai-querying' title='Query the Database'>Query the Database</a>
+<ul>
+<li><a href='#ai-querying' title='AllegroGraph and SPARQL'>AllegroGraph and SPARQL</a></li>
+<li><a href='#header3-110' title='RDFS++ Reasoning'>RDFS++ Reasoning</a></li>
+<li><a href='#header3-121' title='Prolog'>Prolog</a></li></ul></li>
+<li><a href='#intro-federation' title='AllegroGraph Federation'>AllegroGraph Federation</a>
+<ul>
+<li><a href='#header3-130' title='Federation: Scalable triple stores'>Federation: Scalable triple stores</a></li>
+<li><a href='#header3-132' title='Federation: Data Management'>Federation: Data Management</a></li>
+<li><a href='#header3-135' title='Federation: Data warehousing'>Federation: Data warehousing</a></li></ul></li>
+<li><a href='#ai-spatial-temp' title='Advanced Capabilities'>Advanced Capabilities</a>
+<ul>
+<li><a href='#header3-142' title='Social Network Analysis'>Social Network Analysis</a></li>
+<li><a href='#header3-151' title='Geospatial Primitives'>Geospatial Primitives</a></li>
+<li><a href='#header3-155' title='Temporal Primitives'>Temporal Primitives</a></li></ul></li>
+<li><a href='#ai-agraphindexing' title='AllegroGraph Indexing'>AllegroGraph Indexing</a></li>
+<li><a href='#ai-fulltext' title='Full-text Indexing'>Full-text Indexing</a></li>
+<li><a href='#ai-replication' title='Replication in AllegroGraph'>Replication in AllegroGraph</a></li>
+<li><a href='#ai-programming' title='Programming AllegroGraph'>Programming AllegroGraph</a></li>
+<li><a href='#header2-204' title='3rd-party Integration'>3rd-party Integration</a></li>
+<li><a href='#header2-216' title='AllegroGraph Documentation'>AllegroGraph Documentation</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='ai-overview' id='ai-overview'></a> <h2>Overview</h2><p>AllegroGraph is a database and application framework for building Semantic Web applications. It can store data and meta-data as triples; query these triples through various query APIs like SPARQL (the standard W3C query language) and Prolog; and apply RDFS++ reasoning with its built-in reasoner.   AllegroGraph includes support for Federation, Social Network Analysis, Geospatial capabilities and Temporal reasoning. All of these are described in more detail below. </p><a name='header3-10' id='header3-10'></a><h3>The Semantic Web</h3><p>Since AllegroGraph is a database, we'll start by looking at the kind of data it is designed to store. The figure below represents some information about Jans and his pets. Like much of the data on the web, there are explicit relations like <em>Robbie is the petOf Jans</em> and implicit or common-sense relations such as <em>petOf is an inverse relation to hasPet</em> and <em>Dog is a subClassOf Mammal</em> </p><p><img src="data-network-example.png" alt="An Example of a semantic network"></img> </p><p>Though there are many ways to store this information, the <a href="http://www.w3.org/" class="external" target="_blank">W3C</a> has standardized on the Resource Description Framework (<a href="http://en.wikipedia.org/wiki/Resource_Description_Framework" class="external" target="_blank">RDF</a>). RDF breaks knowledge into <em>assertions</em> of <em>subject</em> <em>predicate</em> <em>object</em> (like the three sentences above). For obvious reasons, these assertions are called <em>triples</em>. If we have many triples from different contexts, we can append an additional slot to each assertion; we call this slot a <em>named graph</em>. Even though these assertions are now quads, we'll still call them triples. Here are the assertions from above rewritten slightly to fit them into the triple framework: </p>
+<pre><code>subject  predicate   object   graph  
+jans     Type        Human    jans's home page  
+robbie   petOf       jans     jans's home page  
+petOf    inverseOf   hasPet   english grammar  
+Dog      subClassOf  Mammal   science </code></pre><p>The Semantic Web vision is one where web pages contain enough self-describing data that machines will be able to navigate them as easily as humans do now. This will let computers better assist us in answering questions and managing our ever more complicated world. AllegroGraph is a high-performance database built to hold this information, query it, and reason with it. For more information on the Semantic Web, RDF and all the rest, see the following resources: </p>
+<ul>
+<li>RDF: <a href="http://www.w3.org/TR/rdf-primer/" class="external" target="_blank">http://www.w3.org/TR/rdf-primer/</a>,</li>
+<li>RDFS: <a href="http://www.w3.org/TR/rdf-schema/" class="external" target="_blank">http://www.w3.org/TR/rdf-schema/</a>, and</li>
+<li>OWL: <a href="http://www.w3.org/TR/owl-guide/" class="external" target="_blank">http://www.w3.org/TR/owl-guide/</a>.</li></ul><p>For more information on the above topics, see the <a href="suggested-reading.html">Suggested Reading</a> for recommended introductory texts. </p><p>One thing to note is that AllegroGraph doesn't restrict the contents of its triples to pure RDF. In fact, we can represent any graph data-structure by treating its nodes as subjects and objects, its edges as predicates and creating a triple for every edge. The named-graph slot can be used to hold additional, application-specific, information. Used this way, AllegroGraph becomes a powerful graph-oriented database. </p><a name='header3-21' id='header3-21'></a><h3>A Block diagram of an AllegroGraph database</h3><p>Now that we've seen what kind of data AllegroGraph can manage, we can take a look at how it keeps track of it in a bit more detail: </p><p><img src="logical-structure.png" alt="AllegroGraph's logical structure"></img> </p>
+<ul>
+<li><p>In RDF-land, an assertion is a statement that <code>subject predicate object (in the context of graph)</code>.</p></li>
+<li><p>The bulk of an AllegroGraph triple store is composed of    <strong>assertions</strong>. Though called <strong>triples</strong> for    historical reasons, each assertion has five fields: </p>
+<ul>
+<li>subject (s)</li>
+<li>predicate (p)</li>
+<li>object (o)</li>
+<li>graph (g)</li>
+<li>triple-id (i)</li></ul></li></ul><p><a name="upi-def"></a> </p>
+<ul>
+<li><p>All of s, p, o, and g are strings of arbitrary size.    Of course, it    would be very inefficient to store all of the duplicated strings    directly so we    associate a special number (called a Unique Part Identifier    or UPI) with each unique string. The <strong>string dictionary</strong>    manages these strings and UPIs and    prevents duplication. </p></li>
+<li><p>To speed queries, AllegroGraph creates <strong>indices</strong> which    contain the assertions plus additional information. </p></li>
+<li><p>AllegroGraph can also perform full-text searching in the    assertions using its <strong>full-text indices</strong>. </p></li>
+<li><p>and Finally, AllegroGraph keeps track of <strong>deleted    triples</strong> </p></li></ul><p>Triple data generally comes into AllegroGraph as strings either from pure RDF/XML (see example) or as the more verbose but simpler N-Triple format (see example). The programmer API also makes it easy to import data from RDBMSs, CSV or any other custom data format </p><div class='example' id='n-triples-example'> <h4>the N-triples data format</h4>
+<pre><code>&lt;http://franz.com/simple#Animal&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://www.w3.org/2002/07/owl#Class&gt; .  
+&lt;http://franz.com/simple#Mammal&gt; &lt;http://www.w3.org/2000/01/rdf-schema#subClassOf&gt; &lt;http://franz.com/simple#Animal&gt; .  
+&lt;http://franz.com/simple#Mammal&gt; &lt;http://franz.com/simple#eyes&gt; "two" . </code></pre></div> <div class='example' id='rdf-xml-example'> <h4>Some sample RDF/XML data format</h4>
+<pre><code>&lt;?xml version="1.0"?&gt;  
+&lt;RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"  
+     xml:base="http://www.w3.org/1999/02/22-rdf-syntax-ns#"  
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"  
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"  
+     xmlns:owl="http://www.w3.org/2002/07/owl#"&gt;  
+  &lt;Description rdf:about="http://franz.com/simple#Animal"&gt;  
+    &lt;rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/&gt;  
+  &lt;/Description&gt;  
+  &lt;Description rdf:about="http://franz.com/simple#Mammal"&gt;  
+    &lt;rdfs:subClassOf rdf:resource="http://franz.com/simple#Animal"/&gt;  
+    &lt;ns1:eyes&gt;two&lt;/ns1:eyes&gt;  
+  &lt;/Description&gt;  
+&lt;/RDF&gt; </code></pre></div> <p>You should notice that although the above diagram shows a triple store through an RDF-lens, there is nothing that constrains AllegroGraph to the RDF world. In fact, AllegroGraph contains many features that are outside of <em>pure</em> RDF and make it a true <strong>graph database</strong>. </p><a name='header3-46' id='header3-46'></a><h3>Graph databases</h3><p>We've already seen how AllegroGraph can help manage Semantic Web data and noticed how any graph can be viewed as a collection of triples representing its edges. Because AllegroGraph can store anything in the subject, predicate, object and graph fields of its triples we can add one more quality to the list above: </p>
+<ul>
+<li>In graph-database land, an assertion says that node <em>s</em>  is connected to node <em>o</em> via edge <em>p</em> with additional  data <em>g</em>. </li></ul><p>For many applications, graph databases can be both more flexible and faster than RDBMSs because </p>
+<ul>
+<li><p>You add new predicates without changing any schema</p></li>
+<li><p>One-to-many relations are directly encoded without the indirection of tables</p></li>
+<li><p>You never think about what to index because <em>everything</em> is indexed</p></li></ul><p>AllegroGraph has the ability to encode values directly into its triples (thus bypassing the string dictionary completely). This allows for both more efficient data retrieval and extremely efficient range queries. We take advantage of this data representation in the add-on libraries for geospatial reasoning, temporal reasoning and social network analysis. </p><div id="ACID"> <a name='ai-acid' id='ai-acid'></a> <h2>Transactions</h2><p>AllegroGraph implements the ACID properties of transaction processing (atomicity, consistency, isolation, and durability) similarly to other database products.  This section describes the details of how these properties are implemented and what guarantees developers can expect. <br> </div> </p><a name='header3-58' id='header3-58'></a><h3>Atomicity</h3><p>The atomicity property defines that all updates within one transaction are persisted together.  A transaction either completely fails or completely succeeds. </p><p>With AllegroGraph, when an application calls <em>rollback</em>, the changes that it has made to the triple store since the last <em>commit</em> or <em>rollback</em> are discarded.  Likewise, when an application calls commit, all changes since the last commit or rollback are persisted.  No partial transaction results will ever be seen by other clients of the database. </p><a name='header3-61' id='header3-61'></a><h3>Consistency</h3><p>The consistency property defines that every transaction takes the database as a whole from one consistent state to another.  The database itself will never be inconsistent, according to its own consistency rules. </p><p>AllegroGraph does not allow for user-defined consistency rules (like, say, foreign key constraints in a relational database).  That means that the database has no influence on the application-level consistency of the data stored in a triple store.  It is up to the user to make sure that transactions create and maintain a consistent application-level state.  At the same time, AllegroGraph guarantees that every commit operation will take the database from one consistent internal state to another consistent internal state. </p><p>It is possible for two concurrent transactions to attempt contradictory changes to triple store metadata, such as mapping the same predicate to two different datatypes, or defining the same full-text index using different parameters. The first transaction to commit will succeed normally. Those changes become visible to the second transaction when it attempts to commit. (No rollback is necessary.) AllegroGraph will signal metadata errors at that point, preventing the second transaction from committing. <br />
+</p><a name='header3-65' id='header3-65'></a><h3>Isolation</h3><p>The isolation property defines that every transaction only sees data of other completed transactions, and not partial results of transactions running concurrently. </p><p>AllegroGraph implements the <em>snapshot isolation</em> model.  In this model, every transaction sees a snapshot of the persistent database state as of the time when the transaction has been started by a commit or rollback operation.  During the course of executing transaction code, other transactions can commit and change the persistent state without affecting the snapshot of this transaction. Once the transaction commits, any updates made by concurrent transactions will be made visible as part of the snapshot of the next transaction. </p><p>As no triple locking is performed by AllegroGraph, it is possible that a triple that is being read in a transaction could be deleted in a concurrent transaction.  Developers need to be aware of this and similar possibilities and make sure that transactions are properly sequenced if such concurrent updates could have an impact on application-level consistency. </p><a name='header3-69' id='header3-69'></a><h3>Durability</h3><p>The durability property defines that once the database system signals the successful completion of a transaction to the application, the changes made by the transaction will persist even in the presence of hardware and software failures.  (Obviously, the durability property cannot guarantee the persistence of data after a hard disk failure that destroyed data.) </p><p>When the commit operation of AllegroGraph returns, the database server will have written the updates made by the transaction to the transaction log and waited for the log I/O operation to finish.  Therefore, the application can be sure that every committed transaction will have a permanent effect on the persistent database state. </p><a name='triple-store' id='triple-store'></a> <h2>Modifying a Database</h2><p>You can manipulate data in triple stores via many different interfaces and languages including Java, HTTP and Lisp. Each language provides mechanisms to create and open triple stores; load them with data in bulk-mode or programmatically; enable RDFS++ reasoning (see <a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++ Reasoning</a>); query for triples that match simple or complex constraints; serialize triples in many formats; and understand and manage server performance. </p><a name='header3-75' id='header3-75'></a><h3>Adding triples</h3><p>AllegroGraph can load data in <a href="http://www.w3.org/TR/n-quads/" class="external" target="_blank">N-Quads</a>, <a href="http://www.w3.org/TR/n-triples/" class="external" target="_blank">N-Triples</a>, <a href="http://www.w3.org/TR/rdf-syntax-grammar/" class="external" target="_blank">RDF/XML</a>, <a href="http://www.w3.org/TR/trig/" class="external" target="_blank">TriG</a>, <a href="http://www.w3.org/2004/03/trix/" class="external" target="_blank">TriX</a>, and <a href="http://www.w3.org/TR/turtle/" class="external" target="_blank">Turtle</a>  formats. If your data is in a format that AllegroGraph does not support, please contact support@franz.com. In the meantime, you may be able to use the open source tool <a href="rapper.html">rapper</a> to convert your data into a format that AllegroGraph can use. You can create full-text indices while loading triples by specifying which predicates should be indexed. Additionally, AllegroGraph supports a wide array of <em>encoded data-types</em> such as numbers, dates, and geospatial coordinates. Using these data-types not only shrinks the size of your triple store (because the string data need not be saved) but also allows super-fast range queries and geospatial queries. </p><p>Of course, you can also load triples into AllegroGraph programmatically. This can be used to import custom data formats, or to build a triple store incrementally. Triples can be added using RDF syntax or AllegroGraph's special encoded data-types. Programmatically added triples can also make use of the AllegroGraph's triple-id to perform super-efficient reification. </p><a name='header3-78' id='header3-78'></a><h3>Getting Triples back</h3><h4>Query Patterns</h4><p>AllegroGraph provides numerous methods for getting triples back out of a triple store. The simplest is to ask for triples matching a pattern of subject, predicate, object and graph. Each part of the pattern can be an exact match, a range specifier, or a wild card (don't care). For example, the pattern </p>
+<pre><code>subject  : &lt;http://www.example.com/people/gwking&gt;  
+predicate: wild  
+object   : wild  
+graph    : &lt;http://www.example.com/context/initial&gt; </code></pre><p>would retrieve all triples about the person <strong>gwking</strong> from the <code>graph</code> named <strong>initial</strong>. We could learn about all of someone's phone numbers using: </p>
+<pre><code>subject  : &lt;http://www.example.com/people/gwking&gt;  
+predicate: &lt;http://www.example.com/telephone/&gt;  
+object   : wild  
+graph    : wild </code></pre><p>and learn about everyone born in the first half of 1964 with: </p>
+<pre><code>subject      : wild  
+predicate    : &lt;http://www.example.com/birthm/&gt;  
+object-start : "1964-01-01"^^&lt;http://www.w3.org/2000/01/XMLSchema#date&gt;  
+object-end   : "1964-06-30"^^&lt;http://www.w3.org/2000/01/XMLSchema#date&gt;  
+graph        : wild </code></pre><p>You can use these pattern-based queries in your own programs to query triple stores at the <em>bare-metal</em>. In fact, AllegroGraph's other query interfaces such as SPARQL, Prolog and the RDFS++ reasoner all ground out in patterns exactly like these. </p><p><a name="range-queries"></a> </p><h4>Range Queries</h4><p>In addition to strings, AllegroGraph can store many data-types directly in its triples. This lets it perform range queries in a single operation. Suppose, for example, that weights were stored as strings like </p>
+<pre><code>"158"^^&lt;http://www.w3.org/2000/01/XMLSchema#long&gt; </code></pre><p>If you wanted to find all people whose weight was greater than 200, then you would need to scan every triple in the store, lookup the string, parse it and then do your comparison. Ouch! With AllegroGraph, the value is encoded directly in the raw triple data (using a special kind of UPI). A range query involves immediate data lookup and comparison and is therefore as fast as a search for an individual triple. </p><p><a name="cursors"></a> </p><h4>Cursors</h4><p>When AllegroGraph is given a query pattern, it responds with a cursor that iterates over the triples that match the pattern. Programs can use functions like Lisp's <!-- [cursor-next][] --> <code>cursor-next</code> to move through a cursor or use higher-level constructs like <!-- [map-cursor][] --> <code>map-cursor</code>. </p><h4>Querying Quickly: Indices</h4><p>AllegroGraph builds indices automatically so that any query can find its first match in a single I/O operation. We can abbreviate the index <strong>flavors</strong> using <em>s</em> for subject, <em>p</em> for predicate and so on. What matters with an index is the sort order of the triples. For example, the <em>spogi</em> index first sorts on <em>s</em>ubject, then <em>p</em>redicate, <em>o</em>bject, <em>g</em>raph, and finally, <em>i</em>d. If we ignore the triple ID, there are 24 different index flavors running from <em>spogi</em> through <em>gopsi</em>. Fortunately, we don't need every possible flavor in order to produce fast queries. Suppose, for example, that one of the triples we saw above is in our triple store as </p>
+<pre><code>id    subject  predicate  object  graph  
+21445 jans     Type       Human   jans's home page </code></pre><p>There are many queries that will return this triple but the best flavor to use is the same for many of them. For example, we can use the <em>spogi</em> flavor for any of these queries: </p>
+<ul>
+<li>subject = <code>&lt;jans&gt;</code></li>
+<li>subject = <code>&lt;jans&gt;</code> and predicate = <code>&lt;Type&gt;</code></li>
+<li>subject = <code>&lt;jans&gt;</code> and predicate = <code>&lt;Type&gt;</code> and object = <code>&lt;Human&gt;</code></li></ul><p>Out of the box, AllegroGraph builds six index flavors in the background as triples are added. </p><a name='header3-103' id='header3-103'></a><h3>Duplicate triples</h3><p>It is possible that duplicate triples will be stored. This can, for example, occur because two users independently create and commit identical triples. Duplicate triples reduce the efficiency of the system.  To remove these duplicate triples, use the function <a href="lisp-reference.html#delete-duplicate-triples" title="description of delete-duplicate-triples">delete-duplicate-triples</a>. It lets you specify what <em>duplicate</em> means: Two triples can be the same if they have the same subject, predicate, object, and graph (the <code>:spog</code> option, which is the initial value); or they can be the same if they have the same subject, predicate, and object, ignoring the graph (the <code>:spo</code> option). </p><a name='ai-querying' id='ai-querying'></a> <h2>Query the Database</h2><h3>AllegroGraph and SPARQL</h3><p>SPARQL is the query language of choice for modern triple stores. AllegroGraph's SPARQL sub-system adheres to W3C standard; includes a query optimizer; and has full support for named-graphs. For more information on using SPARQL with AllegroGraph, see the <a href="sparql-lisp-tutorial.html">tutorial</a> and <a href="sparql-reference.html">SPARQL reference</a> guide. </p><p><a name="reasoning-intro"></a> </p><a name='header3-110' id='header3-110'></a><h3>RDFS++ Reasoning</h3><p>Description logic or OWL reasoners are good at handling (complex) ontologies, they are usually complete (give all the possible answers to a query) but have completely unpredictable execution times when the number of individuals increases beyond millions. </p><p>AllegroGraph's RDFS++ reasoning (see <a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++ Reasoning</a>) supports all the RDFS predicates and some of OWL's. It is not complete but it has predictable and fast performance. Here are the supported predicates: </p>
+<ul>
+<li>rdf:type and rdfs:subClassOf</li>
+<li>rdfs:range and rdfs:domain</li>
+<li>rdfs:subPropertyOf</li>
+<li>owl:sameAs</li>
+<li>owl:inverseOf</li>
+<li>owl:TransitiveProperty</li></ul><p>The <a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">reasoner tutorial</a> provides a quick introduction of how each predicate behaves and describes the reasoner in more detail. AllegroGraph also includes an optional OWL restriction reasoning module that supports <code>owl:hasValue</code>, <code>owl:someValuesFrom</code> and <code>owl:allValuesFrom</code> (see the <a href="has-value-tutorial.html">hasValue reasoning tutorial</a>). </p><p><a name="prolog"></a> </p><a name='header3-121' id='header3-121'></a><h3>Prolog</h3><p>Prolog is an alternative query mechanism for AllegroGraph.  With Prolog, you can specify queries declaratively. The <a href="prolog-tutorial.html">Prolog tutorial</a> provides an introduction to using Prolog and AllegroGraph together. Our Prolog is implemented in Lisp so for Lispers, the combination of Lisp, Prolog, and AllegroGraph are a natural triad. You can also send Prolog select queries to the server using Java (see <a href="javadoc/index.html">Javadocs</a>) or using the HTTP-interface (see the <a href="http-protocol.html">HTTP protocol</a>). You send them as strings and you get the bindings back as lists of values. For the Lisp interface, besides the tutorial mentioned above, see <a href="lisp-reference.html#ref-prolog">the Lisp Reference</a>. </p><a name='intro-federation' id='intro-federation'></a> <h2>AllegroGraph Federation</h2><p>The block diagram we saw above is abstract; it can be implemented in many different ways. AllegroGraph uses that same programming API to connect to local triple stores (either on-disk or in-memory), remote triple stores and <em>federated triple stores</em>. A federated store collects multiple AllegroGraph triple stores of <em>any kind</em> (local, remote, reasoning, etc) into a single virtual store that can be manipulated as if it were a simple local store.  Note that this federation of AllegroGraph stores is not related to the similarly named SPARQL federated queries where the use of the SERVICE keyword in a query can direct a portion of a query to a particular SPARQL endpoint which need not be an AllegroGraph store. </p><p>Federation provides three big benefits: </p>
+<ul>
+<li>it scales,</li>
+<li>it makes triple stores more manageable, and</li>
+<li>it makes data archive almost trivial.</li></ul><a name='header3-130' id='header3-130'></a><h3>Federation: Scalable triple stores</h3><p>Since federation provides a natural mechanism to join disparate triple stores, we can use separate instances of AllegroGraph to load data on multiple CPUs and then combine them at query time. 
+<a name="fnr0-2018-06-08" id="fnr0-2018-06-08"></a>
+<sup><a href="#fn0-2018-06-08">1</a></sup>  Loading triples is an extremely parallelizable task in that using <strong>N</strong> CPUs decreases the total time by a factor of <strong>N</strong>. </p><a name='header3-132' id='header3-132'></a><h3>Federation: Data Management</h3><p>AllegroGraph's federation mechanism and flexible triple store architecture combine to make it easy to connect multiple stores (in the same AllegroGraph instance, multiple AllegroGraph instances on the same machine, or multiple AllegroGraph instances on a cluster of machines) together and treat them as one. When a user creates an AllegroGraph federated repository, a virtual index of the constituent stores is created and maintained in the client session to facilitate intelligent query processing and maximum performance.  For example, we can combine the <a href="http://dbpedia.org/About" class="external" target="_blank">dbPedia</a>, the USGS <a href="http://www.geonames.org/about.html" class="external" target="_blank">Geonames</a> database and <a href="http://www.rdfabout.com/demo/census/" class="external" target="_blank">Census</a> information into a single <em>virtual</em> store and explore the interconnections between these datasets <em>without</em> worrying about where the triples originate. Even better, we can keep different kinds of triples separate and combine them as needed. E.g., we can keep known facts, inferred triples, provenance information, ontologies, metadata and deleted triples in separate, easily manageable stores and combine and re-combine the data as necessary. </p><p><img src="agw-federation.jpg" alt="Allegro WebView instructions for federation"></img> </p><a name='header3-135' id='header3-135'></a><h3>Federation: Data warehousing</h3><p>Enterprise data volumes are growing without bound making it essential to enable the accumulation and archiving of multi-billions of triples. Federation lets you segment your data into usable <em>chunks</em> that can be swapped in and out as needed. </p><p><img src="historical-data.png" alt="Using Federation to Manage Historical Data"></img> </p><p>The figure illustrates how an enterprise data center can use federation to easily work with the three most current months of data. Since federated data stores can be built easily and easily changed, it is just as simple to look at historical data whenever that is necessary. </p><a name='ai-spatial-temp' id='ai-spatial-temp'></a> <h2>Advanced Capabilities</h2><p>AllegroGraph supports several specialized datatypes for efficient storage, manipulation, and search of Social Network, Geospatial and Temporal information. AllegroGraph also supports the xsd:date, xsd:dateTime types, and the xsd:integer and xsd:decimal types. </p><a name='header3-142' id='header3-142'></a><h3>Social Network Analysis</h3><p>By viewing interactions as connections in a graph, we can treat a multitude of different situations using the tools of Social Network Analysis (SNA). SNA lets us answer questions like: </p>
+<ul>
+<li><p>How closely connected are any two individuals?</p></li>
+<li><p>What are the core groups or clusters within the data?</p></li>
+<li><p>How important is this person (or company) to the  flow of information </p></li>
+<li><p>How likely is it that this person and that person know  one another </p></li></ul><p> <img src="social-graph-example.png" alt="A Example Social Graph"></img> </p><p>The field is full of rich mathematical techniques and powerful algorithms. AllegroGraph's SNA toolkit includes an array of search methods, tools for measuring centrality and importance, and the building blocks for creating more specialized measures. </p><p><a name="geospatial"></a> </p><a name='header3-151' id='header3-151'></a><h3>Geospatial Primitives</h3><p>AllegroGraph provides a novel mechanism for efficient storage and retrieval of multi-dimensional data, location data in particular.  We often refer to this kind of data as "geospatial", although that term refers specifically to positions on or around the earth's surface. AllegroGraph supports a more general notion of N-dimensional ordinates systems.<br />
+</p><p>Coordinates are packed into a single UPI (defined <a href="#upi-def">above</a>). The more coordinates, the less precision for each coordinate, of course, because the total number of data bits is fixed. The user can control the allocation of precision among the several ordinates. </p><p>See the document <a href="geospatial-nd.html">N-dimensional Geospatial</a> for a description and a tutorial on the new nD geospatial facility. </p><a name='header3-155' id='header3-155'></a><h3>Temporal Primitives</h3><p>AllegroGraph supports efficient storage and retrieval of temporal data including datetimes, time points, and time intervals: </p>
+<ul>
+<li>datetimes in ISO8601 format: "2008-02-01T00:00:00-08:00"</li>
+<li>time points: ex:point1, ex:h-hour, ex:when-the-meeting-began, etc</li>
+<li>time intervals: ex:delay-interval (say, from point ex:point1 to ex:h-hour)</li></ul><p>Once data has been encoded, applications can perform queries involving a broad range of temporal constraints on data, including relations between : </p>
+<ul>
+<li>points and datetimes</li>
+<li>intervals and datetimes</li>
+<li>two points</li>
+<li>two intervals</li>
+<li>points and intervals</li></ul><a name='ai-agraphindexing' id='ai-agraphindexing'></a> <h2>AllegroGraph Indexing</h2><p>AllegroGraph uses a set of sorted indices to quickly identify a contiguous block of triples that are likely to match a specific query pattern. </p><p>These indices are identified by names that describe their organization.  The default set of indices are called <strong>spogi, posgi, ospgi, gspoi, gposi, gospi</strong>, and <strong>i</strong>, where: </p>
+<ul>
+<li>S stands for the subject URI.</li>
+<li>P stands for the predicate URI.</li>
+<li>O stands for the object URI or literal.</li>
+<li>G stands for the graph URI.</li>
+<li>I stands for the triple identifier (its unique id number within the triple store).</li></ul><p>The standard seven indices are enabled when you create a triple store. You can customize this set, however, both by eliminating indices that your application will not use, and by requesting custom indices that match your more unusual triple patterns. </p>
+<ul>
+<li>For instance, if your application does not use subgraphs, the   indices beginning with "g" will never be used.  You can speed up   indexing dramatically by eliminating these indices from the system. </li></ul><p>AllegroGraph indexing is fully discussed in <a href="triple-index.html">Triple Indices</a>. </p><a name='ai-fulltext' id='ai-fulltext'></a> <h2>Full-text Indexing</h2><p>AllegroGraph can build full-text indices of the strings of the objects associated with a set of predicates that you specify. Given a full-text index, you can search for text using: </p>
+<ul>
+<li>boolean expressions ("market" AND "housing")</li>
+<li>wild cards ("science*" OR "math*")</li>
+<li>phrases ("Semantic Web search")</li></ul><p>Of course, full-text indexing slows the rate at which you can insert triples. Our experiments suggest that you'll see a decrease somewhere between 5 and 25% depending on the number of predicates involved and the kinds of string data in your application. </p><p>See <a href="text-index.html">Full-text Indices</a> for more information. </p><a name='ai-replication' id='ai-replication'></a> <h2>Replication in AllegroGraph</h2><p>AllegroGraph Replication is a real-time transactionally consistent data replication and data synchronization solution (<em>replication</em> is making new copies and <em>synchronization</em> ensures existing copies are updated to be identical). It allows businesses to move and synchronize their semantic data across the enterprise. This facilitates real-time reporting, load balancing, disaster recovery, and high availability configurations. It assists organizations in mission critical challenges, such as managing liability or fraud, eliminating the risk of distributed enterprise scale environments, and reducing the costs. </p><p>AllegroGraph replication is documented in <a href="replication.html">Replication</a>. </p><a name='ai-programming' id='ai-programming'></a> <h2>Programming AllegroGraph</h2><p>AllegroGraph comes in multiple flavors and works with multiple programming languages and environments. </p>
+<dl><dt>Java </dt>
+<dd>The Java client interface implements most of the <a href="http://rdf4j.org/" class="external" target="_blank">RDF4J</a> and <a href="http://jena.apache.org/" class="external" target="_blank">Jena</a> interfaces for accessing remote RDF repositories.  Because AllegroGraph provides functionality not found in other triple stores, we have implemented extensions where applicable.  See the <a href="http://agraph.franz.com/jena/" target="_blank">pre-release Jena page</a> for information on our Jena support. (See the <a href="java-tutorial/java-tutorial.html">tutorial</a> and <a href="javadoc/index.html">Javadocs</a> for more information). Note that Java 8 (or later) is required for the java client. </dd><dt>Python </dt>
+<dd>The Python API offers convenient and efficient access to an AllegroGraph server from a Python-based application. This API provides methods for creating, querying and maintaining RDF data. The <a href="python/tutorial.html">Python tutorial</a> provides an overview of the API. </dd><dt>HTTP </dt>
+<dd>It is now possible for web developers and programmers alike to interact with AllegroGraph 6.4.2 completely using a RESTful HTTP protocol (using GET, PUT, POST) to add and delete triples, to query for individual triples and to do SPARQL and Prolog selects using the Sesame 2.0 HTTP-interface with some extensions. See <a href="http-protocol.html">REST/HTTP interface</a> and <a href="http-reference.html">HTTP reference</a> for more information. </dd><dt>Javascript </dt>
+<dd>The AllegroGraph RDF server can be scripted using the <a href="http://en.wikipedia.org/wiki/JavaScript">JavaScript</a> language. The easiest way to get started with this is to open a repository in <a href="agwebview.html">WebView</a> and select 'Utilities-&gt;Scripts' from the navigation bar. Javascript documentation is in <a href="javascript.html">JavaScript</a>. Browser-based Javascript applications may interact with AllegroGraph using the HTTP interface. It might be necessary to configure cross-origin resource sharing (CORS) on the server due to same-origin policy (SOP) restrictions enforced by web browsers. See <a href="http-protocol.html#cors">here</a> in the <a href="http-protocol.html">REST/HTTP interface</a> document for more information. The configuration options necessary to enable CORS are described <a href="daemon-config.html#cors">here</a> in the <a href="daemon-config.html">Server Configuration and Control</a> document. </dd><dt>Lisp </dt>
+<dd>Lisp programmers can open and use triple stores from within Lisp. Lispers can create applications in the same image that the AllegroGraph server is running or use a <code>remote triple store</code> to access data in client/server mode. See <a href="lisp-quickstart.html">Lisp Quickstart</a> and <a href="lisp-reference.html">Lisp Reference</a> for more information. </dd></dl><p><a name="othertools"></a> </p><a name='header2-204' id='header2-204'></a><h2>3rd-party Integration</h2><p>AllegroGraph works with various other database tools, some of which organize data stores and others of which provide specialized indexes. Here are some of the tools provided by other sources and vendors which work with AllegroGraph: </p>
+<dl><dt>Cloudera </dt>
+<dd><a href="http://www.cloudera.com/">Cloudera</a> provides Apache Hadoop tools.  <a href="agload.html#hdfs">AllegroGraph supports loading files from Hadoop Distributed File Systems</a>,such as supplied by Cloudera. </dd><dt>MongoDB </dt>
+<dd>MongoDB is a cross-platform document-oriented NoSQL database. See <a href="mongo-interface.html">MongoDB integration</a> for information on AllegroGraph's integration with MongoDB. </dd><dt>Apache Solr </dt>
+<dd>Apache Solr is an open-source freetext indexing/searching platform from the Apache Lucene project. Lucene is a Java Based Freetext Indexer with many features. Solr is an XML database wrapper around Lucene.  See <a href="solr-index.html">Solr text Indices</a>. </dd><dt>Top Braid Composer </dt>
+<dd>Top-Braid Composer (TBC), a product of TopQuadrant, Inc., is a graphical development environment for modeling data, connecting data sources, and designing queries, rules and semantic data processing chains. See <a href="TBCplugin.html">TopBraid Composer Plugin</a>. </dd><dt>Anaconda </dt>
+<dd><a href="https://www.anaconda.com" class="external" target="_blank">Anaconda</a>&reg; is a data science platform consisting of a package manager, an environment manager, a Python distribution, and a collection of open source packages.  See <a href="anaconda.html">AllegroGraph and Anaconda</a> for information on AllegroGraph's integration with Anaconda. </dd></dl><a name='header2-216' id='header2-216'></a><h2>AllegroGraph Documentation</h2><p>The AllegroGraph website is <a href="http://allegrograph.com">allegrograph.com</a>. AllegroGraph is a product of <a href="http://franz.com">Franz Inc.</a>. </p><p>Documentation for AllegroGraph is available at </p>
+<pre><code>http://franz.com/agraph/support/documentation/&lt;version&gt;/ </code></pre><p>where &lt;version&gt; is <em>vX.Y[.Z]</em>, 6.4.2 for the current version. </p><p>There is a search tool in the upper left corner of each documentation page. That tool uses Google to search for the desired phrase in the documentation on the Franz Inc. website noted just above. That means that even if you have a local copy of the documentation, the search is done on the web copy. </p><p><a href="http://franz.com/agraph/support/documentation/current/">http://franz.com/agraph/support/documentation/current/</a> always links to the documentation for the latest release. </p> <hr/><div id="footnotes"> <h2>Footnotes</h2>
+<div class="footnotes">
+<ol>
+<li>
+<a name="fn0-2018-06-08" id="fn0-2018-06-08"></a>
+Since a query needs to look in each <em>leaf</em> store, federated queries will be somewhat slower than ones which only need to look in a single, local store. Future versions of AllegroGraph will help work around this problem by keeping better track of which leaf stores contain which different kinds of data. <a href="#fnr0-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 1 in the text">&#8617;</a></li>
+</ol>
+</div>  </div>  </div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

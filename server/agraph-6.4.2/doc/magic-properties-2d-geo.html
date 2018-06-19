@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>2D Geospatial SPARQL Magic Properties | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<link rel='stylesheet' href='sparql.css' />
+<body id="sparql-magic-properties-2d-geo"><div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>         <h1>2D Geopatial SPARQL Magic Properties</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a>
+<ul>
+<li><a href='#header3-14' title='2D Magic Properties'>2D Magic Properties</a></li>
+<li><a href='#header3-31' title='2D Helper Functions'>2D Helper Functions</a></li></ul></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p><strong>2D SPARQL GEO queries are no longer supported. 2D SPARQL magic properties have been removed. This document is maintained for information only.</strong> </p><p>A Magic Property is a predicate in a SPARQL query that produces bindings using something other than simple subgraph matching. See the <a href="magic-properties.html">SPARQL Magic Properties</a> document. </p><p>In this document we describe the Magic Properties for the 2D geospatial facility. This facility has been replaced by the newer <a href="geospatial-nd.html">nD Geospatial</a> facility. The 2D facility is maintained for backward compatibility only and will be removed in a future release. </p><p>The 2D geospatial facility itself has an original interface and a revised interface (with differences such as Magic Property names). The <a href="geospatial-tutorial.html">2D Geospatial Tutorial</a> has general geospatial examples which use the original 2D interface. There is no tutorial using the revised 2D interface. </p><p><a name="sparql-magic-geo-2d"></a> </p><a name='header3-14' id='header3-14'></a><h3>2D Magic Properties</h3><p>AllegroGraph's 2D geospatial extensions to SPARQL have a number of Magic Properties. These are listed in the Magic Properties list. Note that the nD geospatial Magic Properties do not work on 2D-encoded data, and vice versa. 2D geospatial Magic Properties are defined for determining points in a bounding box and points within a circle. Each comes in several variants to accommodate different usages. </p><p>The definitions that follow use these prefix definitions: </p>
+<pre><code>PREFIX geofn: &lt;http://franz.com/ns/allegrograph/3.0/geospatial/fn/&gt;   
+PREFIX geo:   &lt;http://franz.com/ns/allegrograph/3.0/geospatial/&gt; </code></pre><p>To use a geospatial Magic Property, you must ensure that the query engine can determine the geospatial subtype based on the predicate. This can be done by creating a predicate type mapping between the predicate and the subtype. The mechanics of this varies with the client. For example, we could create a predicate mapping between <a href="http://example.com/pointLatLong">http://example.com/pointLatLong</a> and the spherical geospatial subtype with a strip width of 1 kilometer in the Python client using code like: </p>
+<pre><code>geoSubtype = conn.createURI("http://franz.com/ns/allegrograph/3.0/geospatial/spherical/km/-180.0/180.0/-90.0/90.0/1")   
+latlon = conn.createURI("http://example.com/pointLatLong")   
+conn.registerDatatypeMapping(datatype=geoSubtype, predicate=latLon, nativeType="int") </code></pre><p>In the following examples, we assume that the predicate ex:location is registered and mapped to a geospatial subtype. Given this, we can ask for subjects whose objects are in the bounding box defined by the two points ?lowerLeftPoint and ?upperRightPoint using: </p>
+<pre><code>?subject geo:inBoundingBox (ex:location ?lowerLeftPoint ?upperRightPoint) . </code></pre><p>The points are assumed to be AllegroGraph 2D geospatial UPIs (<em>Unique Part Identifiers</em>, see <a href="agraph-introduction.html#upi-def">here</a> in the <a href="agraph-introduction.html" id="agraph-introduction-tab">AllegroGraph Introduction</a>). They can come from other variables in the query or be constructed using BIND. For example: </p>
+<pre><code>BIND( geofn:toPointXY( ex:location, 4.3, 12.6 ) AS ?lowerLeft )   
+BIND( geofn:toPointXY( ex:location, 10, 20.1 ) AS ?upperRight )   
+(?subject ?where) geo:inBoundingBox (ex:location ?lowerLeft ?upperRight) </code></pre><p>This second example shows that you can bind the object of the triples found by using a list of variables on the left hand side of the geospatial Magic Property. </p><p>If you have X, Y coordinates rather than points, you can either use the BIND form shown above or use the X, Y version of the 2D Magic Property. For example, this query returns the same results as the one above: </p>
+<pre><code>(?subject ?where) geo:inBoundingBoxXY (ex:location 4.3 12.6 10 20.1) </code></pre><p>The other 2D Magic Properties are: </p>
+<pre><code># triples in a circle using cartesian coordinates   
+?subject geo:inCircle (ex:location centerPoint radius)   
+?subject geo:inCircleXY (ex:location x y radius)   
+ 
+# triples in a circle using spherical coordinates (with different units)   
+?subject geo:inCircleMiles (ex:location centerPoint radius)   
+?subject geo:inCircleMilesXY (ex:location centerPoint radius)   
+?subject geo:inCircleKilometers (ex:location centerPoint radius)   
+?subject geo:inCircleKilometersXY (ex:location centerPoint radius) </code></pre><p>As above, all of these assume that ex:location is mapped to a registered 2D geospatial subtype. For all of these properties, centerPoint must be bound to a geospatial point (either via other triple-patterns that produce bindings to geospatial data or via helper functions like geofn:toPointXY or geofn:toPointLonLat). </p><p>Note that all of the properties require that their arguments be bound before they can be evaluated. AllegroGraph will attempt to re-order patterns in BGPs such that this holds. </p><a name='header3-31' id='header3-31'></a><h3>2D Helper Functions</h3><p>The following functions are defined to help evaluate 2D geospatial queries: </p>
+<ul>
+<li>cartesianDistanceSquared( point1, point2 )</li>
+<li>cartesianDistance( point1, point2 )</li>
+<li>haversineRadians( point1, point2 )</li>
+<li>haversineKilometers( point1, point2 )</li>
+<li>haversineMiles( point1, point2 )</li>
+<li>longitude( point )</li>
+<li>latitude( point )</li>
+<li>cartesianX( point )</li>
+<li>cartesianY( point )</li>
+<li>toPointXY( predicate, x, y )</li>
+<li>toPointLonLat( predicate, lon, lat )</li></ul><p>The functions <code>toPointXY</code> and <code>toPointLonLat</code> require the predicate argument so that AllegroGraph can determine which geospatial subtype should be used to construct the point.
+<a name="fnr0-2018-06-08" id="fnr0-2018-06-08"></a>
+<sup><a href="#fn0-2018-06-08">1</a></sup>  </p><p>See <a href="magic-properties.html#magic-prop-list">the Magic Properties list</a> for a list of all SPARQL Magic Properties including those for 2D geospatial, along with associated SPARQL functions. </p><hr/><div id="footnotes"> <h2>Footnotes</h2>
+<div class="footnotes">
+<ol>
+<li>
+<a name="fn0-2018-06-08" id="fn0-2018-06-08"></a>
+Note that many of the functions were defined previously with slightly different names. For example, <code>cartesian-distance-squared</code> instead of <code>cartesianDistanceSquared</code>. The new names are added for consistency; the old names will eventually be deprecated and removed. <a href="#fnr0-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 1 in the text">&#8617;</a></li>
+</ol>
+</div>  </div>  </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

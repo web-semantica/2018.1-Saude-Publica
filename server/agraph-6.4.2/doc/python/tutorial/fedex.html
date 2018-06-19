@@ -1,0 +1,688 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Running AG on AWS EC2 &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="AllegroGraph Python API Reference" href="../api.html" />
+    <link rel="prev" title="Example 18: Pandas support" href="example018.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+        &laquo;<a href="example018.html" title="previous chapter">Example 18: Pandas support</a>
+      <a href="../api.html" title="next chapter">AllegroGraph Python API Reference</a> 
+      &raquo;
+    </div>
+  
+    
+  <div class="section" id="running-ag-on-aws-ec2">
+<span id="fedex"></span><h1>Running AG on AWS EC2<a class="headerlink" href="#running-ag-on-aws-ec2" title="Permalink to this headline">¶</a></h1>
+<p>Federating multiple repositories located on the same server (as shown
+in <a class="reference internal" href="example016.html#example16"><span class="std std-ref">Example 16: Federated repositories</span></a>) can be useful for organizing data, but to truly
+explore the scalability potential of federated repositories we should
+look at a system consisting of multiple machines. This example will
+illustrate this by instantiating multiple AllegroGraph virtual
+machines on <a class="reference external" href="https://aws.amazon.com/">AWS</a>, joining all servers in a single federated
+repository and issuing a simple query.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This example involves instantiating multiple AWS
+resources. These are <em>not</em> free and you <em>will</em> be charged
+by Amazon. While the cost should not exceed a few
+dollars, we are not responsible for any charges you might
+incur while running this tutorial.</p>
+</div>
+<p>To allow our script to interact with AWS we will need to install an
+additional dependency - <a class="reference external" href="https://boto3.readthedocs.io/en/stable/">boto3</a>.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>pip install boto3
+</pre></div>
+</div>
+<p>We will also need to configure credentials to allow the script to
+access the Amazon account that it should use. This can be done in
+<a class="reference external" href="https://boto3.readthedocs.io/en/stable/guide/configuration.html#credentials">multiple ways</a>. One possibility is to create a file
+named <code class="docutils literal"><span class="pre">~/.aws/credentials</span></code> with the following contents:</p>
+<div class="highlight-ini"><div class="highlight"><pre><span></span><span class="k">[default]</span>
+<span class="na">aws_access_key_id</span> <span class="o">=</span> <span class="s">YOUR_KEY</span>
+<span class="na">aws_secret_access_key</span> <span class="o">=</span> <span class="s">YOUR_SECRET</span>
+</pre></div>
+</div>
+<p>The key and key id can be obtained from the web interface of <a class="reference external" href="https://aws.amazon.com/">AWS</a>.</p>
+<p>We’re now ready to begin writing the actual script. Let’s start with
+some imports:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="kn">import</span> <span class="nn">atexit</span>
+<span class="kn">import</span> <span class="nn">time</span>
+</pre></div>
+</div>
+<p>We will need the <code class="docutils literal"><span class="pre">boto3</span></code> module to interact with AWS. We also want
+to make sure that any resources we have provisioned will be properly
+discarded when the scripts exits, even if it exits because of an
+error. The <code class="docutils literal"><span class="pre">atexit</span></code> module provides a convenient way of doing that.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">While the mechanism of releasing resources used in this
+tutorial is reasonably robust, it might still fail in
+rare circumstances (e.g. if your computer loses power).
+It is important to manually check your AWS account for
+any stray resources after executing this tutorial to
+avoid unnecessary costs.</p>
+</div>
+<p>Now we will set a few configuration constants:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">REGION</span> <span class="o">=</span> <span class="s1">&#39;us-west-2&#39;</span>
+<span class="n">AMI</span> <span class="o">=</span> <span class="s1">&#39;ami-5616d82e&#39;</span>
+<span class="n">TYPE</span> <span class="o">=</span> <span class="s1">&#39;t2.medium&#39;</span>
+</pre></div>
+</div>
+<p>These describe the kind of servers that we will be provisioning, as
+well as the AWS <a class="reference external" href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html">region</a> in which our resources will reside. <cite>AMI</cite>
+should be the image id of an AllegroGraph image appropriate for the
+chosen region. Image identifiers can be found <a class="reference external" href="https://franz.com/agraph/ec2/">here</a>. The
+actual value shown above refers to the AllegroGraph 6.3.0 HVM image
+for the <code class="docutils literal"><span class="pre">us-west-2</span></code> region. <code class="docutils literal"><span class="pre">TYPE</span></code> is the ‘instance type’ and
+determines the amount of compute resources (RAM and CPU) that will be
+available for each of our servers. The list of instance types can be
+found <a class="reference external" href="https://aws.amazon.com/ec2/instance-types/">here</a>.</p>
+<p>We will create a specified number of servers plus an additional one to
+manage the federation. The number below is the number of federated
+instances (i.e. it does <em>not</em> include the management instance).</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">INSTANCE_COUNT</span> <span class="o">=</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>It is desirable to limit the connections to the system that we are
+creating so that only your machine will be able to access it. If you
+have a static IP address, fill it below. If not, leave the value as it
+is.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">MY_IP</span> <span class="o">=</span> <span class="s1">&#39;0.0.0.0/0&#39;</span>
+</pre></div>
+</div>
+<p>The next set of constants describe various aspect of the
+infrastructure that we are about to provision. There should be no need
+to adjust any values here.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">VPC_CIDR</span> <span class="o">=</span> <span class="s1">&#39;10.0.0.0/16&#39;</span>
+<span class="n">PUBLIC_CIDR</span> <span class="o">=</span> <span class="s1">&#39;10.0.0.0/24&#39;</span>
+<span class="n">PRIVATE_CIDR</span> <span class="o">=</span> <span class="s1">&#39;10.0.1.0/24&#39;</span>
+<span class="n">KEY_NAME</span> <span class="o">=</span> <span class="s1">&#39;AG-TUTORIAL-KEYPAIR&#39;</span>
+<span class="n">PROFILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;agprofile&#39;</span>
+<span class="n">USER</span> <span class="o">=</span> <span class="s1">&#39;ec2-user&#39;</span>
+</pre></div>
+</div>
+<p>The first three values describe the structure of the <a class="reference external" href="https://aws.amazon.com/vpc/">virtual network</a>
+that will contain our machines. The network will consist of two
+subnets - a public one which will contain the management instance and
+a private one which will contain all other servers. Only machines in
+the public subnet will be directly accessible over the
+Internet. <code class="docutils literal"><span class="pre">KEY_NAME</span></code> is a name that will be assigned to the
+<a class="reference external" href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html">keypair</a> that we will generate and use to connect to our
+servers. <code class="docutils literal"><span class="pre">PROFILE_NAME</span></code> is the name for an <a class="reference external" href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html">instance profile</a>
+that we will create for our AG servers. <code class="docutils literal"><span class="pre">USER</span></code> is the system user on
+the machines we want to connect to. Since AllegroGraph’s images are
+based on Amazon Linux, that username must be set to <code class="docutils literal"><span class="pre">ec2_user</span></code>.</p>
+<p>We will now create handles for Amazon services that we want to use.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">ec2</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;ec2&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="n">REGION</span><span class="p">)</span>
+<span class="n">ec2_client</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;ec2&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="n">REGION</span><span class="p">)</span>
+<span class="n">iam</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;iam&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="n">REGION</span><span class="p">)</span>
+<span class="n">ssm</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;ssm&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="n">REGION</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>These come in two variants, called <code class="docutils literal"><span class="pre">resources</span></code> and
+<code class="docutils literal"><span class="pre">clients</span></code>. Clients provide low-level access to the Amazon API, while
+resources are a high-level abstraction built over clients. Using
+resources is slightly easier and thus preferable, but some operations
+can only be performed with clients. In our case <code class="docutils literal"><span class="pre">ec2_client</span></code> and
+<code class="docutils literal"><span class="pre">ssm</span></code> objects are clients for the respective AWS services, while
+other handles are resources.</p>
+<p>The first thing that we will create is a <a class="reference external" href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html">security role</a> that will be
+assigned to our machines. This is necessary to allow the use of
+<a class="reference external" href="http://docs.aws.amazon.com/systems-manager/latest/userguide/">SSM</a>, which we will need to execute scripts.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">ssm_role</span> <span class="o">=</span> <span class="n">iam</span><span class="o">.</span><span class="n">create_role</span><span class="p">(</span><span class="n">RoleName</span><span class="o">=</span><span class="s1">&#39;ssm&#39;</span><span class="p">,</span>
+                           <span class="n">AssumeRolePolicyDocument</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;{</span>
+<span class="s2">    &quot;Version&quot;:&quot;2012-10-17&quot;,</span>
+<span class="s2">    &quot;Statement&quot;:[</span>
+<span class="s2">       {</span>
+<span class="s2">          &quot;Effect&quot;:&quot;Allow&quot;,</span>
+<span class="s2">          &quot;Principal&quot;:{</span>
+<span class="s2">             &quot;Service&quot;: [&quot;ssm.amazonaws.com&quot;, &quot;ec2.amazonaws.com&quot;]</span>
+<span class="s2">          },</span>
+<span class="s2">          &quot;Action&quot;:&quot;sts:AssumeRole&quot;</span>
+<span class="s2">       }]}&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ssm_role</span><span class="o">.</span><span class="n">delete</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The role created above can be assumed by EC2 instances and allows
+access to SSM. We have also installed an <code class="docutils literal"><span class="pre">atexit</span></code> handler to make
+sure that the role is deleted once we are done. We will do the same
+thing for every other AWS resource that we create.</p>
+<p>To make all instances that have assumed the role defined above
+accessible to SSM we need to connect that role to the appropriate
+policy document.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">ssm_arn</span> <span class="o">=</span> <span class="s1">&#39;arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM&#39;</span>
+<span class="n">ssm_role</span><span class="o">.</span><span class="n">attach_policy</span><span class="p">(</span><span class="n">PolicyArn</span><span class="o">=</span><span class="n">ssm_arn</span><span class="p">)</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ssm_role</span><span class="o">.</span><span class="n">detach_policy</span><span class="p">,</span> <span class="n">PolicyArn</span><span class="o">=</span><span class="n">ssm_arn</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Again, we have installed an atexit handler to undo the
+association. Without that we would not be able to remove the role
+itself.</p>
+<p>Now we create an <cite>instance profile</cite> that we will use to launch
+instances using our new role.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">instance_profile</span> <span class="o">=</span> <span class="n">iam</span><span class="o">.</span><span class="n">create_instance_profile</span><span class="p">(</span>
+  <span class="n">InstanceProfileName</span><span class="o">=</span><span class="n">PROFILE_NAME</span>
+<span class="p">)</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">instance_profile</span><span class="o">.</span><span class="n">delete</span><span class="p">)</span>
+
+<span class="n">instance_profile</span><span class="o">.</span><span class="n">add_role</span><span class="p">(</span><span class="n">RoleName</span><span class="o">=</span><span class="n">ssm_role</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">instance_profile</span><span class="o">.</span><span class="n">remove_role</span><span class="p">,</span>
+                <span class="n">RoleName</span><span class="o">=</span><span class="n">ssm_role</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now it is time to create the virtual network infrastructure for our
+system.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">vpc</span> <span class="o">=</span> <span class="n">ec2</span><span class="o">.</span><span class="n">create_vpc</span><span class="p">(</span><span class="n">CidrBlock</span><span class="o">=</span><span class="n">VPC_CIDR</span><span class="p">)</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">vpc</span><span class="o">.</span><span class="n">delete</span><span class="p">)</span>
+
+<span class="n">public_subnet</span> <span class="o">=</span> <span class="n">vpc</span><span class="o">.</span><span class="n">create_subnet</span><span class="p">(</span><span class="n">CidrBlock</span><span class="o">=</span><span class="n">PUBLIC_CIDR</span><span class="p">)</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">public_subnet</span><span class="o">.</span><span class="n">delete</span><span class="p">)</span>
+
+<span class="n">private_subnet</span> <span class="o">=</span> <span class="n">vpc</span><span class="o">.</span><span class="n">create_subnet</span><span class="p">(</span><span class="n">CidrBlock</span><span class="o">=</span><span class="n">PRIVATE_CIDR</span><span class="p">)</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">private_subnet</span><span class="o">.</span><span class="n">delete</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We have two subnets - one for things that should be accessible from
+the Internet and one for all other machines. To make the public subnet
+work we need to add an <a class="reference external" href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Internet_Gateway.html">Internet gateway</a> to it.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">internet_gateway</span> <span class="o">=</span> <span class="n">ec2</span><span class="o">.</span><span class="n">create_internet_gateway</span><span class="p">()</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">internet_gateway</span><span class="o">.</span><span class="n">delete</span><span class="p">)</span>
+
+<span class="n">internet_gateway</span><span class="o">.</span><span class="n">attach_to_vpc</span><span class="p">(</span><span class="n">VpcId</span><span class="o">=</span><span class="n">vpc</span><span class="o">.</span><span class="n">vpc_id</span><span class="p">)</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">internet_gateway</span><span class="o">.</span><span class="n">detach_from_vpc</span><span class="p">,</span>
+                <span class="n">VpcId</span><span class="o">=</span><span class="n">vpc</span><span class="o">.</span><span class="n">vpc_id</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As usual, we have to install <code class="docutils literal"><span class="pre">atexit</span></code> handlers to undo all
+operations. This is important not only for operations that create
+resources, but also for those that add associations, since AWS will
+not allow us to remove a resource with existing associations.</p>
+<p>Now we need to define a <a class="reference external" href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Route_Tables.html">route table</a> for the public subnet. The route
+table will basically tell our instances to use the Internet gateway
+that we have just created to communicate with the Internet.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">public_route_table</span> <span class="o">=</span> <span class="n">vpc</span><span class="o">.</span><span class="n">create_route_table</span><span class="p">()</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">public_route_table</span><span class="o">.</span><span class="n">delete</span><span class="p">)</span>
+
+<span class="n">public_route_table</span><span class="o">.</span><span class="n">create_route</span><span class="p">(</span>
+    <span class="n">DestinationCidrBlock</span><span class="o">=</span><span class="s1">&#39;0.0.0.0/0&#39;</span><span class="p">,</span>
+    <span class="n">GatewayId</span><span class="o">=</span><span class="n">internet_gateway</span><span class="o">.</span><span class="n">internet_gateway_id</span><span class="p">)</span>
+
+<span class="n">public_rt_assoc</span> <span class="o">=</span> <span class="n">public_route_table</span><span class="o">.</span><span class="n">associate_with_subnet</span><span class="p">(</span>
+    <span class="n">SubnetId</span><span class="o">=</span><span class="n">public_subnet</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">public_rt_assoc</span><span class="o">.</span><span class="n">delete</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Machines in the private subnet should not be accessible from the
+Internet, but must still be able to access external resources. To
+facilitate that we will create a <a class="reference external" href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/vpc-nat-gateway.html">NAT gateway</a> in the private subnet.
+A NAT gateway must have a public IP address, so will get one first.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">nat_eip</span> <span class="o">=</span> <span class="n">ec2_client</span><span class="o">.</span><span class="n">allocate_address</span><span class="p">(</span><span class="n">Domain</span><span class="o">=</span><span class="s1">&#39;vpc&#39;</span><span class="p">)</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ec2_client</span><span class="o">.</span><span class="n">release_address</span><span class="p">,</span>
+                <span class="n">AllocationId</span><span class="o">=</span><span class="n">nat_eip</span><span class="p">[</span><span class="s1">&#39;AllocationId&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Before we actually create the gateway, we must ensure that we will be
+able to decommission it in a safe manner. The issue is that deleting a
+NAT gateway is not instantaneous and we cannot remove other resources
+(the VPC and subnet) until it is gone. So we will define a function
+that periodically checks the status of our gateway and blocks until it
+has been fully removed.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">wait_for_nat_gateway_termination</span><span class="p">(</span><span class="n">nat</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">repeat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">40</span><span class="p">):</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">ec2_client</span><span class="o">.</span><span class="n">describe_nat_gateways</span><span class="p">(</span>
+            <span class="n">NatGatewayIds</span><span class="o">=</span><span class="p">[</span><span class="n">nat</span><span class="p">[</span><span class="s1">&#39;NatGateway&#39;</span><span class="p">][</span><span class="s1">&#39;NatGatewayId&#39;</span><span class="p">]])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;NatGateways&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;NatGateways&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;State&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;deleted&#39;</span><span class="p">,</span> <span class="s1">&#39;failed&#39;</span><span class="p">):</span>
+            <span class="k">return</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;NAT gateway refuses to go away&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">boto3</span></code> uses so called <code class="docutils literal"><span class="pre">waiters</span></code> to automate the process of wating
+for a state change of an AWS resource. Unfortunately there is no
+<code class="docutils literal"><span class="pre">waiter</span></code> that checks for the termination of a NAT gateway, so we had
+to write our own. We will use <code class="docutils literal"><span class="pre">boto3</span></code> waiters in other parts of the
+code.</p>
+<p>We are now ready to create the gateway. Notce that the gateway itself
+must be a part of the public subent, even though it is meant to be
+used by the private subnet.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">nat</span> <span class="o">=</span> <span class="n">ec2_client</span><span class="o">.</span><span class="n">create_nat_gateway</span><span class="p">(</span>
+    <span class="n">AllocationId</span><span class="o">=</span><span class="n">nat_eip</span><span class="p">[</span><span class="s1">&#39;AllocationId&#39;</span><span class="p">],</span>
+    <span class="n">SubnetId</span><span class="o">=</span><span class="n">public_subnet</span><span class="o">.</span><span class="n">id</span>
+<span class="p">)</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">wait_for_nat_gateway_termination</span><span class="p">,</span> <span class="n">nat</span><span class="p">)</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ec2_client</span><span class="o">.</span><span class="n">delete_nat_gateway</span><span class="p">,</span>
+                <span class="n">NatGatewayId</span><span class="o">=</span><span class="n">nat</span><span class="p">[</span><span class="s1">&#39;NatGateway&#39;</span><span class="p">][</span><span class="s1">&#39;NatGatewayId&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Notice two <code class="docutils literal"><span class="pre">atexit</span></code> handlers - one issues the delete command, the
+other one waits for its completion. The handlers are executed in
+reverse registration order, so the ‘waiting’ handler is registered
+first. We will see this pattern again in the future.</p>
+<p>Now we will wait until the NAT gateway is functional This might take a
+while. Fortunately this time we can take advantage of a <code class="docutils literal"><span class="pre">boto3</span></code>
+waiter:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">ec2_client</span><span class="o">.</span><span class="n">get_waiter</span><span class="p">(</span><span class="s1">&#39;nat_gateway_available&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span>
+    <span class="n">NatGatewayIds</span><span class="o">=</span><span class="p">[</span><span class="n">nat</span><span class="p">[</span><span class="s1">&#39;NatGateway&#39;</span><span class="p">][</span><span class="s1">&#39;NatGatewayId&#39;</span><span class="p">]])</span>
+</pre></div>
+</div>
+<p>Now we need a route table for the private subnet</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">private_route_table</span> <span class="o">=</span> <span class="n">vpc</span><span class="o">.</span><span class="n">create_route_table</span><span class="p">()</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">private_route_table</span><span class="o">.</span><span class="n">delete</span><span class="p">)</span>
+
+<span class="n">private_route_table</span><span class="o">.</span><span class="n">create_route</span><span class="p">(</span>
+    <span class="n">DestinationCidrBlock</span><span class="o">=</span><span class="s1">&#39;0.0.0.0/0&#39;</span><span class="p">,</span>
+    <span class="n">NatGatewayId</span><span class="o">=</span><span class="n">nat</span><span class="p">[</span><span class="s1">&#39;NatGateway&#39;</span><span class="p">][</span><span class="s1">&#39;NatGatewayId&#39;</span><span class="p">])</span>
+
+<span class="n">private_rt_assoc</span> <span class="o">=</span> <span class="n">private_route_table</span><span class="o">.</span><span class="n">associate_with_subnet</span><span class="p">(</span>
+    <span class="n">SubnetId</span><span class="o">=</span><span class="n">private_subnet</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">private_rt_assoc</span><span class="o">.</span><span class="n">delete</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The next pair of resources to create will be the <a class="reference external" href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_SecurityGroups.html">security
+groups</a>. These determine what is allowed to connect to what over the
+network. We will want different rules for private and public subnets.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">public_security_group</span> <span class="o">=</span> <span class="n">vpc</span><span class="o">.</span><span class="n">create_security_group</span><span class="p">(</span>
+    <span class="n">GroupName</span><span class="o">=</span><span class="s2">&quot;ag-http-global&quot;</span><span class="p">,</span>
+    <span class="n">Description</span><span class="o">=</span><span class="s2">&quot;Allow SSH + HTTP connections to AG&quot;</span><span class="p">)</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">public_security_group</span><span class="o">.</span><span class="n">delete</span><span class="p">)</span>
+
+<span class="n">public_ip_permissions</span> <span class="o">=</span> <span class="p">[{</span>
+    <span class="s1">&#39;IpProtocol&#39;</span><span class="p">:</span> <span class="s1">&#39;TCP&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;FromPort&#39;</span><span class="p">:</span> <span class="mi">10035</span><span class="p">,</span>
+    <span class="s1">&#39;ToPort&#39;</span><span class="p">:</span> <span class="mi">10035</span><span class="p">,</span>
+    <span class="s1">&#39;IpRanges&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;CidrIp&#39;</span><span class="p">:</span> <span class="n">MY_IP</span><span class="p">}]</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="s1">&#39;IpProtocol&#39;</span><span class="p">:</span> <span class="s1">&#39;TCP&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;FromPort&#39;</span><span class="p">:</span> <span class="mi">16000</span><span class="p">,</span>
+    <span class="s1">&#39;ToPort&#39;</span><span class="p">:</span> <span class="mi">17000</span><span class="p">,</span>
+    <span class="s1">&#39;IpRanges&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;CidrIp&#39;</span><span class="p">:</span> <span class="n">MY_IP</span><span class="p">}]</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="s1">&#39;IpProtocol&#39;</span><span class="p">:</span> <span class="s1">&#39;TCP&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;FromPort&#39;</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span>
+    <span class="s1">&#39;ToPort&#39;</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span>
+    <span class="s1">&#39;IpRanges&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;CidrIp&#39;</span><span class="p">:</span> <span class="n">MY_IP</span><span class="p">}]</span>
+<span class="p">}]</span>
+
+<span class="n">public_security_group</span><span class="o">.</span><span class="n">authorize_ingress</span><span class="p">(</span>
+    <span class="n">IpPermissions</span><span class="o">=</span><span class="n">public_ip_permissions</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We allow SSH connections and HTTP connections to AG (both the frontend
+(<code class="docutils literal"><span class="pre">10035</span></code>) and the session ports (<code class="docutils literal"><span class="pre">16000-17000</span></code>)) from the address
+we defined above. Note that if you have not changed the default value
+of <code class="docutils literal"><span class="pre">MY_IP</span></code> the the system will be accessible from anywhere, which is
+a security risk.</p>
+<p>Private instances shall accept <em>all</em> connections, but only from
+machines within our virtual network.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">private_security_group</span> <span class="o">=</span> <span class="n">vpc</span><span class="o">.</span><span class="n">create_security_group</span><span class="p">(</span>
+    <span class="n">GroupName</span><span class="o">=</span><span class="s2">&quot;all-internal&quot;</span><span class="p">,</span>
+    <span class="n">Description</span><span class="o">=</span><span class="s2">&quot;Allow all access from our network&quot;</span><span class="p">)</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">private_security_group</span><span class="o">.</span><span class="n">delete</span><span class="p">)</span>
+
+<span class="n">private_ip_permissions</span> <span class="o">=</span> <span class="p">[{</span>
+    <span class="s1">&#39;IpProtocol&#39;</span><span class="p">:</span> <span class="s1">&#39;-1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;UserIdGroupPairs&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;GroupId&#39;</span><span class="p">:</span> <span class="n">private_security_group</span><span class="o">.</span><span class="n">id</span><span class="p">},</span>
+                         <span class="p">{</span><span class="s1">&#39;GroupId&#39;</span><span class="p">:</span> <span class="n">public_security_group</span><span class="o">.</span><span class="n">id</span><span class="p">}]</span>
+<span class="p">}]</span>
+
+<span class="n">private_security_group</span><span class="o">.</span><span class="n">authorize_ingress</span><span class="p">(</span>
+    <span class="n">IpPermissions</span><span class="o">=</span><span class="n">private_ip_permissions</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now it is time to generate a <a class="reference external" href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html">keypair</a>. This is simply the SSH key
+that we will use to control access to our machines.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">key_pair</span> <span class="o">=</span> <span class="n">ec2</span><span class="o">.</span><span class="n">create_key_pair</span><span class="p">(</span><span class="n">KeyName</span><span class="o">=</span><span class="n">KEY_NAME</span><span class="p">)</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">key_pair</span><span class="o">.</span><span class="n">delete</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As mentioned above, we will want to use <a class="reference external" href="http://docs.aws.amazon.com/systems-manager/latest/userguide/">SSM</a> to execute scripts on
+our servers. To do that we have to ensure that an SSM agent is
+installed on each machine. We can do this with the following script.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">user_data</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;#!/bin/bash</span>
+<span class="s2">    cd /tmp</span>
+<span class="s2">    sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm</span>
+<span class="s2">    sudo start amazon-ssm-agent&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<p>The script itself will be executed with <a class="reference external" href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html">cloud-init</a>.</p>
+<p>Now it is finally time to create our machines. Let us start with the
+management node.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">public_instance</span> <span class="o">=</span> <span class="n">ec2</span><span class="o">.</span><span class="n">create_instances</span><span class="p">(</span>
+    <span class="n">ImageId</span><span class="o">=</span><span class="n">AMI</span><span class="p">,</span> <span class="n">InstanceType</span><span class="o">=</span><span class="n">TYPE</span><span class="p">,</span>
+    <span class="n">UserData</span><span class="o">=</span><span class="n">user_data</span><span class="p">,</span>
+    <span class="n">MinCount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">MaxCount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">KeyName</span><span class="o">=</span><span class="n">KEY_NAME</span><span class="p">,</span>
+    <span class="n">SecurityGroupIds</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">public_security_group</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">IamInstanceProfile</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;Arn&quot;</span><span class="p">:</span> <span class="n">instance_profile</span><span class="o">.</span><span class="n">arn</span>
+    <span class="p">},</span>
+    <span class="n">SubnetId</span><span class="o">=</span><span class="n">public_subnet</span><span class="o">.</span><span class="n">id</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+    <span class="n">ec2_client</span><span class="o">.</span><span class="n">get_waiter</span><span class="p">(</span><span class="s1">&#39;instance_terminated&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">wait</span><span class="p">,</span>
+    <span class="n">InstanceIds</span><span class="o">=</span><span class="p">[</span><span class="n">public_instance</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">public_instance</span><span class="o">.</span><span class="n">terminate</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We pass our SSM installation script in the <code class="docutils literal"><span class="pre">UserData</span></code>
+parameter. Notice how the <code class="docutils literal"><span class="pre">atexit</span></code> handlers wait for the instance to
+be fully deleted before proceeding to shutdown other systems.</p>
+<p>Instances in the private subnet can be created in a similar way.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">private_instances</span> <span class="o">=</span> <span class="n">ec2</span><span class="o">.</span><span class="n">create_instances</span><span class="p">(</span>
+    <span class="n">ImageId</span><span class="o">=</span><span class="n">AMI</span><span class="p">,</span> <span class="n">InstanceType</span><span class="o">=</span><span class="n">TYPE</span><span class="p">,</span>
+    <span class="n">MinCount</span><span class="o">=</span><span class="n">INSTANCE_COUNT</span><span class="p">,</span> <span class="n">MaxCount</span><span class="o">=</span><span class="n">INSTANCE_COUNT</span><span class="p">,</span>
+    <span class="n">UserData</span><span class="o">=</span><span class="n">user_data</span><span class="p">,</span>
+    <span class="n">KeyName</span><span class="o">=</span><span class="n">KEY_NAME</span><span class="p">,</span>
+    <span class="n">SecurityGroupIds</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">private_security_group</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">IamInstanceProfile</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;Arn&quot;</span><span class="p">:</span> <span class="n">instance_profile</span><span class="o">.</span><span class="n">arn</span>
+    <span class="p">},</span>
+    <span class="n">SubnetId</span><span class="o">=</span><span class="n">private_subnet</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="n">private_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">private_instances</span><span class="p">]</span>
+<span class="n">all_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">public_instance</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">+</span> <span class="n">private_ids</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+    <span class="n">ec2_client</span><span class="o">.</span><span class="n">get_waiter</span><span class="p">(</span><span class="s1">&#39;instance_terminated&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">wait</span><span class="p">,</span>
+    <span class="n">InstanceIds</span><span class="o">=</span><span class="n">private_ids</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">private_instances</span><span class="p">:</span>
+    <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">terminate</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We gather the ids of all our instances in two lists. Now let us wait
+until all our instances are operational.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">ec2_client</span><span class="o">.</span><span class="n">get_waiter</span><span class="p">(</span><span class="s1">&#39;instance_status_ok&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span>
+    <span class="n">InstanceIds</span><span class="o">=</span><span class="n">all_ids</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We will need one more public IP address, to be used by the management
+instance that we need to connect to.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">eip</span> <span class="o">=</span> <span class="n">ec2_client</span><span class="o">.</span><span class="n">allocate_address</span><span class="p">(</span><span class="n">Domain</span><span class="o">=</span><span class="s1">&#39;vpc&#39;</span><span class="p">)</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ec2_client</span><span class="o">.</span><span class="n">release_address</span><span class="p">,</span>
+                <span class="n">AllocationId</span><span class="o">=</span><span class="n">eip</span><span class="p">[</span><span class="s1">&#39;AllocationId&#39;</span><span class="p">])</span>
+
+<span class="n">eip_assoc</span> <span class="o">=</span> <span class="n">ec2_client</span><span class="o">.</span><span class="n">associate_address</span><span class="p">(</span>
+    <span class="n">AllocationId</span><span class="o">=</span><span class="n">eip</span><span class="p">[</span><span class="s1">&#39;AllocationId&#39;</span><span class="p">],</span>
+    <span class="n">InstanceId</span><span class="o">=</span><span class="n">public_instance</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ec2_client</span><span class="o">.</span><span class="n">disassociate_address</span><span class="p">,</span>
+                <span class="n">AssociationId</span><span class="o">=</span><span class="n">eip_assoc</span><span class="p">[</span><span class="s1">&#39;AssociationId&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>We have installed the SSM agent on our machines, but it takes a moment
+for it to become operational. We will define yet another wait function
+to suspend the execution until then.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">wait_for_ssm_agents</span><span class="p">(</span><span class="n">instance_ids</span><span class="p">):</span>
+   <span class="k">for</span> <span class="n">repeat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">40</span><span class="p">):</span>
+       <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+       <span class="n">response</span> <span class="o">=</span> <span class="n">ssm</span><span class="o">.</span><span class="n">describe_instance_information</span><span class="p">(</span>
+           <span class="n">InstanceInformationFilterList</span><span class="o">=</span><span class="p">[{</span>
+               <span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="s1">&#39;InstanceIds&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;valueSet&#39;</span><span class="p">:</span> <span class="n">instance_ids</span>
+           <span class="p">}])</span>
+       <span class="n">num_responses</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+           <span class="s1">&#39;InstanceInformationList&#39;</span><span class="p">,</span> <span class="p">[]))</span>
+       <span class="k">if</span> <span class="n">num_responses</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">instance_ids</span><span class="p">):</span>
+           <span class="c1"># It is normal for an instance to not show up</span>
+           <span class="c1"># even if requested explicitly.</span>
+           <span class="k">continue</span>
+       <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;InstanceInformationList&#39;</span><span class="p">):</span>
+           <span class="k">if</span> <span class="n">instance</span><span class="p">[</span><span class="s1">&#39;PingStatus&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;Online&#39;</span><span class="p">:</span>
+               <span class="k">break</span>
+       <span class="k">else</span><span class="p">:</span>
+           <span class="k">return</span>
+   <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Timed out waiting for SSM agents to activate.&#39;</span><span class="p">)</span>
+
+<span class="n">wait_for_ssm_agents</span><span class="p">(</span><span class="n">all_ids</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We will need one more function to wait for an SSM command to complete
+its execution (unfortunately there is no built-in waiter for this in
+<code class="docutils literal"><span class="pre">boto3</span></code>).</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">wait_for_ssm_command</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">repeat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">40</span><span class="p">):</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">ssm</span><span class="o">.</span><span class="n">list_commands</span><span class="p">(</span>
+            <span class="n">CommandId</span><span class="o">=</span><span class="n">command</span><span class="p">[</span><span class="s1">&#39;Command&#39;</span><span class="p">][</span><span class="s1">&#39;CommandId&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Commands&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;Commands&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;Status&#39;</span><span class="p">]</span> <span class="ow">in</span> \
+                <span class="p">(</span><span class="s1">&#39;Success&#39;</span><span class="p">,</span> <span class="s1">&#39;Cancelled&#39;</span><span class="p">,</span> <span class="s1">&#39;Failed&#39;</span><span class="p">,</span> <span class="s1">&#39;TimedOut&#39;</span><span class="p">):</span>
+            <span class="k">return</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+        <span class="s1">&#39;Timed out waiting for an SSM command to finish.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Before we proceed, we should wait until all AG servers have started
+(at this point we know that the machines are up, but it takes a moment
+for AG itself to start processing requests). In a production system we
+would probably achieve this by using a dedicated monitoring solution
+or some other advanced mechanism, but to keep this tutorial simple we
+will just use SSM commands to poll the AG port until it starts
+responding.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">wait_for_ag</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="s1">&#39;until curl -f http://127.0.0.1:10035/version; do sleep 2; done&#39;</span>
+<span class="p">]</span>
+<span class="n">cmd</span> <span class="o">=</span> <span class="n">ssm</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span>
+    <span class="n">InstanceIds</span><span class="o">=</span><span class="n">all_ids</span><span class="p">,</span>
+    <span class="n">DocumentName</span><span class="o">=</span><span class="s1">&#39;AWS-RunShellScript&#39;</span><span class="p">,</span>
+    <span class="n">Parameters</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;commands&#39;</span><span class="p">:</span> <span class="n">wait_for_ag</span><span class="p">},</span>
+    <span class="n">TimeoutSeconds</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+<span class="n">wait_for_ssm_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We will now use <a class="reference external" href="http://docs.aws.amazon.com/systems-manager/latest/userguide/">SSM</a> to send a script that will load sample data
+into our instances. To keep things simple we will add just a single
+triple per instance. That triple will include the index of the
+instance (a number between <code class="docutils literal"><span class="pre">0</span></code> and <code class="docutils literal"><span class="pre">INSTANCE_COUNT</span> <span class="pre">-</span> <span class="pre">1</span></code>).</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">script</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;ID=$(curl http://169.254.169.254/latest/meta-data/ami-launch-index)&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;curl -X PUT -u test:xyzzy http://127.0.0.1:10035/repositories/r&#39;</span><span class="p">,</span>
+    <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;curl -X PUT -u test:xyzzy http://127.0.0.1:10035/repositories/r/statement&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;--data-urlencode &quot;subj=&lt;ex://instance${ID}&gt;&quot;&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;--data-urlencode &quot;pred=&lt;ex://id&gt;&quot;&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;--data-urlencode &quot;obj=</span><span class="se">\\</span><span class="s1">&quot;${ID}</span><span class="se">\\</span><span class="s1">&quot;^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt;&quot;&#39;</span><span class="p">])</span>
+<span class="p">]</span>
+
+<span class="n">cmd</span> <span class="o">=</span> <span class="n">ssm</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">InstanceIds</span><span class="o">=</span><span class="n">private_ids</span><span class="p">,</span>
+                       <span class="n">DocumentName</span><span class="o">=</span><span class="s1">&#39;AWS-RunShellScript&#39;</span><span class="p">,</span>
+                       <span class="n">Parameters</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;commands&#39;</span><span class="p">:</span> <span class="n">script</span><span class="p">})</span>
+<span class="n">wait_for_ssm_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that the waiter functions defined above are not particularly
+robust in their error handling. In a production system consisting of a
+larger number of instances a more elaborate mechanism for error
+detection and handling (retries) would have to be implemented.</p>
+<p>Now we are ready to create the federation by connecting to the
+management machine. Notice that we use the default credentials for the
+AllegroGraph AMI.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.sail.allegrographserver</span> <span class="kn">import</span> <span class="n">AllegroGraphServer</span>
+
+<span class="n">server</span> <span class="o">=</span> <span class="n">AllegroGraphServer</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">eip</span><span class="p">[</span><span class="s1">&#39;PublicIp&#39;</span><span class="p">],</span>
+                            <span class="n">user</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;xyzzy&#39;</span><span class="p">)</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">openSession</span><span class="p">(</span>
+    <span class="s1">&#39;+&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;&lt;http://test:xyzzy@</span><span class="si">%s</span><span class="s1">/repositories/r&gt;&#39;</span>
+                 <span class="o">%</span> <span class="n">i</span><span class="o">.</span><span class="n">private_ip_address</span>
+             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">private_instances</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>And now we can issue a query:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.query.query</span> <span class="kn">import</span> <span class="n">QueryLanguage</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">prepareTupleQuery</span><span class="p">(</span><span class="n">QueryLanguage.SPARQL</span><span class="p">,</span> <span class="s2">&quot;&quot;&quot;</span>
+    <span class="k">SELECT</span> <span class="p">(</span><span class="nf">AVG</span><span class="p">(</span><span class="nv">?o</span><span class="p">)</span> <span class="k">as</span> <span class="nv">?avg</span><span class="p">)</span> <span class="p">{</span> <span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span> <span class="p">}</span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="n">query</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This should print the average instance id, which should equal
+<code class="docutils literal"><span class="pre">(INSTANCE_COUNT</span> <span class="pre">-</span> <span class="pre">1)</span> <span class="pre">/</span> <span class="pre">2</span></code>.</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>-------
+| avg |
+=======
+| 0.5 |
+-------
+</pre></div>
+</div>
+<p>That is all - the script is now done and will start tearing down the
+whole infrastructure.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Remember to check your AWS account for any leftover
+resources after running the tutorial to avoid unnecessary
+costs.</p>
+</div>
+</div>
+
+
+  
+    <div class="nav-links nav-links-footer">
+        &laquo;<a href="example018.html" title="previous chapter">Example 18: Pandas support</a>
+      <a href="../api.html" title="next chapter">AllegroGraph Python API Reference</a> 
+      &raquo;
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#setting-the-environment-for-the-tutorial">Setting the environment for the tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#terminology">Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#creating-users-with-webview">Creating Users with WebView</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example001.html">Example 1: Creating a repository and triple indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example002.html">Example 2: Asserting and retracting triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example003.html">Example 3: A SPARQL query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example004.html">Example 4: Statement matching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example005.html">Example 5: Literal values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example006.html">Example 6: Importing triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example007.html">Example 7: Querying multiple contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example008.html">Example 8: Exporting triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example009.html">Example 9: Exporting query results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example010.html">Example 10: Graphs in SPARQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example011.html">Example 11: Namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example012.html">Example 12: Free Text indexing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example013.html">Example 13: SPARQL query forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example014.html">Example 14: Parametric queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example015.html">Example 15: Range queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example016.html">Example 16: Federated repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example017.html">Example 17: Triple attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example018.html">Example 18: Pandas support</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Running AG on AWS EC2</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../tutorial.html">Tutorial</a><ul>
+      <li>Previous: <a href="example018.html" title="previous chapter">Example 18: Pandas support</a></li>
+      <li>Next: <a href="../api.html" title="next chapter">AllegroGraph Python API Reference</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/tutorial/fedex.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

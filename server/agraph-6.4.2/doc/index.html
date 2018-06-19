@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Documentation Index | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="documentation-index"><div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>      <h1>AllegroGraph 6.4.2 Documentation Index</h1></div> <div id="contents"> 
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-6' title='Release notes'>Release notes</a></li>
+<li><a href='#header2-8' title='Getting started'>Getting started</a></li>
+<li><a href='#header2-14' title='Tools'>Tools</a></li>
+<li><a href='#header2-24' title='Special Features'>Special Features</a></li>
+<li><a href='#header2-35' title='Server management'>Server management</a></li>
+<li><a href='#header2-49' title='Programming Interfaces'>Programming Interfaces</a>
+<ul>
+<li><a href='#header3-50' title='Clients'>Clients</a></li>
+<li><a href='#header3-57' title='Server'>Server</a></li></ul></li>
+<li><a href='#header2-61' title='Querying'>Querying</a></li>
+<li><a href='#header2-67' title='Tutorials'>Tutorials</a></li>
+<li><a href='#header2-78' title='3rd-party Integration'>3rd-party Integration</a>
+<ul>
+<li><a href='#header3-82' title='NoSQL Ecosystem Integration'>NoSQL Ecosystem Integration</a></li>
+<li><a href='#header3-85' title='Machine Learning - Data Mining'>Machine Learning - Data Mining</a></li>
+<li><a href='#header3-89' title='ETL and Data Integration'>ETL and Data Integration</a></li>
+<li><a href='#header3-99' title='Entity Extraction & Analytics'>Entity Extraction &amp; Analytics</a></li>
+<li><a href='#header3-102' title='Linked Data'>Linked Data</a></li>
+<li><a href='#header3-105' title='Ontology Development and Management'>Ontology Development and Management</a></li>
+<li><a href='#header3-107' title='Exploration and Discovery'>Exploration and Discovery</a></li></ul></li>
+<li><a href='#header2-110' title='Miscellaneous'>Miscellaneous</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-6' id='header2-6'></a><h2>Release notes</h2>
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li></ul><a name='header2-8' id='header2-8'></a><h2>Getting started</h2>
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">AllegroGraph Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">AllegroGraph Introduction</a></li>
+<li><a href="agraph-quick-start.html">AllegroGraph Quick Start</a></li></ul><a name='header2-14' id='header2-14'></a><h2>Tools</h2>
+<ul>
+<li><a href="agtool.html">agtool General Command Utility</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="materializer.html">Materializer</a></li>
+<li><a href="rapper.html">Data Conversion with Rapper</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li>
+<li><a href="agquery.html">Querying</a></li></ul><a name='header2-24' id='header2-24'></a><h2>Special Features</h2>
+<ul>
+<li><a href="triple-index.html">Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul><a name='header2-35' id='header2-35'></a><h2>Server management</h2>
+<ul>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="multi-master.html">Multi-master Replication</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="warm-standby.html">Replication Details</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="managing-users.html">Managing Users</a></li></ul><a name='header2-49' id='header2-49'></a><h2>Programming Interfaces</h2><a name='header3-50' id='header3-50'></a><h3>Clients</h3>
+<ul>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (RDF4J and Jena)</a></li>
+<li><a href="java-connection-pooling.html">Java Connection Pooling</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li></ul><a name='header3-57' id='header3-57'></a><h3>Server</h3>
+<ul>
+<li><a href="lisp-reference.html">Lisp</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li></ul><a name='header2-61' id='header2-61'></a><h2>Querying</h2>
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPARQL Inferencing Notation (SPIN)</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul><a name='header2-67' id='header2-67'></a><h2>Tutorials</h2>
+<ul>
+<li><a href="java-tutorial/java-tutorial.html">Java RDF4J</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li>Python
+<ul>
+<li><a href="python/tutorial.html">Python tutorial</a></li>
+<li><a href="jupyter-notebook.html">Jupyter notebook tutorial</a></li></ul></li>
+<li><a href="lisp-quickstart.html">Lisp Quick Start</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="tutorial-index.html">More tutorials</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial using AGWebView</a></li></ul><a name='header2-78' id='header2-78'></a><h2>3rd-party Integration</h2>
+<ul>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="anaconda.html">Anaconda</a></li></ul><a name='header3-82' id='header3-82'></a><h3>NoSQL Ecosystem Integration</h3>
+<ul>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="solr-index.html">Solr text Indices</a></li></ul><a name='header3-85' id='header3-85'></a><h3>Machine Learning - Data Mining</h3>
+<ul>
+<li><a href="https://github.com/huangjs/netica-for-allegrocl/blob/master/README" class="external" target="_blank">Bayesian Network Integration - Netica</a></li>
+<li><a href="http://franz.com/ps/pepito/" target="_blank">DataMaestro</a></li>
+<li><a href="https://github.com/joshsh/jig/blob/develop/README.md" class="external" target="_blank">JIG</a></li></ul><a name='header3-89' id='header3-89'></a><h3>ETL and Data Integration</h3>
+<ul>
+<li><a href="http://www.denodo.com/en/index.php" class="external" target="_blank">Denodo</a></li>
+<li><a href="http://www.mulesoft.com/" class="external" target="_blank">MuleSoft</a></li>
+<li><a href="http://franz.com/agraph/set/" target="_blank">AllegroSet</a></li>
+<li><a href="http://franz.com/agraph/talend/">Talend</a></li>
+<li><a href="rapper.html">Rapper</a></li>
+<li><a href="hadoop.html">Hadoop</a></li>
+<li><a href="http://franz.com/agraph/sentient/">Sentient Suite</a></li>
+<li><a href="http://www.w3.org/TR/r2rml/" class="external" target="_blank">R2RML</a></li>
+<li><a href="http://franz.com/ps/">Professional Services</a></li></ul><a name='header3-99' id='header3-99'></a><h3>Entity Extraction &amp; Analytics</h3>
+<ul>
+<li><a href="http://www.smartlogic.com/home/products/semaphore-modules" class="external" target="_blank">Semaphore - Smart Logic</a></li>
+<li><a href="http://www.expertsystem.net/products-technology/cogito-technology" class="external" target="_blank">Cogito</a></li></ul><a name='header3-102' id='header3-102'></a><h3>Linked Data</h3>
+<ul>
+<li><a href="https://drupal.org/" class="external" target="_blank">Drupal</a></li>
+<li><a href="https://github.com/joshsh/twitlogic" class="external" target="_blank">TwitLogic</a></li></ul><a name='header3-105' id='header3-105'></a><h3>Ontology Development and Management</h3>
+<ul>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li></ul><a name='header3-107' id='header3-107'></a><h3>Exploration and Discovery</h3>
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http://franz.com/agraph/sentient/">Sentient Suite</a></li></ul><a name='header2-110' id='header2-110'></a><h2>Miscellaneous</h2>
+<ul>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li>
+<li><a href="http://franz.com/agraph/allegrograph/agraph_benchmarks.lhtml" target="_blank">Benchmarks</a></li>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2 (AMIs)</a></li>
+<li><a href="http://github.com/franzinc">Source Code (github)</a></li>
+<li><a href="copyrights.html">Copyrights</a></li></ul> </div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

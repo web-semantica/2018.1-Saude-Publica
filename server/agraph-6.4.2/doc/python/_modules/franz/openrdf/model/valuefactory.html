@@ -1,0 +1,261 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>franz.openrdf.model.valuefactory &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+    </div>
+  
+    
+  <h1>Source code for franz.openrdf.model.valuefactory</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># pylint: disable-msg=C0103 </span>
+
+<span class="c1">################################################################################</span>
+<span class="c1"># Copyright (c) 2006-2017 Franz Inc.  </span>
+<span class="c1"># All rights reserved. This program and the accompanying materials are</span>
+<span class="c1"># made available under the terms of the MIT License which accompanies</span>
+<span class="c1"># this distribution, and is available at http://opensource.org/licenses/MIT</span>
+<span class="c1">################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">object</span>
+
+<span class="kn">from</span> <span class="nn">.value</span> <span class="k">import</span> <span class="n">Value</span><span class="p">,</span> <span class="n">BNode</span><span class="p">,</span> <span class="n">URI</span>
+<span class="kn">from</span> <span class="nn">.literal</span> <span class="k">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">CompoundLiteral</span><span class="p">,</span> <span class="n">RangeLiteral</span><span class="p">,</span> <span class="n">GeoCoordinate</span>
+<span class="kn">from</span> <span class="nn">.statement</span> <span class="k">import</span> <span class="n">Statement</span>
+
+<div class="viewcode-block" id="ValueFactory"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.ValueFactory">[docs]</a><span class="k">class</span> <span class="nc">ValueFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A factory for creating URIs, blank nodes, literals and statements.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">BLANK_NODE_AMOUNT</span> <span class="o">=</span> <span class="mi">10</span>    
+<div class="viewcode-block" id="ValueFactory.__init__"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.ValueFactory.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">store</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="o">=</span> <span class="n">store</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unusedBNodeIds</span> <span class="o">=</span> <span class="p">[]</span></div>
+        
+<div class="viewcode-block" id="ValueFactory.getUnusedBNodeId"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.ValueFactory.getUnusedBNodeId">[docs]</a>    <span class="k">def</span> <span class="nf">getUnusedBNodeId</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">unusedBNodeIds</span><span class="p">:</span>
+            <span class="c1">## retrieve a set of bnode ids (they include leading &#39;_:&#39;, which we strip off later:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unusedBNodeIds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">mini_repository</span><span class="o">.</span><span class="n">getBlankNodes</span><span class="p">(</span><span class="n">amount</span><span class="o">=</span><span class="n">ValueFactory</span><span class="o">.</span><span class="n">BLANK_NODE_AMOUNT</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">unusedBNodeIds</span><span class="o">.</span><span class="n">pop</span><span class="p">()[</span><span class="mi">2</span><span class="p">:]</span> <span class="c1">## strip off leading &#39;_:&#39;</span></div>
+
+<div class="viewcode-block" id="ValueFactory.createBNode"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.ValueFactory.createBNode">[docs]</a>    <span class="k">def</span> <span class="nf">createBNode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodeID</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        See :meth:`.RepositoryConnection.createBNode`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">nodeID</span><span class="p">:</span>
+            <span class="n">nodeID</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getUnusedBNodeId</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">BNode</span><span class="p">(</span><span class="n">nodeID</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="ValueFactory.createLiteral"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.ValueFactory.createLiteral">[docs]</a>    <span class="k">def</span> <span class="nf">createLiteral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        See :meth:`.RepositoryConnection.createLiteral`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">createRange</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">Literal</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">datatype</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">)</span></div>
+        
+
+<div class="viewcode-block" id="ValueFactory.createStatement"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.ValueFactory.createStatement">[docs]</a>    <span class="k">def</span> <span class="nf">createStatement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">_object</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        See :meth:`.RepositoryConnection.createStatement`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Statement</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">_object</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="ValueFactory.createURI"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.ValueFactory.createURI">[docs]</a>    <span class="k">def</span> <span class="nf">createURI</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">localname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        See :meth:`.RepositoryConnection.createURI`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">namespace</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">localname</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">URI</span><span class="p">(</span><span class="n">namespace</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span> <span class="n">localname</span><span class="o">=</span><span class="n">namespace</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">URI</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span> <span class="n">localname</span><span class="o">=</span><span class="n">localname</span><span class="p">)</span></div>
+    
+
+<span class="c1">#############################################################################</span>
+<span class="c1">## Extension to RDF4J API</span>
+<span class="c1">#############################################################################</span>
+
+<div class="viewcode-block" id="ValueFactory.validateRangeConstant"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.ValueFactory.validateRangeConstant">[docs]</a>    <span class="k">def</span> <span class="nf">validateRangeConstant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">,</span> <span class="n">predicate</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Validate an individual range constant&quot;&quot;&quot;</span>
+        <span class="n">datatype</span> <span class="o">=</span> <span class="n">term</span><span class="o">.</span><span class="n">getDatatype</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">datatype</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Illegal term in range expression &quot;</span><span class="si">%s</span><span class="s1">&quot; needs to &#39;</span>
+                            <span class="s1">&#39;have a datatype.&#39;</span> <span class="o">%</span> <span class="n">term</span><span class="o">.</span><span class="n">getValue</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="ValueFactory.validateCompoundLiteral"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.ValueFactory.validateCompoundLiteral">[docs]</a>    <span class="k">def</span> <span class="nf">validateCompoundLiteral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">,</span> <span class="n">predicate</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check to see if range boundaries are mapped.</span>
+<span class="sd">        TODO: ADD VALIDATION FOR GEO TERMS</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="n">RangeLiteral</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validateRangeConstant</span><span class="p">(</span><span class="n">term</span><span class="o">.</span><span class="n">lowerBound</span><span class="p">,</span> <span class="n">predicate</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validateRangeConstant</span><span class="p">(</span><span class="n">term</span><span class="o">.</span><span class="n">upperBound</span><span class="p">,</span> <span class="n">predicate</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="n">GeoCoordinate</span><span class="p">):</span>
+            <span class="k">pass</span></div>
+        
+<div class="viewcode-block" id="ValueFactory.object_position_term_to_openrdf_term"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.ValueFactory.object_position_term_to_openrdf_term">[docs]</a>    <span class="k">def</span> <span class="nf">object_position_term_to_openrdf_term</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If &#39;term&#39; is a string, integer, float, etc, convert it to</span>
+<span class="sd">        a Literal term.  Otherwise, if its a Value, just pass it through.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">term</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="n">CompoundLiteral</span><span class="p">):</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">validateCompoundLiteral</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="n">predicate</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="n">Value</span><span class="p">):</span>
+                <span class="n">term</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">term</span></div>
+    
+<div class="viewcode-block" id="ValueFactory.createRange"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.ValueFactory.createRange">[docs]</a>    <span class="k">def</span> <span class="nf">createRange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lowerBound</span><span class="p">,</span> <span class="n">upperBound</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a compound literal representing a range from &#39;lowerBound&#39; to &#39;upperBound&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lowerBound</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object_position_term_to_openrdf_term</span><span class="p">(</span><span class="n">lowerBound</span><span class="p">)</span>
+        <span class="n">upperBound</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object_position_term_to_openrdf_term</span><span class="p">(</span><span class="n">upperBound</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RangeLiteral</span><span class="p">(</span><span class="n">lowerBound</span><span class="o">=</span><span class="n">lowerBound</span><span class="p">,</span> <span class="n">upperBound</span><span class="o">=</span><span class="n">upperBound</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ValueFactory.namespace"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.model.html#franz.openrdf.model.ValueFactory.namespace">[docs]</a>    <span class="k">def</span> <span class="nf">namespace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create an object that allows for simple creation of URIs in given namespace.</span>
+<span class="sd">        Attribute lookups on the returned object will produce URIs with the attribute</span>
+<span class="sd">        name as localname. Array item access and function calls will have the same</span>
+<span class="sd">        effect.</span>
+
+<span class="sd">        :param prefix: Prefix prepended to URIs created by the returned object.</span>
+<span class="sd">        :type prefix: str</span>
+<span class="sd">        :return: An object that can be used to create URIs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vf</span> <span class="o">=</span> <span class="bp">self</span>
+
+        <span class="k">class</span> <span class="nc">Namespace</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+            <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+
+            <span class="k">def</span> <span class="nf">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+            <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+            <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">vf</span><span class="o">.</span><span class="n">createURI</span><span class="p">(</span><span class="n">namespace</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span> <span class="n">localname</span><span class="o">=</span><span class="n">arg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Namespace</span><span class="p">()</span></div></div>
+</pre></div>
+
+  
+    <div class="nav-links nav-links-footer">
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

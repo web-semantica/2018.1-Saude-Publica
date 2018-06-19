@@ -1,0 +1,2 @@
+The GPL source code contained in this product is available as a free
+download from ftp://ftp.franz.com/pub/gpl/

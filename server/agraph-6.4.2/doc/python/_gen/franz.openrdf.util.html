@@ -1,0 +1,327 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>franz.openrdf.util package &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="franz.openrdf.vocabulary package" href="franz.openrdf.vocabulary.html" />
+    <link rel="prev" title="franz.openrdf.sail package" href="franz.openrdf.sail.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+        &laquo;<a href="franz.openrdf.sail.html" title="previous chapter">franz.openrdf.sail package</a>
+      <a href="franz.openrdf.vocabulary.html" title="next chapter">franz.openrdf.vocabulary package</a> 
+      &raquo;
+    </div>
+  
+    
+  <div class="section" id="franz-openrdf-util-package">
+<h1>franz.openrdf.util package<a class="headerlink" href="#franz-openrdf-util-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-franz.openrdf.util.contexts">
+<span id="franz-openrdf-util-contexts-module"></span><h2>franz.openrdf.util.contexts module<a class="headerlink" href="#module-franz.openrdf.util.contexts" title="Permalink to this headline">¶</a></h2>
+<p>Utilities related to context managers.</p>
+<dl class="class">
+<dt id="franz.openrdf.util.contexts.BinWrapper">
+<em class="property">class </em><code class="descclassname">franz.openrdf.util.contexts.</code><code class="descname">BinWrapper</code><span class="sig-paren">(</span><em>target</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/util/contexts.html#BinWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.util.contexts.BinWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="franz.openrdf.util.contexts.BinWrapper.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>target</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/util/contexts.html#BinWrapper.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.util.contexts.BinWrapper.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.util.contexts.BinWrapper.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>byte_string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/util/contexts.html#BinWrapper.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.util.contexts.BinWrapper.write" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="franz.openrdf.util.contexts.output_to">
+<code class="descclassname">franz.openrdf.util.contexts.</code><code class="descname">output_to</code><span class="sig-paren">(</span><em>target</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/util/contexts.html#output_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.util.contexts.output_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a file-like object constructed from target.</p>
+<p>Target can be:</p>
+<blockquote>
+<div><ul class="simple">
+<li>None: the returned stream will ignore all data</li>
+<li>True: data will be written to stdout.</li>
+<li>a string: a file will be opened (in binary mode)</li>
+<li>a file-like object: will be returned as is.</li>
+<li>an int - a file descriptor.</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>target</strong> – File path, None or a file-like object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="franz.openrdf.util.contexts.wrap_context">
+<code class="descclassname">franz.openrdf.util.contexts.</code><code class="descname">wrap_context</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/util/contexts.html#wrap_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.util.contexts.wrap_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap a no-op context around an arbitrary value, so that it can be
+used in a <code class="docutils literal"><span class="pre">with</span></code> statement.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> – Value to be returned by the context manager.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A context manager wrapping <code class="docutils literal"><span class="pre">value</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-franz.openrdf.util.strings">
+<span id="franz-openrdf-util-strings-module"></span><h2>franz.openrdf.util.strings module<a class="headerlink" href="#module-franz.openrdf.util.strings" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="franz.openrdf.util.strings.encode_ntriple_string">
+<code class="descclassname">franz.openrdf.util.strings.</code><code class="descname">encode_ntriple_string</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/util/strings.html#encode_ntriple_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.util.strings.encode_ntriple_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a unicode string escaped according to N-Triples
+canonical encoding rules.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="franz.openrdf.util.strings.encode_ntriple_uri">
+<code class="descclassname">franz.openrdf.util.strings.</code><code class="descname">encode_ntriple_uri</code><span class="sig-paren">(</span><em>uri</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/util/strings.html#encode_ntriple_uri"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.util.strings.encode_ntriple_uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a string URI to ntriples by adding angle brackets
+and escaping special characters.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="franz.openrdf.util.strings.literal">
+<code class="descclassname">franz.openrdf.util.strings.</code><code class="descname">literal</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/util/strings.html#literal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.util.strings.literal" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <cite>string</cite> is a valid literal in NTriples syntax, return its value, lang tag and type.
+Use <cite>None</cite> if there is no language tag or no datatype.
+If <cite>string</cite> is not a valid literal return <cite>None</cite>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="franz.openrdf.util.strings.nodeid">
+<code class="descclassname">franz.openrdf.util.strings.</code><code class="descname">nodeid</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/util/strings.html#nodeid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.util.strings.nodeid" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <cite>string</cite> is a valid NTriples BNode reference, extract and return the node id.
+Otherwise return <cite>None</cite>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="franz.openrdf.util.strings.ntriples_unescape">
+<code class="descclassname">franz.openrdf.util.strings.</code><code class="descname">ntriples_unescape</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/util/strings.html#ntriples_unescape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.util.strings.ntriples_unescape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes ntriples escape sequences in a string.</p>
+<p>Actually decodes a superset of said sequences.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="franz.openrdf.util.strings.to_bytes">
+<code class="descclassname">franz.openrdf.util.strings.</code><code class="descname">to_bytes</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/util/strings.html#to_bytes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.util.strings.to_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>If TEXT is a Unicode string, return a byte string in utf-8.
+Otherwise simply return TEXT.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str|bytes|unicode</em>) – Text to be converted.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bytes</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="franz.openrdf.util.strings.to_native_string">
+<code class="descclassname">franz.openrdf.util.strings.</code><code class="descname">to_native_string</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/util/strings.html#to_native_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.util.strings.to_native_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts text to the native string type of the Python version used.
+UTF-8 encoding is used if the text needs to be encoded or decoded.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str|bytes|unicode</em>) – Text to be converted (either Unicode or bytes).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="franz.openrdf.util.strings.uri_escape_match">
+<code class="descclassname">franz.openrdf.util.strings.</code><code class="descname">uri_escape_match</code><span class="sig-paren">(</span><em>match</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/util/strings.html#uri_escape_match"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.util.strings.uri_escape_match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a Match object representing a single character
+into an ntriple escape sequence.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="franz.openrdf.util.strings.uriref">
+<code class="descclassname">franz.openrdf.util.strings.</code><code class="descname">uriref</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/util/strings.html#uriref"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.util.strings.uriref" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <cite>string</cite> is a valid NTriples URI reference, extract and return the URI (as a string).
+Otherwise return <cite>None</cite>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-franz.openrdf.util.uris">
+<span id="franz-openrdf-util-uris-module"></span><h2>franz.openrdf.util.uris module<a class="headerlink" href="#module-franz.openrdf.util.uris" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="franz.openrdf.util.uris.asURIString">
+<code class="descclassname">franz.openrdf.util.uris.</code><code class="descname">asURIString</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/util/uris.html#asURIString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.util.uris.asURIString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="franz.openrdf.util.uris.getLocalNameIndex">
+<code class="descclassname">franz.openrdf.util.uris.</code><code class="descname">getLocalNameIndex</code><span class="sig-paren">(</span><em>uri</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/util/uris.html#getLocalNameIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.util.uris.getLocalNameIndex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-franz.openrdf.util">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-franz.openrdf.util" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+  
+    <div class="nav-links nav-links-footer">
+        &laquo;<a href="franz.openrdf.sail.html" title="previous chapter">franz.openrdf.sail package</a>
+      <a href="franz.openrdf.vocabulary.html" title="next chapter">franz.openrdf.vocabulary package</a> 
+      &raquo;
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">AllegroGraph Python API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="modules.html">src</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#allegrographserver-class">AllegroGraphServer class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#catalog-class">Catalog class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-franz.openrdf.sail.spec">Spec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#repository-class">Repository class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utility-connection-functions">Utility connection functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#repositoryconnection-class">RepositoryConnection class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#query-class-and-subclasses">Query Class (and Subclasses)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#queryresult-class">QueryResult Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#repositoryresult-class">RepositoryResult class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#statement-class">Statement Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#valuefactory-class">ValueFactory Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../api.html">AllegroGraph Python API Reference</a><ul>
+  <li><a href="modules.html">src</a><ul>
+  <li><a href="franz.html">franz package</a><ul>
+  <li><a href="franz.openrdf.html">franz.openrdf package</a><ul>
+      <li>Previous: <a href="franz.openrdf.sail.html" title="previous chapter">franz.openrdf.sail package</a></li>
+      <li>Next: <a href="franz.openrdf.vocabulary.html" title="next chapter">franz.openrdf.vocabulary package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/_gen/franz.openrdf.util.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

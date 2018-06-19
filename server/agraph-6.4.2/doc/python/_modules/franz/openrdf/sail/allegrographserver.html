@@ -1,0 +1,752 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>franz.openrdf.sail.allegrographserver &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+    </div>
+  
+    
+  <h1>Source code for franz.openrdf.sail.allegrographserver</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># pylint: disable-msg=C0103</span>
+
+<span class="c1">################################################################################</span>
+<span class="c1"># Copyright (c) 2006-2017 Franz Inc.  </span>
+<span class="c1"># All rights reserved. This program and the accompanying materials are</span>
+<span class="c1"># made available under the terms of the MIT License which accompanies</span>
+<span class="c1"># this distribution, and is available at http://opensource.org/licenses/MIT</span>
+<span class="c1">################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">str</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">map</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">object</span>
+<span class="kn">from</span> <span class="nn">future</span> <span class="k">import</span> <span class="n">standard_library</span>
+<span class="n">standard_library</span><span class="o">.</span><span class="n">install_aliases</span><span class="p">()</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">..exceptions</span> <span class="k">import</span> <span class="n">ServerException</span>
+<span class="kn">from</span> <span class="nn">..repository.repository</span> <span class="k">import</span> <span class="n">Repository</span><span class="p">,</span> <span class="n">RepositoryConnection</span>
+<span class="kn">from</span> <span class="nn">...miniclient</span> <span class="k">import</span> <span class="n">repository</span> <span class="k">as</span> <span class="n">miniserver</span>
+<span class="kn">import</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">urllib.request</span><span class="o">,</span> <span class="nn">urllib.parse</span><span class="o">,</span> <span class="nn">urllib.error</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">spec</span>
+<span class="kn">from</span> <span class="nn">past.builtins</span> <span class="k">import</span> <span class="n">basestring</span>
+
+<span class="n">READ_ONLY</span> <span class="o">=</span> <span class="s1">&#39;READ_ONLY&#39;</span>
+
+<span class="n">LEGAL_OPTION_TYPES</span> <span class="o">=</span> <span class="p">{</span><span class="n">READ_ONLY</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,}</span>
+
+<div class="viewcode-block" id="AllegroGraphServer"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer">[docs]</a><span class="k">class</span> <span class="nc">AllegroGraphServer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The AllegroGraphServer object represents a remote AllegroGraph server on</span>
+<span class="sd">    the network. It is used to inventory and access the catalogs of that</span>
+<span class="sd">    server.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="AllegroGraphServer.__init__"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">cainfo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sslcert</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verifyhost</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verifypeer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">protocol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">proxy</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AGRAPH_PROXY&#39;</span><span class="p">),</span>
+                 <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define the connection to the AllegroGraph HTTP server.</span>
+
+<span class="sd">        Pass either ``user`` and ``password`` for Basic Authentication or</span>
+<span class="sd">        ``cainfo``, ``sslcert`` values for client X.509 certificate</span>
+<span class="sd">        authentication.</span>
+
+<span class="sd">        :param host: Address of the AllegroGraph server to connect to.</span>
+<span class="sd">                     This can also include protocol and port</span>
+<span class="sd">                     (e.g. http://localhost:10035). Can also be specified in</span>
+<span class="sd">                     the ``AGRAPH_HOST`` environment variable.</span>
+<span class="sd">                     The default value is ``&#39;localhost&#39;```.</span>
+<span class="sd">        :type host: string</span>
+<span class="sd">        :param port: Port on which the server is listening.</span>
+<span class="sd">                     The default is 10035 if ``protocol`` is ``&#39;http&#39;``</span>
+<span class="sd">                     and 10036 if it is ``&#39;https&#39;``. Can also be specified in</span>
+<span class="sd">                     the ``AGRAPH_PORT`` environment variable.</span>
+<span class="sd">                     If passed explicitly this parameter overrides any value</span>
+<span class="sd">                     that might have been specified as a part of the ``host`` string.</span>
+<span class="sd">        :type port: int</span>
+<span class="sd">        :param protocol: Connection protocol, either ``&#39;http&#39;`` or ``&#39;https&#39;``.</span>
+<span class="sd">                         The default is ``&#39;http&#39;`` if no SSL parameters are set</span>
+<span class="sd">                         and `&#39;https&#39;`` otherwise.</span>
+<span class="sd">                         If passed explicitly this parameter overrides any value</span>
+<span class="sd">                         that might have been specified as a part of the ``host`` string.</span>
+<span class="sd">        :type protocol: string</span>
+<span class="sd">        :param user: Username (when using Basic authentication). Can also be specified in</span>
+<span class="sd">                     the ``AGRAPH_USER`` environment variable.</span>
+<span class="sd">        :type user: string</span>
+<span class="sd">        :param password: Password (when using Basic authentication). Can also be specified in</span>
+<span class="sd">                         the ``AGRAPH_PASSWORD`` environment variable.</span>
+<span class="sd">        :type password: string</span>
+<span class="sd">        :param cainfo: Path to a file or directory containing CA certificates that</span>
+<span class="sd">                       will be used to validate the server&#39;s certificate.</span>
+<span class="sd">        :type cainfo: string</span>
+<span class="sd">        :param sslcert: Client certificate path (when using SSL authentication).</span>
+<span class="sd">        :type sslcert: string</span>
+<span class="sd">        :param verifyhost: If set to ``0`` it will not be an error if the server&#39;s</span>
+<span class="sd">                           SSL certificate does not match the server&#39;s address.</span>
+<span class="sd">                           The default value is ``2``, meaning that the host name will</span>
+<span class="sd">                           be validated against the certificate.</span>
+
+<span class="sd">                           ..seealso:: https://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html</span>
+<span class="sd">        :type verifyhost: int</span>
+<span class="sd">        :param verifypeer: If set to ``1`` (the default) the validity of the server&#39;s</span>
+<span class="sd">                           SSL certificate will be checked. Set to ``0`` to disable</span>
+<span class="sd">                           the validation.</span>
+
+<span class="sd">                           ..seealso:: https://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYPEER.html</span>
+<span class="sd">        :type verifypeer: int</span>
+<span class="sd">        :param proxy: Proxy specification string. The format is SCHEME://HOST:PORT.</span>
+<span class="sd">                      Supported schemes are &#39;http&#39;, &#39;socks4&#39; and &#39;socks5&#39;.</span>
+<span class="sd">                      Note that for SOCKS proxies DNS requests are performed by the</span>
+<span class="sd">                      proxy server.</span>
+<span class="sd">                      The default value is taken from the AGRAPH_PROXY environment</span>
+<span class="sd">                      variable.</span>
+<span class="sd">        :type proxy: string</span>
+<span class="sd">        :param options: Ignored.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Not sure why we accept these, but don&#39;t want to change the API at this point.</span>
+        <span class="k">del</span> <span class="n">options</span>
+
+        <span class="n">host</span> <span class="o">=</span> <span class="n">host</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AGRAPH_HOST&#39;</span><span class="p">,</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Check if other arguments were passed as a part of host</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^(?:(?P&lt;protocol&gt;https?)://)?&#39;</span>
+                         <span class="sa">r</span><span class="s1">&#39;(?P&lt;host&gt;[^:]*)(?::(?P&lt;port&gt;[0-9]*))?(?P&lt;tail&gt;.*)$&#39;</span><span class="p">,</span>
+                         <span class="n">host</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">protocol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">protocol</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;protocol&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">port</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">))</span>
+            <span class="n">host</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">)</span>
+            <span class="n">tail</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;tail&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tail</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="n">has_https_params</span> <span class="o">=</span> <span class="n">cainfo</span> <span class="ow">or</span> <span class="n">sslcert</span> <span class="ow">or</span> <span class="n">verifyhost</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">verifypeer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">protocol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">protocol</span> <span class="o">=</span> <span class="s1">&#39;https&#39;</span> <span class="k">if</span> <span class="n">has_https_params</span> <span class="k">else</span> <span class="s1">&#39;http&#39;</span>
+
+        <span class="k">if</span> <span class="n">port</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;AGRAPH_PORT&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+                <span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AGRAPH_PORT&#39;</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">port</span> <span class="o">=</span> <span class="mi">10035</span> <span class="k">if</span> <span class="n">protocol</span> <span class="o">==</span> <span class="s1">&#39;http&#39;</span> <span class="k">else</span> <span class="mi">10036</span>
+
+        <span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{protocol}</span><span class="s1">://</span><span class="si">{host}</span><span class="s1">:</span><span class="si">{port}{tail}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">protocol</span><span class="o">=</span><span class="n">protocol</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span> <span class="n">tail</span><span class="o">=</span><span class="n">tail</span><span class="p">)</span>
+
+        <span class="n">user</span> <span class="o">=</span> <span class="n">user</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AGRAPH_USER&#39;</span><span class="p">)</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">password</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AGRAPH_PASSWORD&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">miniserver</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">cainfo</span><span class="p">,</span> <span class="n">sslcert</span><span class="p">,</span> <span class="n">verifyhost</span><span class="p">,</span> <span class="n">verifypeer</span><span class="p">,</span>
+                                         <span class="n">proxy</span><span class="o">=</span><span class="n">proxy</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the server&#39;s URL.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">url</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the server&#39;s version as a string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">getVersion</span><span class="p">()</span>
+
+<div class="viewcode-block" id="AllegroGraphServer.listCatalogs"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listCatalogs">[docs]</a>    <span class="k">def</span> <span class="nf">listCatalogs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the list of catalogs on this server.</span>
+
+<span class="sd">        A value of ``None`` will be included in this list to</span>
+<span class="sd">        represent the root catalog.</span>
+
+<span class="sd">        :return: A list of catalog names.</span>
+<span class="sd">        :rtype: list[string]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">catalogs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">listCatalogs</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">catalogs</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.openCatalog"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.openCatalog">[docs]</a>    <span class="k">def</span> <span class="nf">openCatalog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Open a catalog by name. Pass None to open the root catalog.</span>
+
+<span class="sd">        :param name: One of the catalog names from :meth:`listCatalogs`</span>
+<span class="sd">                     or ``None`` to open the root catalog.</span>
+<span class="sd">        :return: A catalog object.</span>
+<span class="sd">        :rtype: Catalog</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Allow for None and &#39;&#39; (or anything else that evaluates to False) to</span>
+        <span class="c1"># mean the root catalog.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">cats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">listCatalogs</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">cats</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ServerException</span><span class="p">(</span><span class="s2">&quot;There is no catalog named &#39;</span><span class="si">%s</span><span class="s2">&#39; (found </span><span class="si">%s</span><span class="s2">)&quot;</span>
+                <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cats</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">Catalog</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.getInitfile"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.getInitfile">[docs]</a>    <span class="k">def</span> <span class="nf">getInitfile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve the contents of the server initialization file.</span>
+
+<span class="sd">        The initialization file is a collection of Common Lisp code</span>
+<span class="sd">        that is executed in every back-end as it is created.</span>
+<span class="sd">        :return: Init file content.</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">getInitfile</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.setInitfile"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.setInitfile">[docs]</a>    <span class="k">def</span> <span class="nf">setInitfile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">restart</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Replace the current initialization file contents with the</span>
+<span class="sd">        ``content`` string or remove if None.</span>
+
+<span class="sd">        :param content: New init file conent.</span>
+<span class="sd">        :type content: string</span>
+<span class="sd">        :param restart: specifies whether any running shared back-ends should</span>
+<span class="sd">                        be shut down, so that subsequent requests will be handled by</span>
+<span class="sd">                        back-ends that include the new code. Default is ``True``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">setInitfile</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">restart</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.openSession"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.openSession">[docs]</a>    <span class="k">def</span> <span class="nf">openSession</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">autocommit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">lifetime</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">loadinitfile</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Open a session on a federated, reasoning, or filtered store.</span>
+
+<span class="sd">        Use the helper functions in the :mod:`franz.openrdf.sail.spec` module</span>
+<span class="sd">        to create the spec string.</span>
+
+<span class="sd">        :param spec: Session :mod:`specification string &lt;franz.openrdf.sail.spec&gt;`.</span>
+<span class="sd">        :type spec: string</span>
+<span class="sd">        :param autocommit: Autocommit mode (default: ``False`` = start a transaction).</span>
+<span class="sd">        :type autocommit: bool</span>
+<span class="sd">        :param lifetime: The number of seconds a session can be idle before being terminated.</span>
+<span class="sd">                         The default value is 300 (5 minutes). The maximum acceptable value</span>
+<span class="sd">                         is 21600 (6 hours).</span>
+<span class="sd">        :param loadinitfile: If ``True`` the init file will be loaded into the new session.</span>
+<span class="sd">                             The default is False.</span>
+<span class="sd">        :type loadinitfile: bool</span>
+<span class="sd">        :return: A connection to the new session.</span>
+<span class="sd">        :rtype: RepositoryConnection</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">minirep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">openSession</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">autocommit</span><span class="o">=</span><span class="n">autocommit</span><span class="p">,</span> <span class="n">lifetime</span><span class="o">=</span><span class="n">lifetime</span><span class="p">,</span> <span class="n">loadinitfile</span><span class="o">=</span><span class="n">loadinitfile</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RepositoryConnection</span><span class="p">(</span><span class="n">Repository</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">minirep</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.listScripts"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listScripts">[docs]</a>    <span class="k">def</span> <span class="nf">listScripts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the list of Sitescripts currently on the server.</span>
+
+<span class="sd">        When a user creates a session, they can choose to load one or more</span>
+<span class="sd">        of these scripts into the session.</span>
+
+<span class="sd">        :return: A list of script names.</span>
+<span class="sd">        :rtype: list[string]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">listScripts</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.addScript"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addScript">[docs]</a>    <span class="k">def</span> <span class="nf">addScript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create or replace a sitescript.</span>
+
+<span class="sd">        :param module: Script name.</span>
+<span class="sd">        :type module: string</span>
+<span class="sd">        :param code: Script content.</span>
+<span class="sd">        :type code: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">addScript</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">code</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.deleteScript"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteScript">[docs]</a>    <span class="k">def</span> <span class="nf">deleteScript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete a sitescript.</span>
+<span class="sd">        :param module: Script name.</span>
+<span class="sd">        :type module: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">deleteScript</span><span class="p">(</span><span class="n">module</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.getScript"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.getScript">[docs]</a>    <span class="k">def</span> <span class="nf">getScript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the body of a sitescript.</span>
+<span class="sd">        :param module: Script name.</span>
+<span class="sd">        :type module: string</span>
+<span class="sd">        :return: Script content.</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">getScript</span><span class="p">(</span><span class="n">module</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.openFederated"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.openFederated">[docs]</a>    <span class="k">def</span> <span class="nf">openFederated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repositories</span><span class="p">,</span> <span class="n">autocommit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">lifetime</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">loadinitfile</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Open a session that federates several repositories. The</span>
+<span class="sd">        repositories argument should be an array containing store</span>
+<span class="sd">        designators, which can be Repository or RepositoryConnection</span>
+<span class="sd">        objects, strings (naming a store in the root catalog, or the</span>
+<span class="sd">        URL of a store), or (storename, catalogname) tuples.</span>
+
+<span class="sd">        :param repositories: List of repositories to federate.</span>
+<span class="sd">        :type repositories: list[string|(string, string)|Repository|RepositoryConnection]</span>
+<span class="sd">        :param autocommit: Autocommit mode (default: ``False`` = start a transaction).</span>
+<span class="sd">        :type autocommit: bool</span>
+<span class="sd">        :param lifetime: The number of seconds a session can be idle before being terminated.</span>
+<span class="sd">                         The default value is 300 (5 minutes). The maximum acceptable value</span>
+<span class="sd">                         is 21600 (6 hours).</span>
+<span class="sd">        :param loadinitfile: If ``True`` the init file will be loaded into the new session.</span>
+<span class="sd">                             The default is False.</span>
+<span class="sd">        :type loadinitfile: bool</span>
+<span class="sd">        :return: A connection to the new session.</span>
+<span class="sd">        :rtype: RepositoryConnection</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">asRepoString</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span> <span class="k">return</span> <span class="n">spec</span><span class="o">.</span><span class="n">local</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span> <span class="k">return</span> <span class="n">spec</span><span class="o">.</span><span class="n">local</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Repository</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">getSpec</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">RepositoryConnection</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">getSpec</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span> <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; is not a valid repository specification.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">openSession</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">federate</span><span class="p">(</span><span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">asRepoString</span><span class="p">,</span> <span class="n">repositories</span><span class="p">))),</span> <span class="n">autocommit</span><span class="p">,</span> <span class="n">lifetime</span><span class="p">,</span> <span class="n">loadinitfile</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.listUsers"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUsers">[docs]</a>    <span class="k">def</span> <span class="nf">listUsers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list of names of all the users that have been defined.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">listUsers</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.addUser"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUser">[docs]</a>    <span class="k">def</span> <span class="nf">addUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new user. Expects a password parameter, which specifies the</span>
+<span class="sd">        user&#39;s password (can be left off when creating the anonymous user).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">password</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;anonymous&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">addUser</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.deleteUser"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUser">[docs]</a>    <span class="k">def</span> <span class="nf">deleteUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete a user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">deleteUser</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.changeUserPassword"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.changeUserPassword">[docs]</a>    <span class="k">def</span> <span class="nf">changeUserPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Change the password for the given user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">changeUserPassword</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.listUserAccess"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserAccess">[docs]</a>    <span class="k">def</span> <span class="nf">listUserAccess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve the read/write access for a user. This returns a result set,</span>
+<span class="sd">        each element of which has a read, write, catalog, and repository</span>
+<span class="sd">        component. The first two are booleans, the latter two strings. For</span>
+<span class="sd">        permissions granted globally, catalog and repository will have a</span>
+<span class="sd">        value of &quot;*&quot;, for those granted per-catalog, only repository will</span>
+<span class="sd">        be &quot;*&quot;. catalog normally contains the catalog name, but for the rootAs above, but also includes the access granted to roles that this user has.</span>
+<span class="sd">        catalog &quot;/&quot; is used.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">listUserAccess</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.addUserAccess"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserAccess">[docs]</a>    <span class="k">def</span> <span class="nf">addUserAccess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">read</span><span class="p">,</span> <span class="n">write</span><span class="p">,</span> <span class="n">catalog</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">repository</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Grant read/write access to a user.</span>
+
+<span class="sd">        :param read: Whether to grant read access. Defaults to ``False``.</span>
+<span class="sd">        :type read: bool</span>
+<span class="sd">        :param write: Whether to grant write access. Defaults to ``False``.</span>
+<span class="sd">        :type write: bool</span>
+<span class="sd">        :param catalog: Which catalog to grant the access on. Leave off or pass ``&quot;*&quot;`` to grant</span>
+<span class="sd">                        access on all catalogs. Use ``&quot;/&quot;`` for the root catalog.</span>
+<span class="sd">        :type catalog: string</span>
+<span class="sd">        :param repository: Specifies the repository that access is granted on. Passing ``&quot;*&quot;``,</span>
+<span class="sd">                           or leaving the parameter off, means all repositories in the</span>
+<span class="sd">                           given catalog.</span>
+<span class="sd">        :type repository: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">addUserAccess</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">read</span><span class="p">,</span> <span class="n">write</span><span class="p">,</span> <span class="n">catalog</span><span class="p">,</span> <span class="n">repository</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.deleteUserAccess"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserAccess">[docs]</a>    <span class="k">def</span> <span class="nf">deleteUserAccess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">read</span><span class="p">,</span> <span class="n">write</span><span class="p">,</span> <span class="n">catalog</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">repository</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes the same parameters as PUT on this URL, but revokes the access instead of granting it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">deleteUserAccess</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">read</span><span class="p">,</span> <span class="n">write</span><span class="p">,</span> <span class="n">catalog</span><span class="p">,</span> <span class="n">repository</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.listUserEffectiveAccess"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserEffectiveAccess">[docs]</a>    <span class="k">def</span> <span class="nf">listUserEffectiveAccess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Like listUserAccess, but also includes the access granted to roles that this user has.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">listUserEffectiveAccess</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.listUserPermissions"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserPermissions">[docs]</a>    <span class="k">def</span> <span class="nf">listUserPermissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        List the permission flags that have been assigned to a user (any of</span>
+<span class="sd">        super, eval, session, replication).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">listUserPermissions</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.listUserEffectivePermissions"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserEffectivePermissions">[docs]</a>    <span class="k">def</span> <span class="nf">listUserEffectivePermissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve the permission flags assigned to the user, or any of its roles.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">listUserEffectivePermissions</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.addUserPermission"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserPermission">[docs]</a>    <span class="k">def</span> <span class="nf">addUserPermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Assigns the given permission to this user. type should be super, eval,</span>
+<span class="sd">        replication, or session.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">addUserPermission</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_type</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.deleteUserPermission"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserPermission">[docs]</a>    <span class="k">def</span> <span class="nf">deleteUserPermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Revokes the given permission for this user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">deleteUserPermission</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_type</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.listRoles"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRoles">[docs]</a>    <span class="k">def</span> <span class="nf">listRoles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the names of all defined roles.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">listRoles</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.addRole"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRole">[docs]</a>    <span class="k">def</span> <span class="nf">addRole</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new role.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">addRole</span><span class="p">(</span><span class="n">role</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.deleteRole"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRole">[docs]</a>    <span class="k">def</span> <span class="nf">deleteRole</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes a role.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">deleteRole</span><span class="p">(</span><span class="n">role</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.listRolePermissions"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRolePermissions">[docs]</a>    <span class="k">def</span> <span class="nf">listRolePermissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists the permission flags granted to a role.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">listRolePermissions</span><span class="p">(</span><span class="n">role</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.addRolePermission"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRolePermission">[docs]</a>    <span class="k">def</span> <span class="nf">addRolePermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Grants a role a certain permission. type should be super, eval, or session.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">addRolePermission</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">_type</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.deleteRolePermission"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRolePermission">[docs]</a>    <span class="k">def</span> <span class="nf">deleteRolePermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Revokes a permission for a role.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">deleteRolePermission</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">_type</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.listRoleAccess"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRoleAccess">[docs]</a>    <span class="k">def</span> <span class="nf">listRoleAccess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query the access granted to a role. Returns a result in the same</span>
+<span class="sd">        format as the equivalent service for users.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">listRoleAccess</span><span class="p">(</span><span class="n">role</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.addRoleAccess"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRoleAccess">[docs]</a>    <span class="k">def</span> <span class="nf">addRoleAccess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">read</span><span class="p">,</span> <span class="n">write</span><span class="p">,</span> <span class="n">catalog</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">repository</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Grant read/write access to a role. See here for the parameters</span>
+<span class="sd">        that are expected.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">addRoleAccess</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">read</span><span class="p">,</span> <span class="n">write</span><span class="p">,</span> <span class="n">catalog</span><span class="p">,</span> <span class="n">repository</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.deleteRoleAccess"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRoleAccess">[docs]</a>    <span class="k">def</span> <span class="nf">deleteRoleAccess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">read</span><span class="p">,</span> <span class="n">write</span><span class="p">,</span> <span class="n">catalog</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">repository</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Revoke read/write access for a role. Accepts the same parameters as above.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">deleteRoleAccess</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">read</span><span class="p">,</span> <span class="n">write</span><span class="p">,</span> <span class="n">catalog</span><span class="p">,</span> <span class="n">repository</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.listUserRoles"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserRoles">[docs]</a>    <span class="k">def</span> <span class="nf">listUserRoles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves a list of role names for this user name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">listUserRoles</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.addUserRole"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserRole">[docs]</a>    <span class="k">def</span> <span class="nf">addUserRole</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a role to a user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">addUserRole</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.deleteUserRole"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserRole">[docs]</a>    <span class="k">def</span> <span class="nf">deleteUserRole</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove a role from a user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">deleteUserRole</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.listUserSecurityFilters"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserSecurityFilters">[docs]</a>    <span class="k">def</span> <span class="nf">listUserSecurityFilters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        List security filters for user.</span>
+
+<span class="sd">        _type is one of &quot;allow&quot;, &quot;disallow&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">listUserSecurityFilters</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_type</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.addUserSecurityFilter"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserSecurityFilter">[docs]</a>    <span class="k">def</span> <span class="nf">addUserSecurityFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">_type</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">o</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a security filter for the user.</span>
+
+<span class="sd">        name - user name</span>
+<span class="sd">        _type - one of &#39;allow&#39; or &#39;disallow&#39;</span>
+<span class="sd">        s - optional subject</span>
+<span class="sd">        p - optional predicate</span>
+<span class="sd">        o - optional predicate</span>
+<span class="sd">        g - optional graph</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">addUserSecurityFilter</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_type</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.deleteUserSecurityFilter"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserSecurityFilter">[docs]</a>    <span class="k">def</span> <span class="nf">deleteUserSecurityFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">_type</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">o</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a security filter for the user.</span>
+
+<span class="sd">        name - user name</span>
+<span class="sd">        _type - one of &#39;allow&#39; or &#39;disallow&#39;</span>
+<span class="sd">        s - optional subject</span>
+<span class="sd">        p - optional predicate</span>
+<span class="sd">        o - optional predicate</span>
+<span class="sd">        g - optional graph</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">deleteUserSecurityFilter</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_type</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.listRoleSecurityFilters"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRoleSecurityFilters">[docs]</a>    <span class="k">def</span> <span class="nf">listRoleSecurityFilters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        List security filters for user.</span>
+
+<span class="sd">        _type is one of &quot;allow&quot;, &quot;disallow&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">listRoleSecurityFilters</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">_type</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.addRoleSecurityFilter"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRoleSecurityFilter">[docs]</a>    <span class="k">def</span> <span class="nf">addRoleSecurityFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">_type</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">o</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a security filter for the user.</span>
+
+<span class="sd">        role - role name</span>
+<span class="sd">        _type - one of &#39;allow&#39; or &#39;disallow&#39;</span>
+<span class="sd">        s - optional subject</span>
+<span class="sd">        p - optional predicate</span>
+<span class="sd">        o - optional predicate</span>
+<span class="sd">        g - optional graph</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">addRoleSecurityFilter</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">_type</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AllegroGraphServer.deleteRoleSecurityFilter"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRoleSecurityFilter">[docs]</a>    <span class="k">def</span> <span class="nf">deleteRoleSecurityFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">_type</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">o</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a security filter for the user.</span>
+
+<span class="sd">        role - role name</span>
+<span class="sd">        _type - one of &#39;allow&#39; or &#39;disallow&#39;</span>
+<span class="sd">        s - optional subject</span>
+<span class="sd">        p - optional predicate</span>
+<span class="sd">        o - optional predicate</span>
+<span class="sd">        g - optional graph</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">deleteRoleSecurityFilter</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">_type</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Catalog"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.Catalog">[docs]</a><span class="k">class</span> <span class="nc">Catalog</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Container of multiple repositories (triple stores).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Catalog.__init__"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.Catalog.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mini_catalog</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">openCatalogByName</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span></div>
+
+<div class="viewcode-block" id="Catalog.getName"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.Catalog.getName">[docs]</a>    <span class="k">def</span> <span class="nf">getName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the catalog name.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span></div>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">getName</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Catalog.listRepositories"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.Catalog.listRepositories">[docs]</a>    <span class="k">def</span> <span class="nf">listRepositories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a list of names of repositories (triple stores) managed by</span>
+<span class="sd">        this catalog.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mini_catalog</span><span class="o">.</span><span class="n">listRepositories</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Catalog.deleteRepository"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.Catalog.deleteRepository">[docs]</a>    <span class="k">def</span> <span class="nf">deleteRepository</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete a repository.</span>
+<span class="sd">        :param name: Repository name.</span>
+<span class="sd">        :type name: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mini_catalog</span><span class="o">.</span><span class="n">deleteRepository</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Catalog.getRepository"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.Catalog.getRepository">[docs]</a>    <span class="k">def</span> <span class="nf">getRepository</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">access_verb</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates or opens a repository.</span>
+<span class="sd">        </span>
+<span class="sd">        :param name: Repository name.</span>
+<span class="sd">        :type name: string</span>
+<span class="sd">        :param access_verb: Determines mode of operation. Possible values are:</span>
+
+<span class="sd">                                - **Repository.RENEW** clears the contents of an existing</span>
+<span class="sd">                                   repository before opening. If the indicated repository does not</span>
+<span class="sd">                                   exist, it creates one.</span>
+<span class="sd">                                -  **Repository.OPEN** opens an existing repository, or throws an</span>
+<span class="sd">                                   exception if the repository is not found.</span>
+<span class="sd">                                -  **Repository.ACCESS** opens an existing repository, or creates a</span>
+<span class="sd">                                   new one if the repository is not found.</span>
+<span class="sd">                                -  **Repository.CREATE** creates a new repository, or throws an</span>
+<span class="sd">                                   exception if one by that name already exists.</span>
+<span class="sd">        :return: A repository object.</span>
+<span class="sd">        :rtype: Repository</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">access_verb</span> <span class="o">=</span> <span class="n">access_verb</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">quote_plus</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">exists</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">listRepositories</span><span class="p">();</span>
+        <span class="k">if</span> <span class="n">access_verb</span> <span class="o">==</span> <span class="n">Repository</span><span class="o">.</span><span class="n">RENEW</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">exists</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">deleteRepository</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">createRepository</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">access_verb</span> <span class="o">==</span> <span class="n">Repository</span><span class="o">.</span><span class="n">CREATE</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">exists</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ServerException</span><span class="p">(</span>
+                    <span class="s2">&quot;Can&#39;t create triple store named &#39;</span><span class="si">%s</span><span class="s2">&#39; because a store with that name already exists.&quot;</span><span class="p">,</span>
+                    <span class="n">name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">createRepository</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">access_verb</span> <span class="o">==</span> <span class="n">Repository</span><span class="o">.</span><span class="n">OPEN</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">exists</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ServerException</span><span class="p">(</span>
+                    <span class="s2">&quot;Can&#39;t open a triple store named &#39;</span><span class="si">%s</span><span class="s2">&#39; because there is none.&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">Repository</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mini_catalog</span><span class="o">.</span><span class="n">getRepository</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">access_verb</span> <span class="o">==</span> <span class="n">Repository</span><span class="o">.</span><span class="n">ACCESS</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">exists</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">createRepository</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Repository</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mini_catalog</span><span class="o">.</span><span class="n">getRepository</span><span class="p">(</span><span class="n">name</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Catalog.createRepository"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.Catalog.createRepository">[docs]</a>    <span class="k">def</span> <span class="nf">createRepository</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new repository with the given name.</span>
+
+<span class="sd">        :param name: Repository name.</span>
+<span class="sd">        :type name: string</span>
+<span class="sd">        :param indices: If provided, creates a store with the given indices.</span>
+<span class="sd">                        (e.g. ``[&quot;spogi, &quot;gspoi&quot;, ...]``)</span>
+<span class="sd">        :type indices: list[string]</span>
+<span class="sd">        :return: A repository object.</span>
+<span class="sd">        :rtype: Repository</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Repository</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mini_catalog</span><span class="o">.</span><span class="n">createRepository</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="n">indices</span><span class="p">))</span></div></div>
+</pre></div>
+
+  
+    <div class="nav-links nav-links-footer">
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

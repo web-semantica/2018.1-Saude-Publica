@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Datatypes | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="datatypes"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>AllegroGraph 6.4.2 Datatypes</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a>
+<ul>
+<li><a href='#ieee' title='XSD datatypes derived from IEEE numerical standards'>XSD datatypes derived from IEEE numerical standards</a></li>
+<li><a href='#intdec' title='xsd:decimal and xsd:integer types'>xsd:decimal and xsd:integer types</a></li>
+<li><a href='#date-time' title='XSD Date and Time datatypes'>XSD Date and Time datatypes</a></li>
+<li><a href='#header3-98' title='Supressing automatic encoding'>Supressing automatic encoding</a></li>
+<li><a href='#header3-100' title='Comparing dateTimes, dates, and times'>Comparing dateTimes, dates, and times</a></li></ul></li>
+<li><a href='#header2-142' title='Temporal datatypes derived from dateTimes'>Temporal datatypes derived from dateTimes</a></li>
+<li><a href='#header2-144' title='Geospatial datatypes'>Geospatial datatypes</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>AllegroGraph supports datatypes in two ways. You can define any datatype and tag data with that type. However, the data is actually stored as a string. </p><p>The second way is to encode the data so that AllegroGraph knows what it is. Encoded datatypes are not stored as strings but in a special format which allows fast lookup and conversion. Further, range and order queries on these encoded datatypes (where it is meaningful) are much faster: on unencoded types, such queries can require a full scan. </p><p>The following XSD datatypes can be encoded (all XSD datatypes are supported, but only these are encoded). The <code>xsd:</code> namespace prefix is defined to be <code>http://www.w3.org/2001/XMLSchema#</code>. xsd: will be used in examples.  The XML Datatype Schema is described in <a href="http://www.w3.org/TR/xmlschema-2/" title="Datatypes Schema" class="external" target="_blank">http://www.w3.org/TR/xmlschema-2/</a>. Note that because of limitations in the number of bytes available for encoding, the range may be narrower than the xsd range in some cases. Values outside the supported range can still be input, but will be stored as strings with the limitations of unencoded data. </p>
+<ul>
+<li>Integers
+<ul>
+<li>8-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#byte&gt;</code></li>
+<li>16-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#short&gt;</code></li>
+<li>32-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#int&gt;</code></li>
+<li>64-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#long&gt;</code></li></ul></li>
+<li>Unsigned Integers
+<ul>
+<li>8-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#unsignedByte&gt;</code></li>
+<li>16-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#unsignedShort&gt;</code></li>
+<li>32-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#unsignedInt&gt;</code></li>
+<li>64-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#unsignedLong&gt;</code></li></ul></li>
+<li>Floating point
+<ul>
+<li>single-precision: <code>&lt;http://www.w3.org/2001/XMLSchema#float&gt;</code></li>
+<li>double-precision: <code>&lt;http://www.w3.org/2001/XMLSchema#double&gt;</code></li></ul></li>
+<li>Decimals
+<ul>
+<li>decimal: <code>&lt;http://www.w3.org/2001/XMLSchema#decimal&gt;</code></li>
+<li>integer: <code>&lt;http://www.w3.org/2001/XMLSchema#integer&gt;</code></li></ul></li>
+<li>Times and Dates
+<ul>
+<li>times: <code>&lt;http://www.w3.org/2001/XMLSchema#time&gt;</code></li>
+<li>dates: <code>&lt;http://www.w3.org/2001/XMLSchema#date&gt;</code></li>
+<li>date-times: <code>&lt;http://www.w3.org/2001/XMLSchema#dateTime&gt;</code></li></ul></li></ul><p>Typed literals of these types will be encoded by default. Also, untyped literals in the object position may be automatically typed (and encoded if supported) based on the predicate. See <a href="lisp-reference.html#ref-type-mapping">Data-type and Predicate Mapping in the Lisp Reference Guide</a> and the <a href="http-protocol.html#mapping">Type mapping section in the HTTP Protocol document</a>. </p><p>The other encoded datatype is short (11 bytes or fewer) strings. Encoded strings behave like unencoded strings, except access is much faster. </p><a name='ieee' id='ieee'></a> <h3>XSD datatypes derived from IEEE numerical standards</h3><p>The following XSD datatypes come from IEEE numeric standards are (usually) values represented in some number of bytes (1, 4, 8, or 16) on standard hardware: </p>
+<ul>
+<li>Integers
+<ul>
+<li>8-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#byte&gt;</code></li>
+<li>16-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#short&gt;</code></li>
+<li>32-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#int&gt;</code></li>
+<li>64-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#long&gt;</code></li></ul></li>
+<li>Unsigned Integers
+<ul>
+<li>8-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#unsignedByte&gt;</code></li>
+<li>16-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#unsignedShort&gt;</code></li>
+<li>32-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#unsignedInt&gt;</code></li>
+<li>64-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#unsignedLong&gt;</code></li></ul></li>
+<li>Floating point
+<ul>
+<li>single-precision: <code>&lt;http://www.w3.org/2001/XMLSchema#float&gt;</code></li>
+<li>double-precision: <code>&lt;http://www.w3.org/2001/XMLSchema#double&gt;</code></li></ul></li></ul><p>All are supported over their full ranges, which are defined in <a href="http://www.w3.org/TR/xmlschema-2/" title="XML Schema" class="external" target="_blank">http://www.w3.org/TR/xmlschema-2/</a>. </p><a name='intdec' id='intdec'></a> <h3>xsd:decimal and xsd:integer types</h3><p>The xsd:decimal type differs from the IEEE numbers defined above by storing decimal rather than floating point values. This does not make that much of a difference for integers but is very important for numbers with fractional parts (such as monetary values) since floating point arithmetic cannot handle fractional decimal digits accurately. </p><p>xsd:decimal is described in <a href="http://www.w3.org/TR/xmlschema-2/#decimal" title="Decimal' class external target _blank). xsd:decimals can be whole numbers (i.e. integers, but note xsd:integer has a different number of significant digits and a different range) or numbers with a whole part (with zero or non-zero digits before the decimal point" and="a" fractional="part" (with="non-zero" digits="after" the="decimal">http://www.w3.org/TR/xmlschema-2/#decimal</a>. The derived type xsd:integer is for whole numbers only. </p><p>The xsd:integer range is </p>
+<pre><code>-154742504910672534362390528  
+ 154742504910672534362390527 </code></pre><p>The xsd:decimal range is </p>
+<pre><code>min -9999999999999999999900000000000000000000000000000000000000000000  
+max  9999999999999999999900000000000000000000000000000000000000000000 </code></pre><p>That is [20 9's][44 0's] for both. </p><p>The smallest positive decimal is </p>
+<pre><code>0.000000000000000000000000000000000000000000000000000000000000001 </code></pre><p>That is 62 zeros after the decimal point, followed by a 1. </p><p>Similarly, the largest negative decimal is </p>
+<pre><code>-0.000000000000000000000000000000000000000000000000000000000000001 </code></pre><p>That is 62 zeros after the decimal point, followed by a 1. </p><p>xsd:decimals are specified by up to 20 significant digits (from the first non-zero digit through the last) with a decimal point optionally placed somewhere. </p><p>xsd:integers may have 27 digits (more than decimals, but no fractional parts). </p><p><strong>Human readable representation</strong> </p><p>The Lisp functions <a href="lisp-reference.html#part-:3Econcise" title="description of part->concise">part-&gt;concise</a> and <a href="lisp-reference.html#part-:3Eterse" title="description of part->terse">part-&gt;terse</a> return strings which represent xsd:decimals and xsd:integers in short human-readable format: </p>
+<pre><code>(value-&gt;upi "123456.7890123456" :encoded-decimal)  
+returns  
+["\"123456.7890123456\"^^&lt;http://www.w3.org/2001/XMLSchema#decimal&gt;"]  
+ 
+(part-&gt;concise (value-&gt;upi "123456.7890123456" :encoded-decimal))  
+returns  
+"123456.7890123456"  
+</code></pre><a name='date-time' id='date-time'></a> <h3>XSD Date and Time datatypes</h3><p>AllegroGraph supports xsd:date, xsd:time, and xsd:dateTime data types (see the <a href="http://www.w3.org/TR/xmlschema-2/#isoformats" title="ISO 8601' class external target _blank) in the [W3C XML Schema Part 2](http://www.w3.org/TR/xmlschema-2/ 'XML Schema' class external target _blank">ISO 8601 Date and Time Formats</a>. </p><p>The xsd:date format is [-]YYYYYYY-MM-DD[Z | +/-HH:MM]. (Though most typical dates use four year (Y) digits). December 18, 1948 is 1948-12-18, for example. The range is </p>
+<pre><code>-8917687-01-25  
+ 8921486-12-07 </code></pre><p>The range is for encoded dates. Unencoded dates are stored as strings and have no limits (but note operations on unencoded values are slower and you must take care that AllegroGraph does not try to encode an out of range date as that will cause an error). Encoding will happen if the type is specified (such as "2014-02-23"^^xsd:date, where the ^^xsd:date indicates the type) or if there is a predicate mapping specifying the type (see <a href="lisp-reference.html#ref-type-mapping">Data-type and Predicate Mapping in the Lisp Reference Guide</a> and the <a href="http-protocol.html#mapping">Type mapping section in the HTTP Protocol document</a>). </p><p>The year range is quite suitable for all human history applications, but is likely too small for geology and dinosaurs. </p><p>The optional timezone can be Z (meaning Zulu time, which is Greenwich Mean Time) or +/-HH:MM. The sign and both hour and minute digits must be included. Examples of proper dates are 1948-12-18Z, 1948-12-18+12:00. The improper dates 1948-12-1805:00, 1948-12-18+12, and 1948-12-18-5:00 will signal errors (the first is missing a + or - and the second has no minute digits, and the third has a one digit hour). The timezone range is -14:00 to 14:00. </p><p>The xsd:time format is HH:MM:SS[.SSSSSSSS][Z | +/-HH:MM]. 10 minutes after midnight is 00:10:00 and 4 minutes, 3.5 seconds after noon is 12:04:03.5. All times of the day, with second fractions up to 8 digits are supported. </p><p>The optional timezone can be Z (meaning Zulu time, which is Greenwich Mean Time) or +/-HH:MM. The sign and both hour and minute digits must be included. Examples of proper times are 12:04:03.5Z, 12:04:03-05:00, and 12:04:03.5+12:30. The improper times 12:04:0305:00, 12:04:03+05, and 12:04:03-5:00 will signal errors (the first is missing a + or -, the second is missing the minutes, the third has a one digit hour). The timezone range is -14:00 to 14:00. </p><p>Note that you can supply more than 8 fractional digits for seconds. The extra digits will be rounded and truncated: </p>
+<pre><code>(value-&gt;upi "00:00:00.123456789" :time) =&gt; {00:00:00.1234568} </code></pre><p>The rounding formula is </p>
+<pre><code>(round (* fraction 10000000)) </code></pre><p>where <em>fraction</em> is the fractional seconds expressed as a rational number, so in our example </p>
+<pre><code>(round (* 123456789/1000000000 10000000)) </code></pre><p>which is 1234568. </p><p>As usual, you can append a type value, in the form ^^xsd:<em>type</em>, to a data string. For example: </p>
+<pre><code>"10:05:01.1234"^^xsd:time  
+</code></pre><p>The xsd:dateTime format is [xsd:date format]T[xsd:time format][TZ], where TZ is the (optional) time zone. Time zone <code>Z</code> means Zulu, which is Greenwich Mean Time. Otherwise TZ is in the range -14:00 to +14:00. Resolution is to one minute (though most but not all timezones are an integer number of hours). The + or - must be specified. </p><p>So, ten minutes after midnight on December 18, 1948 in Washington DC, USA is 1948-12-18T00:10:00-05:00. </p><p>dateTime strings can be tagged with ^^xsd:dateTime to tell AllegroGraph that the data is a dateTime: </p>
+<pre><code>"2014-02-23T08:18:59+05:00"^^xsd:dateTime  
+"2014-02-23T03:18:59Z"^^xsd:dateTime  
+"2014-02-23T03:18:59"^^xsd:dateTime </code></pre><p>The last does not have a timezone specified and that fact is stored (rather than assuming the timezone is Z, for example). </p><p>The encoded xsd:dateTime range is </p>
+<pre><code>minimum -8917687-01-25T13:15:44  
+maximum 8921486-12-07T10:44:15.  
+</code></pre><p>The limits are for encoded dateTimes. There are no limits on unencoded values (which are stored in the string table -- note operations on unencoded values are slower). If AllegroGraph tries to encode a value outside the limits, an error is signaled. Encoding will happen if the type is specified (such as "2014-02-23T08:18:59+05:00"^^xsd:dateTime, where the ^^xsd:dateTime indicates the type) or if there is a predicate mapping specifying the type (see <a href="lisp-reference.html#ref-type-mapping">Data-type and Predicate Mapping in the Lisp Reference Guide</a> and the <a href="http-protocol.html#mapping">Type mapping section in the HTTP Protocol document</a>). </p><a name='header3-98' id='header3-98'></a><h3>Supressing automatic encoding</h3><p>Note that you can suppress the automatic encoding of a data type by removing the datatype mapping, though this is not recommended since it slows down handling of the now untyped data (which are now stored as strings). To do so, see the Lisp function <a href="lisp-reference.html#datatype-mapping" title="description of datatype-mapping">datatype-mapping</a> and the <a href="http-protocol.html#mapping">Type mapping section in the HTTP Protocol document</a> for information on modifying automatic mappings. </p><a name='header3-100' id='header3-100'></a><h3>Comparing dateTimes, dates, and times</h3><p>Comparing two dates, dateTimes, or times, both with timezones is easy: the dateTime and the time can both be adjusted to a reference timezone, like Zulu (which is Greenwich Mean Time), and then the dateTimes represent actual instants, and either they are equal, or one is greater than (later than) the other. With times, the rule is assign the same (arbitrary) date to each, and compare as dateTimes. One date is earlier than another if its starting instant is earlier. Again, convert the starting instants of the two dates with timezones to dateTimes in the Zulu timezone, and the earlier is less than the later (or they are equal if the starting instants are the same). </p><p>Comparing two dates, dateTimes, or times, both without timezones is also straightforward: just assume they are Zulu timezone and proceed as above. </p><p>But comparing a date with a timezone to one without, or a dateTime with a timezone to one without, or a time with a timezone to one without is harder, and the meaning is not intuitive. <strong>For this reason, having some data with timezone and some without is not recommended unless absolutely necessary</strong>. </p><p>Here are the comparison rules: </p><p>Such pairs (two dateTimes, two dates, two times, with one having a timezone and the other not having a timezone) are never equal. One may be less than the other, or greater than the other, or neither greater than or less than the other. </p><p>A date/dateTime/time with a timezone is greater than a date/dateTime/time without a timezone if there is no timezone (in the allowable range -14:00 to +14:00) which can be assigned to the date/dateTime/time without a timezone which makes it greater than or equal to the original date/dateTime/time with a timezone. </p><p>A date/dateTime/time with a timezone is less than a date/dateTime/time without a timezone if there is no timezone (in the allowable range -14:00 to +14:00) which can be assigned to the date/dateTime/time without a timezone which makes it less than or equal to the original date/dateTime/time with a timezone. We have examples below. </p><p>Note that when comparing two dates/dateTimes/times with timezones, they are either equal or one is greater than the other. Similarly for two dates/dateTimes/times without timezones. Therefore, if you have tested any two of equal-to/greater-than/less-than, and both are false, you can conclude the third is true and do not have to test. But when one object has a timezone and one does not, you know they are not equal, but you have to test both greater than and less than since both may be false. You cannot infer from one not being greater than the other that it is therefore less than the other. </p><p><strong>Comparing dates with times, dates with dateTimes, and times with dateTimes</strong> </p><p>It makes no sense (and so is an error) to compare a time with a date or a dateTime. (A time is unanchored by any date: it is meaningless to ask if 9:00 AM is greater than 2:00 AM, July 4, 1776.) </p><p>While comparing a date and a dateTime might be defined, it instead is raises an error in AllegroGraph. The date must be cast as a datetime to compare them (or the dateTime converted to a date). </p><p><strong>When is one date earlier than another?</strong> </p><p>You compare dates by comparing their starting instants, and the later starting instant is the later date (even if the durations of the dates overlap). Two dates are equal if they have the same starting instant. Two dates with the same timezone, or two dates without timezones use regular calendar order. So: </p>
+<pre><code>1948-12-18Z is equal to 1948-12-18Z,  
+1948-12-18Z is greater (later) than 1947-12-18Z  
+1948-12-18Z is less (earlier) than 1948-12-19Z  
+ 
+1948-12-18 is equal to 1948-12-18,  
+1948-12-18 is greater (later) than 1947-12-18  
+1948-12-18 is less (earlier) than 1948-12-19  
+ 
+2001-03-04-03:00 has starting dateTime in Zulu 2001-03-04T03:00:00Z  
+2001-03-04+11:00 has starting dateTime in Zulu 2001-03-03T13:00:00Z  
+So  
+2001-03-04-03:00 is greater than 2001-03-04+11:00 since  
+2001-03-04T03:00:00Z is greater than 2001-03-03T13:00:00Z  
+ 
+1948-12-18-12:00 is equal to 1948-12-19+12:00  
+(When Dec. 18 is starting in the -12:00 TZ,  
+ Dec. 19 is just starting in the +12:00 TZ.) </code></pre><p><strong>time comparison examples</strong> </p><p>You compare two times by assuming they are on the same date. If neither has a timezone, then compare them as if they were both in the same timezone, so </p>
+<pre><code>01:03:00 is less than 02:00:00 is less than 12:00:00 is less than 18:22:13  
+01:03:00 equals 01:03:00 and is greater than 00:10:10 </code></pre><p>If they both have timezones, assume the same date (say 2013-01-01) and compare as dateTimes: </p>
+<pre><code>You are in the -13:00 timezone, and your clock says 1:00 AM.  
+Assume it is January 1, 2013. Around the world at that instant clocks  
+and calendars say:  
+ 
+TZ     Clock time        Calendar date    Equal to  
+                                          2013-01-01T01:00:00-13:00?  
+--------------------------------------------------------------------  
+-13:00 01:00:00            2013-01-01         Yes  
+-10:00 04:00:00            2013-01-01         Yes  
+-05:00 09:00:00            2013-01-01         Yes  
+ Z     14:00:00            2013-01-01         Yes  
++03:15 17:15:00            2013-01-01         Yes  
++09:00 23:00:00            2013-01-01         Yes  
++10:00 00:00:00            2013-01-02         No  
++11:00 01:00:00            2013-01-02         No </code></pre><p>Note that the last two entries are not equal to our reference entry, even though people looking at clocks in those timezones will see the times indicated -- midnight (00:00:00) and 1:00 AM, when they look at the calendar, they see a different day. </p><p><strong>Comparing a dateTime with a timezone with a dateTime without a timezone</strong> </p><p>This case is defined by convention (unlike the cases where both have timezone or neither have timezones, relying on the plain meaning of the terms leads to ambiguity). We have a dateTime with no timezone, dt-wo-tz, and a dateTime with a timezone, dt-w-tz. </p><p>Let us consider two additional dateTimes with timezones: one with the date and time of dt-wo-tz and with timezone -14:00, which we call dt-tz-latest, and one with the date and time of dt-wo-tz and with timezone +14:00, which we call dt-tz-earliest. Here is an example: </p>
+<pre><code>Consider the dateTime without timezone  
+ 
+     1066-01-10T12:00:00  
+ 
+Now consider  
+ 
+     1066-01-10T12:00:00-14:00  
+ 
+This is the same instant as  
+ 
+     1066-01-11T02:00:00Z  
+ 
+since Zulu time is 14 hours later than timezone -14:00. Note the  
+date is different (the 11th rather than the 10th).  
+This is dt-tz-latest.  
+ 
+And consider  
+ 
+     1066-01-10T12:00:00+14:00  
+ 
+This is the same instant as  
+ 
+     1066-01-09T22:00:00Z  
+ 
+ Since Zulu time is 14 hours earlier than timezone +14:00.  
+ This is dt-tz-earliest. (Again, the date is different.) </code></pre><p>So now we have three dateTimes with timezones, dt-w-tz, dt-tz-latest, and dt-tz-earliest. Here then are the comparison rules: </p>
+<ol>
+<li><p>dt-w-tz and dt-wo-tz are never equal. </p></li>
+<li><p>dt-w-tz is greater than (later than) dt-wo-tz if it is greater than    dt-tz-latest. </p></li>
+<li><p>dt-w-tz is less than (earlier than) dt-wo-tz if it is less than    dt-tz-earliest. </p></li>
+<li><p>dt-w-tz is neither greater than nor less than (nor equal to)    dt-wo-tz if dt-w-tz is later than or equal to dt-tz-earliest    and earlier than or equal to dt-tz-latest. </p></li></ol><p>Here are some examples: </p>
+<pre><code>Again, dt-wo-tz is 1066-01-10T12:00:00, so  
+1066-01-09T22:00:00Z is dt-tz-earliest and  
+1066-01-11T02:00:00Z is dt-tz-latest.  
+ 
+Here are some values for dt-w-tz, the same date time in Zulu  
+time, and the comparison with dt-wo-tz. 'Undecided' means neither  
+earlier (&lt;) nor later (&gt;) nor equal (a dateTime with a timezone can  
+never equal a dateTime without a timezone). Note that SPARQL &gt;, =, and &lt;  
+comparisons return FALSE for UNDECIDED.  
+ 
+1066-01-09T17:00:00-05:00 = 1066-01-09T22:00:00Z Undecided  
+                             because equals dt-wo-tz-earliest  
+                             (so FALSE since undecided)  
+2013-06-01T02:13:14.5Z [same] later (hundreds of years later  
+                             than dt-wo-tz-latest)  
+1066-01-10T17:00:00+03:12 1066-01-10T13:48:00Z Undecided because  
+                             between dt-wo-tz-earliest and dt-wo-tz-latest  
+                             (so FALSE since undecided)  
+1066-01-09T15:00:00-01:00 1066-01-09T16:00:00Z earlier because  
+                             before dt-wo-tz-earliest </code></pre><p><strong>Comparing two dates with timezones</strong> </p><p>A date YYYY-MM-DD with timezone TZ has starting instant YYYY-MM-DDT00:00:00TZ, for example 2013-01-01-08:00 has starting dateTime 2013-01-01T00:00:00-08:00. To compare two dates with timezones, convert them to dateTimes with time 00:00:00, and you now have two dateTimes with timezones. Comparing two dateTimes with timezones is discussed above. </p><p><strong>Comparing dates without timezones</strong> </p><p>Dates without timezones are treated as if they both have the same timezone. Thus, they are equal if they specify the same calendar date, and one is greater than the other if it has a later calendar date. </p><p><strong>Comparing dates where one has a timezone and the other does not</strong> </p><p>Just as with comparing a dateTime without a timezone to one with a timezone, the comparison of two dates, one with and one without a timezone, is done by finding the dateTime the timezoneless date starts if it had timezone +14:00, call this dateTime+14; and the dateTime the timezoneless date starts if it had timezone -14:00, call this dateTime-14. We now have three datetimes: </p>
+<pre><code>dateTime+14  
+dateTime-14  
+ 
+dateTime-wtz = the starting instant of the date with timezone  
+ 
+If dateTime-14 &lt; dateTime-wtz THEN date-wo-tz &lt; date-w-tz  
+If dateTime-wtz &lt; dateTime+14 THEN date-w-tz &lt; date-wo-tz  
+If dateTime+14 &lt;= dateTime-wtx &lt;= dateTime-14 THEN  
+   date-w-tz is neither greater than nor less than (nor equal to)  
+   date-wo-tz  
+ 
+So, compare date 1948-12-19+05:00 with 1948-12-18  
+ 
+1948-12-19+05:00 starts at 1948-12-18T19:00:00Z  
+ 
+1948-12-18+14:00 starts at 1948-12-17T10:00:00Z  
+1948-12-18-14:00 starts at 1948-12-18T14:00:00Z  
+ 
+Since 1948-12-18T19:00:00Z is later than  
+      1948-12-18T14:00:00Z  
+1948-12-19+05:00 is greater than 1948-12-18  
+ 
+ 
+ 
+</code></pre><p><strong>Human readable representation</strong> </p><p>The Lisp functions <a href="lisp-reference.html#part-:3Econcise" title="description of part->concise">part-&gt;concise</a> and <a href="lisp-reference.html#part-:3Eterse" title="description of part->terse">part-&gt;terse</a> return strings with xsd:dates and xsd:dateTimes in a readable format: </p>
+<pre><code>(part-&gt;concise (value-&gt;upi "2013-01-03T10:34:00-05:00" :date-time))  
+=&gt; "2013-01-03T10:34:00-05:00"  
+</code></pre><a name='header2-142' id='header2-142'></a><h2>Temporal datatypes derived from dateTimes</h2><p>There are various temporal datatypes derived from dateTimes, described <a href="magic-properties.html#sparql-magic-temporal">here</a>. </p><a name='header2-144' id='header2-144'></a><h2>Geospatial datatypes</h2><p>Geospatial datatypes are described <a href="geospatial-nd.html#units-and-ordinates">here</a> </p></div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

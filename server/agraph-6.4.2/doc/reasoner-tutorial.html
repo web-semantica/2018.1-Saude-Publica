@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Reasoner Tutorial | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="reasoner-tutorial"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>        <h1>AllegroGraph 6.4.2 Reasoner Tutorial</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-7' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-13' title='Reasoning Supported.'>Reasoning Supported.</a></li>
+<li><a href='#header2-28' title='Using the reasoner in AllegroGraph'>Using the reasoner in AllegroGraph</a></li>
+<li><a href='#header2-41' title='Functions discussed in this tutorial.'>Functions discussed in this tutorial.</a></li>
+<li><a href='#header2-59' title='Getting Ready'>Getting Ready</a></li>
+<li><a href='#header2-62' title='Reasoner Examples'>Reasoner Examples</a>
+<ul>
+<li><a href='#header3-66' title='Inverse of'>Inverse of</a></li>
+<li><a href='#header3-68' title='Sub-property of'>Sub-property of</a></li>
+<li><a href='#header3-70' title='inverse and sub properties'>inverse and sub properties</a></li>
+<li><a href='#header3-72' title='Same-as'>Same-as</a></li>
+<li><a href='#header3-74' title='Same-as, inverse, and sub-properties'>Same-as, inverse, and sub-properties</a></li>
+<li><a href='#header3-76' title='type with sub-class'>type with sub-class</a></li>
+<li><a href='#header3-78' title='type with range'>type with range</a></li>
+<li><a href='#header3-80' title='type with domain'>type with domain</a></li>
+<li><a href='#header3-82' title='Transitivity with Same As'>Transitivity with Same As</a></li></ul></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-7' id='header2-7'></a><h2>Introduction</h2><p>Before we begin the tutorial there are few things to keep in mind. </p>
+<ul>
+<li><p>The reasoner supports a subset of the full RDFS and OWL    constructs (see below). </p></li>
+<li><p>The tutorial examples below are in Lisp. You can find    examples of using the reasoner in the other tutorials    as well. See the <a href="lisp-quickstart.html">Quick Start</a> if you need    more information on getting started. </p></li>
+<li><p>This tutorial is written for people who know how to get    around in the IDE or in Emacs. You can load this file in a    buffer and start executing its forms from top to bottom. </p></li>
+<li><p>The Lisp program 'reasoner-tutorial.cl' contains all of    the illustrative examples below. You may want to open this    in your Lisp development environment and follow along by    evaluating its forms as you go. The program is in the    'tutorial-files' sub-directory of the AllegroGraph    installation directory. </p></li></ul><a name='header2-13' id='header2-13'></a><h2>Reasoning Supported.</h2><p>We support the following RDFS and OWL predicates: </p>
+<ul>
+<li>rdf:type</li>
+<li>rdfs:domain</li>
+<li>rdfs:range</li>
+<li>rdfs:subClassOf</li>
+<li>rdfs:subPropertyOf</li>
+<li>owl:inverseOf</li>
+<li>owl:sameAs</li>
+<li>owl:TransitiveProperty</li></ul><p>We also support <code>owl:hasValue</code>, <code>owl:someValuesFrom</code> and <code>owl:allValuesFrom</code> reasoning. Its use is covered in a <a href="has-value-tutorial.html">separate tutorial</a>. </p><div class='sidenote' id='reasoner-and-open-ended-queries'> <p>Note that the reasoner is designed to efficiently answer questions like "What are properties of <em>this</em> subject?" or "Tell me all the subjects that have this <em>type</em>?" It is <em>not</em> designed for efficiently determining <em>all</em> of the inferred triples in a store (e.g., "Tell me everything you know?"). You should expect fast answers for queries whose predicate is specified but you will not see good performance for more open-ended calls to <a href="lisp-reference.html#get-triples" title="description of get-triples"><code>get-triples</code></a>. We will continue to enhance the reasoner as AllegroGraph develops. </p></div> <p>Before you look up the semantics of these predicates in the <a href="http://www.w3.org/TR/2004/REC-owl-features-20040210/#s3" class="external" target="_blank">W3C documentation</a> you may want to first examine the examples in the tutorial below. Note that for efficiency's sake, our RDFS++ reasoner will not make every possible inference given a triple-store's ground triples.
+<a name="fnr0-2018-06-08" id="fnr0-2018-06-08"></a>
+<sup><a href="#fn0-2018-06-08">1</a></sup>  We are constantly improving our inference algorithms and will continue to extend the reasoner's reach. If there are particular inferences that are important to you and AllegroGraph is not making them, please let us know so that we can work together to reach a solution. </p><a name='header2-28' id='header2-28'></a><h2>Using the reasoner in AllegroGraph</h2><p>You use the RDFS++ reasoner by calling <a href="#apply-rdfs:2B:2B-reasoner" title="description of apply-rdfs++-reasoner">apply-rdfs++-reasoner</a> on a regular triple-store.  For example, suppose we create a triple-store and add two triples (if you not familiar with the <strong>!</strong>-notation, see the section of the reference-guide on <a href="lisp-reference.html#ref-future-parts" title="">future-parts</a>): </p>
+<pre><code>;; make sure the !-reader is on  
+&gt; (enable-!-reader)  
+ 
+&gt; (enable-print-decoded t)  
+t  
+ 
+&gt; (register-namespace "ex" "http://franz.com/simple#")  
+  "http://franz.com/simple#"     
+ 
+&gt; (defparameter ground-ts (create-triple-store "sample"))  
+#&lt;triple-db /home/agraph/sample, open @ #x13d41812&gt;  
+ 
+&gt; (add-triple !ex:jans !ex:owns !ex:birra)  
+1  
+ 
+&gt; (add-triple !ex:jans !owl:sameAs !ex:jannes)  
+2 </code></pre><p>We'll make sure that the triples are in there and use <a href="lisp-reference.html#enable-print-decoded" title="description of enable-print-decoded">enable-print-decoded</a> so that the rest of this example is easier to read: </p>
+<pre><code>&gt; (print-triples *db* :format :concise)  
+&lt;1: ex:jans ex:owns ex:birrabirra&gt;  
+&lt;2: ex:jans owl:sameAs ex:jannesjannes&gt;  
+; No value </code></pre><p>If we ask for all of the triples whose predicate is <code>!ex:owns</code>, we get back the single ground triple. </p>
+<pre><code>&gt; (get-triples-list :p !ex:owns)  
+(&lt;jans owns birra&gt;)  
+nil </code></pre><p>If we want to use AllegroGraph's RDFS++ reasoner, we call <code>apply-rdfs++-reasoner</code>. If called with no additional parameters, this will encapsulate the current triple-store (i.e., <a href="lisp-reference.html#x:2Adb:2A" title="description of *db*">*db*</a>) with a <a href="lisp-reference.html#reasoning-triple-store" title="description of reasoning-triple-store">reasoning-triple-store</a> whose <a href="lisp-reference.html#reasoner" title="description of reasoner">reasoner</a> is of type <a href="lisp-reference.html#rdfs:2B:2B-reasoner" title="description of rdfs++-reasoner">rdfs++-reasoner</a>. It will also set *db* to this new store. The return value of the call makes it clear what has happened. </p>
+<pre><code>&gt; (defparameter inferred-ts (apply-rdfs++-reasoner))  
+#&lt;reasoning-triple-store  
+  sample, inner #&lt;triple-db /home/agraph/sample, open @ #x13d41812&gt;  
+  @ #x140a26f2&gt; </code></pre><p>Now if we make the same call to <code>get-triples-list</code>, we get two results back. One ground triple and one that has been inferred. </p>
+<pre><code>&gt; (get-triples-list :p !ex:owns)  
+(&lt;jans owns birra&gt;  
+ &lt;jannes owns birra&gt;) </code></pre><p>Note that we can specify which triple-store to query using the <code>:db</code> argument. If we ask for the triples from <code>ground-ts</code>, that is what we will get. We can also accomplish the same thing by using the reasoning-triple-store's <a href="lisp-reference.html#ground-triple-store" title="description of ground-triple-store">ground-triple-store</a>: </p>
+<pre><code>&gt; (get-triples-list :p !ex:owns :db ground-ts)  
+(&lt;jans owns birra&gt;)  
+ 
+&gt; (get-triples-list :p !ex:owns :db (ground-triple-store *db*))  
+(&lt;jans owns birra&gt;)  
+</code></pre><a name='header2-41' id='header2-41'></a><h2>Functions discussed in this tutorial.</h2><p>This tutorial discusses: <code>apply-rdfs++-reasoner</code>, <code>ground-triple-store</code> and <code>get-triples-list</code>. </p><p>As discussed above, <code>apply-rdfs++-reasoner</code> wraps a triple-store in a <a href="lisp-reference.html#reasoning-triple-store" title="description of reasoning-triple-store">reasoning-triple-store</a> and uses the <a href="lisp-reference.html#rdfs:2B:2B-reasoner" title="description of rdfs++-reasoner">rdfs++-reasoner</a> as the reasoning class. </p>
+<a name="function.apply-rdfs:2B:2B-reasoner" id="function.apply-rdfs:2B:2B-reasoner"></a>
+<a name="apply-rdfs:2B:2B-reasoner" id="apply-rdfs:2B:2B-reasoner"></a>
+<div class="documentation function"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">apply-rdfs++-reasoner</span>
+<span class="documentation-arguments"><span class="marker">&amp;rest</span> &nbsp;<span class="argument">args</span> &nbsp;<span class="marker">&amp;key</span> &nbsp;<span class="argument">db</span> &nbsp;<span class="argument">name</span> &nbsp;<span class="argument">restriction-reasoning-enabled</span> &nbsp;<span class="argument">remote-reasoning</span> &nbsp;<span class="argument">inferred-graph</span> &nbsp;<span class="argument">cached-wrapper-key</span></span>
+</div>
+<span class="documentation-kind">function</span>
+</div>
+<div class="documentation contents"><p>Returns a new <a href="lisp-reference.html#reasoning-triple-store" title="description of reasoning-triple-store">reasoning-triple-store</a> which wraps <code>db</code> with an <a href="lisp-reference.html#rdfs:2B:2B-reasoner" title="description of rdfs++-reasoner">rdfs++-reasoner</a>. </p>
+<ul>
+<li><p><code>db</code> - the triple-store to encapsulate. The defaults to the value of *db*.  If <code>db</code> is *db* then *db* will be set to the returned <a href="lisp-reference.html#reasoning-triple-store" title="description of reasoning-triple-store">reasoning-triple-store</a>. </p></li>
+<li><p><code>name</code> - the name to give the <a href="lisp-reference.html#encapsulated-triple-store" title="description of encapsulated-triple-store">encapsulated-triple-store</a>. Defaults to the current <a href="lisp-reference.html#db-name" title="description of db-name">db-name</a> of the <code>db</code> prefixed with <em>rdfs++-</em> and with a generated suffix . </p></li>
+<li><p><code>restriction-reasoning-enabled</code> - when true, enable OWL hasValue reasoning.  The default is nil. </p></li>
+<li><p><code>inferred-graph</code> - This argument specifies the graph component of all inferred triples.  The default is to use the default graph of the specified triple store. </p></li>
+<li><p><code>cached-wrapper-key</code> - If this argument is <code>nil</code>, the call creates a new instance of a reasoning wrapper; this instance will cause a new invocation of prepare-reasoning when the first query is issued.  If the argument is not nil, it is used as a key in an equalp hash-table; if a previously created wrapper is found, the previous instance is used.  If no entry is found, a new wrapper is created and saved in the table.  The default value is taken from the variable <code>*cached-wrapper-key*</code>.  The initial value of this variable is nil. </p></li>
+<li><code>remote-reasoning</code> - This argument is meaningful only when the db argument is a remote-triple-store instance.  A non-nil value specifies that the reasoning wrapper is created on the server side.  The value returned by <code>apply-rdfs++-reasoner</code> is a new <code>remote-triple-store</code> instance pointing to the reasoner on the server side. </li></ul>
+</div>
+</div>
+  <p>You can query a reasoning-triple-store almost anywhere that you can use a regular triple-store. SPARQL, our family of Prolog <a href="lisp-reference.html#select" title="description of select">select</a> functors, <a href="lisp-reference.html#get-triples" title="description of get-triples">get-triples</a> and <a href="lisp-reference.html#get-triples-list" title="description of get-triples-list">get-triples-list</a> all know how to work with a reasoning-triple-store. </p><p>It's helpful to be able to quickly print out the results of a query. For this purpose, we define a new function <code>ptl</code> (for print-triples-list): </p>
+<pre><code>(defun ptl (s p o)  
+  (print-triples (get-triples :s s :p p :o o) :format :concise)) </code></pre><p>As you can see, it simply passes the <code>s-p-o</code> pattern to <code>get-triples</code> and then uses <code>print-triples</code> to display them in an easy to read form. </p>
+<pre><code>(ptl !ex:Jans !ex:has nil) </code></pre><p> <div class='sidenote' id='query-planner-and-upi-maps'>  </p><p>Note that there is a problem in the query optimizer's handling of uncommitted triples and RDFS reasoning. In certain cases involving uncommitted triples, the optimizer will produce incorrect plans that may return fewer results than expected. The two possible work-arounds are to either call <a href="lisp-reference.html#commit-triple-store" title="description of commit-triple-store">commit-triple-store</a> before executing the query or to add the clause <code>(:use-maps nil)</code> to the query plan. This problem will be corrected in the near future. See the <a href="lisp-reference.html#ref-query-planner" title="">reference guide</a> for more details about the query planner. </p></div> <p>Finally, the reasoner introduces a new Prolog functor <a href="lisp-reference.html#q" title="description of q">q</a> that is used like <a href="lisp-reference.html#q-" title="description of q-">q-</a> in prolog clauses. The difference is that <code>q-</code> will work on the <a href="lisp-reference.html#ground-triple-store" title="description of ground-triple-store">ground-triple-store</a> whereas <code>q</code> will work with the actual *db* (obviously, if *db* is a non-encapsulated-store, then <code>q-</code> and <code>q</code> will be the same.) </p><p>Example: Assume that *db* is a reasoning-triple-store, then using <code>q-</code> ... </p>
+<pre><code>(select (?x)  
+    (q- ?x !cyc:isa !cyc:Terrorist)) </code></pre><p>will find all the triples that <em>literally</em> have the predicate <code>!cyc:isa</code> and the object <code>!cyc:Terrorist</code>. </p><p>This next query does the same thing but uses the reasoner and might return more triples. </p>
+<pre><code>(select (?x)  
+  (q ?x !cyc:isa !cyc:Terrorist)) </code></pre><a name='header2-59' id='header2-59'></a><h2>Getting Ready</h2><p>The examples below assume that the following code has been evaluated in your Lisp session. So please make sure you do so in your session before continuing. </p>
+<pre><code>(require :agraph)  
+ 
+(in-package :triple-store-user)  
+ 
+(enable-!-reader)  
+ 
+(enable-print-decoded t)  
+ 
+(defun ptl (s p o)  
+  ;; short for print-triples-list  
+  (print-triples (get-triples :s s :p p :o o) :format :concise))  
+ 
+(register-namespace  
+ "ex" "http://franz.com/example#" :errorp nil) </code></pre><a name='header2-62' id='header2-62'></a><h2>Reasoner Examples</h2><p>The examples below assume that you have using an RDFS++ triple-store using something like. Note that if <code>ground-ts</code> is already open, then you will not be able to recreate it unless you close it first: </p>
+<pre><code>(defparameter ground-ts (create-triple-store "sample"))  
+(apply-rdfs++-reasoner) </code></pre><p>Each example removes all of the triples in the store, adds some new triples, and makes some queries to illustrate the different sorts of reasoning that AllegroGraph supports. </p><a name='header3-66' id='header3-66'></a><h3>Inverse of</h3>
+<pre><code>(delete-triples)   
+ 
+(add-triple !ex:jans !ex:owns !ex:birra)  
+(add-triple !ex:owned-by !owl:inverseOf !ex:owns)  
+(add-triple !ex:has !owl:inverseOf !ex:owned-by)  
+ 
+(ptl !ex:birra !ex:owned-by nil)  
+(ptl nil !ex:owned-by nil)  
+(ptl nil !ex:owned-by !ex:jans)  
+ 
+(ptl !ex:jans !ex:has nil)  
+(ptl nil !ex:has nil)  
+(ptl nil !ex:has !ex:birra)  
+ 
+(ptl nil nil nil)  
+; this will return nothing  
+; because it works on only the triples explicitly  
+; added to the triple-store  
+ 
+(select (?x)  
+	(q- !ex:birra !ex:owned-by ?x))  
+ 
+; this will return something  
+; because it works on inferred triples  
+ 
+(select (?x)  
+	(q !ex:birra !ex:owned-by ?x)) </code></pre><a name='header3-68' id='header3-68'></a><h3>Sub-property of</h3>
+<pre><code>(delete-triples)  
+ 
+(add-triple !ex:jans !ex:has-pet !ex:birra)  
+(add-triple !ex:has-pet !rdfs:subPropertyOf !ex:owns)  
+(add-triple !ex:birra !ex:friend-of !ex:samira)  
+ 
+(ptl !ex:jans !ex:owns !ex:birra)  
+(ptl !ex:jans !ex:owns nil)  
+(ptl nil !ex:owns !ex:birra)  
+ 
+(ptl !ex:jans !ex:has-pet !ex:birra)  
+(ptl !ex:jans !ex:has-pet nil)  
+(ptl nil !ex:has-pet !ex:birra)  
+ 
+(select (?x ?y)  
+	(q !ex:jans !ex:owns ?x)  
+	(q ?x !ex:friend-of ?y)) </code></pre><a name='header3-70' id='header3-70'></a><h3>inverse and sub properties</h3>
+<pre><code>(delete-triples)  
+ 
+(add-triple !ex:jans !ex:has-pet !ex:birra)  
+(add-triple !ex:owned-by !owl:inverseOf !ex:owns)  
+(add-triple !ex:has !owl:inverseOf !ex:owned-by)  
+(add-triple !ex:has-pet !rdfs:subPropertyOf !ex:owns)  
+(add-triple !ex:pet-of !owl:inverseOf !ex:has-pet)  
+ 
+;; direct triples     
+(ptl !ex:jans !ex:has-pet !ex:birra)  
+(ptl nil !ex:has-pet !ex:birra)  
+(ptl !ex:jans !ex:has-pet nil)  
+ 
+;; inverse of !ex:has-pet  
+(ptl !ex:birra !ex:pet-of !ex:jans)  
+(ptl nil !ex:pet-of !ex:jans)  
+(ptl !ex:birra !ex:pet-of nil)  
+ 
+;; subproperty     
+(ptl !ex:jans !ex:owns !ex:birra)  
+(ptl !ex:jans !ex:owns nil)  
+(ptl nil !ex:owns !ex:birra)  
+ 
+;; inverse of subproperty  
+(ptl !ex:birra !ex:owned-by !ex:jans)  
+(ptl nil !ex:owned-by !ex:jans)  
+(ptl !ex:birra !ex:owned-by nil)  
+ 
+;; inverse of inverse  
+(ptl !ex:jans !ex:has !ex:birra)  
+(ptl nil !ex:has !ex:birra)  
+(ptl !ex:jans !ex:has nil) </code></pre><a name='header3-72' id='header3-72'></a><h3>Same-as</h3>
+<pre><code>(create-triple-store "rdfs-tutorial")   
+ 
+(add-triple !ex:jans !ex:owns !ex:birra)  
+(add-triple !ex:jans !owl:sameAs !ex:jannes)  
+(add-triple !ex:aasman !owl:sameAs !ex:jannes)  
+(add-triple !ex:birra !owl:sameAs !ex:son-of-samira)  
+ 
+(ptl !ex:aasman !ex:owns !ex:son-of-samira)  
+(ptl !ex:aasman !ex:owns nil)  
+(ptl nil !ex:owns !ex:son-of-samira)  
+ 
+(ptl nil !ex:owns nil) </code></pre><a name='header3-74' id='header3-74'></a><h3>Same-as, inverse, and sub-properties</h3>
+<pre><code>(create-triple-store "rdfs-tutorial")   
+ 
+(add-triple !ex:jans !ex:has-pet !ex:birra)  
+(add-triple !ex:owned-by !owl:inverseOf !ex:owns)  
+(add-triple !ex:has !owl:inverseOf !ex:owned-by)  
+(add-triple !ex:has-pet !rdfs:subPropertyOf !ex:owns)  
+(add-triple !ex:pet-of !owl:inverseOf !ex:has-pet)  
+(add-triple !ex:birra !ex:age !ex:twelve)  
+ 
+(add-triple !ex:jans !owl:sameAs !ex:jannes)  
+(add-triple !ex:aasman !owl:sameAs !ex:jannes)  
+(add-triple !ex:birra !owl:sameAs !ex:son-of-samira)  
+ 
+;; direct triples  
+ 
+(ptl !ex:aasman !ex:has-pet !ex:son-of-samira)  
+(ptl nil !ex:has-pet !ex:son-of-samira)  
+(ptl !ex:aasman !ex:has-pet nil)  
+ 
+;; inverse of !ex:owns  
+ 
+(ptl !ex:son-of-samira !ex:pet-of !ex:aasman)  
+(ptl nil !ex:pet-of !ex:aasman)  
+(ptl !ex:son-of-samira !ex:pet-of nil)  
+ 
+;; inverse of inverse  
+ 
+(ptl !ex:aasman !ex:has !ex:son-of-samira)  
+(ptl nil !ex:has !ex:son-of-samira)  
+(ptl !ex:aasman !ex:has nil)  
+ 
+;; subproperty  
+ 
+(ptl !ex:aasman !ex:owns !ex:son-of-samira)  
+(ptl !ex:aasman !ex:owns nil)  
+(ptl nil !ex:owns !ex:son-of-samira)  
+ 
+;; inverse of subproperty  
+ 
+(ptl !ex:son-of-samira !ex:owned-by !ex:aasman)  
+(ptl nil !ex:owned-by !ex:aasman)  
+(ptl !ex:son-of-samira !ex:owned-by nil)  
+ 
+;; what to do with this?  
+ 
+(ptl nil nil nil)  
+ 
+;; but what if predicate is unknown?  
+ 
+(ptl !ex:jans nil !ex:birra) ;; this returns only one valid result  
+ 
+;; what should i do here, find all the  
+;; predicates defined for !ex:aasman (and the sames)  
+;; and then try them all?  
+ 
+(ptl !ex:aasman nil !ex:birra)  
+ 
+(ptl !ex:aasman nil nil)    </code></pre><a name='header3-76' id='header3-76'></a><h3>type with sub-class</h3>
+<pre><code>(delete-triples)  
+ 
+(add-triple !ex:mammal !rdfs:subClassOf !ex:animal)  
+(add-triple !ex:human !rdfs:subClassOf !ex:mammal)  
+(add-triple !ex:man !rdfs:subClassOf !ex:human)  
+(add-triple !ex:jans !rdf:type !ex:man)  
+(add-triple !ex:jans !owl:sameAs !ex:jannes)  
+(add-triple !ex:aasman !owl:sameAs !ex:jannes)  
+ 
+(ptl !ex:jans !rdf:type !ex:man)  
+(ptl !ex:jans !rdf:type !ex:human)  
+(ptl !ex:jans !rdf:type nil)  
+ 
+(ptl !ex:aasman !rdf:type !ex:man)  
+(ptl !ex:aasman !rdf:type !ex:human)  
+(ptl !ex:aasman !rdf:type nil)  
+ 
+(ptl nil !rdf:type !ex:man)  
+(ptl nil !rdf:type !ex:human)  
+(ptl nil !rdf:type nil)  
+</code></pre><a name='header3-78' id='header3-78'></a><h3>type with range</h3>
+<pre><code>(delete-triples)  
+ 
+(add-triple !ex:jans !ex:has-pet !ex:birra)  
+(add-triple !ex:has-pet !rdfs:range !ex:pet)  
+(add-triple !ex:pet !rdfs:subClassOf !ex:mammal)  
+(add-triple !ex:fatcat !owl:sameAs !ex:birra)  
+ 
+(ptl !ex:birra !rdf:type !ex:pet)  
+(ptl !ex:birra !rdf:type nil)  
+(ptl nil !rdf:type !ex:pet)  
+ 
+(ptl !ex:birra !rdf:type !ex:mammal)  
+(ptl !ex:fatcat !rdf:type !ex:mammal) </code></pre><a name='header3-80' id='header3-80'></a><h3>type with domain</h3>
+<pre><code>(delete-triples)  
+ 
+(add-triple !ex:jans !ex:has-pet !ex:birra)  
+(add-triple !ex:has-pet !rdfs:domain !ex:human)  
+(add-triple !ex:human !rdfs:subClassOf !ex:mammal)  
+(add-triple !ex:jans !owl:sameAs !ex:aasman)  
+ 
+(ptl !ex:jans !rdf:type !ex:human)  
+(ptl !ex:jans !rdf:type nil)  
+(ptl nil !rdf:type !ex:human)  
+ 
+;; not returning all solutions..  
+ 
+(ptl nil !rdf:type nil) </code></pre><a name='header3-82' id='header3-82'></a><h3>Transitivity with Same As</h3>
+<pre><code>(delete-triples)  
+ 
+(add-triple !ex:contains !rdf:type !owl:TransitiveProperty)  
+(add-triple !ex:usa !ex:contains !ex:california)  
+(add-triple !ex:golden-state !ex:contains !ex:contra-costa)  
+(add-triple !ex:contra-costa !ex:contains !ex:moraga)  
+ 
+(add-triple !ex:usa !owl:sameAs !ex:uncle-sam)  
+(add-triple !ex:moraga !owl:sameAs !ex:mytown)  
+(add-triple !ex:california !owl:sameAs !ex:golden-state)  
+ 
+(ptl !ex:usa !ex:contains !ex:moraga)  
+(ptl !ex:uncle-sam !ex:contains !ex:mytown)  
+(ptl !ex:golden-state !ex:contains !ex:moraga)  
+(ptl !ex:california !ex:contains !ex:moraga)  
+(ptl !ex:california !ex:contains !ex:mytown)  
+ 
+(ptl !ex:usa !ex:contains nil)  
+(ptl !ex:uncle-sam !ex:contains nil)  
+ 
+(ptl nil !ex:contains !ex:moraga)  
+(ptl nil !ex:contains !ex:mytown)  
+</code></pre><hr/><div id="footnotes"> <h2>Footnotes</h2>
+<div class="footnotes">
+<ol>
+<li>
+<a name="fn0-2018-06-08" id="fn0-2018-06-08"></a>
+In particular, <em>some</em> non-rdf:type and rdfs:subClassOf reasoning involving chains of transitive predicates will not be followed unless the predicate is supplied as part of the query. <a href="#fnr0-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 1 in the text">&#8617;</a></li>
+</ol>
+</div>  </div>  </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

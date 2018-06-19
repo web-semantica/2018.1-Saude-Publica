@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Security Overview | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="security-overview"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>AllegroGraph 6.4.2 Security Overview</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='AllegroGraph Enterprise Security and Management'>AllegroGraph Enterprise Security and Management</a>
+<ul>
+<li><a href='#header3-16' title='Transport Layer Security'>Transport Layer Security</a>
+<ul>
+<li><a href='#header4-20' title='SSL and TLS'>SSL and TLS</a></li>
+<li><a href='#header4-23' title='X.509 Certificates'>X.509 Certificates</a></li></ul></li>
+<li><a href='#header3-25' title='Management Access Control'>Management Access Control</a>
+<ul>
+<li><a href='#header4-27' title='Configuration of Repositories and Catalogs'>Configuration of Repositories and Catalogs</a></li>
+<li><a href='#header4-29' title='Management of JavaScript and Lisp Stored Procedures'>Management of JavaScript and Lisp Stored Procedures</a></li>
+<li><a href='#header4-31' title='User Management'>User Management</a></li>
+<li><a href='#header4-35' title='Programmatic System Management'>Programmatic System Management</a></li></ul></li>
+<li><a href='#header3-62' title='Triple Level Security'>Triple Level Security</a></li></ul></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>AllegroGraph Enterprise Security and Management</h2><p>Franz AllegroGraph v4 represents the first Semantic Technology Database with OLTP, ACID compliance and Enterprise Management functionality.  AllegroGraph Enterprise Security and Management (ESM) provides the mission critical functionality that organizations need to support 24/7/365 operations.  AllegroGraph has received a Certificate of Networthiness for the product to run on the Department of Defense <code>.mil</code> network. </p><p>This document gives and overview of security in AllegroGraph. See <a href="security.html">Security Implementation</a> for implementation details. </p><p>AllegroGraph ESM includes the following: </p>
+<ul>
+<li>Transport Layer security to and from database clients.</li>
+<li>Management, Access Control and Security for the AllegroGraph   database server and AllegroGraph Enterprise Subsystems; such as   Backup, Restore, Point-in-Time Recovery, Warm Standby and   Replication. </li>
+<li>Data Access Control v4</li>
+<li>Data Access Control v4.5 – Triple Level Security</li></ul><a name='header3-16' id='header3-16'></a><h3>Transport Layer Security</h3><p>Access to an AllegroGraph database server can be obtained via AllegroGraph’s RESTful interface (for HTTP and HTTPS clients), through AllegroGraph’s built-in web interface – AGWebView, and through a local Lisp client application </p><p>All client network access to AllegroGraph occurs though the product’s HTTP and HTTPS RESTful interfaces.  The AllegroGraph interface, and RESTful interfaces in general, are remarkable in that they are by definition client-server, stateless, cacheable and provide a uniform interface identifying system resources in the client request. </p><p>AllegroGraph clients can connect directly to the server via HTTP, sending and receiving clear text.  AllegroGraph clients also have the ability to send and receive encrypted requests. </p><a name='header4-20' id='header4-20'></a><h4>SSL and TLS</h4><p>When an AllegroGraph session is established over Secure Sockets Layer (SSL), the server shares a public key with the client which is used to encrypt subsequent requests.  AllegroGraph supports TLS versions 1.0, 1.1, and 1.2. </p><p>AllegroGraph utilizes FIPS 140-2 compliant encryption for data in transit.  Reference <a href="http://csrc.nist.gov/groups/STM/cmvp/documents/fips140-2/FIPS1402IG.pdf" title="FIPS" class="external" target="_blank">http://csrc.nist.gov/groups/STM/cmvp/documents/fips140-2/FIPS1402IG.pdf</a>. </p><a name='header4-23' id='header4-23'></a><h4>X.509 Certificates</h4><p>The server provides an X.509 certificate to the client during the SSL/TLS handshake when the connection is established. Therefore the client can check the contents of the certificate if desired. </p><a name='header3-25' id='header3-25'></a><h3>Management Access Control</h3><p>AGWebView provides a GUI management and data access interface to AllegroGraph, as we describe in <a href="security.html">Security Implementation</a>. The web-browser based interface allows the system administrator to manage access control to individual repositories, maintain users and roles, and control the Warm Standby and Replication interfaces. </p><a name='header4-27' id='header4-27'></a><h4>Configuration of Repositories and Catalogs</h4><p>Repositories are effectively managed through AGWebView.  Control over placement of the catalogs and server settings is managed during initial server configuration. </p><a name='header4-29' id='header4-29'></a><h4>Management of JavaScript and Lisp Stored Procedures</h4><p>Both JavaScript and Lisp stored procedures are supported.  The user manages stored procedures through AGWebView. </p><a name='header4-31' id='header4-31'></a><h4>User Management</h4><p>The system administrator is given fine-grained control over creation and management of users, passwords and roles through the AGWebView interface. </p><p>There are several predefined user permissions, including Superuser, Start Sessions, Eval (stored procedures) and (control) Replication. </p><p>For each user and role, the administrator can manage these permissions and repository access.  Access can be granted to specific repositorities in specific catalogs, all repositories in a catalog, or all repositories in the server. </p><a name='header4-35' id='header4-35'></a><h4>Programmatic System Management</h4><p>All the management functions of the product are exposed via HTTP, Java, Python, Lisp and others.  Organizations can take advantage of AGWebView or provide their own custom interface to AllegoGraph security and management. </p><p><strong><em>Summary:</em></strong> </p><p><strong>Manage User Permissions and Access Rights</strong> </p>
+<ul>
+<li>Super User - Manages user accounts and all security.</li>
+<li>Eval User - Manages access to AllegroGraph stored procedure functionality.</li>
+<li>Session - Allows users to manage their own sessions.</li>
+<li>Read/Write - Defined per user for each database and catalog.</li></ul><p><strong>Administrative Functionality</strong> </p>
+<ul>
+<li>List Users</li>
+<li>Create Users</li>
+<li>Delete Users</li>
+<li>Change Password</li>
+<li>List User Roles</li>
+<li>Add Role to User</li>
+<li>Delete Role from User</li>
+<li>List User Permission Flags</li>
+<li>Assign Permission Flags</li>
+<li>Delete Permission Flags</li>
+<li>List User Database and Catalog Access</li>
+<li>Set User Database and Catalog Access</li>
+<li>List Users within specified Role</li>
+<li>Create New Role</li>
+<li>Delete Role</li>
+<li>Grant and Revoke Permissions for each Role</li>
+<li>Create and Delete Database</li>
+<li>Specify security filters for roles and for users</li></ul><a name='header3-62' id='header3-62'></a><h3>Triple Level Security</h3><p>As RDF stores become more entrenched in enterprise applications, increased security and fine-grained data access control is required. To support this, AllegroGraph supports statement-level Security Filters, which are described in <a href="security.html#filters">the Security Filters section</a> of <a href="security.html">Security Implementation</a>. </p><p>With Security Filters the system administrator is able to grant user access to the entire repository, or restrict access to a limited and filtered view of a repository. </p><p>Security Filters can be applied to individual repositories for all add/delete/query operations, per user and per role. You specify which values of the subject, predicate, object, or graph should be allowed or disallowed and then query responses are filtered appropriately, and attempts to add or delete filtered triples fail. </p><p><strong><em>Key Security Filter Features:</em></strong> </p>
+<ul>
+<li>Apply Security Filters per user and/or role.</li>
+<li>Prevents data access to unauthorized users.</li>
+<li>Minimal administration.</li>
+<li>The user <code>views</code> the repository based on the applied Security Filter.</li>
+<li>Allows extremely fine-grained and flexible access to data.</li></ul></div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

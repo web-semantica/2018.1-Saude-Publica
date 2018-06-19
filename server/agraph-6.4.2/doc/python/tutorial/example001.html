@@ -1,0 +1,450 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Example 1: Creating a repository and triple indices &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example 2: Asserting and retracting triples" href="example002.html" />
+    <link rel="prev" title="Prerequisites" href="setup.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+        &laquo;<a href="setup.html" title="previous chapter">Prerequisites</a>
+      <a href="example002.html" title="next chapter">Example 2: Asserting and retracting triples</a> 
+      &raquo;
+    </div>
+  
+    
+  <div class="section" id="example-1-creating-a-repository-and-triple-indices">
+<span id="example1"></span><h1>Example 1: Creating a repository and triple indices<a class="headerlink" href="#example-1-creating-a-repository-and-triple-indices" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="listing-catalogs">
+<h2>Listing catalogs<a class="headerlink" href="#listing-catalogs" title="Permalink to this headline">¶</a></h2>
+<p>The first task is to attach to our AllegroGraph Server and open a
+repository. To achieve this we build a chain of Python objects, ending in
+a “connection” object that lets us manipulate triples in a specific
+repository. The overall process of generating the connection object
+follows this diagram:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><p class="first">The first example opens (or
+creates) a repository by building a
+series of client-side objects,
+culminating in a “connection”
+object.</p>
+<p class="last">The connection object contains the
+methods that let us manipulate
+triples in a specific repository.</p>
+</td>
+<td><a class="reference internal" href="../_images/connection.svg"><img alt="img-connection" src="../_images/connection.svg" width="100%" /></a></td>
+</tr>
+</tbody>
+</table>
+<p>Before we start, we will extract the location of the AG server from environment
+variables</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">AGRAPH_HOST</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AGRAPH_HOST&#39;</span><span class="p">)</span>
+<span class="n">AGRAPH_PORT</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AGRAPH_PORT&#39;</span><span class="p">,</span> <span class="s1">&#39;10035&#39;</span><span class="p">))</span>
+<span class="n">AGRAPH_USER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AGRAPH_USER&#39;</span><span class="p">)</span>
+<span class="n">AGRAPH_PASSWORD</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AGRAPH_PASSWORD&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>AllegroGraph connection functions use these environment variables as
+defaults, but we will pass the values explicitly to illustrate how to
+specify connection parameters in Python.</p>
+<p>The example first connects to an AllegroGraph Server by providing the
+endpoint (host IP address and port number) of an already-launched
+AllegroGraph server. This creates a client-side server object, which can
+access the AllegroGraph server’s list of available catalogs through the
+<a class="reference internal" href="../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listCatalogs" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listCatalogs"><code class="xref py py-meth docutils literal"><span class="pre">listCatalogs()</span></code></a> method. Note that the name of the root catalog
+will be represented by <code class="docutils literal"><span class="pre">None</span></code>:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.sail.allegrographserver</span> <span class="kn">import</span> <span class="n">AllegroGraphServer</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Connecting to AllegroGraph server --&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;host:&#39;</span><span class="si">%s</span><span class="s2">&#39; port:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">AGRAPH_HOST</span><span class="p">,</span> <span class="n">AGRAPH_PORT</span><span class="p">))</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">AllegroGraphServer</span><span class="p">(</span><span class="n">AGRAPH_HOST</span><span class="p">,</span> <span class="n">AGRAPH_PORT</span><span class="p">,</span>
+                            <span class="n">AGRAPH_USER</span><span class="p">,</span> <span class="n">AGRAPH_PASSWORD</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Available catalogs:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">cat_name</span> <span class="ow">in</span> <span class="n">server</span><span class="o">.</span><span class="n">listCatalogs</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">cat_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;  - &lt;root catalog&gt;&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;  - &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">cat_name</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>This is the output so far:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Connecting to AllegroGraph server -- host:&#39;...
+Available catalogs:
+  - &lt;root catalog&gt;
+  ...
+</pre></div>
+</div>
+<p>This output says that the server has the root catalog and possibly
+also some other catalogs that someone has created for some
+experimentation.</p>
+</div>
+<div class="section" id="listing-repositories">
+<h2>Listing repositories<a class="headerlink" href="#listing-repositories" title="Permalink to this headline">¶</a></h2>
+<p>In the next part of this example, we use the <a class="reference internal" href="../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.AllegroGraphServer.openCatalog" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.openCatalog"><code class="xref py py-meth docutils literal"><span class="pre">openCatalog()</span></code></a>
+method to create a client-side catalog object. In this example we will
+connect to the root catalog. When we look inside that catalog, we can
+see which repositories are available:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">catalog</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">openCatalog</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Available repositories in catalog &#39;</span><span class="si">%s</span><span class="s2">&#39;:&quot;</span> <span class="o">%</span> <span class="n">catalog</span><span class="o">.</span><span class="n">getName</span><span class="p">())</span>
+<span class="k">for</span> <span class="n">repo_name</span> <span class="ow">in</span> <span class="n">catalog</span><span class="o">.</span><span class="n">listRepositories</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;  - &#39;</span> <span class="o">+</span> <span class="n">repo_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The corresponding output lists the available repositories. When you run
+the examples, you may see a different list of repositories.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">Available</span> <span class="n">repositories</span> <span class="ow">in</span> <span class="n">catalog</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
+ <span class="o">-</span> <span class="n">pythontutorial</span>
+ <span class="o">-</span> <span class="n">greenthings</span>
+ <span class="o">-</span> <span class="n">redthings</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-repositories">
+<h2>Creating repositories<a class="headerlink" href="#creating-repositories" title="Permalink to this headline">¶</a></h2>
+<p>The next step is to create a client-side repository object representing
+the respository we wish to open, by calling the <a class="reference internal" href="../_gen/franz.openrdf.sail.html#franz.openrdf.sail.allegrographserver.Catalog.getRepository" title="franz.openrdf.sail.allegrographserver.Catalog.getRepository"><code class="xref py py-meth docutils literal"><span class="pre">getRepository()</span></code></a>
+method of the catalog object. We have to provide the name of the desired
+repository (<code class="docutils literal"><span class="pre">'python-tutorial'</span></code>), and select one of four access modes:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">Repository.RENEW</span></code> clears the contents of an existing repository
+before opening. If the indicated repository does not exist, it
+creates one.</li>
+<li><code class="docutils literal"><span class="pre">Repository.OPEN</span></code> opens an existing repository, or throws an
+exception if the repository is not found.</li>
+<li><code class="docutils literal"><span class="pre">Repository.ACCESS</span></code> opens an existing repository, or creates a new
+one if the repository is not found.</li>
+<li><code class="docutils literal"><span class="pre">Repository.CREATE</span></code> creates a new repository, or throws an
+exception if one by that name already exists.</li>
+</ul>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.repository.repository</span> <span class="kn">import</span> <span class="n">Repository</span>
+
+<span class="n">mode</span> <span class="o">=</span> <span class="n">Repository</span><span class="o">.</span><span class="n">RENEW</span>
+<span class="n">my_repository</span> <span class="o">=</span> <span class="n">catalog</span><span class="o">.</span><span class="n">getRepository</span><span class="p">(</span><span class="s1">&#39;python-tutorial&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+<span class="n">my_repository</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>A new or renewed repository must be initialized, using the
+<a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.initialize" title="franz.openrdf.repository.repository.Repository.initialize"><code class="xref py py-meth docutils literal"><span class="pre">initialize()</span></code></a> method of the repository object.</p>
+</div>
+<div class="section" id="connecting-to-a-repository">
+<h2>Connecting to a repository<a class="headerlink" href="#connecting-to-a-repository" title="Permalink to this headline">¶</a></h2>
+<p>The goal of all this object-building has been to create a client-side
+connection object, whose methods let us manipulate the triples of the
+repository. The repository object’s <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.getConnection" title="franz.openrdf.repository.repository.Repository.getConnection"><code class="xref py py-meth docutils literal"><span class="pre">getConnection()</span></code></a> method
+returns this connection object.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">conn</span> <span class="o">=</span> <span class="n">my_repository</span><span class="o">.</span><span class="n">getConnection</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Repository </span><span class="si">%s</span><span class="s1"> is up!&#39;</span> <span class="o">%</span> <span class="n">my_repository</span><span class="o">.</span><span class="n">getDatabaseName</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;It contains </span><span class="si">%d</span><span class="s1"> statement(s).&#39;</span> <span class="o">%</span> <span class="n">conn</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.size" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.size"><code class="xref py py-meth docutils literal"><span class="pre">size()</span></code></a> method of the connection object returns how many
+triples are present. In the <code class="docutils literal"><span class="pre">example1()</span></code> function, this number
+will always be zero because we “renewed” the repository.</p>
+<p>This is the output so far:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Repository python-tutorial is up!
+It contains 0 statement(s).
+</pre></div>
+</div>
+</div>
+<div class="section" id="managing-indices">
+<h2>Managing indices<a class="headerlink" href="#managing-indices" title="Permalink to this headline">¶</a></h2>
+<p>Whenever you create a new repository, you should stop to consider which
+kinds of triple indices you will need. This is an important efficiency
+decision. AllegroGraph uses a set of sorted indices to quickly identify
+a contiguous range of triples that are likely to match a specific query
+pattern.</p>
+<p>These indices are identified by names that describe their organization.
+The default set of indices are called <strong>spogi, posgi, ospgi, gspoi,
+gposi, gospi</strong>, and <strong>i</strong> , where:</p>
+<ul class="simple">
+<li><strong>S</strong> stands for the subject URI.</li>
+<li><strong>P</strong> stands for the predicate URI.</li>
+<li><strong>O</strong> stands for the object URI or literal.</li>
+<li><strong>G</strong> stands for the graph URI.</li>
+<li><strong>I</strong> stands for the triple identifier (its unique id number within the
+triple store).</li>
+</ul>
+<p>The order of the letters denotes how the index has been organized. For
+instance, the <strong>spogi</strong> index contains all of the triples in the
+store, sorted first by subject, then by predicate, then by object, and
+finally by graph. The triple id number is present as a fifth column in
+the index. If you know the URI of a desired resource (the <em>subject</em>
+value of the query pattern), then the <strong>spogi</strong> index lets you quickly
+locate and retrieve all triples with that subject.</p>
+<p>The idea is to provide your respository with the indices that your
+queries will need, and to avoid maintaining indices that you will never
+need.</p>
+<p>We can use the connection object’s <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.listValidIndices" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.listValidIndices"><code class="xref py py-meth docutils literal"><span class="pre">listValidIndices()</span></code></a> method to
+examine the list of all possible AllegroGraph triple indices:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">indices</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">listValidIndices</span><span class="p">()</span>
+<span class="n">group_size</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;All valid triple indices:&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">offset</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">),</span> <span class="n">group_size</span><span class="p">):</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">offset</span> <span class="o">+</span> <span class="n">group_size</span><span class="p">]</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;  &#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">group</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>This is the list of all possible valid indices:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>All valid triple indices:
+   spogi spgoi sopgi sogpi sgpoi
+   sgopi psogi psgoi posgi pogsi
+   pgsoi pgosi ospgi osgpi opsgi
+   opgsi ogspi ogpsi gspoi gsopi
+   gpsoi gposi gospi gopsi i
+</pre></div>
+</div>
+<p>AllegroGraph can generate any of these indices if you need them, but it
+creates only seven indices by default. We can see the current indices
+by using the connection object’s <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.listIndices" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.listIndices"><code class="xref py py-meth docutils literal"><span class="pre">listIndices()</span></code></a> method:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">indices</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">listIndices</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Current triple indices:&#39;</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">indices</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>There are currently seven indices</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Current triple indices: i, gospi, gposi, gspoi, ospgi, posgi, spogi
+</pre></div>
+</div>
+<p>The indices that begin with “g” are sorted primarily by subgraph (or
+“context”). If your application does not use subgraphs, you should
+consider removing these indices from the repository. You don’t want to
+build and maintain triple indices that your application will never use.
+This wastes CPU time and disk space. The connection object has a
+convenient <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.dropIndex" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.dropIndex"><code class="xref py py-meth docutils literal"><span class="pre">dropIndex()</span></code></a> method:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Removing graph indices...&quot;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">dropIndex</span><span class="p">(</span><span class="s2">&quot;gospi&quot;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">dropIndex</span><span class="p">(</span><span class="s2">&quot;gposi&quot;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">dropIndex</span><span class="p">(</span><span class="s2">&quot;gspoi&quot;</span><span class="p">)</span>
+<span class="n">indices</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">listIndices</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Current triple indices:&#39;</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">indices</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Having dropped three of the triple indices, there are now four
+remaining:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Removing graph indices...
+Current triple indices: i, ospgi, posgi, spogi
+</pre></div>
+</div>
+<p>The <strong>i</strong> index is for deleting triples by using the triple id number.
+It is also required for <a class="reference internal" href="example012.html#example12"><span class="std std-ref">free text indexing</span></a>.  The
+<strong>ospgi</strong> index is sorted primarily by object value, which makes it
+possible to efficiently retrieve a range of object values from the
+index. Similarly, the <strong>posgi</strong> index lets us quickly reach for a
+triples that all share the same predicate. We mentioned previously
+that the <strong>spogi</strong> index speeds up the retrieval of triples that all
+have the same subject URI.</p>
+<p>As it happens, we may have been overly hasty in eliminating all of the
+graph indices. AllegroGraph can find the right matches as long as there
+is <em>any</em> one index present, but using the “right” index is much faster.
+Let’s put one of the graph indices back, just in case we need it. We’ll
+use the connection object’s <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.addIndex" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.addIndex"><code class="xref py py-meth docutils literal"><span class="pre">addIndex()</span></code></a> method:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Adding one graph index back in...&quot;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">addIndex</span><span class="p">(</span><span class="s2">&quot;gspoi&quot;</span><span class="p">)</span>
+<span class="n">indices</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">listIndices</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Current triple indices:&#39;</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">indices</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Adding one graph index back in...
+Current triple indices: i, gspoi, ospgi, posgi, spogi
+</pre></div>
+</div>
+</div>
+<div class="section" id="releasing-resources">
+<h2>Releasing resources<a class="headerlink" href="#releasing-resources" title="Permalink to this headline">¶</a></h2>
+<p>Both the connection and the repository object must be closed to
+release resources once they are no longer needed. We can use the
+<a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository.shutDown" title="franz.openrdf.repository.repository.Repository.shutDown"><code class="xref py py-meth docutils literal"><span class="pre">shutDown()</span></code></a> and <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.close" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.close"><code class="xref py py-meth docutils literal"><span class="pre">close()</span></code></a>
+methods to do this:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">my_repository</span><span class="o">.</span><span class="n">shutDown</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>It is safer and more convenient to ensure that the resources are
+released by using the <code class="docutils literal"><span class="pre">with</span></code> statement:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">catalog</span><span class="o">.</span><span class="n">getRepository</span><span class="p">(</span><span class="s1">&#39;python-tutorial&#39;</span><span class="p">,</span> <span class="n">Repository</span><span class="o">.</span><span class="n">OPEN</span><span class="p">)</span> <span class="k">as</span> <span class="n">repo</span><span class="p">:</span>
+    <span class="c1"># Note: an explicit call to initialize() is not required</span>
+    <span class="c1"># when using the `with` statement.</span>
+    <span class="k">with</span> <span class="n">repo</span><span class="o">.</span><span class="n">getConnection</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Statements:&#39;</span><span class="p">,</span> <span class="n">conn</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Statements: 0
+</pre></div>
+</div>
+</div>
+<div class="section" id="utility-functions">
+<h2>Utility functions<a class="headerlink" href="#utility-functions" title="Permalink to this headline">¶</a></h2>
+<p>Creating the intermediate server, catalog and repository objects can
+be tedious when the only thing required is a single connection to one
+repository. In such circumstances it might be more convenient to use
+the <a class="reference internal" href="../_gen/franz.openrdf.html#franz.openrdf.connect.ag_connect" title="franz.openrdf.connect.ag_connect"><code class="xref py py-func docutils literal"><span class="pre">ag_connect()</span></code></a> function. That is what we will do in further
+examples. Here is a brief example of using <a class="reference internal" href="../_gen/franz.openrdf.html#franz.openrdf.connect.ag_connect" title="franz.openrdf.connect.ag_connect"><code class="xref py py-func docutils literal"><span class="pre">ag_connect()</span></code></a></p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.connect</span> <span class="kn">import</span> <span class="n">ag_connect</span>
+
+<span class="k">with</span> <span class="n">ag_connect</span><span class="p">(</span><span class="s1">&#39;python-tutorial&#39;</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Statements:&#39;</span><span class="p">,</span> <span class="n">conn</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>This function take care of creating all required objects and the
+returned context manager ensures that all necessary initialization
+steps are taken and no resources are leaked. The <code class="docutils literal"><span class="pre">create</span></code> and
+<code class="docutils literal"><span class="pre">clear</span></code> arguments ensure that the repository is empty and that it is
+created if necessary.</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Statements: 0
+</pre></div>
+</div>
+</div>
+</div>
+
+
+  
+    <div class="nav-links nav-links-footer">
+        &laquo;<a href="setup.html" title="previous chapter">Prerequisites</a>
+      <a href="example002.html" title="next chapter">Example 2: Asserting and retracting triples</a> 
+      &raquo;
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#setting-the-environment-for-the-tutorial">Setting the environment for the tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#terminology">Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#creating-users-with-webview">Creating Users with WebView</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Example 1: Creating a repository and triple indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example002.html">Example 2: Asserting and retracting triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example003.html">Example 3: A SPARQL query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example004.html">Example 4: Statement matching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example005.html">Example 5: Literal values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example006.html">Example 6: Importing triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example007.html">Example 7: Querying multiple contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example008.html">Example 8: Exporting triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example009.html">Example 9: Exporting query results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example010.html">Example 10: Graphs in SPARQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example011.html">Example 11: Namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example012.html">Example 12: Free Text indexing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example013.html">Example 13: SPARQL query forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example014.html">Example 14: Parametric queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example015.html">Example 15: Range queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example016.html">Example 16: Federated repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example017.html">Example 17: Triple attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example018.html">Example 18: Pandas support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fedex.html">Running AG on AWS EC2</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../tutorial.html">Tutorial</a><ul>
+      <li>Previous: <a href="setup.html" title="previous chapter">Prerequisites</a></li>
+      <li>Next: <a href="example002.html" title="next chapter">Example 2: Asserting and retracting triples</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/tutorial/example001.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

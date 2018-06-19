@@ -1,0 +1,424 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>AllegroGraph Python client release history &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="franz.openrdf.vocabulary package" href="_gen/franz.openrdf.vocabulary.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+        &laquo;<a href="_gen/franz.openrdf.vocabulary.html" title="previous chapter">franz.openrdf.vocabulary package</a>
+    </div>
+  
+    
+  <div class="section" id="allegrograph-python-client-release-history">
+<h1>AllegroGraph Python client release history<a class="headerlink" href="#allegrograph-python-client-release-history" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="release-100-2-0">
+<h2>Release 100.2.0<a class="headerlink" href="#release-100-2-0" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pandas-support">
+<h3>Pandas support<a class="headerlink" href="#pandas-support" title="Permalink to this headline">¶</a></h3>
+<p>It is now possible to turn a query result into a Pandas DataFrame
+by calling the <code class="docutils literal"><span class="pre">toPandas()</span></code> method of the result object. Note that
+Pandas must be installed separately for this to work.</p>
+</div>
+</div>
+<div class="section" id="release-100-1-2">
+<h2>Release 100.1.2<a class="headerlink" href="#release-100-1-2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bug25281-proxy-settings-are-ignored">
+<h3>bug25281: Proxy settings are ignored<a class="headerlink" href="#bug25281-proxy-settings-are-ignored" title="Permalink to this headline">¶</a></h3>
+<p>Proxy settings used to be ignored when the requests backend was used.
+This has been corrected.</p>
+<p>Thanks to Iván Darío Ramos Vacca for reporting the bug and providing
+a fix.</p>
+</div>
+</div>
+<div class="section" id="release-100-1-1">
+<h2>Release 100.1.1<a class="headerlink" href="#release-100-1-1" title="Permalink to this headline">¶</a></h2>
+<p>A bugfix release that adds some missing dependencies that are needed
+when using Python &lt; 3.5.</p>
+</div>
+<div class="section" id="release-100-1-0">
+<h2>Release 100.1.0<a class="headerlink" href="#release-100-1-0" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="triple-attributes">
+<h3>Triple attributes<a class="headerlink" href="#triple-attributes" title="Permalink to this headline">¶</a></h3>
+<p>Added support for triple attributes (requires AG &gt;= 6.1). Specifically
+it is now possible to:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Set and retrieve the static attribute filter using
+<code class="docutils literal"><span class="pre">conn.setAttributeFilter()</span></code> and <code class="docutils literal"><span class="pre">conn.getAttributeFilter()</span></code></li>
+<li>Set and retrieve user attributes (that will be sent with each
+request) using <code class="docutils literal"><span class="pre">conn.setUserAttributes()</span></code> and
+<code class="docutils literal"><span class="pre">conn.getUserAttributes()</span></code>.</li>
+<li>Manage attribute definitions using various methods in the
+connection class..</li>
+<li>Add triples with attributes - a new keyword parameter named
+‘attributes’ has been added to methods that add triples,
+such as <code class="docutils literal"><span class="pre">addData()</span></code>. It is also possible to pass five-element
+tuples to <code class="docutils literal"><span class="pre">addTriples()</span></code>, where the fifth element is
+a dictionary of attribute values.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="distributed-transaction-settings">
+<h3>Distributed transaction settings<a class="headerlink" href="#distributed-transaction-settings" title="Permalink to this headline">¶</a></h3>
+<p>It is now possible to configure distributed transaction parameters
+in multiple ways:</p>
+<blockquote>
+<div><ul class="simple">
+<li>By passing arguments to the <code class="docutils literal"><span class="pre">commit()</span></code> method</li>
+<li>By calling <code class="docutils literal"><span class="pre">setTransactionSettings()</span></code> on the connection object.</li>
+<li>By using a context manager returned by the
+<code class="docutils literal"><span class="pre">temporaryTransactionSettings()</span></code> method.</li>
+</ul>
+</div></blockquote>
+<p>In all cases the settings can be passed either in a single
+<code class="docutils literal"><span class="pre">TransactionSettings</span></code> object or as individual keyword arguments.</p>
+</div>
+<div class="section" id="enhanced-namespace-objects">
+<h3>Enhanced namespace objects<a class="headerlink" href="#enhanced-namespace-objects" title="Permalink to this headline">¶</a></h3>
+<p>Namespace objects can now create URIs when indexed or called like a
+function. This makes it easier to create URIs where the local name is
+not a valid attribute name:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">franz.openrdf.connect</span> <span class="kn">import</span> <span class="n">ag_connect</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">conn</span> <span class="o">=</span> <span class="n">ag_connect</span><span class="p">(</span><span class="s1">&#39;repo&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">namespace</span><span class="p">(</span><span class="s1">&#39;http://franz.com/example/&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span><span class="p">(</span><span class="s1">&#39;is&#39;</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">franz</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">example</span><span class="o">/</span><span class="ow">is</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span><span class="p">[</span><span class="s1">&#39;def&#39;</span><span class="p">]</span>
+<span class="o">&lt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">franz</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">example</span><span class="o">/</span><span class="n">def</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="release-100-0-4">
+<h2>Release 100.0.4<a class="headerlink" href="#release-100-0-4" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="jupyter-friendly-stdout">
+<h3>Jupyter-friendly stdout<a class="headerlink" href="#jupyter-friendly-stdout" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">output_to</span></code> context manager (used internally when writing output
+to stdout) has been modified to work better in environments that
+hijack the <code class="docutils literal"><span class="pre">sys.stdout</span></code> value, such as Jupyter notebooks or IDLE.</p>
+</div>
+</div>
+<div class="section" id="release-100-0-3">
+<h2>Release 100.0.3<a class="headerlink" href="#release-100-0-3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="resolved-issues-with-running-unit-tests-from-a-wheel">
+<h3>Resolved issues with running unit tests from a wheel<a class="headerlink" href="#resolved-issues-with-running-unit-tests-from-a-wheel" title="Permalink to this headline">¶</a></h3>
+<p>Some unit tests used to fail when the module was installed
+from a binary wheel. This has been corrected.</p>
+</div>
+<div class="section" id="bug25081-the-context-argument-to-addtriples-is-broken">
+<h3>bug25081: The ‘context’ argument to addTriples() is broken<a class="headerlink" href="#bug25081-the-context-argument-to-addtriples-is-broken" title="Permalink to this headline">¶</a></h3>
+<p>Using the <code class="docutils literal"><span class="pre">addTriples()</span></code> method with the <code class="docutils literal"><span class="pre">context</span></code> parameter
+set to a non-default value used to produce errors:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">conn</span><span class="o">.</span><span class="n">addTriples</span><span class="p">([(</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">o</span><span class="p">)],</span> <span class="n">context</span><span class="o">=</span><span class="n">g</span><span class="p">)</span>
+<span class="mi">400</span> <span class="n">MALFORMED</span> <span class="n">DATA</span><span class="p">:</span> <span class="n">Invalid</span> <span class="n">graph</span> <span class="n">name</span><span class="p">:</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">ex</span><span class="p">:</span><span class="o">//</span><span class="n">g</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This has been corrected. Context can now be set to a single URI
+or a list of URIs. Both URI objects and strings are supported.</p>
+</div>
+<div class="section" id="bug25079-statement-objects-not-created-from-strings-are-broken">
+<h3>bug25079: Statement objects not created from strings are broken<a class="headerlink" href="#bug25079-statement-objects-not-created-from-strings-are-broken" title="Permalink to this headline">¶</a></h3>
+<p>Statement objects that were created in user code were not fully
+functional. In particular attempts to convert such statements to
+strings or to pass them to addTriples() would fail.</p>
+<p>This has been corrected.</p>
+</div>
+<div class="section" id="namespace-objects">
+<h3>Namespace objects<a class="headerlink" href="#namespace-objects" title="Permalink to this headline">¶</a></h3>
+<p>Namespace objects can be used to create URIs, as in the following
+example:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">franz.openrdf.connect</span> <span class="kn">import</span> <span class="n">ag_connect</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">conn</span> <span class="o">=</span> <span class="n">ag_connect</span><span class="p">(</span><span class="s1">&#39;repo&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">namespace</span><span class="p">(</span><span class="s1">&#39;http://franz.com/example/&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span><span class="o">.</span><span class="n">foo</span>
+<span class="o">&lt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">franz</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">example</span><span class="o">/</span><span class="n">foo</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="release-100-0-2">
+<h2>Release 100.0.2<a class="headerlink" href="#release-100-0-2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="new-query-methods">
+<h3>New query methods<a class="headerlink" href="#new-query-methods" title="Permalink to this headline">¶</a></h3>
+<p>Four new methods have been added to the RepositoryConnection class:</p>
+<blockquote>
+<div><ul class="simple">
+<li>executeTupleQuery()</li>
+<li>executeGraphQuery()</li>
+<li>executeBooleanQuery()</li>
+<li>executeUpdate()</li>
+</ul>
+</div></blockquote>
+<p>These can be used to prepare and evaluate a SPARQL query in a single
+call.</p>
+</div>
+<div class="section" id="new-tutorial">
+<h3>New tutorial<a class="headerlink" href="#new-tutorial" title="Permalink to this headline">¶</a></h3>
+<p>The tutorial has been updated and restyled using Sphinx.</p>
+</div>
+<div class="section" id="finalizers-for-query-results">
+<h3>Finalizers for query results<a class="headerlink" href="#finalizers-for-query-results" title="Permalink to this headline">¶</a></h3>
+<p>All result objects are now closed automatically when garbage collected.
+This makes it possible to write simple loops like the one below:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">stmt</span> <span class="ow">in</span> <span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span><span class="s1">&#39;</span><span class="p">...</span><span class="s1">&#39;</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>without having to use the <code class="docutils literal"><span class="pre">with</span></code> statement, since reference counting
+will ensure that the query result is closed at the right time. Note that
+this should not be relied upon in more complex scenarios, where circular
+references might occur and prevent the result object from being closed.</p>
+</div>
+<div class="section" id="connection-parameters-can-now-be-passed-in-environment-variables">
+<h3>Connection parameters can now be passed in environment variables<a class="headerlink" href="#connection-parameters-can-now-be-passed-in-environment-variables" title="Permalink to this headline">¶</a></h3>
+<p>The following environment variables are now used when connecting
+to the server:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">AGRAPH_HOST</span></code> - server address, the default is ‘127.0.0.1’</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">AGRAPH_PORT</span></code> - port number (default: 10035 for HTTP connections,</dt>
+<dd>10036 for HTTPS).</dd>
+</dl>
+</li>
+<li><code class="docutils literal"><span class="pre">AGRAPH_USER</span></code> - Username, no default.</li>
+<li><code class="docutils literal"><span class="pre">AGRAPH_PASSWORD</span></code> - Password, no default.</li>
+</ul>
+</div></blockquote>
+<p>Note that parameters passed to <code class="docutils literal"><span class="pre">ag_connect()</span></code> or  <code class="docutils literal"><span class="pre">AllegroGraphServer()</span></code>
+will override these variables.</p>
+</div>
+<div class="section" id="various-fixes-related-to-data-export">
+<h3>Various fixes related to data export<a class="headerlink" href="#various-fixes-related-to-data-export" title="Permalink to this headline">¶</a></h3>
+<p>Specifically the following adjustments have been done:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Changed the default RDF export format to N-Quads.</li>
+<li>Fixed a bug where errors returned during export
+caused an encoding error.</li>
+<li>Provided a default format (CSV) for tuple queries.</li>
+<li>Value of the output parameter can now be True (stdout)
+or a file descriptor.</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="release-100-0-1">
+<h2>Release 100.0.1<a class="headerlink" href="#release-100-0-1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bug24892-time-parsing-fixes">
+<h3>bug24892: Time parsing fixes<a class="headerlink" href="#bug24892-time-parsing-fixes" title="Permalink to this headline">¶</a></h3>
+<p>The Python client used to fail when trying to retrieve a
+datetimeValue() of a literal that contained time zone
+information. This has been corrected.</p>
+<p>All datetime objects created by the Python API are now timezone-aware.</p>
+</div>
+<div class="section" id="rfe15005-duplicate-suppression-control-api">
+<h3>rfe15005: duplicate suppression control API<a class="headerlink" href="#rfe15005-duplicate-suppression-control-api" title="Permalink to this headline">¶</a></h3>
+<p>It is now possible to set and query the duplicate suppression policy of
+a repository from Python, using three new methods of the connection
+object:</p>
+<blockquote>
+<div><ul class="simple">
+<li>getDuplicateSuppressionPolicy()</li>
+<li>setDuplicateSuppressionPolicy()</li>
+<li>disableDuplicateSuppression()</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="new-export-methods">
+<h3>New export methods<a class="headerlink" href="#new-export-methods" title="Permalink to this headline">¶</a></h3>
+<p>A new mechanism for exporting data has been added. It utilizes a new
+<code class="docutils literal"><span class="pre">output</span></code> parameter that has been added to the following methods:</p>
+<blockquote>
+<div><ul class="simple">
+<li>RepositoryConnection.getStatements()</li>
+<li>RepositoryConnection.getStatementsById()</li>
+<li>TupleQuery.evaluate()</li>
+<li>GraphQuery.evaluate()</li>
+</ul>
+</div></blockquote>
+<p>Setting the new parameter to a file name or a file-like object
+will cause the data that would normally be returned by the call
+to be saved to the specified file instead. Serialization format
+can be controlled by setting another new parameter,
+<code class="docutils literal"><span class="pre">output_format</span></code>.</p>
+</div>
+</div>
+<div class="section" id="release-100-0-0">
+<h2>Release 100.0.0<a class="headerlink" href="#release-100-0-0" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="new-versioning-scheme">
+<h3>New versioning scheme<a class="headerlink" href="#new-versioning-scheme" title="Permalink to this headline">¶</a></h3>
+<p>Client versions no longer match the server version. Major version
+number has been bumped to 100 to avoid confusion.</p>
+</div>
+<div class="section" id="bug24819-circular-import">
+<h3>bug24819: Circular import<a class="headerlink" href="#bug24819-circular-import" title="Permalink to this headline">¶</a></h3>
+<p>Importing com.franz.openrdf.query.query failed due to a circular
+import. Thanks to Maximilien de Bayser for reporting this.</p>
+</div>
+<div class="section" id="bug24826-removestatement-uses-context-instead-of-object">
+<h3>bug24826: removeStatement uses context instead of object<a class="headerlink" href="#bug24826-removestatement-uses-context-instead-of-object" title="Permalink to this headline">¶</a></h3>
+<p>The removeStatement method of RepositoryConnection was broken.
+Patch by Maximilien de Bayser.</p>
+</div>
+</div>
+<div class="section" id="release-6-2-2-0-4">
+<h2>Release 6.2.2.0.4<a class="headerlink" href="#release-6-2-2-0-4" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bug24728-incorrect-conversion-between-boolean-literals-and-python-values">
+<h3>bug24728: Incorrect conversion between boolean literals and Python values<a class="headerlink" href="#bug24728-incorrect-conversion-between-boolean-literals-and-python-values" title="Permalink to this headline">¶</a></h3>
+<p>The booleanValue() method of the Literal class used to work
+incorrectly.  It would return True for any literal that is not empty,
+including the “false”^^xsd:boolean literal.  This has been corrected -
+the function will now return expected values for literals of type
+xsd:boolean.  Result for other types remains undefined.</p>
+</div>
+</div>
+<div class="section" id="release-6-2-2-0-1">
+<h2>Release 6.2.2.0.1<a class="headerlink" href="#release-6-2-2-0-1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bug24680-to-native-string-is-broken-on-python-2">
+<h3>bug24680: to_native_string is broken on Python 2<a class="headerlink" href="#bug24680-to-native-string-is-broken-on-python-2" title="Permalink to this headline">¶</a></h3>
+<p>The Python client sometimes failed while processing values with
+non-ascii characters, showing the following error message:</p>
+<p>UnicodeEncodeError: ‘ascii’ codec can’t encode characters in position ??: ordinal not in range(128)</p>
+<p>This has been corrected.</p>
+</div>
+</div>
+<div class="section" id="release-6-2-2-0-0">
+<h2>Release 6.2.2.0.0<a class="headerlink" href="#release-6-2-2-0-0" title="Permalink to this headline">¶</a></h2>
+<p>Released with AllegroGraph 6.2.2. Change log for this and all previous
+Python client releases can be found in AllegroGraph release notes:
+<a class="reference external" href="https://franz.com/agraph/support/documentation/current/release-notes.html">https://franz.com/agraph/support/documentation/current/release-notes.html</a></p>
+</div>
+</div>
+
+
+  
+    <div class="nav-links nav-links-footer">
+        &laquo;<a href="_gen/franz.openrdf.vocabulary.html" title="previous chapter">franz.openrdf.vocabulary package</a>
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Release notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#release-100-2-0">Release 100.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#release-100-1-2">Release 100.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#release-100-1-1">Release 100.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#release-100-1-0">Release 100.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#release-100-0-4">Release 100.0.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#release-100-0-3">Release 100.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#release-100-0-2">Release 100.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#release-100-0-1">Release 100.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#release-100-0-0">Release 100.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#release-6-2-2-0-4">Release 6.2.2.0.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#release-6-2-2-0-1">Release 6.2.2.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#release-6-2-2-0-0">Release 6.2.2.0.0</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="_gen/franz.openrdf.vocabulary.html" title="previous chapter">franz.openrdf.vocabulary package</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/changes.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

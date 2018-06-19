@@ -1,0 +1,1079 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Example 5: Literal values &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example 6: Importing triples" href="example006.html" />
+    <link rel="prev" title="Example 4: Statement matching" href="example004.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+        &laquo;<a href="example004.html" title="previous chapter">Example 4: Statement matching</a>
+      <a href="example006.html" title="next chapter">Example 6: Importing triples</a> 
+      &raquo;
+    </div>
+  
+    
+  <div class="section" id="example-5-literal-values">
+<span id="example5"></span><h1>Example 5: Literal values<a class="headerlink" href="#example-5-literal-values" title="Permalink to this headline">¶</a></h1>
+<p>The next example illustrates some variations on what we have seen so
+far. The example creates and asserts plain, data-typed, and
+language-tagged literals, and then conducts searches for them in three
+ways:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements"><code class="xref py py-meth docutils literal"><span class="pre">getStatements()</span></code></a> search, which is an efficient way to match a
+single triple pattern.</li>
+<li>SPARQL direct match, for efficient multi-pattern search.</li>
+<li>SPARQL filter match, for sophisticated filtering such as
+performing range matches.</li>
+</ul>
+</div></blockquote>
+<p>The <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements"><code class="xref py py-meth docutils literal"><span class="pre">getStatements()</span></code></a> and SPARQL direct searches return exactly
+the datatype you ask for. The SPARQL filter queries can sometimes
+return multiple datatypes. This behavior will be one focus of this
+section.</p>
+<p>If you are not explicit about the datatype of a value, either when
+asserting the triple or when writing a search pattern, AllegroGraph
+will deduce an appropriate datatype and use it. This is another focus
+of this section. This helpful behavior can sometimes surprise you with
+unanticipated results.</p>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>We begin by obtaining a connection object and remvoing all existing data
+from the repository</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.connect</span> <span class="kn">import</span> <span class="n">ag_connect</span>
+
+<span class="n">conn</span> <span class="o">=</span> <span class="n">ag_connect</span><span class="p">(</span><span class="s1">&#39;python-tutorial&#39;</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For the sake of coding efficiency, it is good practice to create variables
+for namespace strings. We’ll use this namespace again and again in the
+following example. We have made the URIs in this example very short to
+keep the result displays compact.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">exns</span> <span class="o">=</span> <span class="s2">&quot;ex://&quot;</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">setNamespace</span><span class="p">(</span><span class="s1">&#39;ex&#39;</span><span class="p">,</span> <span class="n">exns</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Namespace handling, including the <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.setNamespace" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.setNamespace"><code class="xref py py-meth docutils literal"><span class="pre">setNamespace()</span></code></a> method, is
+described in <a class="reference internal" href="example011.html#example11"><span class="std std-ref">Example 11: Namespaces</span></a>.</p>
+<p>The example will use an artificial data set consisting of eight
+statements, each illustrating a different kind of literal. The subject
+will describe the nature of the literal used as the object, while the
+predicate will always be <code class="docutils literal"><span class="pre">&lt;ex://p&gt;</span></code>. The example shows how to enter
+a full URI string, or alternately how to combine a namespace with a
+local resource name.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">ex_integer</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createURI</span><span class="p">(</span><span class="s2">&quot;ex://integer&quot;</span><span class="p">)</span>
+<span class="n">ex_double</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createURI</span><span class="p">(</span><span class="s2">&quot;ex://double&quot;</span><span class="p">)</span>
+<span class="n">ex_int</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createURI</span><span class="p">(</span><span class="s2">&quot;ex://int&quot;</span><span class="p">)</span>
+<span class="n">ex_long</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createURI</span><span class="p">(</span>
+    <span class="n">namespace</span><span class="o">=</span><span class="n">exns</span><span class="p">,</span> <span class="n">localname</span><span class="o">=</span><span class="s2">&quot;long&quot;</span><span class="p">)</span>
+<span class="n">ex_float</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createURI</span><span class="p">(</span>
+    <span class="n">namespace</span><span class="o">=</span><span class="n">exns</span><span class="p">,</span> <span class="n">localname</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
+<span class="n">ex_decimal</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createURI</span><span class="p">(</span>
+    <span class="n">namespace</span><span class="o">=</span><span class="n">exns</span><span class="p">,</span> <span class="n">localname</span><span class="o">=</span><span class="s2">&quot;decimal&quot;</span><span class="p">)</span>
+<span class="n">ex_string</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createURI</span><span class="p">(</span>
+    <span class="n">namespace</span><span class="o">=</span><span class="n">exns</span><span class="p">,</span> <span class="n">localname</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+<span class="n">ex_plain</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createURI</span><span class="p">(</span>
+    <span class="n">namespace</span><span class="o">=</span><span class="n">exns</span><span class="p">,</span> <span class="n">localname</span><span class="o">=</span><span class="s2">&quot;plain&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The predicate for all our statements will be the same.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">pred</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createURI</span><span class="p">(</span><span class="n">namespace</span><span class="o">=</span><span class="n">exns</span><span class="p">,</span> <span class="n">localname</span><span class="o">=</span><span class="s2">&quot;p&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we construct the objects, illustrating various kinds of RDF
+literals.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.vocabulary.xmlschema</span> <span class="kn">import</span> <span class="n">XMLSchema</span>
+
+<span class="c1"># Type will be XMLSchema.INTEGER</span>
+<span class="n">forty_two</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="c1"># Type will be XMLSchema.DOUBLE</span>
+<span class="n">forty_two_double</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="mf">42.0</span><span class="p">)</span>
+<span class="n">forty_two_int</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span>
+    <span class="s1">&#39;42&#39;</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">INT</span><span class="p">)</span>
+<span class="n">forty_two_long</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span>
+    <span class="s1">&#39;42&#39;</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">LONG</span><span class="p">)</span>
+<span class="n">forty_two_float</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span>
+    <span class="s1">&#39;42&#39;</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">)</span>
+<span class="n">forty_two_decimal</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span>
+    <span class="s1">&#39;42&#39;</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">DECIMAL</span><span class="p">)</span>
+<span class="n">forty_two_string</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span>
+    <span class="s1">&#39;42&#39;</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">STRING</span><span class="p">)</span>
+<span class="c1"># Creates a plain (untyped) literal.</span>
+<span class="n">forty_two_plain</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="s1">&#39;42&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In four of these statements, we explicitly identified the datatype of
+the value in order to create an INT, a LONG, a FLOAT and a
+STRING. This is the best practice.</p>
+<p>In three other statements, we just handed AllegroGraph numeric-looking
+values to see what it would do with them. As we will see in a moment,
+<code class="docutils literal"><span class="pre">42</span></code> creates an INTEGER, <code class="docutils literal"><span class="pre">42.0</span></code> becomes a DOUBLE, and <code class="docutils literal"><span class="pre">'42'</span></code>
+becomes a “plain” (untyped) literal value.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Note that plain literals are not <em>quite</em> the same thing
+as typed literal strings. A search for a plain literal
+will not always match a typed string, and <em>vice versa</em>.)</p>
+</div>
+<p>Now we will now assemble the URIs and values into <a class="reference internal" href="../_gen/franz.openrdf.model.html#franz.openrdf.model.Statement" title="franz.openrdf.model.Statement"><code class="xref py py-class docutils literal"><span class="pre">statements</span></code></a> (which are client-side triples):</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">stmt1</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createStatement</span><span class="p">(</span><span class="n">ex_integer</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">forty_two</span><span class="p">)</span>
+<span class="n">stmt2</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createStatement</span><span class="p">(</span><span class="n">ex_double</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">forty_two_double</span><span class="p">)</span>
+<span class="n">stmt3</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createStatement</span><span class="p">(</span><span class="n">ex_int</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">forty_two_int</span><span class="p">)</span>
+<span class="n">stmt4</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createStatement</span><span class="p">(</span><span class="n">ex_long</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">forty_two_long</span><span class="p">)</span>
+<span class="n">stmt5</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createStatement</span><span class="p">(</span><span class="n">ex_float</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">forty_two_float</span><span class="p">)</span>
+<span class="n">stmt6</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createStatement</span><span class="p">(</span><span class="n">ex_decimal</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">forty_two_decimal</span><span class="p">)</span>
+<span class="n">stmt7</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createStatement</span><span class="p">(</span><span class="n">ex_string</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">forty_two_string</span><span class="p">)</span>
+<span class="n">stmt8</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createStatement</span><span class="p">(</span><span class="n">ex_plain</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">forty_two_plain</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And then add the statements to the triple store on the AllegroGraph
+server. We can use either <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.add" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.add"><code class="xref py py-meth docutils literal"><span class="pre">add()</span></code></a> or <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.addStatement" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.addStatement"><code class="xref py py-meth docutils literal"><span class="pre">addStatement()</span></code></a> for this
+purpose.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">stmt1</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">stmt2</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">stmt3</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">addStatement</span><span class="p">(</span><span class="n">stmt4</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">addStatement</span><span class="p">(</span><span class="n">stmt5</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">addStatement</span><span class="p">(</span><span class="n">stmt6</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">addStatement</span><span class="p">(</span><span class="n">stmt7</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">addStatement</span><span class="p">(</span><span class="n">stmt8</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we’ll complete the round trip to see what triples we get back from
+these assertions. This is where we use <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements"><code class="xref py py-meth docutils literal"><span class="pre">getStatements()</span></code></a> in this
+example to retrieve and display triples for us:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Showing all triples using getStatements(). Eight matches.&quot;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">getStatements</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">,)</span>
+</pre></div>
+</div>
+<p>This code prints out all triples from the store. The <code class="docutils literal"><span class="pre">output</span></code>
+parameter causes the result to be printed on <code class="docutils literal"><span class="pre">stdout</span></code> (it is also
+possible to pass a file name or a file-like object as the value of
+this parameter to print to other destinations). Without <code class="docutils literal"><span class="pre">output</span></code> the
+result would have been returned as a <code class="xref py py-class docutils literal"><span class="pre">RepositoryResult</span></code> object.</p>
+<p>Note that the retrieved literals are of eight types: an int (a 32-bit
+integer), an integer (arbitrary precision), a decimal, a long, a
+float, a double, a string, and a “plain literal.”</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Showing all triples using getStatements(). Eight matches.
+&lt;ex://plain&gt; &lt;ex://p&gt; &quot;42&quot; .
+&lt;ex://string&gt; &lt;ex://p&gt; &quot;42&quot;^^&lt;http://www.w3.org/2001/XMLSchema#string&gt; .
+&lt;ex://decimal&gt; &lt;ex://p&gt; &quot;42.0&quot;^^&lt;http://www.w3.org/2001/XMLSchema#decimal&gt; .
+&lt;ex://float&gt; &lt;ex://p&gt; &quot;4.2E1&quot;^^&lt;http://www.w3.org/2001/XMLSchema#float&gt; .
+&lt;ex://long&gt; &lt;ex://p&gt; &quot;42&quot;^^&lt;http://www.w3.org/2001/XMLSchema#long&gt; .
+&lt;ex://int&gt; &lt;ex://p&gt; &quot;42&quot;^^&lt;http://www.w3.org/2001/XMLSchema#int&gt; .
+&lt;ex://double&gt; &lt;ex://p&gt; &quot;4.2E1&quot;^^&lt;http://www.w3.org/2001/XMLSchema#double&gt; .
+&lt;ex://integer&gt; &lt;ex://p&gt; &quot;42&quot;^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt; .
+</pre></div>
+</div>
+<p>If you ask for a specific datatype, you will get it. If you leave the
+decision up to AllegroGraph, you might get something unexpected such as
+a plain literal value.</p>
+</div>
+<div class="section" id="numeric-literal-values">
+<h2>Numeric literal values<a class="headerlink" href="#numeric-literal-values" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="matching-42-without-explicit-type">
+<h3>Matching 42 without explicit type<a class="headerlink" href="#matching-42-without-explicit-type" title="Permalink to this headline">¶</a></h3>
+<p>This section explores <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements"><code class="xref py py-meth docutils literal"><span class="pre">getStatements()</span></code></a> and SPARQL matches against
+numeric triples. We ask AllegroGraph to find an untyped number,
+<code class="docutils literal"><span class="pre">42</span></code>.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;getStatements():&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">getStatements</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL direct match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span>
+    <span class="s1">&#39;</span><span class="k">SELECT</span> <span class="nv">?s</span> <span class="k">WHERE</span> <span class="p">{</span><span class="nv">?s</span> <span class="nv">?p</span> <span class="mi">42</span> <span class="p">.}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL filter match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span>
+    <span class="s1">&#39;</span><span class="k">SELECT</span> <span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span> <span class="k">WHERE</span> <span class="p">{</span><span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span> <span class="p">.</span> <span class="k">filter</span> <span class="p">(</span><span class="nv">?o</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We use the <code class="xref py py-meth docutils literal"><span class="pre">executeQuery()</span></code> method to retrieve the result of a
+SPARQL query. Like <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements"><code class="xref py py-meth docutils literal"><span class="pre">getStatements()</span></code></a>, it accepts an <code class="docutils literal"><span class="pre">output</span></code>
+parameter that causes the result to be printed (instead of being
+returned as a <a class="reference internal" href="../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.TupleQueryResult" title="franz.openrdf.query.queryresult.TupleQueryResult"><code class="xref py py-class docutils literal"><span class="pre">TupleQueryResult</span></code></a> object).  Here is what the query
+methods discussed in this example would return:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>getStatements():
+&lt;ex://integer&gt; &lt;ex://p&gt; &quot;42&quot;^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt; .
+
+SPARQL direct match
+--------------
+| s          |
+==============
+| ex:integer |
+--------------
+
+SPARQL filter match
+-----------------------------
+| s          | p    | o     |
+=============================
+| ex:integer | ex:p | 42    |
+| ex:double  | ex:p | 4.2E1 |
+| ex:int     | ex:p | 42    |
+| ex:long    | ex:p | 42    |
+| ex:float   | ex:p | 4.2E1 |
+| ex:decimal | ex:p | 42.0  |
+-----------------------------
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements"><code class="xref py py-meth docutils literal"><span class="pre">getStatements()</span></code></a> query returned triples containing longs
+only. The SPARQL direct match treated the numeric literal as if it had
+the type of <code class="docutils literal"><span class="pre">&lt;http://www.w3.org/2001/XMLSchema#integer&gt;</span></code> (see the
+SPARQL <a class="reference external" href="https://www.w3.org/TR/sparql11-query/#QSynLiterals">specification</a> for
+information on how literals are parsed in queries) and returned only
+triples with exactly the same type. The SPARQL filter match, however,
+opened the doors to matches of multiple numeric types, and returned
+ints, floats, longs and doubles.</p>
+</div>
+<div class="section" id="matching-42-0-without-explicit-type">
+<h3>Matching 42.0 without explicit type<a class="headerlink" href="#matching-42-0-without-explicit-type" title="Permalink to this headline">¶</a></h3>
+<p>Now we will try the same queries using <code class="docutils literal"><span class="pre">42.0</span></code>.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;getStatements():&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">getStatements</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="mf">42.0</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL direct match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span>
+    <span class="s1">&#39;</span><span class="k">SELECT</span> <span class="nv">?s</span> <span class="k">WHERE</span> <span class="p">{</span><span class="nv">?s</span> <span class="nl">&lt;ex://p&gt;</span> <span class="mf">42.0</span> <span class="p">.}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL filter match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span>
+    <span class="s1">&#39;</span><span class="k">SELECT</span> <span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span> <span class="k">WHERE</span> <span class="p">{</span><span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span> <span class="p">.</span> <span class="k">filter</span> <span class="p">(</span><span class="nv">?o</span> <span class="o">=</span> <span class="mf">42.0</span><span class="p">)}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Here is what the query methods discussed in this example would
+return:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>getStatements():
+&lt;ex://double&gt; &lt;ex://p&gt; &quot;4.2E1&quot;^^&lt;http://www.w3.org/2001/XMLSchema#double&gt; .
+
+SPARQL direct match
+--------------
+| s          |
+==============
+| ex:decimal |
+--------------
+
+SPARQL filter match
+-----------------------------
+| s          | p    | o     |
+=============================
+| ex:integer | ex:p | 42    |
+| ex:double  | ex:p | 4.2E1 |
+| ex:int     | ex:p | 42    |
+| ex:long    | ex:p | 42    |
+| ex:float   | ex:p | 4.2E1 |
+| ex:decimal | ex:p | 42.0  |
+-----------------------------
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements"><code class="xref py py-meth docutils literal"><span class="pre">getStatements()</span></code></a> search returned a double but not the similar
+float. Direct SPARQL match treated <code class="docutils literal"><span class="pre">42.0</span></code> as a decimal (in
+accordance with the SPARQL specification). The filter match returned
+all numeric types that were equal to 42.0.</p>
+</div>
+<div class="section" id="matching-42-xsd-int">
+<h3>Matching “42”^^xsd:int<a class="headerlink" href="#matching-42-xsd-int" title="Permalink to this headline">¶</a></h3>
+<p>The next section shows the results obtained when querying for a
+literal with explicitly specified type. Note that doing this with
+<a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements"><code class="xref py py-meth docutils literal"><span class="pre">getStatements()</span></code></a> requires passing in a <a class="reference internal" href="../_gen/franz.openrdf.model.html#franz.openrdf.model.Literal" title="franz.openrdf.model.Literal"><code class="xref py py-class docutils literal"><span class="pre">Literal</span></code></a> object,
+not a raw value.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;getStatements():&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">getStatements</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">forty_two_int</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL direct match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span>
+    <span class="s1">&#39;</span><span class="k">SELECT</span> <span class="nv">?s</span> <span class="k">WHERE</span> <span class="p">{</span><span class="nv">?s</span> <span class="nv">?p</span> <span class="s">&quot;42&quot;</span><span class="o">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">int</span> <span class="p">.}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL filter match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span><span class="s2">&#39;&#39;&#39;</span>
+    <span class="k">SELECT</span> <span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span> <span class="k">WHERE</span> <span class="p">{</span>
+       <span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span> <span class="p">.</span>
+       <span class="k">filter</span> <span class="p">(</span><span class="nv">?o</span> <span class="o">=</span> <span class="s">&quot;42&quot;</span><span class="o">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">int</span><span class="p">)</span>
+    <span class="p">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Here is what the query methods discussed in this example would
+return:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>getStatements():
+&lt;ex://int&gt; &lt;ex://p&gt; &quot;42&quot;^^&lt;http://www.w3.org/2001/XMLSchema#int&gt; .
+
+SPARQL direct match
+----------
+| s      |
+==========
+| ex:int |
+----------
+
+SPARQL filter match
+-----------------------------
+| s          | p    | o     |
+=============================
+| ex:integer | ex:p | 42    |
+| ex:double  | ex:p | 4.2E1 |
+| ex:int     | ex:p | 42    |
+| ex:long    | ex:p | 42    |
+| ex:float   | ex:p | 4.2E1 |
+| ex:decimal | ex:p | 42.0  |
+-----------------------------
+</pre></div>
+</div>
+<p>We would get similar results when asking for any other typed literal
+(<code class="docutils literal"><span class="pre">forty_two_long</span></code>, <code class="docutils literal"><span class="pre">forty_two_float</span></code>, …).</p>
+</div>
+</div>
+<div class="section" id="numeric-strings-and-plain-literals">
+<h2>Numeric strings and plain literals<a class="headerlink" href="#numeric-strings-and-plain-literals" title="Permalink to this headline">¶</a></h2>
+<p>At this point we are transitioning from tests of numeric matches to
+tests of string matches, but there is a gray zone to be explored
+first. What do we find if we search for strings that contain numbers?
+In particular, what about “plain literal” values that are almost, but
+not quite, strings?</p>
+<div class="section" id="matching-42-as-a-typed-string">
+<h3>Matching “42” as a typed string<a class="headerlink" href="#matching-42-as-a-typed-string" title="Permalink to this headline">¶</a></h3>
+<p>Let’s start with a typed string literal.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;getStatements():&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">getStatements</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">forty_two_string</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL direct match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span>
+    <span class="s1">&#39;</span><span class="k">SELECT</span> <span class="nv">?s</span> <span class="k">WHERE</span> <span class="p">{</span><span class="nv">?s</span> <span class="nv">?p</span> <span class="s">&quot;42&quot;</span><span class="o">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">string</span> <span class="p">.}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL filter match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span><span class="s2">&#39;&#39;&#39;</span>
+    <span class="k">SELECT</span> <span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span> <span class="k">WHERE</span> <span class="p">{</span>
+       <span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span> <span class="p">.</span>
+       <span class="k">filter</span> <span class="p">(</span><span class="nv">?o</span> <span class="o">=</span> <span class="s">&quot;42&quot;</span><span class="o">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">string</span><span class="p">)</span>
+    <span class="p">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Here are the results:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span> getStatements():
+ &lt;ex://string&gt; &lt;ex://p&gt; &quot;42&quot;^^&lt;http://www.w3.org/2001/XMLSchema#string&gt; .
+
+ SPARQL direct match
+ -------------
+ | s         |
+ =============
+ | ex:plain  |
+ | ex:string |
+ -------------
+
+ SPARQL filter match
+ ------------------------------------------------------------------
+ | s         | p    | o                                           |
+ ==================================================================
+ | ex:string | ex:p | 42^^http://www.w3.org/2001/XMLSchema#string |
+ | ex:plain  | ex:p | 42                                          |
+ ------------------------------------------------------------------
+</pre></div>
+</div>
+<p>SPARQL matched both plain and literal strings, but a
+<a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements"><code class="xref py py-meth docutils literal"><span class="pre">getStatements()</span></code></a> search returned only typed matches. In both
+cases numeric literals were ignored.</p>
+</div>
+<div class="section" id="matching-42-as-a-plain-literal">
+<h3>Matching “42” as a plain literal<a class="headerlink" href="#matching-42-as-a-plain-literal" title="Permalink to this headline">¶</a></h3>
+<p>If we try to match a plain (untyped) string value</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;getStatements():&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">getStatements</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">forty_two_plain</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL direct match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span>
+    <span class="s1">&#39;</span><span class="k">SELECT</span> <span class="nv">?s</span> <span class="k">WHERE</span> <span class="p">{</span><span class="nv">?s</span> <span class="nv">?p</span> <span class="s">&quot;42&quot;</span> <span class="p">.}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL filter match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span><span class="s2">&#39;&#39;&#39;</span>
+    <span class="k">SELECT</span> <span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span> <span class="k">WHERE</span> <span class="p">{</span>
+       <span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span> <span class="p">.</span>
+       <span class="k">filter</span> <span class="p">(</span><span class="nv">?o</span> <span class="o">=</span> <span class="s">&quot;42&quot;</span><span class="p">)</span>
+    <span class="p">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We will get results consistent with that we saw in the typed case:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span> getStatements():
+ &lt;ex://plain&gt; &lt;ex://p&gt; &quot;42&quot; .
+
+ SPARQL direct match
+ -------------
+ | s         |
+ =============
+ | ex:plain  |
+ | ex:string |
+ -------------
+
+ SPARQL filter match
+ ------------------------------------------------------------------
+ | s         | p    | o                                           |
+ ==================================================================
+ | ex:string | ex:p | 42^^http://www.w3.org/2001/XMLSchema#string |
+ | ex:plain  | ex:p | 42                                          |
+ ------------------------------------------------------------------
+</pre></div>
+</div>
+<p>In SPARQL both kinds of string literals were matched, while
+<a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements"><code class="xref py py-meth docutils literal"><span class="pre">getStatements()</span></code></a> returned only direct matches.</p>
+</div>
+</div>
+<div class="section" id="matching-strings">
+<h2>Matching strings<a class="headerlink" href="#matching-strings" title="Permalink to this headline">¶</a></h2>
+<p>In this section we’ll set up a variety of string triples and
+experiment with matching them using <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements"><code class="xref py py-meth docutils literal"><span class="pre">getStatements()</span></code></a> and SPARQL.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference internal" href="example012.html#example12"><span class="std std-ref">Example 12: Free Text indexing</span></a> is a different topic. In this section we’re
+doing simple matches of whole strings.</p>
+</div>
+<div class="section" id="sample-data">
+<h3>Sample data<a class="headerlink" href="#sample-data" title="Permalink to this headline">¶</a></h3>
+<p>For these examples we will use a different data set.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">name</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createURI</span><span class="p">(</span><span class="s1">&#39;ex://name&#39;</span><span class="p">)</span>
+<span class="n">upper_g</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="s1">&#39;Galadriel&#39;</span><span class="p">)</span>
+<span class="n">lower_g</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="s1">&#39;galadriel&#39;</span><span class="p">)</span>
+<span class="n">typed_g</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="s1">&#39;Galadriel&#39;</span><span class="p">,</span> <span class="n">XMLSchema</span><span class="o">.</span><span class="n">STRING</span><span class="p">)</span>
+<span class="n">lang_g</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="s1">&#39;Galadriel&#39;</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s1">&#39;sjn&#39;</span><span class="p">)</span>
+<span class="n">upper_a</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="s1">&#39;Artanis&#39;</span><span class="p">)</span>
+<span class="n">lower_a</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="s1">&#39;artanis&#39;</span><span class="p">)</span>
+<span class="n">typed_a</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="s1">&#39;Artanis&#39;</span><span class="p">,</span> <span class="n">XMLSchema</span><span class="o">.</span><span class="n">STRING</span><span class="p">)</span>
+<span class="n">lang_a</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="s1">&#39;Artanis&#39;</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s1">&#39;qya&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">addTriple</span><span class="p">(</span><span class="s1">&#39;&lt;ex://upper_g&gt;&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">upper_g</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">addTriple</span><span class="p">(</span><span class="s1">&#39;&lt;ex://lower_g&gt;&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">lower_g</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">addTriple</span><span class="p">(</span><span class="s1">&#39;&lt;ex://typed_g&gt;&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">typed_g</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">addTriple</span><span class="p">(</span><span class="s1">&#39;&lt;ex://lang_g&gt;&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">lang_g</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">addTriple</span><span class="p">(</span><span class="s1">&#39;&lt;ex://upper_a&gt;&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">upper_a</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">addTriple</span><span class="p">(</span><span class="s1">&#39;&lt;ex://lower_a&gt;&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">lower_a</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">addTriple</span><span class="p">(</span><span class="s1">&#39;&lt;ex://typed_a&gt;&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">typed_a</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">addTriple</span><span class="p">(</span><span class="s1">&#39;&lt;ex://lang_a&gt;&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">lang_a</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We have two literals, each in four variants:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Upper case (plain literal)</li>
+<li>Lower case (plain literal)</li>
+<li>Typed</li>
+<li>Tagged with a <a class="reference external" href="https://tools.ietf.org/html/bcp47">BCP47</a> language tag appropriate for its language
+(Quenya or Sindarin) according to the the <a class="reference external" href="https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">registry</a></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="matching-a-plain-string">
+<h3>Matching a plain string<a class="headerlink" href="#matching-a-plain-string" title="Permalink to this headline">¶</a></h3>
+<p>We’ve seen a similar case when looking at matches for <code class="docutils literal"><span class="pre">&quot;42&quot;</span></code>, but
+this time we have more similar literals in the store.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;getStatements():&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">getStatements</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">upper_g</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL direct match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span>
+    <span class="s1">&#39;</span><span class="k">SELECT</span> <span class="nv">?s</span> <span class="k">WHERE</span> <span class="p">{</span><span class="nv">?s</span> <span class="nl">&lt;ex://name&gt;</span> <span class="s">&quot;Galadriel&quot;</span> <span class="p">.}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL filter match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span><span class="s2">&#39;&#39;&#39;</span>
+    <span class="k">SELECT</span> <span class="nv">?s</span> <span class="nv">?o</span> <span class="k">WHERE</span> <span class="p">{</span>
+       <span class="nv">?s</span> <span class="nl">&lt;ex://name&gt;</span> <span class="nv">?o</span> <span class="p">.</span>
+       <span class="k">filter</span> <span class="p">(</span><span class="nv">?o</span> <span class="o">=</span> <span class="s">&quot;Galadriel&quot;</span><span class="p">)</span>
+    <span class="p">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Here’s the result:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>getStatements():
+&lt;ex://upper_g&gt; &lt;ex://name&gt; &quot;Galadriel&quot; .
+
+SPARQL direct match
+--------------
+| s          |
+==============
+| ex:typed_g |
+| ex:upper_g |
+--------------
+
+SPARQL filter match
+-------------------------------------------------------------------
+| s          | o                                                  |
+===================================================================
+| ex:typed_g | Galadriel^^http://www.w3.org/2001/XMLSchema#string |
+| ex:upper_g | Galadriel                                          |
+-------------------------------------------------------------------
+</pre></div>
+</div>
+<p>We can see that the match is case-sensitive and ignores the
+language-tagged literal in all cases. As usual <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements"><code class="xref py py-meth docutils literal"><span class="pre">getStatements()</span></code></a>
+matches only the exact kind of literal that we’ve provided, while
+SPARQL is more liberal.</p>
+</div>
+<div class="section" id="matching-a-language-tagged-string">
+<h3>Matching a language-tagged string<a class="headerlink" href="#matching-a-language-tagged-string" title="Permalink to this headline">¶</a></h3>
+<p>To retrieve the language-tagged variant we can ask for it explicitly:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;getStatements():&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">getStatements</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">lang_g</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL direct match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span>
+    <span class="s1">&#39;</span><span class="k">SELECT</span> <span class="nv">?s</span> <span class="k">WHERE</span> <span class="p">{</span><span class="nv">?s</span> <span class="nl">&lt;ex://name&gt;</span> <span class="s">&quot;Galadriel&quot;</span><span class="o">@</span><span class="nf">sjn</span> <span class="p">.}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL filter match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span><span class="s2">&#39;&#39;&#39;</span>
+    <span class="k">SELECT</span> <span class="nv">?s</span> <span class="nv">?o</span> <span class="k">WHERE</span> <span class="p">{</span>
+       <span class="nv">?s</span> <span class="nl">&lt;ex://name&gt;</span> <span class="nv">?o</span> <span class="p">.</span>
+       <span class="k">filter</span> <span class="p">(</span><span class="nv">?o</span> <span class="o">=</span> <span class="s">&quot;Galadriel&quot;</span><span class="o">@</span><span class="nf">sjn</span><span class="p">)</span>
+    <span class="p">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Unsurprisingly we get exactly what we have asked for</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>getStatements():
+&lt;ex://lang_g&gt; &lt;ex://name&gt; &quot;Galadriel&quot;@sjn .
+
+SPARQL direct match
+-------------
+| s         |
+=============
+| ex:lang_g |
+-------------
+
+SPARQL filter match
+-----------------------------
+| s         | o             |
+=============================
+| ex:lang_g | Galadriel@sjn |
+-----------------------------
+</pre></div>
+</div>
+<p>You may be wondering how to perform a string match where language and
+capitalization don’t matter. You can do that with a SPARQL filter
+query using the <code class="docutils literal"><span class="pre">str()</span></code> function, which strips out the string
+portion of a literal, leaving behind the datatype or language
+tag. Then the <code class="docutils literal"><span class="pre">fn:lower-case()</span></code> function eliminates case issues:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span><span class="s2">&#39;&#39;&#39;</span>
+    <span class="k">SELECT</span> <span class="nv">?s</span> <span class="nv">?o</span> <span class="k">WHERE</span> <span class="p">{</span>
+       <span class="nv">?s</span> <span class="nl">&lt;ex://name&gt;</span> <span class="nv">?o</span> <span class="p">.</span>
+       <span class="k">filter</span> <span class="p">(</span><span class="nn">fn</span><span class="p">:</span><span class="nt">lower-case</span><span class="p">(</span><span class="nf">str</span><span class="p">(</span><span class="nv">?o</span><span class="p">))</span> <span class="o">=</span> <span class="s">&quot;artanis&quot;</span><span class="p">)</span>
+    <span class="p">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This query returns all variants of the selected literal</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>-----------------------------------------------------------------
+| s          | o                                                |
+=================================================================
+| ex:lang_a  | Artanis@qya                                      |
+| ex:typed_a | Artanis^^http://www.w3.org/2001/XMLSchema#string |
+| ex:lower_a | artanis                                          |
+| ex:upper_a | Artanis                                          |
+-----------------------------------------------------------------
+</pre></div>
+</div>
+<p>Remember that the SPARQL <code class="docutils literal"><span class="pre">filter</span></code> queries are powerful, but they are
+also the slowest queries. SPARQL direct queries and getStatements()
+queries are faster.</p>
+</div>
+</div>
+<div class="section" id="booleans">
+<h2>Booleans<a class="headerlink" href="#booleans" title="Permalink to this headline">¶</a></h2>
+<p>Boolean values in SPARQL are represented by literals of type
+<code class="docutils literal"><span class="pre">&lt;http://www.w3.org/2001/XMLSchema#boolean&gt;</span></code>. There are two ways to
+create such literals in Python:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">From corresponding Python boolean values (<code class="docutils literal"><span class="pre">True</span></code> and <code class="docutils literal"><span class="pre">FAlse</span></code>):</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">true1</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">false1</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">By creating a typed literal with the value of <code class="docutils literal"><span class="pre">&quot;true&quot;</span></code> or
+<code class="docutils literal"><span class="pre">&quot;false&quot;</span></code>. The type must be <code class="docutils literal"><span class="pre">xsd:boolean</span></code>:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">true2</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">BOOLEAN</span><span class="p">)</span>
+<span class="n">false2</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="s2">&quot;false&quot;</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">BOOLEAN</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div></blockquote>
+<p>Both ways of creating boolean literals produce equivalent results:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">true1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">true2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As we can see the literals are identical.</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>&quot;true&quot;^^&lt;http://www.w3.org/2001/XMLSchema#boolean&gt;
+&quot;true&quot;^^&lt;http://www.w3.org/2001/XMLSchema#boolean&gt;
+</pre></div>
+</div>
+<p>Let us add some boolean data to the store:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nv">&lt;ex://f&gt;</span><span class="w"> </span><span class="nv">&lt;ex://p&gt;</span><span class="w"></span>
+<span class="w">        </span><span class="s">&quot;false&quot;</span><span class="o">^^</span><span class="ge">&lt;http://www.w3.org/2001/XMLSchema#boolean&gt;</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="c"># In Turtle &#39;true&#39; is the same as &#39;&quot;true&quot;^^xsd:boolean&quot;&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="nv">&lt;ex://t&gt;</span><span class="w"> </span><span class="nv">&lt;ex://p&gt;</span><span class="w"> </span><span class="l">true</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When querying for boolean values using SPARQL one can use the literals
+<code class="docutils literal"><span class="pre">true</span></code> and <code class="docutils literal"><span class="pre">false</span></code> as a shorthand for
+<code class="docutils literal"><span class="pre">&quot;true&quot;^^&lt;http://www.w3.org/2001/XMLSchema#boolean&gt;</span></code> and
+<code class="docutils literal"><span class="pre">&quot;false&quot;^^&lt;http://www.w3.org/2001/XMLSchema#boolean&gt;</span></code>. The code
+below illustrates various ways of querying for boolean values:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;getStatements():&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">getStatements</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">true1</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL direct match (true)&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span>
+    <span class="s1">&#39;</span><span class="k">SELECT</span> <span class="nv">?s</span> <span class="k">WHERE</span> <span class="p">{</span><span class="nv">?s</span> <span class="nv">?p</span> <span class="kc">true</span><span class="p">.}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL direct match (&quot;false&quot;^^xsd:boolean)&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span>
+    <span class="s1">&#39;</span><span class="k">SELECT</span> <span class="nv">?s</span> <span class="k">WHERE</span> <span class="p">{</span><span class="nv">?s</span> <span class="nv">?p</span> <span class="s">&quot;false&quot;</span><span class="o">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">boolean</span> <span class="p">.}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL filter match (&quot;false&quot;^^xsd:boolean)&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span><span class="s2">&#39;&#39;&#39;</span>
+    <span class="k">SELECT</span> <span class="nv">?s</span> <span class="nv">?o</span> <span class="k">WHERE</span> <span class="p">{</span>
+       <span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span> <span class="p">.</span>
+       <span class="k">filter</span> <span class="p">(</span><span class="nv">?o</span> <span class="o">=</span> <span class="s">&quot;false&quot;</span><span class="o">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">boolean</span><span class="p">)</span>
+    <span class="p">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Here’s the output from that script:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>getStatements():
+&lt;ex://t&gt; &lt;ex://p&gt; &quot;true&quot;^^&lt;http://www.w3.org/2001/XMLSchema#boolean&gt; .
+
+SPARQL direct match (true)
+--------
+| s    |
+========
+| ex:t |
+--------
+
+SPARQL direct match (&quot;false&quot;^^xsd:boolean)
+--------
+| s    |
+========
+| ex:f |
+--------
+
+SPARQL filter match (&quot;false&quot;^^xsd:boolean)
+----------------
+| s    | o     |
+================
+| ex:f | false |
+----------------
+</pre></div>
+</div>
+</div>
+<div class="section" id="dates-and-times">
+<h2>Dates and times<a class="headerlink" href="#dates-and-times" title="Permalink to this headline">¶</a></h2>
+<p>SPARQL represents dates and times using three literal types:
+<code class="docutils literal"><span class="pre">xsd:date</span></code>, <code class="docutils literal"><span class="pre">xsd:time</span></code> and <code class="docutils literal"><span class="pre">xsd:dateTime</span></code>. These can be created
+either explicitly from strings in the <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format or from
+Python <code class="docutils literal"><span class="pre">datetime.date</span></code>, <code class="docutils literal"><span class="pre">datetime.time</span></code> and <code class="docutils literal"><span class="pre">datetime.datetime</span></code>
+values.</p>
+<p>Let’s create a few sample literals:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">iso8601</span>
+
+<span class="n">d</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">1944</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="s1">&#39;1944-08-01T17:00:00+02:00&#39;</span><span class="p">,</span>
+                        <span class="n">datatype</span><span class="o">=</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">DATETIME</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Creating <code class="docutils literal"><span class="pre">time</span></code> and <code class="docutils literal"><span class="pre">datetime</span></code> literals from Python values can
+yield somewhat unexpected results if time zones are involved:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">surprise</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="n">iso8601</span><span class="o">.</span><span class="n">parse_date</span><span class="p">(</span>
+    <span class="s1">&#39;1944-08-01T17:00:00+02:00&#39;</span><span class="p">))</span>
+<span class="c1"># Should be the same...</span>
+<span class="k">print</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">surprise</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output is</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>&quot;1944-08-01T17:00:00+02:00&quot;^^&lt;http://www.w3.org/2001/XMLSchema#dateTime&gt;
+&quot;1944-08-01T15:00:00Z&quot;^^&lt;http://www.w3.org/2001/XMLSchema#dateTime&gt;
+</pre></div>
+</div>
+<p>The time has been converted to UTC. While both <code class="docutils literal"><span class="pre">dt</span></code> and <code class="docutils literal"><span class="pre">surprise</span></code>
+refer to the same moment in time, this conversion might still lead to
+problems if the user is not aware that it takes place.</p>
+<p>We will now add the newly created literals to the store:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">addTriple</span><span class="p">(</span><span class="s1">&#39;&lt;ex://d&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;ex://p&gt;&#39;</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">addTriple</span><span class="p">(</span><span class="s1">&#39;&lt;ex://t&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;ex://p&gt;&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">addTriple</span><span class="p">(</span><span class="s1">&#39;&lt;ex://dt&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;ex://p&gt;&#39;</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The following sections illustrate how date and time values behave
+during queries.</p>
+<div class="section" id="matching-dates">
+<h3>Matching dates<a class="headerlink" href="#matching-dates" title="Permalink to this headline">¶</a></h3>
+<p>Let’s try the usual mix of query methods and see what is returned:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;getStatements():&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">getStatements</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL direct match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span>
+    <span class="s1">&#39;</span><span class="k">SELECT</span> <span class="nv">?s</span> <span class="k">WHERE</span> <span class="p">{</span><span class="nv">?s</span> <span class="nv">?p</span> <span class="s">&quot;1944-08-01&quot;</span><span class="o">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span> <span class="p">.}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL filter match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span><span class="s2">&#39;&#39;&#39;</span>
+    <span class="k">SELECT</span> <span class="nv">?s</span> <span class="nv">?o</span> <span class="k">WHERE</span> <span class="p">{</span>
+       <span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span> <span class="p">.</span>
+       <span class="k">filter</span> <span class="p">(</span><span class="nv">?o</span> <span class="o">=</span> <span class="s">&quot;1944-08-01&quot;</span><span class="o">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span><span class="p">)</span>
+    <span class="p">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The result is not surprising. It is worth noting that the <code class="docutils literal"><span class="pre">datetime</span></code>
+value has not been returned, even though it refers to the same date.</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span> getStatements():
+ &lt;ex://d&gt; &lt;ex://p&gt; &quot;1944-08-01&quot;^^&lt;http://www.w3.org/2001/XMLSchema#date&gt; .
+
+ SPARQL direct match
+ --------
+ | s    |
+ ========
+ | ex:d |
+ --------
+
+ SPARQL filter match
+ ---------------------
+ | s    | o          |
+ =====================
+ | ex:d | 1944-08-01 |
+ ---------------------
+</pre></div>
+</div>
+</div>
+<div class="section" id="matching-times">
+<h3>Matching times<a class="headerlink" href="#matching-times" title="Permalink to this headline">¶</a></h3>
+<p>Times can be queried in a similar fashion.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;getStatements():&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">getStatements</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL direct match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span>
+    <span class="s1">&#39;</span><span class="k">SELECT</span> <span class="nv">?s</span> <span class="k">WHERE</span> <span class="p">{</span><span class="nv">?s</span> <span class="nv">?p</span> <span class="s">&quot;15:00:00Z&quot;</span><span class="o">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">time</span> <span class="p">.}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL filter match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span><span class="s2">&#39;&#39;&#39;</span>
+    <span class="k">SELECT</span> <span class="nv">?s</span> <span class="nv">?o</span> <span class="k">WHERE</span> <span class="p">{</span>
+       <span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span> <span class="p">.</span>
+       <span class="k">filter</span> <span class="p">(</span><span class="nv">?o</span> <span class="o">=</span> <span class="s">&quot;15:00:00Z&quot;</span><span class="o">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">time</span><span class="p">)</span>
+    <span class="p">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Again, only the value of the appropriate type is returned.</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>getStatements():
+&lt;ex://t&gt; &lt;ex://p&gt; &quot;15:00:00Z&quot;^^&lt;http://www.w3.org/2001/XMLSchema#time&gt; .
+
+SPARQL direct match
+--------
+| s    |
+========
+| ex:t |
+--------
+
+SPARQL filter match
+--------------------
+| s    | o         |
+====================
+| ex:t | 15:00:00Z |
+--------------------
+</pre></div>
+</div>
+</div>
+<div class="section" id="matching-datetimes">
+<h3>Matching datetimes<a class="headerlink" href="#matching-datetimes" title="Permalink to this headline">¶</a></h3>
+<p>Datetimes work just like times and dates:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;getStatements():&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">getStatements</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL direct match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span><span class="s2">&#39;&#39;&#39;</span>
+    <span class="k">SELECT</span> <span class="nv">?s</span> <span class="k">WHERE</span> <span class="p">{</span>
+       <span class="nv">?s</span> <span class="nv">?p</span> <span class="s">&quot;1944-08-01T17:00:00+02:00&quot;</span><span class="o">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">.</span>
+    <span class="p">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL filter match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span><span class="s2">&#39;&#39;&#39;</span>
+    <span class="k">SELECT</span> <span class="nv">?s</span> <span class="nv">?o</span> <span class="k">WHERE</span> <span class="p">{</span>
+       <span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span> <span class="p">.</span>
+       <span class="k">filter</span> <span class="p">(</span><span class="nv">?o</span> <span class="o">=</span> <span class="s">&quot;1944-08-01T17:00:00+02:00&quot;</span><span class="o">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span><span class="p">)</span>
+    <span class="p">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The result:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>getStatements():
+&lt;ex://dt&gt; &lt;ex://p&gt; &quot;1944-08-01T17:00:00+02:00&quot;^^&lt;http://www.w3.org/2001/XMLSchema#dateTime&gt; .
+
+SPARQL direct match
+---------
+| s     |
+=========
+| ex:dt |
+---------
+
+SPARQL filter match
+-------------------------------------
+| s     | o                         |
+=====================================
+| ex:dt | 1944-08-01T17:00:00+02:00 |
+-------------------------------------
+</pre></div>
+</div>
+</div>
+<div class="section" id="matching-datetimes-with-offsets">
+<h3>Matching datetimes with offsets<a class="headerlink" href="#matching-datetimes-with-offsets" title="Permalink to this headline">¶</a></h3>
+<p>We saw that times created from Python values are converted to UTC. So
+what happens when we query for Zulu time, while the value in the store
+is still in CEST?</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">zulu</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="s2">&quot;1944-08-01T15:00:00Z&quot;</span><span class="p">,</span>
+                          <span class="n">datatype</span><span class="o">=</span><span class="n">XMLSchema</span><span class="o">.</span><span class="n">DATETIME</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;getStatements():&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">getStatements</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">zulu</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL direct match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span><span class="s2">&#39;&#39;&#39;</span>
+    <span class="k">SELECT</span> <span class="nv">?s</span> <span class="k">WHERE</span> <span class="p">{</span>
+       <span class="nv">?s</span> <span class="nv">?p</span> <span class="s">&quot;1944-08-01T15:00:00Z&quot;</span><span class="o">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">.</span>
+    <span class="p">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;SPARQL filter match&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span><span class="s2">&#39;&#39;&#39;</span>
+    <span class="k">SELECT</span> <span class="nv">?s</span> <span class="nv">?o</span> <span class="k">WHERE</span> <span class="p">{</span>
+       <span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span> <span class="p">.</span>
+       <span class="k">filter</span> <span class="p">(</span><span class="nv">?o</span> <span class="o">=</span> <span class="s">&quot;1944-08-01T15:00:00Z&quot;</span><span class="o">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span><span class="p">)</span>
+    <span class="p">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>AllegroGraph still finds our value when using SPARQL</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>getStatements():
+
+SPARQL direct match
+---------
+| s     |
+=========
+| ex:dt |
+---------
+
+SPARQL filter match
+-------------------------------------
+| s     | o                         |
+=====================================
+| ex:dt | 1944-08-01T17:00:00+02:00 |
+-------------------------------------
+</pre></div>
+</div>
+<p>When evaluating SPARQL queries AllegroGraph treats <code class="docutils literal"><span class="pre">datetime</span></code>
+objects that refer to the same point in time as equivalent, regardless
+of the timezone used in their representation. <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getStatements"><code class="xref py py-meth docutils literal"><span class="pre">getStatements()</span></code></a>
+performs exact matching, so will not return a value with different
+timezone.</p>
+</div>
+</div>
+</div>
+
+
+  
+    <div class="nav-links nav-links-footer">
+        &laquo;<a href="example004.html" title="previous chapter">Example 4: Statement matching</a>
+      <a href="example006.html" title="next chapter">Example 6: Importing triples</a> 
+      &raquo;
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#setting-the-environment-for-the-tutorial">Setting the environment for the tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#terminology">Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#creating-users-with-webview">Creating Users with WebView</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example001.html">Example 1: Creating a repository and triple indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example002.html">Example 2: Asserting and retracting triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example003.html">Example 3: A SPARQL query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example004.html">Example 4: Statement matching</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Example 5: Literal values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example006.html">Example 6: Importing triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example007.html">Example 7: Querying multiple contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example008.html">Example 8: Exporting triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example009.html">Example 9: Exporting query results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example010.html">Example 10: Graphs in SPARQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example011.html">Example 11: Namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example012.html">Example 12: Free Text indexing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example013.html">Example 13: SPARQL query forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example014.html">Example 14: Parametric queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example015.html">Example 15: Range queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example016.html">Example 16: Federated repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example017.html">Example 17: Triple attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example018.html">Example 18: Pandas support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fedex.html">Running AG on AWS EC2</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../tutorial.html">Tutorial</a><ul>
+      <li>Previous: <a href="example004.html" title="previous chapter">Example 4: Statement matching</a></li>
+      <li>Next: <a href="example006.html" title="next chapter">Example 6: Importing triples</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/tutorial/example005.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

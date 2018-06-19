@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>AGquery: command-line query tool</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="agquery"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>The agquery command-line query tool</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-11' title='Usage'>Usage</a>
+<ul>
+<li><a href='#header3-18' title='Options'>Options</a>
+<ul>
+<li><a href='#header4-26' title='Connection options'>Connection options</a></li>
+<li><a href='#header4-38' title='Triple-store options'>Triple-store options</a></li>
+<li><a href='#header4-50' title='Query options'>Query options</a></li>
+<li><a href='#header4-66' title='Reporting options'>Reporting options</a></li>
+<li><a href='#header4-76' title='Other options'>Other options</a></li></ul></li></ul></li>
+<li><a href='#header2-104' title='Examples:'>Examples:</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p><strong>agtool query</strong> is a command-line query tool. It dispatches queries to the AllegroGraph server and receives the results. The results are the same as sending queries using, say, AGWebView (see <a href="agwebview.html">WebView</a>). </p><p>The <a href="agtool.html">agtool</a> program is the general program for AllegroGraph command-line operations. (In earlier releases, there was a separate <strong>agquery</strong> program. A change from earlier releases is the <code>-username</code> option, is now the <code>--user</code> option and <code>-u</code> can be used as an abbreviation.) </p><a name='header2-11' id='header2-11'></a><h2>Usage</h2>
+<pre><code>agtool query [OPTIONS] DBNAME [QUERY-FILE]* </code></pre><p>The arguments are: </p>
+<dl><dt><em>DBNAME</em> </dt>
+<dd>the AllegroGraph triple store name</dd><dt><em>QUERY-FILE</em> </dt>
+<dd>zero or more files or directories containing SPARQL queries; If a directory is specified, all of the files in it will be processed. Use <code>-</code> for standard input. </dd></dl><a name='header3-18' id='header3-18'></a><h3>Options</h3><p>There are many options. For convenience, we break them into several categories: </p>
+<ul>
+<li><a href="#connection-options">Connection options</a></li>
+<li><a href="#triple-store-options">Triple-store options</a></li>
+<li><a href="#query-options">Query options</a></li>
+<li><a href="#reporting-options">Reporting options</a></li>
+<li><a href="#other-options">Other options</a></li></ul><p><a name="connection-options"></a> </p><a name='header4-26' id='header4-26'></a><h4>Connection options</h4>
+<dl><dt><em>-p PORT, --port PORT</em> </dt>
+<dd>Server port (default 10035).</dd><dt><em>-c CATALOG, --catalog CATALOG</em> </dt>
+<dd>CATALOG name on server; use "" or leave unspecified for the root catalog (the default is the root catalog). <strong>Note</strong>: the root catalog has no name. Specifying "root" will not be interpreted as the root catalog. </dd><dt><em>-u USERNAME, --user USERNAME</em> </dt>
+<dd>username for the triple-store; use with <code>--password</code> (default username).</dd><dt><em>--password PASSWORD</em> </dt>
+<dd>password for the triple-store; use with --user (default password).</dd><dt><em>--server SERVER</em> </dt>
+<dd>server where the triple-store lives (if unspecified, this argument is ignored). This allows you to query a remote triple-store. </dd></dl><p><a name="triple-store-options"></a> </p><a name='header4-38' id='header4-38'></a><h4>Triple-store options</h4>
+<dl><dt><em>-m MODE, --mode MODE</em> </dt>
+<dd>the reasoning mode. The choices are:
+<pre><code>rdfs           RDFS++  
+restriction    restriction </code></pre></dd><dt><em>-o LEVEL, --optimize LEVEL</em> </dt>
+<dd>Optimize database indices (default 0) as soon as the store is opened. Possible values are 0, 1, and 2. See optimize-indices][]. </dd><dt><em>--specification SPECIFICATION</em> </dt>
+<dd>triple-store specification for a remote-triple-store (if unspecified, this argument is ignored). See <a href="agwebview.html#SessionSpecifications">Session specifications</a> for more details. </dd><dt><em>--with-indices INDICES</em> </dt>
+<dd><p>Specify the indices of the triple-store. The parameter should be a list of index names separated by spaces. When multiple names separated by spaces are specified, the spaces must be escaped or the whole specification can be quoted, like "spogi posgi ospgi". </p></dd>
+<dd><p>If not specified, newly created triple-stores will use the standard set of indices and existing triple-stores will retain their current indices. If specified, the current indices are dropped and the newly specified ones are used. </p></dd></dl><p><a name="query-options"></a> </p><a name='header4-50' id='header4-50'></a><h4>Query options</h4>
+<dl><dt><strong>--engine ENGINE</strong> </dt>
+<dd>Name of the query engine to use (default default). Choices are:
+<pre><code>sparql-1.1, sbqe, set-based    Use the set based engine  
+default                        Use the default engine  
+</code></pre></dd><dt><em>-i ITERATIONS, --iterations ITERATIONS</em> </dt>
+<dd>Run entire batch (default 1).</dd><dt><em>--option NAME=VALUE</em> </dt>
+<dd>Specify options, which will be used when running the queries, just like normal SPARQL prefixes. See <a href="sparql-reference.html#sparql-queryoptions">SPARQL query options</a>. </dd><dt><em>-r REPETITIONS, --repetitions REPETITIONS</em> </dt>
+<dd>Run each query this many times per iteration (default 1).</dd><dt><em>--results-format FORMAT</em> </dt>
+<dd>output format used by the query engine (default table). Choices are:
+<pre><code>arrays          arrays  
+strings         strings  
+lists           lists  
+sparql-xml      sparql-xml  
+count           count  
+count-cursor    determine the count using a cursor  
+table           table </code></pre></dd><dt><em>--title TITLE</em> </dt>
+<dd>Value to use for the report title.</dd></dl><p><a name="reporting-options"></a> </p><a name='header4-66' id='header4-66'></a><h4>Reporting options</h4>
+<dl><dt><em>--baseline FILENAME</em> </dt>
+<dd>Log file to use as a reporting baseline.</dd><dt><em>--measure MEASURE</em> </dt>
+<dd>What to measure (e.g., time, space). Choices include:
+<pre><code>Choice     What it measures  
+------     ----------------  
+time       time  
+user       user time  
+system     system time  
+space      cons cells  
+minor      minor page faults  
+major      major page faults </code></pre></dd><dt><em>--report-format FORMAT</em> </dt>
+<dd>Output format for generated reports (default text). Choices are
+<pre><code>Choice  Format  
+------  ------  
+text    text  
+csv     comma-separated value  
+</code></pre></dd></dl><p><a name="other-options"></a> </p><a name='header4-76' id='header4-76'></a><h4>Other options</h4>
+<dl><dt><em>--answer-file ANSWER-FILE</em> </dt>
+<dd>provide answers for the queries you are running, in order to verify results.</dd><dt><em>--log FILENAME</em> </dt>
+<dd>Save results to log.</dd><dt><em>--profile STYLE</em> </dt>
+<dd>Profile queries. Styles include:
+<pre><code>time     profile time  
+space    profile space  
+count    count calls (and profile time) </code></pre></dd><dt><em>--profile-file FILENAME</em> </dt>
+<dd>Send profile report to this file (use standard output if unspecified).</dd><dt><em>--quiet</em> </dt>
+<dd>Reduce output (default no).</dd><dt><em>--seed RANDOM-SEED</em> </dt>
+<dd>Specify an initial random seed.</dd><dt><em>--setup FILENAME</em> </dt>
+<dd>Run code before starting queries.</dd><dt><em>--spogi YES-OR-NO</em> </dt>
+<dd>Turn the SPOGI cache on or off (default yes).</dd><dt><em>--squeeze-memory</em> </dt>
+<dd>Squeeze / release memory before each query.</dd><dt><em>--summary-only YES-OR-NO</em> </dt>
+<dd>Report only the summary.</dd><dt><em>--teardown FILENAME</em> </dt>
+<dd>Run code before exiting.</dd><dt><em>-v, --verbose</em> </dt>
+<dd>Include more output.</dd><dt><em>--warmup</em> </dt>
+<dd>Calls <a href="lisp-reference.html#warmup-triple-store" title="description of warmup-triple-store">warmup-triple-store</a> before querying if specified.</dd></dl><a name='header2-104' id='header2-104'></a><h2>Examples:</h2><p>A typical call using the lubm50 database and associated queries. </p>
+<pre><code>agtool query --catalog stores lubm-50 /queries/lubm-50/*.rq </code></pre><p>Another example would be the following which uses a book database. Note we get the query from standard input. </p>
+<pre><code>agtool query --results-format count sp2b-1e4 - &lt;&lt;EOF  
+PREFIX rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;  
+PREFIX rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt;  
+PREFIX swrc:    &lt;http://swrc.ontoware.org/ontology#&gt;  
+PREFIX foaf:    &lt;http://xmlns.com/foaf/0.1/&gt;  
+PREFIX bench:   &lt;http://localhost/vocabulary/bench/&gt;  
+PREFIX dc:      &lt;http://purl.org/dc/elements/1.1/&gt;  
+PREFIX dcterms: &lt;http://purl.org/dc/terms/&gt;  
+ 
+SELECT ?inproc ?author ?booktitle ?title  
+       ?proc ?ee ?page ?url ?yr ?abstract  
+WHERE {  
+  ?inproc rdf:type bench:Inproceedings .  
+  ?inproc dc:creator ?author .  
+  ?inproc bench:booktitle ?booktitle .  
+  ?inproc dc:title ?title .  
+  ?inproc dcterms:partOf ?proc .  
+  ?inproc rdfs:seeAlso ?ee .  
+  ?inproc swrc:pages ?page .  
+  ?inproc foaf:homepage ?url .  
+  ?inproc dcterms:issued ?yr  
+  OPTIONAL {  
+    ?inproc bench:abstract ?abstract  
+  }  
+}  
+ORDER BY ?yr  
+EOF </code></pre><p>It returns: </p>
+<pre><code>   147   0.364  
+ 
+</code></pre></div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Performance Tuning | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="performance-tuning"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>AllegroGraph 6.4.2 Performance Tuning</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-9' title='AllegroGraph  Performance Tuning'>AllegroGraph </a>
+<ul>
+<li><a href='#header3-12' title='Hardware Selection'>Hardware Selection</a></li>
+<li><a href='#header3-18' title='Disable transparent hugepages (THP)'>Disable transparent hugepages (THP)</a></li>
+<li><a href='#header3-26' title='Adjust the Backends Setting'>Adjust the Backends Setting</a></li>
+<li><a href='#header3-30' title='Use Dedicated Sessions'>Use Dedicated Sessions</a></li>
+<li><a href='#header3-34' title='Catalog Parameters that Improve Performance'>Catalog Parameters that Improve Performance</a></li>
+<li><a href='#header3-60' title='Catalog Parameters that Trade Performance for Space'>Catalog Parameters that Trade Performance for Space</a></li>
+<li><a href='#header3-68' title='Minimize non-encoded typed literals'>Minimize non-encoded typed literals</a></li></ul></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <p><a name="ag-per-tun"></a> </p><a name='header2-9' id='header2-9'></a><h2>AllegroGraph 6.4.2 Performance Tuning</h2><p>This guide provides some insights on how to use some of AllegroGraph's tunable parameters to maximize database performance. These settings are applied in the AllegroGraph server configuration file (agraph.cfg) as well as the individual database parameter files (parameters.dat). Documentation of all parameter settings appears on the <a href="daemon-config.html">Server Configuration</a> page. </p><p><a name="har-sel"></a> </p><a name='header3-12' id='header3-12'></a><h3>Hardware Selection</h3><p>For users looking to work with multi-billions of RDF triples we encourage you to purchase as much hardware as your budget will permit.  We can offer purchase references (info@franz.com) for hardware systems containing multiple CPU cores with 96GB RAM for ~$7,000 or less. </p><p>An ideal system for 2-3 billion triples would include 8 CPU cores, 96 GB of RAM, and solid state drives (SSDs). This type of system will optimize query performance as well providing rapid ingest speeds. We also work with smaller hardware in our development and release testing and receive very satisfactory results. </p><p>Your results will vary based on factors associated with your application, such as the number and size of unique strings found in the triples, etc. </p><p>Please contact us if you have any questions related to hardware selection - info@franz.com </p><p><a name="THP"></a> </p><a name='header3-18' id='header3-18'></a><h3>Disable transparent hugepages (THP)</h3><p>Transparent hugepages (THP) is a mechanism that allows Linux to automatically use memory pages that are much larger than the standard 4096 bytes. (See, e.g., <a href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Performance_Tuning_Guide/s-memory-transhuge.html">this description in Red Hat documentation</a>.) THP may be enabled by default in some Linux distributions. </p><p>Having THP enabled can result in poor AllegroGraph performance, particularly for large databases. The following command will disable THP on the machine (but the change will not last over reboots so must be executed each time the computer is booted up): </p>
+<pre><code>echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled </code></pre><p>That command requires root privileges. </p><p>You can usually disable THP entirely by editing a system file. On Red Hat Enterprise Linux 6, for example, edit the file <em>/etc/rc.local</em>, adding the line above (<em>echo never > ...</em>) to it. Other Red Hat releases and other versions of Linux likely have similar means of disabling THP. Check the OS documentation for further information. </p><p>If THP is enabled, AllegroGraph logs a warning into agraph.log on startup. The warning is also printed to the console and displayed in AGWebView. </p><p><a name="adj-bac-set"></a> </p><a name='header3-26' id='header3-26'></a><h3>Adjust the Backends Setting</h3><p>The Backends setting in <em>agraph.cfg</em> determines the maximum number of (non-dedicated) back-ends that the server may spawn. On a machine with many CPU cores, heavy concurrent access can be faster when more back-ends are allowed to be spawned. </p><p>As a rule of thumb, set the Backends setting to the number of CPU cores on your machine. <em>agraph.cfg</em> and configuration settings are discussed in the <a href="daemon-config.html">Server Configuration and Control</a> document. </p><p><a name="use-ded-ses"></a> </p><a name='header3-30' id='header3-30'></a><h3>Use Dedicated Sessions</h3><p>When using non-dedicated back ends, all communications between the client and back ends are funneled through the AllegroGraph service daemon, adding overhead. To maximize client/server communication speed, clients should use dedicated sessions instead.  <br />
+</p><p>However, be aware that each dedicated back end uses resources on the server. Dedicated back ends increase performance up to an optimum, after which resource issues begin to degrade performance again. </p><p><a name="CatalogParameters"></a> </p><a name='header3-34' id='header3-34'></a><h3>Catalog Parameters that Improve Performance</h3><p>You can design catalogs in agraph.cfg to improve disk-access performance. Such a catalog description might resemble this one (the values shown are to illustrate the appearance of the file contents and may not be appropriate for a particular catalog): </p>
+<pre><code>&lt;Catalog fast&gt;  
+  ExpectedStoreSize 2000000  
+  CheckpointInterval 10m     
+  Main /var/lib/ag4/fast  
+  TransactionLogDir /mnt/disk2/ag4/fast   
+  StringTableDir /mnt/disk3/ag4/fast  
+  StringTableSize 128m  
+&lt;/Catalog&gt; </code></pre><p>Catalog parameters and directives are discussed in the <a href="daemon-config.html">Server Configuration and Control</a> document. In the descriptions below, each parameter is linked to its description in that document. </p><p><a name="exp-sto-siz"></a> </p><h4>ExpectedStoreSize</h4><p>Load performance can be improved by using the <a href="daemon-config.html#expectedstoresize">ExpectedStoreSize</a> catalog parameter. The value should be the maximum number of triples you expect to add to the triple store.  During normal operation, AllegroGraph may resize data structures as triples are added to the triple store. Using the ExpectedStoreSize settings allows AllegroGraph to pre-size certain data structures, reducing the number of resizes required, thereby improving overall load performance. </p><p><a name="che-int"></a> </p><h4>CheckpointInterval</h4><p>Load performance can be improved by setting the <a href="daemon-config.html#checkpointinterval">CheckpointInterval</a> catalog parameter.  By default, checkpoints occur every 5 minutes. While a checkpoint is operating, commits are blocked.  On a large database, checkpoints can take several tens of seconds to complete. Setting the CheckpointInterval to a longer interval reduces how often checkpoints occur, thereby reducing the impact on commits.<br />
+</p><p>Note that increasing the CheckpointInterval may increase the amount of time it takes to recover after an unclean database shutdown.<br />
+</p><p>Note that certain background database operations trigger checkpoints regardless of the CheckpointInterval setting.  So, in effect, the CheckpointInterval settings sets an upper bound on the amount of time that may elapsed before a checkpoint occurs. </p><p>Unused space in the datafile is not made available for reuse until a checkpoint completes, so increasing the time between checkpoints also increases the potential for datafile growth. </p><p><a name="tra-log-dir"></a> </p><h4>TransactionLogDir</h4><p>Load performance can be improved by using a <a href="daemon-config.html#transactionlogdir">TransactionLogDir</a> which specifies a directory on a filesystem which is physically separate from the filesystems on which the other database directories are located.  This will separate the writes to the transaction log file, which occur at every commit, from the write activity of the merger processes, which operate in the background. </p><p><a name="str-tab-dir"></a> </p><h4>StringTableDir</h4><p>By using the <a href="daemon-config.html#stringtabledir">StringTableDir</a> directive, it is possible to locate the string table files on a separate filesystem so that accesses to the string tables do not interfere with the write activity of mergers. </p><p><a name="str-tab-siz"></a> </p><h4>StringTableSize</h4><p>The <a href="daemon-config.html#stringtablesize">StringTableSize</a> directive allows specification of the size of the string table, which determines the minimum number of slots to use for the hash table used to map <a href="agraph-introduction.html#upi-def">UPI</a>s to their corresponding strings. Increasing the number of slots may result in better insert and lookup performance for triple stores with a lot of unique strings.  The increase in performance comes with the following costs: </p>
+<ul>
+<li><p>Increased memory use when the database is open.  Each slot requires 4 bytes of memory. </p></li>
+<li><p>Longer checkpoints. The information stored in the slots is recorded in the transaction log during checkpoints. </p></li></ul><p><a name="string-table-compression"></a> </p><p><a name="MoreCatalogParameters"></a> </p><a name='header3-60' id='header3-60'></a><h3>Catalog Parameters that Trade Performance for Space</h3><p><a name="string-table-compression"></a> </p><h4>StringTableCompression</h4><p>The <code>StringTableCompression</code> parameter specifies whether string tables should be compressed. Compressing a string table will usually have a significant effect on the space used by the string table, but at the cost of slower access (since strings have to be uncompressed in order to be used). This is a catalog parameter that is inheritable (meaning it can be specified as a top-level parameter which will apply to all catalogs except those which have a different value specified in their definitions). </p><p>The parameter value provides the default for new repositories in a catalog. This value can be overridden when creating a new repository with <a href="agload.html">agtool agload</a> (see the <code>--parameters</code> option) or using the REST interface (with the <code>stringTableCompression</code> parameter to the repository creation HTTP service) or using the <code>:params</code> keyword argument to <a href="lisp-reference.html#create-triple-store" title="description of create-triple-store">create-triple-store</a>. </p><p>If <code>StringTableCompression</code> is unspecified in a catalog specification (whether directly or through inheriting from the top-level parameter), it defaults to <code>none</code>, meaning do not compress the string table. For other possible values, see the <a href="daemon-config.html#stringtablecompress">parameter description</a> in the <a href="daemon-config.html">Server Configuration and Control</a> document. </p><p>Once a repository is created, its string table compression method is set and cannot be changed. To have a repository with the same contents but a different string table compression method, you must write out the triples or quads (perhaps using <a href="agexport.html">agtool export</a>) and read them back (perhaps using <a href="agload.html">agtool load</a>) into a new repository whose <code>StringTableCompression</code> setting is what is desired. (Backing up and restoring will not work for this purpose. The restored repository will have the same string table compression method as the backed up repository.) </p><p><a name="min-non-typ"></a> </p><a name='header3-68' id='header3-68'></a><h3>Minimize non-encoded typed literals</h3><p>If a triple store contains non-encoded typed literals, then AllegroGraph's SPARQL engine cannot blithely translate numeric range queries such as </p>
+<pre><code>SELECT * {  
+  ?s ex:foo ?o .  
+  FILTER (?o &gt; 10)  
+} </code></pre><p>into fast range queries over AllegroGraph's encoded datatypes because typed literals would be missed. However, AllegroGraph's default behavior is to encode numeric and other literals automatically which means that it is almost always appropriate to trust the encoded datatypes when querying. In rare circumstances (e.g., if you have turned off type-mapping), where non-encoded typed numeric (or date/dateTime) literals are in the store, then you may need to tell AllegroGraph to not trust the encoded datatypes in order to achieve correct results when using range filters. </p><p>You can force AllegroGraph to make these additional queries by setting the <code>trustEncodedDatatypesForRangeQueries</code> PREFIX option to <code>no</code>. </p><p>This can be accomplished either in the AllegroGraph configuration file using </p>
+<pre><code>QueryOption trustEncodedDatatypesForRangeQueries=no </code></pre><p>or on a per-query basis using the PREFIX notation as in </p>
+<pre><code>PREFIX franzOption_trustEncodedDatatypesForRangeQueries: &lt;franz:no&gt; </code></pre><p>Generally speaking, this setting should never need to be used as it will reduce performance. </p><p><a name="miscellaneous"></a> </p></div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

@@ -1,0 +1,401 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>franz.openrdf.query.queryresult &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+    </div>
+  
+    
+  <h1>Source code for franz.openrdf.query.queryresult</h1><div class="highlight"><pre>
+<span></span><span class="c1">################################################################################</span>
+<span class="c1"># Copyright (c) 2006-2017 Franz Inc.  </span>
+<span class="c1"># All rights reserved. This program and the accompanying materials are</span>
+<span class="c1"># made available under the terms of the MIT License which accompanies</span>
+<span class="c1"># this distribution, and is available at http://opensource.org/licenses/MIT</span>
+<span class="c1">################################################################################</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">range</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">object</span>
+
+<span class="kn">from</span> <span class="nn">future.utils</span> <span class="k">import</span> <span class="n">python_2_unicode_compatible</span>
+<span class="kn">from</span> <span class="nn">past.builtins</span> <span class="k">import</span> <span class="n">unicode</span>
+
+<span class="kn">from</span> <span class="nn">..model</span> <span class="k">import</span> <span class="n">Statement</span><span class="p">,</span> <span class="n">parse_term</span>
+<span class="kn">from</span> <span class="nn">.repositoryresult</span> <span class="k">import</span> <span class="n">RepositoryResult</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">franz.openrdf.query.pandas_support</span> <span class="k">as</span> <span class="nn">pandas</span>
+    <span class="n">has_pandas</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">has_pandas</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="QueryResult"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.QueryResult">[docs]</a><span class="k">class</span> <span class="nc">QueryResult</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Super type of all query result types (TupleQueryResult, GraphQueryResult, etc.</span>
+<span class="sd">    Evaluates as a Python iterator</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="QueryResult.close"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.QueryResult.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Release resources used by this query result.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    <span class="k">def</span> <span class="nf">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the next result item if there is one.</span>
+
+<span class="sd">        :return: The next item.</span>
+<span class="sd">        :raises StopIteration: If there are no more items to return.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="bp">NotImplemented</span><span class="p">(</span><span class="s1">&#39;__next__&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="k">del</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<span class="c1">#############################################################################</span>
+<span class="c1">##</span>
+<span class="c1">#############################################################################</span>
+
+<div class="viewcode-block" id="GraphQueryResult"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.GraphQueryResult">[docs]</a><span class="k">class</span> <span class="nc">GraphQueryResult</span><span class="p">(</span><span class="n">RepositoryResult</span><span class="p">,</span> <span class="n">QueryResult</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A graph query result is an iterator over the Statements.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="GraphQueryResult.__init__"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.GraphQueryResult.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string_tuples</span><span class="p">):</span>
+        <span class="n">QueryResult</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">RepositoryResult</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string_tuples</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="TupleQueryResult"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.TupleQueryResult">[docs]</a><span class="k">class</span> <span class="nc">TupleQueryResult</span><span class="p">(</span><span class="n">QueryResult</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A representation of a variable-binding query result as a sequence of</span>
+<span class="sd">    BindingSet objects. Each query result consists of zero or more</span>
+<span class="sd">    solutions, each of which represents a single query solution as a set of</span>
+<span class="sd">    bindings. Note: take care to always close a TupleQueryResult after use to</span>
+<span class="sd">    free any resources it keeps hold of.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="TupleQueryResult.__init__"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.TupleQueryResult.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_names</span><span class="p">,</span> <span class="n">string_tuples</span><span class="p">):</span>
+        <span class="n">QueryResult</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">variable_names</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">variable_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">variable_names</span><span class="p">]</span>
+            <span class="n">string_tuples</span> <span class="o">=</span> <span class="p">[</span><span class="n">string_tuples</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variable_names</span> <span class="o">=</span> <span class="n">variable_names</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string_tuples</span> <span class="o">=</span> <span class="n">string_tuples</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tuple_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">string_tuples</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binding_set</span> <span class="o">=</span> <span class="n">ListBindingSet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_names</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the next result tuple if there is one.</span>
+
+<span class="sd">        :return: The next tuple.</span>
+<span class="sd">        :rtype: ListBindingSet</span>
+<span class="sd">        :raises StopIteration: If there are no more items to return.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tuple_count</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span><span class="p">()</span>
+
+        <span class="n">bset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding_set</span>
+        <span class="n">bset</span><span class="o">.</span><span class="n">_reset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">string_tuples</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">bset</span>
+
+<div class="viewcode-block" id="TupleQueryResult.close"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.TupleQueryResult.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="TupleQueryResult.getBindingNames"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.TupleQueryResult.getBindingNames">[docs]</a>    <span class="k">def</span> <span class="nf">getBindingNames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the names of the bindings, in order of projection.</span>
+
+<span class="sd">        :return: A list of names.</span>
+<span class="sd">        :rtype: list[string]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_names</span></div>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tuple_count</span>
+
+<div class="viewcode-block" id="TupleQueryResult.rowCount"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.TupleQueryResult.rowCount">[docs]</a>    <span class="k">def</span> <span class="nf">rowCount</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TupleQueryResult.toPandas"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.TupleQueryResult.toPandas">[docs]</a>    <span class="k">def</span> <span class="nf">toPandas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">has_pandas</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Pandas not installed.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">rows_to_pandas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_names</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ListBindingSet"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.ListBindingSet">[docs]</a><span class="nd">@python_2_unicode_compatible</span>
+<span class="k">class</span> <span class="nc">ListBindingSet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A BindingSet is a set of named value bindings, which is used to</span>
+<span class="sd">    represent a single query solution. Values are indexed by name of</span>
+<span class="sd">    the binding which typically corresponds to the names of the</span>
+<span class="sd">    variables used in the projection of the original query.</span>
+
+<span class="sd">    ListBindingSet emulates an RDF4J BindingSet, a Python dictionary</span>
+<span class="sd">    and a list simultaneously.  The internal datastructure is a pair</span>
+<span class="sd">    of lists.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ListBindingSet.__init__"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.ListBindingSet.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_names</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variable_names</span> <span class="o">=</span> <span class="n">variable_names</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string_tuple</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_cache</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">variable_names</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string_tuple</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string_tuple</span> <span class="o">=</span> <span class="n">string_tuple</span>
+        <span class="n">value_cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_cache</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_names</span><span class="p">)):</span>
+            <span class="n">value_cache</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_validate_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">string_tuple</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">index</span>
+
+        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;Out-of-bounds index passed to BindingSet.&quot;</span> <span class="o">+</span>
+                         <span class="s2">&quot;  Index must be between 0 and </span><span class="si">%i</span><span class="s2">, inclusive.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">string_tuple</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_get_ith_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="n">term</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_cache</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">term</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span> <span class="k">return</span> <span class="p">[</span><span class="n">convert</span><span class="p">(</span><span class="n">elt</span><span class="p">)</span> <span class="k">for</span> <span class="n">elt</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="n">parse_term</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">term</span> <span class="o">=</span> <span class="n">convert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">string_tuple</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value_cache</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">term</span>
+        <span class="k">return</span> <span class="n">term</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_ith_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_validate_index</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_ith_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">((</span><span class="s2">&quot;Illegal key &#39;</span><span class="si">%s</span><span class="s2">&#39; passed to binding set.&quot;</span> <span class="o">+</span>
+                            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">   Legal keys are </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_names</span><span class="p">)))</span>
+
+
+<div class="viewcode-block" id="ListBindingSet.iterator"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.ListBindingSet.iterator">[docs]</a>    <span class="k">def</span> <span class="nf">iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates an iterator over the bindings in this BindingSet. This only</span>
+<span class="sd">        returns bindings with non-null values. An implementation is free to return</span>
+<span class="sd">        the bindings in arbitrary order.</span>
+
+<span class="sd">        Currently, we only support Python-style iteration over BindingSet dictionaries,</span>
+<span class="sd">        so this (Java-style) iterator method is not implemented.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;iterator&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ListBindingSet.getBindingNames"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.ListBindingSet.getBindingNames">[docs]</a>    <span class="k">def</span> <span class="nf">getBindingNames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the names of the bindings in this BindingSet.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_names</span></div>
+
+<div class="viewcode-block" id="ListBindingSet.getBinding"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.ListBindingSet.getBinding">[docs]</a>    <span class="k">def</span> <span class="nf">getBinding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bindingName</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the binding with the specified name from this BindingSet.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Binding</span><span class="p">(</span><span class="n">bindingName</span><span class="p">,</span> <span class="bp">self</span><span class="p">[</span><span class="n">bindingName</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="ListBindingSet.hasBinding"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.ListBindingSet.hasBinding">[docs]</a>    <span class="k">def</span> <span class="nf">hasBinding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bindingName</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks whether this BindingSet has a binding with the specified name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_names</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">bindingName</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="ListBindingSet.getValue"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.ListBindingSet.getValue">[docs]</a>    <span class="k">def</span> <span class="nf">getValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bindingName</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the value of the binding with the specified name from this BindingSet.</span>
+<span class="sd">        Throws exception if &#39;bindingName&#39; is not legal.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">bindingName</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ListBindingSet.getRow"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.ListBindingSet.getRow">[docs]</a>    <span class="k">def</span> <span class="nf">getRow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a list of strings representing the values of the current row.</span>
+<span class="sd">        This exists mostly for debugging (otherwise, we would return terms instead of strings).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">string_tuple</span></div>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value_cache</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ListBindingSet.size"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.ListBindingSet.size">[docs]</a>    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the number of bindings in this BindingSet.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_toDict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strings_dict</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a Python dictionary representation of this binding set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_names</span><span class="p">)):</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">strings_dict</span><span class="p">:</span> <span class="n">v</span> <span class="o">=</span> <span class="n">unicode</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">d</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_names</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">d</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_toDict</span><span class="p">(</span><span class="n">strings_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span></div>
+
+
+<span class="c1">#############################################################################</span>
+<span class="c1">##</span>
+<span class="c1">#############################################################################</span>
+
+<div class="viewcode-block" id="Binding"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.Binding">[docs]</a><span class="k">class</span> <span class="nc">Binding</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Binding&#39;</span><span class="p">,</span> <span class="s1">&#39;name value&#39;</span><span class="p">)):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An implementation of &#39;Binding&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Binding.getName"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.Binding.getName">[docs]</a>    <span class="k">def</span> <span class="nf">getName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the name of the binding (e.g. the variable name).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+
+<div class="viewcode-block" id="Binding.getValue"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.Binding.getValue">[docs]</a>    <span class="k">def</span> <span class="nf">getValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the value of the binding. The returned value is never equal to</span>
+<span class="sd">        None, such a &quot;binding&quot; is considered to be unbound.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div></div>
+
+
+<span class="c1">#############################################################################</span>
+<span class="c1">##</span>
+</pre></div>
+
+  
+    <div class="nav-links nav-links-footer">
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

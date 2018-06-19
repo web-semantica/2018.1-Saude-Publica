@@ -1,0 +1,379 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Example 13: SPARQL query forms &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example 14: Parametric queries" href="example014.html" />
+    <link rel="prev" title="Example 12: Free Text indexing" href="example012.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+        &laquo;<a href="example012.html" title="previous chapter">Example 12: Free Text indexing</a>
+      <a href="example014.html" title="next chapter">Example 14: Parametric queries</a> 
+      &raquo;
+    </div>
+  
+    
+  <div class="section" id="example-13-sparql-query-forms">
+<span id="example13"></span><h1>Example 13: SPARQL query forms<a class="headerlink" href="#example-13-sparql-query-forms" title="Permalink to this headline">¶</a></h1>
+<p>SPARQL provides alternatives to the standard SELECT query. This
+example exercises these alternatives to show how AllegroGraph Server
+and the Python client handle them.</p>
+<p>Let’s connect to the database:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.connect</span> <span class="kn">import</span> <span class="n">ag_connect</span>
+
+<span class="n">conn</span> <span class="o">=</span> <span class="n">ag_connect</span><span class="p">(</span><span class="s1">&#39;python-tutorial&#39;</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We’ll need some sample data to illustrate all the query types. Our
+dataset will contain information about rulers of 17th century England.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">@prefix</span><span class="w"> </span><span class="nn">:</span><span class="w"> </span><span class="nv">&lt;ex://&gt;</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="k">@prefix</span><span class="w"> </span><span class="nn">xsd:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/2001/XMLSchema#&gt;</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+
+<span class="w">    </span><span class="nn">:</span><span class="nt">james_i</span><span class="w"> </span><span class="nn">:</span><span class="nt">reigned_from</span><span class="w"> </span><span class="s">&quot;1603-03-24&quot;</span><span class="o">^^</span><span class="ge">xsd:date</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">             </span><span class="nn">:</span><span class="nt">reigned_to</span><span class="w"> </span><span class="s">&quot;1625-03-27&quot;</span><span class="o">^^</span><span class="ge">xsd:date</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="nn">:</span><span class="nt">charles_i</span><span class="w"> </span><span class="nn">:</span><span class="nt">reigned_from</span><span class="w"> </span><span class="s">&quot;1625-03-27&quot;</span><span class="o">^^</span><span class="ge">xsd:date</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">               </span><span class="nn">:</span><span class="nt">reigned_to</span><span class="w"> </span><span class="s">&quot;1649-01-30&quot;</span><span class="o">^^</span><span class="ge">xsd:date</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">               </span><span class="nn">:</span><span class="nt">child_of</span><span class="w"> </span><span class="nn">:</span><span class="nt">james_i</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="nn">:</span><span class="nt">charles_ii</span><span class="w"> </span><span class="nn">:</span><span class="nt">reigned_from</span><span class="w"> </span><span class="s">&quot;1649-01-30&quot;</span><span class="o">^^</span><span class="ge">xsd:date</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">             </span><span class="nn">:</span><span class="nt">reigned_to</span><span class="w"> </span><span class="s">&quot;1685-02-06&quot;</span><span class="o">^^</span><span class="ge">xsd:date</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">             </span><span class="nn">:</span><span class="nt">child_of</span><span class="w"> </span><span class="nn">:</span><span class="nt">charles_i</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="nn">:</span><span class="nt">james_ii</span><span class="w"> </span><span class="nn">:</span><span class="nt">reigned_from</span><span class="w"> </span><span class="s">&quot;1685-02-06&quot;</span><span class="o">^^</span><span class="ge">xsd:date</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">             </span><span class="nn">:</span><span class="nt">reigned_to</span><span class="w"> </span><span class="s">&quot;1688-12-11&quot;</span><span class="o">^^</span><span class="ge">xsd:date</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">             </span><span class="nn">:</span><span class="nt">child_of</span><span class="w"> </span><span class="nn">:</span><span class="nt">charles_i</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="nn">:</span><span class="nt">mary_ii</span><span class="w"> </span><span class="nn">:</span><span class="nt">reigned_from</span><span class="w"> </span><span class="s">&quot;1689-02-13&quot;</span><span class="o">^^</span><span class="ge">xsd:date</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">             </span><span class="nn">:</span><span class="nt">reigned_to</span><span class="w"> </span><span class="s">&quot;1694-12-28&quot;</span><span class="o">^^</span><span class="ge">xsd:date</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">             </span><span class="nn">:</span><span class="nt">child_of</span><span class="w"> </span><span class="nn">:</span><span class="nt">james_ii</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="nn">:</span><span class="nt">william_iii</span><span class="w"> </span><span class="nn">:</span><span class="nt">reigned_from</span><span class="w"> </span><span class="s">&quot;1672-07-04&quot;</span><span class="o">^^</span><span class="ge">xsd:date</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">                 </span><span class="nn">:</span><span class="nt">reigned_to</span><span class="w"> </span><span class="s">&quot;1702-03-08&quot;</span><span class="o">^^</span><span class="ge">xsd:date</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="nn">:</span><span class="nt">anne</span><span class="w"> </span><span class="nn">:</span><span class="nt">reigned_from</span><span class="w"> </span><span class="s">&quot;1707-05-01&quot;</span><span class="o">^^</span><span class="ge">xsd:date</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">          </span><span class="nn">:</span><span class="nt">reigned_to</span><span class="w"> </span><span class="s">&quot;1714-08-01&quot;</span><span class="o">^^</span><span class="ge">xsd:date</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">          </span><span class="nn">:</span><span class="nt">child_of</span><span class="w"> </span><span class="nn">:</span><span class="nt">james_ii</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="select">
+<h2><code class="docutils literal"><span class="pre">SELECT</span></code><a class="headerlink" href="#select" title="Permalink to this headline">¶</a></h2>
+<p>This kind of query returns a sequence of tuples, binding variables to
+matching elements of a search pattern. <code class="docutils literal"><span class="pre">SELECT</span></code> queries are created
+using <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareTupleQuery" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareTupleQuery"><code class="xref py py-meth docutils literal"><span class="pre">prepareTupleQuery()</span></code></a> and return results of type
+<a class="reference internal" href="../_gen/franz.openrdf.query.html#franz.openrdf.query.queryresult.TupleQueryResult" title="franz.openrdf.query.queryresult.TupleQueryResult"><code class="xref py py-class docutils literal"><span class="pre">TupleQueryResult</span></code></a>. Query result can also be serialized in a
+supported <a class="reference internal" href="../_gen/franz.openrdf.rio.html#franz.openrdf.rio.tupleformat.TupleFormat" title="franz.openrdf.rio.tupleformat.TupleFormat"><code class="xref py py-class docutils literal"><span class="pre">TupleFormat</span></code></a> - in previous examples we used
+<code class="docutils literal"><span class="pre">output=True</span></code> and relied on the default <code class="docutils literal"><span class="pre">TupleFormat.TABLE</span></code>.</p>
+<p>Here’s a sample query which locates all rulers whose grandchildren
+inherited the crown:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">setNamespace</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;ex://&#39;</span><span class="p">)</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">prepareTupleQuery</span><span class="p">(</span><span class="na">query</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+    <span class="k">SELECT</span> <span class="k">DISTINCT</span> <span class="nv">?name</span> <span class="k">WHERE</span> <span class="p">{</span>
+        <span class="nv">?grandchild</span> <span class="p">:</span><span class="nt">child_of</span><span class="o">/</span><span class="p">:</span><span class="nt">child_of</span> <span class="nv">?name</span> <span class="p">.</span>
+    <span class="p">}</span> <span class="k">ORDER BY</span> <span class="nv">?name</span> <span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">query</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span> <span class="k">as</span> <span class="n">result</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">bindings</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">bindings</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Two names are returned:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>&lt;ex://charles_i&gt;
+&lt;ex://james_i&gt;
+</pre></div>
+</div>
+<p>We can also serialize the output instead of processing the result
+object. This time let us reverse the query and ask for rulers whose
+grandparents are also in the dataset:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.rio.tupleformat</span> <span class="kn">import</span> <span class="n">TupleFormat</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">prepareTupleQuery</span><span class="p">(</span><span class="na">query</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+   <span class="k">SELECT</span> <span class="k">DISTINCT</span> <span class="nv">?name</span> <span class="k">WHERE</span> <span class="p">{</span>
+      <span class="nv">?name</span> <span class="p">:</span><span class="nt">child_of</span><span class="o">/</span><span class="p">:</span><span class="nt">child_of</span> <span class="nv">?grandparent</span> <span class="p">.</span>
+   <span class="p">}</span> <span class="k">ORDER BY</span> <span class="nv">?name</span> <span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">query</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="n">TupleFormat</span><span class="o">.</span><span class="n">CSV</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We get four results, serialized as CSV:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>name
+&quot;ex://anne&quot;
+&quot;ex://charles_ii&quot;
+&quot;ex://james_ii&quot;
+&quot;ex://mary_ii&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="ask">
+<h2><code class="docutils literal"><span class="pre">ASK</span></code><a class="headerlink" href="#ask" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">ASK</span></code> query returns a Boolean, depending on whether the triple
+pattern matched any triples. Queries of this type are created using
+<a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareBooleanQuery" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareBooleanQuery"><code class="xref py py-meth docutils literal"><span class="pre">prepareBooleanQuery()</span></code></a>.</p>
+<p>Let’s check if there were any co-regencies in the time period
+described by our dataset:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">prepareBooleanQuery</span><span class="p">(</span><span class="na">query</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">ASK</span> <span class="p">{</span> <span class="nv">?ruler1</span> <span class="p">:</span><span class="nt">reigned_from</span> <span class="nv">?r1from</span> <span class="p">;</span>
+                  <span class="p">:</span><span class="nt">reigned_to</span> <span class="nv">?r1to</span> <span class="p">.</span>
+          <span class="nv">?ruler2</span> <span class="p">:</span><span class="nt">reigned_from</span> <span class="nv">?r2from</span> <span class="p">;</span>
+                  <span class="p">:</span><span class="nt">reigned_to</span> <span class="nv">?r2to</span> <span class="p">.</span>
+          <span class="k">FILTER</span> <span class="p">(</span><span class="nv">?ruler1</span> <span class="o">!=</span> <span class="nv">?ruler2</span> <span class="o">&amp;&amp;</span>
+                  <span class="nv">?r1from</span> <span class="o">&gt;=</span> <span class="nv">?r2from</span> <span class="o">&amp;&amp;</span>
+                  <span class="nv">?r1from</span> <span class="o">&lt;</span> <span class="nv">?r2to</span><span class="p">)</span>
+    <span class="p">}</span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">evaluate</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>There was one (William and Mary):</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+<div class="section" id="construct">
+<h2><code class="docutils literal"><span class="pre">CONSTRUCT</span></code><a class="headerlink" href="#construct" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">CONSTRUCT</span></code> query creates triples by substantiating provided
+templates with values resulting from matching a pattern. Queries of
+this kind are created using <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareGraphQuery" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareGraphQuery"><code class="xref py py-meth docutils literal"><span class="pre">prepareGraphQuery()</span></code></a> and return a
+<a class="reference internal" href="../_gen/franz.openrdf.query.html#franz.openrdf.query.repositoryresult.RepositoryResult" title="franz.openrdf.query.repositoryresult.RepositoryResult"><code class="xref py py-class docutils literal"><span class="pre">RepositoryResult</span></code></a> - which is an iterator over the constructed
+triples.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Executing a <code class="docutils literal"><span class="pre">CONSTRUCT</span></code> query will <em>not</em> add any triples to the
+store. To insert the data we have to iterate over the result and
+add each triple using <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.addStatement" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.addStatement"><code class="xref py py-meth docutils literal"><span class="pre">addStatement()</span></code></a> (or use an <code class="docutils literal"><span class="pre">INSERT</span></code>
+query).</p>
+</div>
+<p>Let us consider a query that calculates a <code class="docutils literal"><span class="pre">:sibling_of</span></code>
+relationship:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Size before: {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">conn</span><span class="o">.</span><span class="n">size</span><span class="p">()))</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">prepareGraphQuery</span><span class="p">(</span><span class="na">query</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+   <span class="k">CONSTRUCT</span> <span class="p">{</span>
+       <span class="nv">?person1</span> <span class="p">:</span><span class="nt">sibling_of</span> <span class="nv">?person2</span> <span class="p">.</span>
+   <span class="p">}</span> <span class="k">WHERE</span> <span class="p">{</span>
+       <span class="nv">?person1</span> <span class="p">:</span><span class="nt">child_of</span> <span class="nv">?parent</span> <span class="p">.</span>
+       <span class="nv">?person2</span> <span class="p">:</span><span class="nt">child_of</span> <span class="nv">?parent</span> <span class="p">.</span>
+       <span class="k">filter</span> <span class="p">(</span><span class="nv">?person1</span> <span class="o">!=</span> <span class="nv">?person2</span><span class="p">)</span> <span class="p">.</span>
+   <span class="p">}</span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">stmt</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">evaluate</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;{0} &lt;-&gt; {1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">getSubject</span><span class="p">(),</span>
+                               <span class="n">stmt</span><span class="o">.</span><span class="n">getObject</span><span class="p">()))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Size after: {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">conn</span><span class="o">.</span><span class="n">size</span><span class="p">()))</span>
+</pre></div>
+</div>
+<p>The returned object is an iterator over <a class="reference internal" href="../_gen/franz.openrdf.model.html#franz.openrdf.model.Statement" title="franz.openrdf.model.Statement"><code class="xref py py-class docutils literal"><span class="pre">Statement</span></code></a> objects. We can
+also see that no data has been added to the repository.</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Size before: 19
+&lt;ex://james_ii&gt; &lt;-&gt; &lt;ex://charles_ii&gt;
+&lt;ex://charles_ii&gt; &lt;-&gt; &lt;ex://james_ii&gt;
+&lt;ex://anne&gt; &lt;-&gt; &lt;ex://mary_ii&gt;
+&lt;ex://mary_ii&gt; &lt;-&gt; &lt;ex://anne&gt;
+Size after: 19
+</pre></div>
+</div>
+<p>We can also serialize the result using any of the supported
+<a class="reference internal" href="../_gen/franz.openrdf.rio.html#franz.openrdf.rio.rdfformat.RDFFormat" title="franz.openrdf.rio.rdfformat.RDFFormat"><code class="xref py py-class docutils literal"><span class="pre">RDFFormats</span></code></a>:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.rio.rdfformat</span> <span class="kn">import</span> <span class="n">RDFFormat</span>
+
+<span class="n">query</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+               <span class="n">output_format</span><span class="o">=</span><span class="n">RDFFormat</span><span class="o">.</span><span class="n">NTRIPLES</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here we use the <a class="reference external" href="https://www.w3.org/TR/n-triples/">N-Triples</a> format. This happens to be the default,
+so we could have omitted the <code class="docutils literal"><span class="pre">output_format</span></code> argument.</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>&lt;ex://james_ii&gt; &lt;ex://sibling_of&gt; &lt;ex://charles_ii&gt; .
+&lt;ex://charles_ii&gt; &lt;ex://sibling_of&gt; &lt;ex://james_ii&gt; .
+&lt;ex://anne&gt; &lt;ex://sibling_of&gt; &lt;ex://mary_ii&gt; .
+&lt;ex://mary_ii&gt; &lt;ex://sibling_of&gt; &lt;ex://anne&gt; .
+</pre></div>
+</div>
+</div>
+<div class="section" id="describe">
+<h2><code class="docutils literal"><span class="pre">DESCRIBE</span></code><a class="headerlink" href="#describe" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">DESCRIBE</span></code> query returns triples that ‘describe’ a given set of
+resources. Such queries are created using <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareGraphQuery" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.prepareGraphQuery"><code class="xref py py-meth docutils literal"><span class="pre">prepareGraphQuery()</span></code></a>
+and return <a class="reference internal" href="../_gen/franz.openrdf.query.html#franz.openrdf.query.repositoryresult.RepositoryResult" title="franz.openrdf.query.repositoryresult.RepositoryResult"><code class="xref py py-class docutils literal"><span class="pre">RepositoryResult</span></code></a> objects.</p>
+<p>The set of resources to be processed is specified by a query
+pattern. The SPARQL standard does not say what triples constitute a
+‘description’ of a particular resource. AllegroGraph will return the
+<a class="reference external" href="https://www.w3.org/Submission/CBD/">Concise Bounded Description</a> of the queried resources.</p>
+<p>Let’s use a <code class="docutils literal"><span class="pre">DESCRIBE</span></code> query to see what data do we have regarding
+the children of Charles I:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">prepareGraphQuery</span><span class="p">(</span><span class="na">query</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+    <span class="k">DESCRIBE</span> <span class="nv">?child</span> <span class="k">WHERE</span> <span class="p">{</span>
+        <span class="nv">?child</span> <span class="p">:</span><span class="nt">child_of</span> <span class="p">:</span><span class="nt">charles_i</span>
+    <span class="p">}</span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">stmt</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">evaluate</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this case AllegroGraph will simply return all triples with subject
+in the specified set:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>(&lt;ex://charles_ii&gt;, &lt;ex://reigned_from&gt;, &quot;1649-01-30&quot;^^&lt;http://www.w3.org/2001/XMLSchema#date&gt;)
+(&lt;ex://charles_ii&gt;, &lt;ex://reigned_to&gt;, &quot;1685-02-06&quot;^^&lt;http://www.w3.org/2001/XMLSchema#date&gt;)
+(&lt;ex://charles_ii&gt;, &lt;ex://child_of&gt;, &lt;ex://charles_i&gt;)
+(&lt;ex://james_ii&gt;, &lt;ex://reigned_from&gt;, &quot;1685-02-06&quot;^^&lt;http://www.w3.org/2001/XMLSchema#date&gt;)
+(&lt;ex://james_ii&gt;, &lt;ex://reigned_to&gt;, &quot;1688-12-11&quot;^^&lt;http://www.w3.org/2001/XMLSchema#date&gt;)
+(&lt;ex://james_ii&gt;, &lt;ex://child_of&gt;, &lt;ex://charles_i&gt;)
+</pre></div>
+</div>
+<p>DESCRIBE queries can be useful for exploring a dataset and learning
+what properties a certain object might have. The results of such
+queries can be serialized to any supported <a class="reference internal" href="../_gen/franz.openrdf.rio.html#franz.openrdf.rio.rdfformat.RDFFormat" title="franz.openrdf.rio.rdfformat.RDFFormat"><code class="xref py py-class docutils literal"><span class="pre">RDFFormat</span></code></a>:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">query</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+               <span class="n">output_format</span><span class="o">=</span><span class="n">RDFFormat</span><span class="o">.</span><span class="n">NTRIPLES</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>&lt;ex://charles_ii&gt; &lt;ex://reigned_from&gt; &quot;1649-01-30&quot;^^&lt;http://www.w3.org/2001/XMLSchema#date&gt; .
+&lt;ex://charles_ii&gt; &lt;ex://reigned_to&gt; &quot;1685-02-06&quot;^^&lt;http://www.w3.org/2001/XMLSchema#date&gt; .
+&lt;ex://charles_ii&gt; &lt;ex://child_of&gt; &lt;ex://charles_i&gt; .
+&lt;ex://james_ii&gt; &lt;ex://reigned_from&gt; &quot;1685-02-06&quot;^^&lt;http://www.w3.org/2001/XMLSchema#date&gt; .
+&lt;ex://james_ii&gt; &lt;ex://reigned_to&gt; &quot;1688-12-11&quot;^^&lt;http://www.w3.org/2001/XMLSchema#date&gt; .
+&lt;ex://james_ii&gt; &lt;ex://child_of&gt; &lt;ex://charles_i&gt; .
+</pre></div>
+</div>
+</div>
+</div>
+
+
+  
+    <div class="nav-links nav-links-footer">
+        &laquo;<a href="example012.html" title="previous chapter">Example 12: Free Text indexing</a>
+      <a href="example014.html" title="next chapter">Example 14: Parametric queries</a> 
+      &raquo;
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#setting-the-environment-for-the-tutorial">Setting the environment for the tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#terminology">Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#creating-users-with-webview">Creating Users with WebView</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example001.html">Example 1: Creating a repository and triple indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example002.html">Example 2: Asserting and retracting triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example003.html">Example 3: A SPARQL query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example004.html">Example 4: Statement matching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example005.html">Example 5: Literal values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example006.html">Example 6: Importing triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example007.html">Example 7: Querying multiple contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example008.html">Example 8: Exporting triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example009.html">Example 9: Exporting query results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example010.html">Example 10: Graphs in SPARQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example011.html">Example 11: Namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example012.html">Example 12: Free Text indexing</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Example 13: SPARQL query forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example014.html">Example 14: Parametric queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example015.html">Example 15: Range queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example016.html">Example 16: Federated repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example017.html">Example 17: Triple attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example018.html">Example 18: Pandas support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fedex.html">Running AG on AWS EC2</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../tutorial.html">Tutorial</a><ul>
+      <li>Previous: <a href="example012.html" title="previous chapter">Example 12: Free Text indexing</a></li>
+      <li>Next: <a href="example014.html" title="next chapter">Example 14: Parametric queries</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/tutorial/example013.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

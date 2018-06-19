@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Distributed Database Tutorial | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="jupyter"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>    <h1>AllegroGraph 6.4.2 Distributed Database Tutorial</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-5' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-7' title='Cluster Definition File'>Cluster Definition File</a></li>
+<li><a href='#header2-14' title='Distributed Databases'>Distributed Databases</a></li>
+<li><a href='#header2-27' title='Installing AllegroGraph on a Cluster'>Installing AllegroGraph on a Cluster</a></li>
+<li><a href='#header2-48' title='Controlling AllegroGraph across a Cluster'>Controlling AllegroGraph across a Cluster</a></li>
+<li><a href='#header2-61' title='Creating the Shards of a Distributed Database'>Creating the Shards of a Distributed Database</a></li>
+<li><a href='#header2-67' title='Adding Data to Partitions'>Adding Data to Partitions</a></li>
+<li><a href='#header2-73' title='Parallel SPARQL'>Parallel SPARQL</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-5' id='header2-5'></a><h2>Introduction</h2><p>AllegroGraph implements a number of utilities and features that support operation across a cluster of nodes running AllegroGraph. This tutorial walks you through these features. </p><a name='header2-7' id='header2-7'></a><h2>Cluster Definition File</h2><p>To support operation over a cluster of servers, AllegroGraph requires a Cluster Definition file. It is used to identify the servers, individual repositories, and distributed collections (partitioned dbs and replication sets) over which you may wish to operate. </p><p>For this tutorial we will use the following sample cluster definition. It consists of three servers (aghost1, aghost2 and aghost3), a user (the operating system login name, <code>agraph</code>) in <em>agcluster.cfg</em>: </p>
+<pre><code>Port 10035  
+Scheme http  
+user agraph  
+ 
+server aghost1.franz.com host1  
+server aghost2.franz.com host2  
+server aghost3.franz.com host3  
+</code></pre><p>This sample cluster definition declares that all AllegroGraph servers in the cluster will be running on port 10035 via HTTP. Each server has been given a label, which can be used as a shortcut to refer to each server later in the cluster config file, and with some AllegroGraph utilities. The port must be identically specified in <em>agraph.cfg</em>: </p>
+<pre><code>Port 10035 </code></pre><p>Next, we learn how to define a distributed database. </p><a name='header2-14' id='header2-14'></a><h2>Distributed Databases</h2><p>Distributed Databases store partitioned data in shards across an AllegroGraph cluster as defined by the cluster definition file. Shards are implemented as single AllegroGraph repositories and the same number of shards must exist on each node in the cluster. </p><p>The data must be partitioned such that each query can run independently on each shard without needing to transmit data between them. For example, a health insurance company could partition its claim data on patient ID so that any given patient will have all of their triples in a single shard. In this case, queries that are about the properties of patients could be run in parallel. Note, however, that this particular partitioning strategy would <em>not</em> allow queries about the relationships between patients because that might require transmitting data between the shards in the database.  Note too that some triples, such as those associating billing codes with diseases, must be replicated on each server. </p><p>To use a distributed database, it must first be defined. Distributed databases are a collection of shards that are grouped together into an entity we call, simply, a <code>db</code>. DBs, in the cluster context, are declared by adding a definition to the cluster definition file, <em>agcluster.cfg</em>. </p><p>When defining a DB, there are two ways to define its shards; explicitly or implicitly. </p><p>The following definition uses the implicit approach, declaring that there are three database shards per server, based on the <code>shardcount' directive, named *repo0*, *repo1*, and *repo2*.  These repo names are generated based on the </code>prefix' directive and a monotonically increasing integer. All three repositories will be in the root catalog.  Access to these repositories will be authenticated with the given database user (test) and password (xyzzy). </p>
+<pre><code>server aghost1.franz.com host1  
+server aghost2.franz.com host2  
+server aghost3.franz.com host3  
+user agraph  
+ 
+db bigDB  
+  user     test  
+  password xyzzy  
+  prefix repo  
+  shardcount  3 </code></pre><p>Alternatively, you can explicitly name each shard yourself, using the `repo' directive: </p>
+<pre><code>server aghost1.franz.com host1  
+server aghost2.franz.com host2  
+server aghost3.franz.com host3  
+user agraph  
+ 
+Port 10035  
+ 
+db bigDB  
+  user     test  
+  password xyzzy  
+  repo http://aghost1.franz.com:10035/catalogs/test/repositories/repo0  
+  repo host1/catalogs/test/repositories/repo1  
+  repo host1/catalogs/test/repositories/repo2  
+  repo host2/catalogs/test/repositories/repo0  
+  repo host2/catalogs/test/repositories/repo1  
+  repo host2/catalogs/test/repositories/repo2  
+  repo host3/catalogs/test/repositories/repo0  
+  repo host3/catalogs/test/repositories/repo1  
+  repo host3/catalogs/test/repositories/repo2  
+</code></pre><p>Multiple DBs can be added to <em>agcluster.cfg</em> in this way. When AllegroGraph starts up, if <em>agcluster.cfg</em> is present, these DBs will be parsed and an Endpoint Connection Manager will be started for each one.  By adding the above definition to the <em>agcluster.cfg</em>, there would be three Endpoint Manager services published: </p>
+<pre><code>http://aghost1:10035/parallelEndpoint-bigDB  
+http://aghost2:10035/parallelEndpoint-bigDB  
+http://aghost3:10035/parallelEndpoint-bigDB </code></pre><p>Either of these URLs can then be used when making a Parallel SPARQL query against this distributed database. (We discuss Parallel SPARQL later in this tutorial.) First, we need to install AllegroGraph on the cluster. </p><p><a name="cluster-installation"></a> </p><a name='header2-27' id='header2-27'></a><h2>Installing AllegroGraph on a Cluster</h2><p>The first step to installing AllegroGraph is to grab the tarball from the <a href="http://franz.com/agraph/downloads/" target="_blank">Franz download page</a>, and extract it. Inside the extracted directory is the installation utility <a href="server-installation.html#tarinstall">install-agraph</a>. </p><p>Second, build your <em>agcluster.cfg</em> and <em>agraph.cfg</em> files and save them to disk. For installation, any location will do. If you do not specify a pre-built <em>agraph.cfg</em> on the <strong>install-agraph</strong> command-line, you will be prompted with a set of questions, and a very basic <em>agraph.cfg</em> will be generated for you. We recommend building your own <em>agraph.cfg</em> as the <strong>configure-agraph</strong> script does not prompt for a number of directives which you might need, such as <code>SSLPort</code>, additional catalogs, or the <code>ParallelSPARQLManager</code> directive, which enables the use of distributed databases and are demonstrated later in this tutorial. In fact, in order for this tutorial to work, the following directive must be added to your <em>agraph.cfg</em>. </p>
+<pre><code>ParallelSPARQLManager yes </code></pre><p>Here is a sample <em>agraph.cfg</em>: </p>
+<pre><code># AllegroGraph configuration file  
+Port 10035  
+SuperUser super:xyzzy  
+ 
+SettingsDirectory /home/agraph/ag-6.4.2/data/settings  
+LogDir /home/agraph/ag-6.4.2/log  
+PidFile /home/agraph/ag-6.4.2/data/agraph.pid  
+InstanceTimeout 604800  
+ 
+&lt;RootCatalog&gt;  
+ Main /home/agraph/ag-6.4.2/data/rootcatalog  
+&lt;/RootCatalog&gt;  
+ 
+&lt;SystemCatalog&gt;  
+ Main /home/agraph/ag-6.4.2/data/systemcatalog  
+ InstanceTimeout 10  
+&lt;/SystemCatalog&gt;  
+ 
+ParallelSPARQLManager yes  
+ 
+[License information added here] </code></pre><p>Third, make sure your hosts are all up and running and are configured for the following: </p>
+<ul>
+<li><p>passwordless ssh login to each host. This must be supported for the   user (e.g., agraph) declared in the cluster definition file, e.g:   <code>ssh agraph@aghost1</code>. If no user has been declared, then it must be   supported for the user issuing the <code>install-agraph</code> command. </p></li>
+<li><p>OPTIONAL: passwordless sudo on each host. This is only required if   you include <code>sudo yes</code> in the definition file. Sudo is necessary if,   for example, you wish to install AllegroGraph into a directory that   requires root privileges to write to. </p></li></ul><p>A typical local invocation of install-agraph looks as follows: </p>
+<pre><code>./install-agraph --agraph-config ./agraph.cfg  /home/agraph/ag-6.4.2 </code></pre><p>The destination directory `/home/agraph/ag-6.4.2` is where AllegroGraph server will be installed. To make this a cluster installation, it looks like this: </p>
+<pre><code>./install-agraph --cluster ./agcluster.cfg --agraph-config ./agraph.cfg /home/agraph/ag-6.4.2 </code></pre><p>As the installation runs, it will check that it has the proper access to each host (passwordless ssh and sudo, write permissions, etc). Furthermore, it will check for an existing AllegroGraph installation either based on any <code>bindir' directive associated with the server being installed to, or in the *default-installation-dir* (</code>/home/agraph/ag-6.4.2`). If there already exists an AllegroGraph installation the installation will be skipped on that node only. </p><p>After installation, the files specified by the <code>--agraph-config</code> and <code>--cluster</code> arguments are copied to <em>lib/agraph.cfg</em> and <em>lib/agcluster.cfg</em>, respectively, in the installation directory on each node. This occurs whether or not the installation is skipped. This behavior makes it easy to add new nodes to the cluster or update config files without performing a full install to all nodes. Simply update the config files and run the exact same command again. </p><p>Here is a sample run: </p>
+<pre><code>$ ./install-agraph --cluster ./agcluster.cfg --agraph-config ./agraph.cfg /disk1/ag  
+Checking for passwordless ssh to all servers...ok.  
+Checking for write permission on staging-dir /tmp/agtmp-7.0.0-2017-10-06-09-27-03... ok.  
+Checking for write permission on installation-dir for each server... ok.  
+Building plan for cluster installation...  
+Checking for existing binary installations...  
+Copying binaries for 3 new AllegroGraph installations.  
+Copying AllegroGraph Server config file ./agraph.cfg to cluster.  
+Copying AllegroGraph Cluster config file ./tmp/agraph-7.0.0/tmp_agclustera173210934071 to cluster.  
+Removing staged installations from all hosts.  
+Installation complete. </code></pre><p>The presence of <em>agcluster.cfg</em> in an installation enables other tools to also support operations on the cluster. If you deploy AllegroGraph to a cluster via other means, you can manually install an <em>agcluster.cfg</em> to gain the same extended feature set. </p><p>For tarball installations, <em>agcluster.cfg</em> should be added to the lib/ subdirectory of the installation dir. </p><p>For RPM installations, or setups that may use an RPM install such as VMs and Amazon EC2 instances, the <em>agcluster.cfg</em> should be placed in /etc/agraph/. </p><p>Now that installation is complete, it is time to start AllegroGraph </p><a name='header2-48' id='header2-48'></a><h2>Controlling AllegroGraph across a Cluster</h2><p>The <a href="daemon-config.html#agraph-control">agraph-control</a> utility is used to start and stop AllegroGraph on a single server. By adding the <code>--cluster</code> argument, it will also work against the entire cluster. </p><p>To start AllegroGraph on all nodes: </p>
+<pre><code>$ bin/agraph-control --cluster start  
+Reading from config file ./lib/agcluster.cfg  
+Checking for passwordless ssh to all hosts...ok.  
+Cluster definition has 3 hosts  
+Issuing `start' command to all nodes... Done. </code></pre><p>The <code>start</code> command checks to see if AllegroGraph is already running, and if it is, does not try to start it again. This allows the start command to work properly on clusters where some nodes are running, but multiple crashed/new nodes now need to be started. </p><p>To stop AllegroGraph on only the local node: </p>
+<pre><code>$ bin/agraph-control stop  
+Stopping agraph (26547): ....  Stopped </code></pre><p>Additionally, agraph-control now supports a `status' argument: </p>
+<pre><code>$ bin/agraph-control --cluster status  
+Checking for passwordless ssh to all servers...ok.  
+2 servers are UP: aghost2 aghost3  
+1 server is DOWN: aghost1  
+</code></pre><p>Now, we stop the rest of the AllegroGraph nodes. </p>
+<pre><code>$ ./bin/agraph-control --cluster stop  
+Checking for passwordless ssh to all servers...ok.  
+Issuing `stop' command to all nodes... Done.  
+</code></pre><p>And then, check the status to make sure everything is shut down. </p>
+<pre><code>$ ./bin/agraph-control --cluster status  
+Checking for passwordless ssh to all servers...ok.  
+All servers are DOWN.  
+</code></pre><a name='header2-61' id='header2-61'></a><h2>Creating the Shards of a Distributed Database</h2><p>Now that the distributed database has been defined, and AllegroGraph started, the next step is to create the shards that comprise the DB. The <code>agtool create-db</code> command is used to create repositories on the local node, or across an entire cluster. Its interface is as follows: </p>
+<pre><code>Usage: agtool create-db [ --cluster-config AGCLUSTER.CFG-FILENAME ]  
+                        [ --supersede ]  [ --quiet ]  
+		    [ -v|--verbose ] [ --password PASSWORD ]  
+		    [ -u|--user USER ]  
+		    [ --host HOST ]  
+		    DBNAME  
+ 
+create-db will create one or more repositories depending on the  
+value of the DBNAME argument. If agcluster.cfg is found, and  
+DBNAME matches a label defined in that file, create-db will  
+attempt to create all repositories associated with that  
+label--even those that reside on different servers. Otherwise,  
+DBNAME will be treated as a REPO-SPEC that is to be created on the  
+local server.  
+ 
+Options:  
+  --cluster-config AGCLUSTER.CFG-FILENAME    Specifies the agcluster.cfg file.  
+                                             If not specified, agcluster.cfg will  
+					 be searched for in standard locations  
+  --supersede                                If there is an existing database,  
+  						 delete it first  
+ 
+Other options:  
+  --quiet                                    Reduce output (default: no)  
+  -v, --verbose                              Include more output  
+ 
+Repository options:  
+  --host HOST                                Host where the repository lives  
+  	     					 (default: localhost)  
+  --password PASSWORD                        Password for the repository; use  
+  		 				 with --user (default: password)  
+ 
+  -u USER, --user USER                       User name for the repository; use  
+  	       	      				 with --password (default: username)  
+</code></pre><p>We want to create all of the shards in our distributed DB, which we gave the label `bigDB' in our agcluser.cfg file. So, we invoke the following command-line: </p>
+<pre><code>./bin/agtool create-db bigDB  
+Found label bigDB in cluster config file. Creating repositories for referenced db. </code></pre><p>When this command completes, all shards for bigDB will have been created, and we can now undertake the process of populating them. </p><a name='header2-67' id='header2-67'></a><h2>Adding Data to Partitions</h2><p>In order to make interesting queries, the distributed database first needs to be populated with data.  At present, you are reponsible for partitioning your data and importing it to the appropriate shards in the distributed database, as well as maintaining and updating the data in each shard. </p><p>We provide a sample data generator using the <strong>agtool generate</strong> command. For this tutorial we generate sample data representing health insurance patients, and populate our db with it using the following command: </p>
+<pre><code>$ ./bin/agtool generate patient bigDB 10000  
+Found label bigDB in cluster config file.  
+Verifying access to repositories... Done.  
+Generating data for 10,000 patients...  
+Operation completed in 0h0m41s.  
+Added 10,000 patients. 245.52773 patients/sec.  
+Added 4,771,512 triples. 117153.84 triples/sec  
+</code></pre><p>Here, <code>patient</code> indicates that we desire sample patient data, and the intended destination is the endpoint <em>bigDB</em>. The value <em>10000</em> instructs the generator how many patients we want data for. Each patient data set is comprised of roughly 800-900 triples. </p><p>When generating data for a partitioned DB, the <em>generate</em> command divides the job into one subtask per shard, each generating a portion of the patients. For example, if bigDB was comprised of 10 shards, there would be 10 subtasks, each generating 1000 patients. Once the command completes, each shard in our DB will be populated with data that we can query. </p><a name='header2-73' id='header2-73'></a><h2>Parallel SPARQL</h2><p>Parallel SPARQL works by taking a single SPARQL query, determining a set of shards to which the query must be delivered, and issuing the query to each shard in parallel. The results from each shard are then combined to form the result of the query. The AllegroGraph server that receives the initial query is known as the <em>Query Conductor</em>. It is responsible for executing the query on each shard and processing the results. </p><p>Parallel SPARQL is enabled by adding a special prefix to your query. This prefix provides access to the list of shards to which this query should be delivered. As mentioned in the <code>Distributed Databases</code> section, at startup, a URL is published for each DB defined in the cluster definition file. We use this URL to tell Parallel SPARQL how to fetch the list of shards: </p>
+<pre><code>prefix franzOption_parallelEndpointManager: &lt;franz:http://aghost1:10035/parallelEndpoint-bigdb&gt; </code></pre><p>Without this prefix, a query will only be made against the specific repository/shard to which it was issued. </p><h3>What types of Queries is Parallel SPARQL Good At?</h3><p>Some parallel SPARQL queries can be run completely independently whereas others require a post-processing step to combine the results. For example, a query that uses DISTINCT must compare the results returned by each shard to ensure that there are no duplicates. Similarly, if a query has a LIMIT, then the conductor will ask each shard for up to the LIMIT rows of results but then the conductor will need to further constrain the solution set. Queries that run without the need for <em>post-processing</em> can be much more efficient. </p><p><em>post-processing</em> is required if the SPARQL query uses any of the following constructs: </p>
+<ul>
+<li>ORDER BY</li>
+<li>DISTINCT</li>
+<li>Aggregation (GROUP BY and HAVING)</li>
+<li>LIMIT</li>
+<li>OFFSET</li></ul><p>Additional <em>post-processing</em> is <em>not</em> required when one of the following output formats is used: </p>
+<ul>
+<li>SPARQL CSV</li>
+<li>SPARQL JSON</li>
+<li>SPARQL TSV</li>
+<li>SPARQL XML</li></ul><p>Thus, the most efficient queries will be ones that request results in an above format <em>without</em> any of the above SPARQL constructs. </p><h3>Issuing a Parallel SPARQL Query</h3><p>We can now deliver queries to the distributed database using our client of choice. If using <a href="http://franz.com/agraph/agwebview/index.lhtml" target="_blank">AG WebView</a> to issue the query, open the Query dialog for any single shard in the distributed database. </p><p>Query 1: Compute the frequency of each diagnosis </p>
+<pre><code>prefix franzOption_logQuery: &lt;franz:onFailure&gt;  
+prefix franzOption_parallelEndpointManager: &lt;franz:http://aghost1:10035/parallelEndpoint-bigdb&gt;  
+prefix fr: &lt;http://franz.com/&gt;  
+ 
+select (count(?node) as ?count) ?node where  
+{  
+  ?EmergencyEncounter fr:diagnosis ?PatientDiagnosis .  
+  ?diagnosis rdfs:label ?node .  
+  ?PatientDiagnosis      &lt;http://franz.com/symValue&gt; ?diagnosis .  
+}  
+group by ?node  
+order by desc(?count)  
+</code></pre><p>Query 2: How many patients have Lumbago? </p>
+<pre><code>prefix franzOption_logQuery: &lt;franz:onFailure&gt;  
+prefix franzOption_parallelEndpointManager: &lt;franz:http://aghost1:10035/parallelEndpoint-bigdb&gt;  
+prefix fr: &lt;http://franz.com/&gt;  
+ 
+select (count(distinct ?Person) as ?count) where  
+{  
+  ?Person fr:claim ?OutpatientClaim .  
+  ?OutpatientClaim fr:diagnosis ?PatientDiagnosis .  
+  ?PatientDiagnosis &lt;http://franz.com/symValue&gt; ?diagnosis .  
+  ?diagnosis rdfs:label "Lumbago" .  
+} </code></pre><p>Query 3: Same as Query 2 (How many people have Lumbago?), but optimized </p>
+<pre><code>prefix franzOption_logQuery: &lt;franz:onFailure&gt;  
+prefix franzOption_parallelEndpointManager: &lt;franz:http://aghost1:10035/parallelEndpoint-bigdb&gt;  
+prefix fr: &lt;http://franz.com/&gt;  
+ 
+select (sum(?count) as ?total) {  
+{  
+  select (count(distinct ?Person) as ?count) where  
+  {  
+    ?Person fr:claim ?OutpatientClaim .  
+?OutpatientClaim fr:diagnosis ?PatientDiagnosis .  
+?PatientDiagnosis &lt;http://franz.com/symValue&gt; ?diagnosis .  
+?diagnosis rdfs:label "Lumbago" .  
+   }  
+  }  
+} </code></pre> <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

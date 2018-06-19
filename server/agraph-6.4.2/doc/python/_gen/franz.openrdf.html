@@ -1,0 +1,330 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>franz.openrdf package &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="franz.openrdf.model package" href="franz.openrdf.model.html" />
+    <link rel="prev" title="franz package" href="franz.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+        &laquo;<a href="franz.html" title="previous chapter">franz package</a>
+      <a href="franz.openrdf.model.html" title="next chapter">franz.openrdf.model package</a> 
+      &raquo;
+    </div>
+  
+    
+  <div class="section" id="franz-openrdf-package">
+<h1>franz.openrdf package<a class="headerlink" href="#franz-openrdf-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="franz.openrdf.model.html">franz.openrdf.model package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.model.html#module-franz.openrdf.model">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="franz.openrdf.query.html">franz.openrdf.query package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.query.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.query.html#module-franz.openrdf.query.dataset">franz.openrdf.query.dataset module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.query.html#module-franz.openrdf.query.query">franz.openrdf.query.query module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.query.html#module-franz.openrdf.query.queryresult">franz.openrdf.query.queryresult module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.query.html#module-franz.openrdf.query.repositoryresult">franz.openrdf.query.repositoryresult module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.query.html#module-franz.openrdf.query">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="franz.openrdf.repository.html">franz.openrdf.repository package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.repository.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.repository.html#module-franz.openrdf.repository.repository">franz.openrdf.repository.repository module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.repository.html#module-franz.openrdf.repository.repositoryconnection">franz.openrdf.repository.repositoryconnection module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.repository.html#module-franz.openrdf.repository.repositoryresult">franz.openrdf.repository.repositoryresult module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.repository.html#module-franz.openrdf.repository">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="franz.openrdf.rio.html">franz.openrdf.rio package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.rio.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.rio.html#module-franz.openrdf.rio.formats">franz.openrdf.rio.formats module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.rio.html#module-franz.openrdf.rio.rdfformat">franz.openrdf.rio.rdfformat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.rio.html#module-franz.openrdf.rio.rdfwriter">franz.openrdf.rio.rdfwriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.rio.html#module-franz.openrdf.rio.rdfxmlwriter">franz.openrdf.rio.rdfxmlwriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.rio.html#module-franz.openrdf.rio.tupleformat">franz.openrdf.rio.tupleformat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.rio.html#module-franz.openrdf.rio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="franz.openrdf.sail.html">franz.openrdf.sail package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.sail.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.sail.html#module-franz.openrdf.sail.allegrographserver">franz.openrdf.sail.allegrographserver module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.sail.html#module-franz.openrdf.sail.spec">franz.openrdf.sail.spec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.sail.html#module-franz.openrdf.sail">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="franz.openrdf.util.html">franz.openrdf.util package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.util.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.util.html#module-franz.openrdf.util.contexts">franz.openrdf.util.contexts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.util.html#module-franz.openrdf.util.strings">franz.openrdf.util.strings module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.util.html#module-franz.openrdf.util.uris">franz.openrdf.util.uris module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.util.html#module-franz.openrdf.util">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="franz.openrdf.vocabulary.html">franz.openrdf.vocabulary package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="franz.openrdf.vocabulary.html#module-franz.openrdf.vocabulary">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-franz.openrdf.connect">
+<span id="franz-openrdf-connect-module"></span><h2>franz.openrdf.connect module<a class="headerlink" href="#module-franz.openrdf.connect" title="Permalink to this headline">¶</a></h2>
+<p>Helper function for opening connections.</p>
+<dl class="function">
+<dt id="franz.openrdf.connect.ag_connect">
+<code class="descclassname">franz.openrdf.connect.</code><code class="descname">ag_connect</code><span class="sig-paren">(</span><em>repo</em>, <em>catalog=None</em>, <em>create=True</em>, <em>fail_if_exists=False</em>, <em>clear=False</em>, <em>session=False</em>, <em>autocommit=False</em>, <em>lifetime=None</em>, <em>loadinitfile=False</em>, <em>host=None</em>, <em>port=None</em>, <em>protocol=None</em>, <em>user=None</em>, <em>password=None</em>, <em>cainfo=None</em>, <em>sslcert=None</em>, <em>verifyhost=None</em>, <em>verifypeer=None</em>, <em>indices=None</em>, <em>proxy=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/connect.html#ag_connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.connect.ag_connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a connection to an AllegroGraph repository.</p>
+<p>When closed the connection will take care of releasing all intermediate resources
+that were created in order to open it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repo</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Repository name.</li>
+<li><strong>catalog</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Catalog name (optional, root catalog is the default).</li>
+<li><strong>create</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – if <cite>True</cite> (default) create the repository if it does not exist.</li>
+<li><strong>fail_if_exists</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – if <cite>True</cite> and the repository exists raise an exception.
+This applies only if <cite>create</cite> is <cite>True</cite>.
+The default value is <cite>False</cite>.</li>
+<li><strong>clear</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – if <cite>True</cite> delete all data after creating the connection.
+The default is <cite>False</cite>.</li>
+<li><strong>session</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – If <code class="docutils literal"><span class="pre">True</span></code> start a session after creating the connection.
+The default is <code class="docutils literal"><span class="pre">False</span></code>.</li>
+<li><strong>autocommit</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – When opening a session: if <code class="docutils literal"><span class="pre">True</span></code>, commits are done on each
+request, otherwise you will need to call <a class="reference internal" href="franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.commit" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a> or
+<a class="reference internal" href="franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.rollback" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.rollback"><code class="xref py py-meth docutils literal"><span class="pre">rollback()</span></code></a> as appropriate for your application.
+The default value is <code class="docutils literal"><span class="pre">False</span></code>.</li>
+<li><strong>lifetime</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – Time (in seconds) before the session expires when idle.
+Note that the client maintains a thread that ping the
+session before this happens.
+Ignored if not starting a session.</li>
+<li><strong>loadinitfile</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – if <code class="docutils literal"><span class="pre">True</span></code> then the current initfile will be loaded
+for you when the session starts. The default is <code class="docutils literal"><span class="pre">False</span></code>.
+Ignored if not starting a session.</li>
+<li><strong>host</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – AllegroGraph server host (default: <code class="docutils literal"><span class="pre">'127.0.0.1'</span></code> or the value
+of the AGRAPH_HOST environment variable if that is defined.`
+Can also be used to supply protocol and port number
+(e.g. <code class="docutils literal"><span class="pre">https://localhost:10036</span></code>).</li>
+<li><strong>protocol</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Either <code class="docutils literal"><span class="pre">&quot;http&quot;</span></code> or <code class="docutils literal"><span class="pre">&quot;https&quot;</span></code>.
+The default is <code class="docutils literal"><span class="pre">&quot;http&quot;</span></code>.
+Overrides the protocol specified in <code class="docutils literal"><span class="pre">host</span></code>.</li>
+<li><strong>port</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – AllegroGraph server port (default: <cite>10035</cite> for http and <cite>10036</cite>
+for https, or the AGRAPH_PORT environment variable if that is defined).
+Overrides the port number provided in <code class="docutils literal"><span class="pre">host</span></code>.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Username for authentication (default: value of the <code class="docutils literal"><span class="pre">AGRAPH_USER</span></code>
+environment variable).</li>
+<li><strong>password</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Password for authentication (default: value of the <code class="docutils literal"><span class="pre">AGRAPH_PASSWORD</span></code>
+environment variable).</li>
+<li><strong>cainfo</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Path to file or directory with CA certificates.</li>
+<li><strong>sslcert</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Path to a client certificate to use for
+authentication instead of username and password.</li>
+<li><strong>verifyhost</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – See <a class="reference external" href="https://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html">https://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html</a></li>
+<li><strong>verifypeer</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – See <a class="reference external" href="https://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYPEER.html">https://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYPEER.html</a></li>
+<li><strong>indices</strong> (<em>list</em><em>[</em><a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a><em>]</em>) – List of indices to create if creating a new repository.</li>
+<li><strong>proxy</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Proxy specification string. The format is SCHEME://HOST:PORT.
+Supported schemes are ‘http’, ‘socks4’ and ‘socks5’.
+Note that for SOCKS proxies DNS requests are performed by the
+proxy server.
+The default value is taken from the AGRAPH_PROXY environment
+variable.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection"><code class="xref py py-class docutils literal"><span class="pre">RepositoryConnection</span></code></a> object.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">franz.openrdf.repositoryconnection.RepositoryConnection</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-franz.openrdf.exceptions">
+<span id="franz-openrdf-exceptions-module"></span><h2>franz.openrdf.exceptions module<a class="headerlink" href="#module-franz.openrdf.exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="franz.openrdf.exceptions.IllegalArgumentException">
+<em class="property">exception </em><code class="descclassname">franz.openrdf.exceptions.</code><code class="descname">IllegalArgumentException</code><a class="reference internal" href="../_modules/franz/openrdf/exceptions.html#IllegalArgumentException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.exceptions.IllegalArgumentException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="franz.openrdf.exceptions.IllegalOptionException">
+<em class="property">exception </em><code class="descclassname">franz.openrdf.exceptions.</code><code class="descname">IllegalOptionException</code><a class="reference internal" href="../_modules/franz/openrdf/exceptions.html#IllegalOptionException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.exceptions.IllegalOptionException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="franz.openrdf.exceptions.QueryMissingFeatureException">
+<em class="property">exception </em><code class="descclassname">franz.openrdf.exceptions.</code><code class="descname">QueryMissingFeatureException</code><a class="reference internal" href="../_modules/franz/openrdf/exceptions.html#QueryMissingFeatureException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.exceptions.QueryMissingFeatureException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
+<p>Source language evokes a feature not supported by the execution language</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="franz.openrdf.exceptions.RDFHandlerException">
+<em class="property">exception </em><code class="descclassname">franz.openrdf.exceptions.</code><code class="descname">RDFHandlerException</code><a class="reference internal" href="../_modules/franz/openrdf/exceptions.html#RDFHandlerException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.exceptions.RDFHandlerException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="franz.openrdf.exceptions.ServerException">
+<em class="property">exception </em><code class="descclassname">franz.openrdf.exceptions.</code><code class="descname">ServerException</code><a class="reference internal" href="../_modules/franz/openrdf/exceptions.html#ServerException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.exceptions.ServerException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-franz.openrdf">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-franz.openrdf" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+  
+    <div class="nav-links nav-links-footer">
+        &laquo;<a href="franz.html" title="previous chapter">franz package</a>
+      <a href="franz.openrdf.model.html" title="next chapter">franz.openrdf.model package</a> 
+      &raquo;
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">AllegroGraph Python API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="modules.html">src</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#allegrographserver-class">AllegroGraphServer class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#catalog-class">Catalog class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-franz.openrdf.sail.spec">Spec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#repository-class">Repository class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utility-connection-functions">Utility connection functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#repositoryconnection-class">RepositoryConnection class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#query-class-and-subclasses">Query Class (and Subclasses)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#queryresult-class">QueryResult Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#repositoryresult-class">RepositoryResult class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#statement-class">Statement Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#valuefactory-class">ValueFactory Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../api.html">AllegroGraph Python API Reference</a><ul>
+  <li><a href="modules.html">src</a><ul>
+  <li><a href="franz.html">franz package</a><ul>
+      <li>Previous: <a href="franz.html" title="previous chapter">franz package</a></li>
+      <li>Next: <a href="franz.openrdf.model.html" title="next chapter">franz.openrdf.model package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/_gen/franz.openrdf.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

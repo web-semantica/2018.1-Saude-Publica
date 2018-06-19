@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>SPARQL Magic Properties | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<link rel='stylesheet' href='sparql.css' />
+<body id="sparql-magic-properties"><div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>         <h1>SPARQL Magic Properties</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-18' title='Freetext'>Freetext</a></li>
+<li><a href='#header2-30' title='n-Dimensional (nD) Geospatial'>n-Dimensional (nD) Geospatial</a></li>
+<li><a href='#header2-40' title='2D Geospatial'>2D Geospatial</a></li>
+<li><a href='#header2-43' title='SNA'>SNA</a>
+<ul>
+<li><a href='#header3-46' title='Generators'>Generators</a></li>
+<li><a href='#header3-75' title='Neighbors'>Neighbors</a></li>
+<li><a href='#header3-79' title='Groups and Centrality Measures'>Groups and Centrality Measures</a></li>
+<li><a href='#header3-102' title='Neighbor Caches'>Neighbor Caches</a></li>
+<li><a href='#header3-111' title='Paths'>Paths</a></li>
+<li><a href='#header3-140' title='Cliques'>Cliques</a></li></ul></li>
+<li><a href='#header2-148' title='Temporal'>Temporal</a>
+<ul>
+<li><a href='#header3-165' title='relations between points'>relations between points</a></li>
+<li><a href='#header3-172' title='relation between intervals'>relation between intervals</a></li>
+<li><a href='#header3-188' title='relations between points and intervals'>relations between points and intervals</a></li>
+<li><a href='#header3-196' title='relations between points and datetimes'>relations between points and datetimes</a></li>
+<li><a href='#header3-199' title='relations between intervals and datetimes'>relations between intervals and datetimes</a></li></ul></li>
+<li><a href='#header2-203' title='Magic properties list'>Magic properties list</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>A Magic Property is a predicate in a SPARQL query that produces bindings using something other than simple subgraph matching. These extensions provide a much richer query environment at the cost of non-portability. AllegroGraph has long supported a Magic Property to enable <a href="text-index.html">freetext</a> queries and to interface to <a href="solr-index.html">Solr</a> and <a href="mongo-interface.html">MongoDB</a>. For example, when a query contains a pattern like </p>
+<pre><code>?subject fti:match 'baseball' . </code></pre><p>AllegroGraph does <em>not</em> look at the triples in the triple-store to find matching patterns; rather, it uses the freetext index to find the triples that have objects with <code>baseball</code> in their text. </p><p>AllegroGraph includes both enhanced Magic Properties for freetext queries and new properties to enable SPARQL queries to access Geospatial, Temporal and Social Network Analysis. </p><p>Note that Magic Properties can use patterns with multiple inputs and outputs. SPARQL's list notation provides a syntactic sugar to make this quite readable. Here is an example that looks for text matching <em>willows</em> in the freetext index named <em>titles</em> and then binds <em>?book</em> to the matches it finds: </p>
+<pre><code>select * {  
+  ?book fti:match ('willows' 'titles' ) .  
+} </code></pre><p>This parenthetical notation uses SPARQL's (and Turtle's) syntactic sugar for the longer (and harder to read!) but equivalent query: </p>
+<pre><code>SELECT * {  
+  ?book fti:match _:b0 .  
+  _:b0 rdf:first "willows" .  
+  _:b0 rdf:rest _:b1 .  
+  _:b1 rdf:first "titles" .  
+  _:b1 rdf:rest rdf:nil  
+} </code></pre><p><a name="sparql-magic-freetext"></a> </p><a name='header2-18' id='header2-18'></a><h2>Freetext</h2><p>AllegroGraph supports freetext queries with enhancements that allow the selection of the index to use and the easy retrieval of the object of any matching triples. Both <a href="http://franz.com/ns/allegrograph/2.2/textindex/match"><code>fti:match</code></a> and <a href="http://franz.com/ns/allegrograph/2.2/textindex/matchExpression"><code>fti:matchExpression</code></a> provide the same four pattern forms: </p>
+<ol>
+<li>?subject fti:match 'text to query' . </li>
+<li>(?subject ?object) fti:match 'text to query' . </li>
+<li>?subject fti:match ('text to query' 'index name') . </li>
+<li>(?subject ?object) fti:match ('text to query' 'index name') . </li></ol><p>The second and fourth forms bind the second variable on the subject side to the object of any matching triples. </p><p>Note that both the query text and the index name <em>must</em> be constants. You can, however, specify a particular subject or object to have the Magic Property act as a filter. For example, </p>
+<pre><code>&lt;ex:wind_in_the_williows&gt; fti:match ('toad' 'characters') . </code></pre><p>would succeed if and only if the freetext index named <em>characters</em> indexed a triple with subject &lt;ex:wind_in_the_williows&gt; whose object contained <em>toad</em>. </p><p><a name="sparql-magic-geo"></a> </p><p><a name="sparql-magic-geo-nd"></a> </p><a name='header2-30' id='header2-30'></a><h2>n-Dimensional (nD) Geospatial</h2><p>The nD geospatial facility is described generally in <a href="geospatial-nd.html">nD Geospatial Overview</a>. A tutorial is in the <a href="geospatial-nd-tutorial.html">nD Geospatial Usage Guide</a>.  The magic properties for making nD geospatial queries are listed below in the <a href="#magic-prop-list">Magic properties list</a>. </p><p>The Lisp interface to nD geospatial is described <a href="lisp-reference.html#lisp-nd-geospatial-reference">here in the Lisp Reference</a>. </p><p>The nD definitions that follow use these prefix definitions: </p>
+<pre><code>PREFIX geofn: &lt;http://franz.com/ns/allegrograph/3.0/geospatial/fn/&gt;  
+PREFIX geo:   &lt;http://franz.com/ns/allegrograph/3.0/geospatial/&gt;  
+PREFIX nd:    &lt;http://franz.com/ns/allegrograph/5.0/geo/nd#&gt;   
+PREFIX ndfn:  &lt;http://franz.com/ns/allegrograph/5.0/geo/nd/fn#&gt;   
+PREFIX :      &lt;http://franz.com/ns/keyword#&gt;  </code></pre><p>The several SPARQL Magic Predicates in both systems (nD and 2D) find triples in the store based on their encoded data.  To use a geospatial Magic Property in either system you must ensure that the query engine can determine the geospatial subtype based on the triple predicate. This can be done by creating a predicate type mapping between the predicate and the subtype. The mechanics of this vary with the client. For example, in the Python client we could create a predicate mapping between <code>&lt;http://example.com/pointLatLong&gt;</code> and the spherical geospatial subtype with a strip width of 1 kilometer using code like: </p>
+<pre><code>geoSubtype = conn.createURI("http://franz.com/ns/allegrograph/3.0/geospatial/spherical/km/-180.0/180.0/-90.0/90.0/1")  
+latlon = conn.createURI("http://example.com/pointLatLong")  
+conn.registerDatatypeMapping(datatype=geoSubtype, predicate=latlon, nativeType="int") </code></pre><p>These links document establishing a predicate mapping in <a href="http-reference.html#backend-post/put-catalogs-repositories-mapping-predicate">HTTP</a>, <a href="lisp-reference.html#function.predicate-mapping">Lisp</a>, <a href="javadoc/com/franz/agraph/repository/AGRepositoryConnection.html#mapping">Java</a>, and <a href="python/_gen/franz.openrdf.repository.html?highlight=registerdatatypemapping#franz.openrdf.repository.repository.Repository.registerDatatypeMapping">Python</a>. </p><p><a name="sparql-magic-geospatial"></a> </p><p><a name="sparql-magic-geo-2d"></a> </p><a name='header2-40' id='header2-40'></a><h2>2D Geospatial</h2><p>2D SPARQL Magic Properties are no longer supported. </p><p><a name="sparql-magic-sna"></a> </p><a name='header2-43' id='header2-43'></a><h2>SNA</h2><p>AllegroGraph now provides Magic Properties that work with its <a href="lisp-reference.html#sna">Social Networking Analysis (SNA)</a> Library. Recall that the SNA functions use abstract generators to specify which nodes in the graph are neighbors. You can define generators using the existing client APIs or via SPARQL (see below). To use a generator with the Magic Properties, you <em>must</em> name it with a URI. </p><p>In the following, the namespace prefix <em>sna</em> is short for <em>http://franz.com/ns/allegrograph/4.11/sna/</em>. </p><a name='header3-46' id='header3-46'></a><h3>Generators</h3><p>A triple-store is a graph of triples where the subjects and objects are vertexes in the graph and the triples define labeled edges between these nodes. Often, however, it makes more sense for a given problem to define an abstract graph <em>on top of</em> the triple-store by specifying which nodes are neighbors of other nodes. In this case, the vertexes are still subjects and objects but the edges are specified via a function that computes the neighbors of a node. We call a function like this a <em>generator</em>. For example, a triple-store of publications will have triples like: </p>
+<pre><code>:b1 foaf:name "Sam Smith" .  
+:b2 foaf:name "Betty Bintur" .  
+:a1 rdfs:label "Book about Cats" .  
+:a1 dc:creator :b1 ;  
+    dc:creator :b2 . </code></pre><p>We might be interested in the graph of co-authors. In this graph, two authors are linked if they both created the same article. In SPARQL, this would look like: </p>
+<pre><code>SELECT ?coCreator {  
+  ?article dc:creator ?input .  
+  ?article dc:creator ?coCreator .  
+  FILTER( ?input != ?coCreator )  
+} </code></pre><p>(the <code>FILTER</code> makes sure that a person isn't a co-author with themselves). </p><h4>Defining Generators</h4><p>You can define a generator using one of the client APIs or by including triples of the correct form in the triple-store itself. When a Magic Property specifies a generator named <code>&lt;generator&gt;</code>, AllegroGraph will look for an existing definition. If it is not found, then AllegroGraph will look for the triple </p>
+<pre><code>?node sna:hasName &lt;generator&gt; sna:sna . </code></pre><p>I.e., the triple with predicate <code>&lt;http://franz.com/ns/allegrograph/4.11/sna/hasName&gt;</code>, object matching the generator you looking for and graph <code>&lt;http://franz.com/ns/allegrograph/4.11/sna/sna&gt;</code>.  If this triple is found, then the triples associated with that subject will be used to construct the generator on the fly. As an example, the SPARQL generator above could be added to the store using this SPARQL update statement: </p>
+<pre><code>prefix ex: &lt;http://www.franz.com/sna#&gt;  
+prefix sna: &lt;http://franz.com/ns/allegrograph/4.11/sna/&gt;  
+#  
+# First, delete any existing definition (just in case!)  
+#  
+delete { graph sna:sna { ?id ?p ?o }}  
+where {  
+  graph sna:sna {  
+    ?id a sna:Generator ;  
+        sna:hasName ex:coCreators ;  
+        ?p ?o  .  
+  }  
+} ;  
+ 
+#  
+# then add the definition  
+#  
+insert data {  
+  graph sna:sna {  
+   [ a sna:Generator ;  
+       sna:hasName ex:coCreators ;  
+       sna:hasSPARQL '''  
+prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt;  
+select distinct ?output {  
+  ?article dc:creator ?input .  
+  ?article dc:creator ?output .  
+  FILTER( ?input != ?output )  
+}''' ]  
+  }  
+} </code></pre><p>In this definition, the generator has <code>sna:hasName</code> <code>ex:coCreators</code> and is defined by the SPARQL query <code>sna:hasSPARQL</code> using the text of the query directly. Note that if there is more than one generator defined with the same name, AllegroGraph will signal an error. </p><p>The following defining forms are allowed: </p>
+<dl><dt>sna:hasSPARQL <em>query</em> </dt>
+<dd>specify a SPARQL query (as a literal) to use to find neighbors. The query must project a single variable binding. To specify which graph vertex is being examined, the query can either use a variable named <code>?input</code> or use a different variable and specify its name using sna:hasInput. </dd><dt>sna:objectsOf <em>predicate(s)</em> </dt>
+<dd>Starting from a graph vertex as a subject, define its neighbors as the objects of the triples with the given predicate(s). Two forms are possible: 
+<pre><code>sna:objectsOf example:onePredicate . </code></pre></dd><p>or </p>
+<pre><code>sna:objectsOf (example:predicate1 example:predicate2 ...) </code></pre><dt>sna:subjectsOf <em>predicate(s)</em> </dt>
+<dd>like <code>sna:objectsOf</code> only start from an object and define its neighbors as the subjects of triples with the given predicate(s). For example: 
+<pre><code>[ a sna:Generator ;  
+    sna:hasName ex:knowsOrHeardOfS ;  
+    sna:subjectsOf (&lt;http://www.franz.com/sna#knows&gt; &lt;http://www.franz.com/sna#heardOf&gt;) ] . </code></pre></dd><dt>sna:undirected <em>predicate(s)</em> </dt>
+<dd>This combines <code>sna:subjectsOf</code> and <code>sna:objectsOf</code> in that it will define neighbors as the union of the subjects and objects of the given predicate(s). </dd><dt>sna:hasSelect </dt>
+<dd>Define neighbors using a Prolog Select query. The query must return a single variable binding and should use the <code>(?? node)</code> syntax to specify the starting graph vertex. For example, 
+<pre><code>(select ?person2  
+  (q ?article !dc:creator (?? node))  
+  (q ?article !dc:creator ?person2)  
+  (lispp (not (upi= node ?person2)))) </code></pre></dd><p>The query will be read into the current environment so using namespace abbreviations is not recommended. </p></dl><a name='header3-75' id='header3-75'></a><h3>Neighbors</h3><p>Use <code>sna:nodalNeighbors</code> to iterate over the neighbors of a node (as determined by a generator). For example: </p>
+<pre><code>?neighbor sna:nodalNeighbors (sna:coCreators ?start) . </code></pre><p>would bind <code>?neighbor</code> to each vertex that is adjacent to <code>?start</code>. </p><a name='header3-79' id='header3-79'></a><h3>Groups and Centrality Measures</h3><p>Many of the SNA functions are defined in terms of nodes and groups. You can specify a group in a SPARQL query using either the BIND form or the Magic Property form. Both forms require a generator, a starting node and a depth. These next two queries are equivalent. </p>
+<pre><code># Find the size of Erdoes's social network out to a depth of 2  
+# using the BIND form.  
+prefix sna: &lt;http://franz.com/ns/allegrograph/4.11/sna/&gt;  
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;  
+select ?size {  
+  ?s foaf:name 'Paul Erdoes'^^&lt;http://www.w3.org/2001/XMLSchema#string&gt; .  
+  BIND( sna:egoGroup( sna:coCreators, ?s, 2 ) as ?group )   
+  ?group sna:size ?size .  
+}  
+ 
+# Find the size of Erdoes's social network out to a depth of 2  
+# using the magic property form.  
+prefix sna: &lt;http://franz.com/ns/allegrograph/4.11/sna/&gt;  
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;  
+select ?size {  
+  ?s foaf:name 'Paul Erdoes'^^&lt;http://www.w3.org/2001/XMLSchema#string&gt; .  
+  Bgroup sna:egoGroup (ex:coCreators ?s 2)  
+  ?group sna:size ?size .  
+} </code></pre><p>These groups act like blank nodes and have no meaning outside of a given query.
+<a name="fnr0-2018-06-08" id="fnr0-2018-06-08"></a>
+<sup><a href="#fn0-2018-06-08">1</a></sup> . Within a query, however, we can use other Magic Properties to examine the group.
+<a name="fnr1-2018-06-08" id="fnr1-2018-06-08"></a>
+<sup><a href="#fn1-2018-06-08">2</a></sup>  For example, we can get actor degree centrality for each actor in an ego group by building a group with the <code>sna:egoGroup</code> function and then using <code>sna:actorDegreeCentrality</code>. </p>
+<pre><code>prefix sna: &lt;http://franz.com/ns/allegrograph/4.11/sna/&gt;  
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;  
+select ?actor ?centrality {  
+  ?s foaf:name 'Paul Erdoes'^^&lt;http://www.w3.org/2001/XMLSchema#string&gt; .  
+  ?group sna:egoGroup (sna:coCreators ?s 3) .  
+  (?actor ?centrality) sna:actorDegreeCentrality (sna:coCreators ?group) .  
+} </code></pre><p>This will compute the actor degree centrality for each member in Erdoes's ego group. If we only wanted the centrality for a single actor, we could have used something like this: </p>
+<pre><code>prefix sna: &lt;http://franz.com/ns/allegrograph/4.11/sna/&gt;   
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;   
+select ?actor ?centrality {   
+  ?s foaf:name 'Paul Erdoes'^^&lt;http://www.w3.org/2001/XMLSchema#string&gt; .   
+  ?group sna:egoGroup (sna:coCreators ?s 3) .   
+  ?actor foaf:name 'Paul Thinkle'^^xsd:string .   
+  (?actor ?centrality) sna:actorDegreeCentrality (sna:coCreators ?group) .  
+} </code></pre><p>I.e., we first find the blank node corresponding to Erdoes; then we find the group that surrounds that blank node; then we find the blank node that corresponds to Paul Thinkle; and finally, we find centrality. The binding on ?actor means that we only find a single centrality measure. </p><p>Use sna:members to iterate over the members of a group: </p>
+<pre><code>?actor sna:members ?group . </code></pre><p>and the group graph density with </p>
+<pre><code>?density sna:groupDensity (&lt;generator&gt; &lt;group&gt;) </code></pre><p>The group centrality measures are similar: given a group, we'd get the group degree centrality with </p>
+<pre><code>?centrality sna:groupDegreeCentrality (&lt;generator&gt; &lt;group&gt;) </code></pre><p>The following centrality measures are defined: </p>
+<ul>
+<li>sna:actorDegreeCentrality</li>
+<li>sna:actorClosenessCentrality</li>
+<li>sna:actorBetweennessCentrality</li>
+<li>sna:groupDegreeCentrality</li>
+<li>sna:groupClosenessCentrality</li>
+<li>sna:groupBetweennessCentrality</li></ul><p>You can find the size of a group by using <code>sna:size</code> as in </p>
+<pre><code>?group sna:size ?size </code></pre><a name='header3-102' id='header3-102'></a><h3>Neighbor Caches</h3><p>Because computing some measures can be quite expensive, the SNA library provides a caching mechanism to save information about nodal neighbors. The SPARQL SNA extensions call these neighbor caches. As with ego groups, you can create a cache using either the bind form or the Magic Property form: </p>
+<pre><code>BIND( sna:neighborCache( &lt;generator&gt; &lt;starting points&gt; &lt;depth&gt; ) as ?cache )  
+ 
+?cache sna:neighborCache( &lt;generator&gt; &lt;starting points&gt; &lt;depth&gt; ) . </code></pre><p><code>starting points</code> can be a node or a group. </p><p>Once we have the cache, we can use it wherever we'd use a generator (or a group). For example, here is a query that computes closeness centrality for each actor using the generator: </p>
+<pre><code>prefix sna: &lt;http://franz.com/ns/allegrograph/4.11/sna/&gt;  
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;  
+select ?actor ?c {  
+  ?s foaf:name 'Paul Erdoes'^^&lt;http://www.w3.org/2001/XMLSchema#string&gt; .  
+  ?group sna:egoGroup (sna:coCreators ?s 1) .  
+  (?actor ?c) sna:actorClosenessCentrality (sna:coCreators ?group) .  
+} </code></pre><p>and here is the same query using the neighbor cache: </p>
+<pre><code>prefix sna: &lt;http://franz.com/ns/allegrograph/4.11/sna/&gt;  
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;  
+select ?actor ?c {  
+  ?s foaf:name 'Paul Erdoes'^^&lt;http://www.w3.org/2001/XMLSchema#string&gt; .  
+  ?cache sna:neighborCache (sna:coCreators ?s 1) .  
+  (?actor ?c) sna:actorClosenessCentrality (?cache ?cache) .  
+} </code></pre><p>Since the centrality measure needs both a generator and a group, we use the cache twice. This second form can be significantly faster. Note that neighbor caches are themselves cached between queries. </p><a name='header3-111' id='header3-111'></a><h3>Paths</h3><p>A path is an ordered sequence of nodes starting at <code>node1</code> and ending at <code>node2</code> such that each node is the neighbor (as defined by a generator) of its predecessor. AllegroGraph provides three primitive path finding operations: breadth-first, depth-first and bidirectional. Each of these has a corresponding Magic Property. For example, this pattern will succeed if a path exists between <code>ex:llama</code> and <code>ex:caribou</code>: </p>
+<pre><code>ex:llama sna:depthFirstSearch (ex:animalNeighborGenerator ex:caribou) . </code></pre><p>It will use the depth first search strategy. </p><p>Examining the paths between two nodes is more complicated because SPARQL can only bind variables to single values (literals or resources) and a path consists of multiple ordered values. To accommodate this, we introduce <em>path identifiers</em> and <em>node indexes</em>. The first represents a single path and the second is a typed literal that represents the index of the node in its path. </p><p>As an example, suppose we start with this graph </p>
+<pre><code>  /--- b ---\  
+a            c  
+  \--- d ---/ </code></pre><p>We can ask for all of the paths between <code>&lt;a&gt;</code> and <code>&lt;c&gt;</code> using </p>
+<pre><code>(&lt;a&gt; ?vertex ?linkNumber ?path) sna:depthFirstSearch (ex:generator &lt;c&gt;) . </code></pre><p>AllegroGraph will find two paths: (a b c) and (a d c). It will represent these as: </p>
+<pre><code>?vertex    ?linkNumber ?path  
+=================================  
+  a        0           0  
+  b        1           0  
+  c        2           0  
+  a        0           1  
+  d        1           1  
+  c        2           1 </code></pre><p>That is, it will return bindings for the three variables such that <code>?path</code> will have one value for (a b c) and another value for the (a d c). Within each path, <code>?linkNumber</code> will index the vertexes and ?vertex will actually be bound to each node along the way. </p><p>If the <code>?path</code> is left off, then AllegroGraph will return only the first path that it finds. If you do not need to know the order of the vertexes in the path, then <code>?linkNumber</code> can also be left off. So for example, these two queries will find a single path and return some information about it: </p>
+<pre><code>(ex:llama ?vertex) sna:depthFirstSearch (ex:animalNeighborGenerator ex:caribou) .  
+ 
+(ex:llama ?vertex ?order) sna:depthFirstSearch (ex:animalNeighborGenerator ex:caribou) . </code></pre><p>and this will return all paths (as described in the table above): </p>
+<pre><code>(ex:llama ?vertex ?order ?path) sna:depthFirstSearch (ex:animalNeighborGenerator ex:caribou) . </code></pre><p>Sometimes, it is useful to be able to examine each path in turn. The Magic Properties <code>sna:depthFirstSearchPaths</code>, <code>sna:breadthFirstSearchPaths</code>, and <code>sna:bidirectionalSearchPaths</code> iterate over paths between two nodes. For example, this pattern will bind <code>?path</code> to an different identifier for each path between <code>ex:llama</code> and <code>ex:caribou</code>: </p>
+<pre><code>(ex:llama ?path) sna:depthFirstSearchPaths (ex:animalNeighborGenerator ex:caribou) . </code></pre><p>The path identifiers can then be used with other Magic Properties. For example, <code>sna:members</code> iterates over the vertexes of a path: </p>
+<pre><code># first form  
+?vertex sna:members ?path .  
+ 
+# second form  
+(?vertex ?order) sna:members ?path . </code></pre><p>and <code>sna:size</code> returns the length of a path: </p>
+<pre><code>?path sna:size ?length . </code></pre><p>Note that path identifiers have meaning only within the query execution and should not be projected. </p><p>Using the same graph (a,b,c,d) graph from above, this query </p>
+<pre><code>(&lt;a&gt; ?path) sna:depthFirstSearchPaths (ex:generator &lt;c&gt;) .  
+(?vertex ?order) sna:vertexOf ?path . </code></pre><p>would return something very much like the <code>sna:depthFirstSearch</code> query did above: </p>
+<pre><code>?vertex       ?order            ?path  
+===================================  
+      a           0            _:g0  
+      b           1            _:g0  
+      c           2            _:g0  
+      a           0            _:g1  
+      d           1            _:g1  
+      c           2            _:g1 </code></pre><p>But this second form also allows us to compute things like the average path length: </p>
+<pre><code>select (avg(?length) as ?avgLength {  
+  (&lt;a&gt; ?path) sna:depthFirstSearchPaths (ex:generator &lt;c&gt;) .  
+  ?path sna:size ?length .  
+}  
+</code></pre><a name='header3-140' id='header3-140'></a><h3>Cliques</h3><p>We can tell if a group is a clique with </p>
+<pre><code>?isClique sna:isClique (&lt;generator&gt; &lt;group&gt;) . </code></pre><p>We can find the cliques with </p>
+<pre><code>?clique sna:cliquesOf (&lt;generator&gt; &lt;actor&gt; ) .  
+?clique sna:cliquesOf (&lt;generator&gt; &lt;actor&gt; &lt;minimum-size&gt; ) . </code></pre><p>?clique will be bound to a group identifier for each clique found. As mentioned above, this identifier makes sense only within the query and it should not be projected. It can, of course, be used by other SNA function and properties. </p>
+<pre><code>?clique sna:cliquesOf (&lt;generator&gt; &lt;actor&gt; &lt;minimum-size&gt; ) .  
+?member sna:member ?clique . </code></pre><p><a name="sparql-magic-temporal"></a> </p><a name='header2-148' id='header2-148'></a><h2>Temporal</h2><p>There is a tutorial using an older interface <a href="temporal-tutorial.html">here</a>.  The older interface is also described <a href="lisp-reference.html#lisp-temporal-reference">here</a>. </p><p>AllegroGraph supports efficient storage and retrieval of temporal data including: </p>
+<ul>
+<li>dateTimes in <a href="http://en.wikipedia.org/wiki/ISO_8601" class="external" target="_blank">ISO 8601</a> format: "2008-02-01T00:00:00-08:00"</li>
+<li>time points: ex:point1, ex:h-hour, ex:when-the-meeting-began, etc</li>
+<li>time intervals: ex:delay-interval (e.g., from point ex:point1 to ex:h-hour)</li></ul><p>In the following, the namespace prefix <em>t</em> is short for <em>http://franz.com/ns/allegrograph/3.0/temporal/</em>. AllegroGraph also requires that time points are defined using the <em>t:time</em> predicate and that intervals are defined using either <em>t:starttime</em> and <em>t:endtime</em> <em>or</em> <em>t:startpoint</em> and <em>t:endpoint</em>. Starting in version 4.11 of AllegroGraph, the <em>t:time</em>, <em>t:starttime</em>, and <em>t:endtime</em> predicates are automatically mapped to xsd:dateTimes (see <a href="lisp-reference.html#ref-encoded-data-types" title="">predicate type mapping</a> for more details). </p><p>Once data has been encoded, you can query for: </p>
+<ul>
+<li>relations between two points</li>
+<li>relations between two intervals</li>
+<li>relations between points and dateTimes</li>
+<li>relations between intervals and dateTimes</li>
+<li>relations between points and intervals</li></ul><p>The <a href="temporal-tutorial.html">temporal reasoning tutorial</a> describes all of these capabilities in detail and also functions as a general reference guide. Below, we will quickly outline the various SPARQL Magic Properties. To illustrate them, we'll use a triple-store with intervals defined for days and months of 2013 like: </p>
+<pre><code>:day1Start t:time "2013-01-01T00:00:00"^^xsd:dateTime .  
+:day1End t:time "2013-01-01T12:59:59"^^xsd:dateTime .  
+:day1 t:startpoint :day1Start ;  
+   t:endpoint :day1End ;  
+   rdfs:label "January 1st" .  
+:day2Start t:time "2013-01-02T00:00:00"^^xsd:dateTime .  
+:day2End t:time "2013-01-02T12:59:59"^^xsd:dateTime .  
+:day2 t:startpoint :day2Start ;  
+   t:endpoint :day2End ;  
+   rdfs:label "January 2nd" .  
+...  
+:month1 t:startpoint :day1Start ;  
+  t:endpoint :day31End ;  
+  rdfs:label "January" .  
+... </code></pre><p>We will also include an interesting date in the store: </p>
+<pre><code>:earthDay t:startpoint :day110Start .  
+</code></pre><a name='header3-165' id='header3-165'></a><h3>relations between points</h3>
+<ul>
+<li>t:pointBefore</li>
+<li>t:pointAfter</li>
+<li>t:pointSimultaneous</li></ul><p>We can ask for all the points before the month of January ends using </p>
+<pre><code>select * {  
+   ?month rdfs:label 'January' .  
+   ?month t:endpoint ?monthEnds .  
+   ?point t:pointBefore ?monthEnds .  
+} </code></pre><p>This will return the start and end of each day in January (though it will not return the end of January 31st because that point is simultaneous with the end of the month and not before it). </p><a name='header3-172' id='header3-172'></a><h3>relation between intervals</h3>
+<ul>
+<li>t:intervalBefore</li>
+<li>t:intervalAfter</li>
+<li>t:intervalMeets</li>
+<li>t:intervalMetBy</li>
+<li>t:intervalOverlaps</li>
+<li>t:intervalOverlappedBy</li>
+<li>t:intervalStarts</li>
+<li>t:intervalStartedBy</li>
+<li>t:intervalDuring</li>
+<li>t:intervalContains</li>
+<li>t:intervalFinishes</li>
+<li>t:intervalFinishedBy</li>
+<li>t:intervalCotemporal</li></ul><p>For example, we can find the number of days
+<a name="fnr2-2018-06-08" id="fnr2-2018-06-08"></a>
+<sup><a href="#fn2-2018-06-08">3</a></sup>  in January by querying: </p>
+<pre><code>select (count(?day) as ?days) {  
+   ?month rdfs:label 'January' .  
+   ?day t:intervalDuring ?month .  
+} group by ?month </code></pre><a name='header3-188' id='header3-188'></a><h3>relations between points and intervals</h3>
+<ul>
+<li>t:pointBeforeInterval</li>
+<li>t:pointStartsInterval</li>
+<li>t:pointDuringInterval</li>
+<li>t:pointEndsInterval</li>
+<li>t:pointAfterInterval</li></ul><p>For example, we can ask for the month during which Earth Day falls using: </p>
+<pre><code>select ?month ?label {  
+  :earthday t:startpoint ?start .  
+  ?start t:pointDuringInterval ?month .  
+  ?month rdfs:label ?label .  
+} </code></pre><a name='header3-196' id='header3-196'></a><h3>relations between points and datetimes</h3>
+<ul>
+<li>t:pointBeforeDatetime</li>
+<li>t:pointAfterDatetime</li></ul><a name='header3-199' id='header3-199'></a><h3>relations between intervals and datetimes</h3>
+<ul>
+<li>t:intervalBeforeDatetime</li>
+<li>t:intervalAfterDatetime   </li></ul><p><a name="magic-prop-list"></a> </p><a name='header2-203' id='header2-203'></a><h2>Magic properties list</h2><p><h3>nD Geospatial</h3> 
+<ul>
+<li><a href='http://franz.com/ns/allegrograph/5.0/geo/nd#inBoundingBox'>&lt;http://franz.com/ns/allegrograph/5.0/geo/nd#inBoundingBox&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/5.0/geo/nd#inCircle'>&lt;http://franz.com/ns/allegrograph/5.0/geo/nd#inCircle&gt;</a></li></ul><h3>Attributes</h3> 
+<ul>
+<li><a href='http://franz.com/ns/allegrograph/6.2.0/attributes'>&lt;http://franz.com/ns/allegrograph/6.2.0/attributes&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/6.2.0/attributesNameValue'>&lt;http://franz.com/ns/allegrograph/6.2.0/attributesNameValue&gt;</a></li></ul><h3>Reification</h3> 
+<ul>
+<li><a href='http://franz.com/ns/allegrograph/4.0/tripleId'>&lt;http://franz.com/ns/allegrograph/4.0/tripleId&gt;</a></li></ul><h3>Social Network Analysis</h3> 
+<ul>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/actorBetweennessCentrality'>&lt;http://franz.com/ns/allegrograph/4.11/sna/actorBetweennessCentrality&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/actorClosenessCentrality'>&lt;http://franz.com/ns/allegrograph/4.11/sna/actorClosenessCentrality&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/actorDegreeCentrality'>&lt;http://franz.com/ns/allegrograph/4.11/sna/actorDegreeCentrality&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/bidirectionalSearch'>&lt;http://franz.com/ns/allegrograph/4.11/sna/bidirectionalSearch&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/bidirectionalSearchPaths'>&lt;http://franz.com/ns/allegrograph/4.11/sna/bidirectionalSearchPaths&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/breadthFirstSearch'>&lt;http://franz.com/ns/allegrograph/4.11/sna/breadthFirstSearch&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/breadthFirstSearchPaths'>&lt;http://franz.com/ns/allegrograph/4.11/sna/breadthFirstSearchPaths&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/cliquesOf'>&lt;http://franz.com/ns/allegrograph/4.11/sna/cliquesOf&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/depthFirstSearch'>&lt;http://franz.com/ns/allegrograph/4.11/sna/depthFirstSearch&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/depthFirstSearchPaths'>&lt;http://franz.com/ns/allegrograph/4.11/sna/depthFirstSearchPaths&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/egoGroup'>&lt;http://franz.com/ns/allegrograph/4.11/sna/egoGroup&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/groupBetweennessCentrality'>&lt;http://franz.com/ns/allegrograph/4.11/sna/groupBetweennessCentrality&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/groupClosenessCentrality'>&lt;http://franz.com/ns/allegrograph/4.11/sna/groupClosenessCentrality&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/groupDegreeCentrality'>&lt;http://franz.com/ns/allegrograph/4.11/sna/groupDegreeCentrality&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/groupMember'>&lt;http://franz.com/ns/allegrograph/4.11/sna/groupMember&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/isClique'>&lt;http://franz.com/ns/allegrograph/4.11/sna/isClique&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/members'>&lt;http://franz.com/ns/allegrograph/4.11/sna/members&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/neighborCache'>&lt;http://franz.com/ns/allegrograph/4.11/sna/neighborCache&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/nodalNeighbors'>&lt;http://franz.com/ns/allegrograph/4.11/sna/nodalNeighbors&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.11/sna/size'>&lt;http://franz.com/ns/allegrograph/4.11/sna/size&gt;</a></li></ul><h3>Temporal</h3> 
+<ul>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalAfter'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalAfter&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalAfterDatetime'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalAfterDatetime&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalBefore'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalBefore&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalBeforeDatetime'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalBeforeDatetime&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalContains'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalContains&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalContainsTime'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalContainsTime&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalCotemporal'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalCotemporal&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalDuring'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalDuring&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalFinishedBy'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalFinishedBy&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalFinishes'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalFinishes&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalMeets'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalMeets&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalMetBy'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalMetBy&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalOverlappedBy'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalOverlappedBy&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalOverlaps'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalOverlaps&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalStartedBy'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalStartedBy&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/intervalStarts'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/intervalStarts&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointAfter'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointAfter&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointAfterDatetime'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointAfterDatetime&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointAfterInterval'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointAfterInterval&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointBefore'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointBefore&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointBeforeDatetime'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointBeforeDatetime&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointBeforeInterval'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointBeforeInterval&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointDuringInterval'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointDuringInterval&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointEndsInterval'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointEndsInterval&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointSimultaneous'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointSimultaneous&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/temporal/pointStartsInterval'>&lt;http://franz.com/ns/allegrograph/3.0/temporal/pointStartsInterval&gt;</a></li></ul><h3>Text Indexing</h3> 
+<ul>
+<li><a href='http://franz.com/ns/allegrograph/2.2/textindex/match'>&lt;http://franz.com/ns/allegrograph/2.2/textindex/match&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/2.2/textindex/matchExpression'>&lt;http://franz.com/ns/allegrograph/2.2/textindex/matchExpression&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.5/solr/match'>&lt;http://franz.com/ns/allegrograph/4.5/solr/match&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.5/solr/matchId'>&lt;http://franz.com/ns/allegrograph/4.5/solr/matchId&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/4.7/mongo/find'>&lt;http://franz.com/ns/allegrograph/4.7/mongo/find&gt;</a></li></ul><h3>2D Geospatial</h3> 
+<ul>
+<li><a href='http://franz.com/ns/allegrograph/3.0/geospatial/inBoundingBox'>&lt;http://franz.com/ns/allegrograph/3.0/geospatial/inBoundingBox&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/geospatial/inBoundingBoxXY'>&lt;http://franz.com/ns/allegrograph/3.0/geospatial/inBoundingBoxXY&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/geospatial/inCircle'>&lt;http://franz.com/ns/allegrograph/3.0/geospatial/inCircle&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/geospatial/inCircleKilometers'>&lt;http://franz.com/ns/allegrograph/3.0/geospatial/inCircleKilometers&gt;</a></li>
+<li><a href='http://franz.com/ns/allegrograph/3.0/geospatial/inCircleMiles'>&lt;http://franz.com/ns/allegrograph/3.0/geospatial/inCircleMiles&gt;</a></li></ul>  </p><hr/><div id="footnotes"> <h2>Footnotes</h2>
+<div class="footnotes">
+<ol>
+<li>
+<a name="fn0-2018-06-08" id="fn0-2018-06-08"></a>
+SNA Groups, caches and path identifiers will all serialize as if they were blank nodes with the same blank node identifier <a href="#fnr0-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 1 in the text">&#8617;</a></li>
+<li>
+<a name="fn1-2018-06-08" id="fn1-2018-06-08"></a>
+Note that group members are cached between queries when possible to make the SNA functions operate more efficiently. <a href="#fnr1-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 2 in the text">&#8617;</a></li>
+<li>
+<a name="fn2-2018-06-08" id="fn2-2018-06-08"></a>
+Actually this will be two less than the number of days in January because January 1st <em>starts</em> the month and January 31st <em>finishes</em> it. I.e. they are not during the month. <a href="#fnr2-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 3 in the text">&#8617;</a></li>
+</ol>
+</div>  </div>  </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

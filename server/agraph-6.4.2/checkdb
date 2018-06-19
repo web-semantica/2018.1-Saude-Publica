@@ -1,0 +1,87 @@
+#!/bin/bash
+
+#############################################################################
+# Copyright (C) 2012-2016 Franz Inc, Oakland, CA - All rights reserved.     #
+#                                                                           #
+# The software, data and information contained herein are proprietary       #
+# to, and comprise valuable trade secrets of, Franz, Inc.  They are         #
+# given in confidence by Franz, Inc. pursuant to a written license          #
+# agreement, and may be stored and used only in accordance with the terms   #
+# of such license.                                                          #
+#                                                                           #
+# Restricted Rights Legend                                                  #
+# ------------------------                                                  #
+# Use, duplication, and disclosure of the software, data and information    #
+# contained herein by any agency, department or entity of the U.S.          #
+# Government are subject to restrictions of Restricted Rights for           #
+# Commercial Software developed at private expense as specified in          #
+# DOD FAR Supplement 52.227-7013 (c) (1) (ii), as applicable.               #
+#############################################################################
+
+set -e
+
+function usage {
+    cat <<EOF
+Usage: $0 [ --verbose ] [ --host HOST ] [ --port PORT ] --user USER --password PASSWORD [ --catalog CATALOG ] repo
+
+HOST defaults to localhost
+PORT defaults to 10035
+CATALOG defaults to the root catalog
+
+This script runs checks against the triple indices and string table of
+the indicated AllegroGraph triple repository. If the checks are
+successful, the script exits with status 0.  Otherwise it will exit
+with status 1, in which case you should look for error messages in
+your agraph.log file.
+
+If the --verbose flag is supplied, a status message will be printed
+before exiting.
+
+EOF
+    exit 1
+}
+
+source `dirname $0`/scripts-common.sh
+
+if [ $# -ne 1 ]; then
+    usage
+fi
+
+repo="$1"
+base=`make_base_url`
+    
+# echo repo: $repo
+
+# Verify that something basic works
+if ! do_curl --fail $base/size >/dev/null 2>&1; then
+    # The request didn't work.  Reissue it w/o redirecting stdout
+    # so that the caller will know what's going on.
+    do_curl $base/size
+    echo
+    exit 1
+fi
+
+if res=`do_curl -X POST $base/check`; then
+    case "$res" in
+	true)
+              if [ "$verbose" ]; then    
+		  echo Database integrity check completed successfully
+	      fi
+	      exit 0
+	      ;;
+	false)
+      	      echo Database integrity check failed.  Please check your agraph.log file for details
+	      exit 1
+	      ;;
+        *)
+ 	      echo Unexpected result from integrity check: $res
+	      exit 1
+	      ;;
+    esac
+else
+    # Dunno what hapened
+    echo $res
+    exit 1
+fi
+
+	

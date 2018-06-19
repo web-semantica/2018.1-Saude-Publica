@@ -1,0 +1,247 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>franz.openrdf.connect &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+    </div>
+  
+    
+  <h1>Source code for franz.openrdf.connect</h1><div class="highlight"><pre>
+<span></span><span class="c1">################################################################################</span>
+<span class="c1"># Copyright (c) 2006-2017 Franz Inc.  </span>
+<span class="c1"># All rights reserved. This program and the accompanying materials are</span>
+<span class="c1"># made available under the terms of the MIT License which accompanies</span>
+<span class="c1"># this distribution, and is available at http://opensource.org/licenses/MIT</span>
+<span class="c1">################################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Helper function for opening connections.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">franz.openrdf.repository</span> <span class="k">import</span> <span class="n">Repository</span>
+<span class="kn">from</span> <span class="nn">franz.openrdf.repository.repositoryconnection</span> <span class="k">import</span> <span class="n">RepositoryConnection</span>
+<span class="kn">from</span> <span class="nn">franz.openrdf.sail</span> <span class="k">import</span> <span class="n">AllegroGraphServer</span>
+
+
+<span class="c1"># Note that the default values come from AllegroGraphServer.__init__</span>
+<div class="viewcode-block" id="ag_connect"><a class="viewcode-back" href="../../../_gen/franz.openrdf.html#franz.openrdf.connect.ag_connect">[docs]</a><span class="k">def</span> <span class="nf">ag_connect</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">catalog</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">create</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fail_if_exists</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+               <span class="n">session</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">autocommit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">lifetime</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">loadinitfile</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+               <span class="n">host</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cainfo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sslcert</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">verifyhost</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verifypeer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">proxy</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AGRAPH_PROXY&#39;</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a connection to an AllegroGraph repository.</span>
+
+<span class="sd">    When closed the connection will take care of releasing all intermediate resources</span>
+<span class="sd">    that were created in order to open it.</span>
+
+<span class="sd">    :param repo: Repository name.</span>
+<span class="sd">    :type repo: string</span>
+<span class="sd">    :param catalog: Catalog name (optional, root catalog is the default).</span>
+<span class="sd">    :type catalog: string</span>
+<span class="sd">    :param create: if `True` (default) create the repository if it does not exist.</span>
+<span class="sd">    :type create: bool</span>
+<span class="sd">    :param fail_if_exists: if `True` and the repository exists raise an exception.</span>
+<span class="sd">                           This applies only if `create` is `True`.</span>
+<span class="sd">                           The default value is `False`.</span>
+<span class="sd">    :type fail_if_exists: bool</span>
+<span class="sd">    :param clear: if `True` delete all data after creating the connection.</span>
+<span class="sd">                  The default is `False`.</span>
+<span class="sd">    :type clear: bool</span>
+<span class="sd">    :param session: If ``True`` start a session after creating the connection.</span>
+<span class="sd">                    The default is ``False``.</span>
+<span class="sd">    :type session: bool</span>
+<span class="sd">    :param autocommit: When opening a session: if ``True``, commits are done on each</span>
+<span class="sd">                       request, otherwise you will need to call :meth:`.commit` or</span>
+<span class="sd">                       :meth:`.rollback` as appropriate for your application.</span>
+<span class="sd">                       The default value is ``False``.</span>
+<span class="sd">    :type autocommit: bool</span>
+<span class="sd">    :param lifetime: Time (in seconds) before the session expires when idle.</span>
+<span class="sd">                     Note that the client maintains a thread that ping the</span>
+<span class="sd">                     session before this happens.</span>
+<span class="sd">                     Ignored if not starting a session.</span>
+<span class="sd">    :type lifetime: int</span>
+<span class="sd">    :param loadinitfile: if ``True`` then the current initfile will be loaded</span>
+<span class="sd">                         for you when the session starts. The default is ``False``.</span>
+<span class="sd">                         Ignored if not starting a session.</span>
+<span class="sd">    :type loadinitfile: bool</span>
+<span class="sd">    :param host: AllegroGraph server host (default: ``&#39;127.0.0.1&#39;`` or the value</span>
+<span class="sd">                 of the AGRAPH_HOST environment variable if that is defined.`</span>
+<span class="sd">                 Can also be used to supply protocol and port number</span>
+<span class="sd">                 (e.g. ``https://localhost:10036``).</span>
+<span class="sd">    :type host: string</span>
+<span class="sd">    :param protocol: Either ``&quot;http&quot;`` or ``&quot;https&quot;``.</span>
+<span class="sd">                     The default is ``&quot;http&quot;``.</span>
+<span class="sd">                     Overrides the protocol specified in ``host``.</span>
+<span class="sd">    :type protocol: string</span>
+<span class="sd">    :param port: AllegroGraph server port (default: `10035` for http and `10036`</span>
+<span class="sd">                 for https, or the AGRAPH_PORT environment variable if that is defined).</span>
+<span class="sd">                 Overrides the port number provided in ``host``.</span>
+<span class="sd">    :type port: int</span>
+<span class="sd">    :param user: Username for authentication (default: value of the ``AGRAPH_USER``</span>
+<span class="sd">                 environment variable).</span>
+<span class="sd">    :type user: string</span>
+<span class="sd">    :param password:  Password for authentication (default: value of the ``AGRAPH_PASSWORD``</span>
+<span class="sd">                      environment variable).</span>
+<span class="sd">    :type password: string</span>
+<span class="sd">    :param cainfo: Path to file or directory with CA certificates.</span>
+<span class="sd">    :type cainfo: string</span>
+<span class="sd">    :param sslcert: Path to a client certificate to use for</span>
+<span class="sd">                    authentication instead of username and password.</span>
+<span class="sd">    :type sslcert: string</span>
+<span class="sd">    :param verifyhost: See https://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html</span>
+<span class="sd">    :type verifyhost: int</span>
+<span class="sd">    :param verifypeer: See https://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYPEER.html</span>
+<span class="sd">    :type verifypeer: int</span>
+<span class="sd">    :param indices: List of indices to create if creating a new repository.</span>
+<span class="sd">    :type indices: list[string]</span>
+<span class="sd">    :param proxy: Proxy specification string. The format is SCHEME://HOST:PORT.</span>
+<span class="sd">                  Supported schemes are &#39;http&#39;, &#39;socks4&#39; and &#39;socks5&#39;.</span>
+<span class="sd">                  Note that for SOCKS proxies DNS requests are performed by the</span>
+<span class="sd">                  proxy server.</span>
+<span class="sd">                  The default value is taken from the AGRAPH_PROXY environment</span>
+<span class="sd">                  variable.</span>
+<span class="sd">    :type proxy: string</span>
+<span class="sd">    :return: A :class:`.RepositoryConnection` object.</span>
+<span class="sd">    :rtype: franz.openrdf.repositoryconnection.RepositoryConnection</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">server</span> <span class="o">=</span> <span class="n">AllegroGraphServer</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span> <span class="n">protcol</span><span class="o">=</span><span class="n">protocol</span><span class="p">,</span>
+                                <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span> <span class="n">sslcert</span><span class="o">=</span><span class="n">sslcert</span><span class="p">,</span>
+                                <span class="n">cainfo</span><span class="o">=</span><span class="n">cainfo</span><span class="p">,</span> <span class="n">verifyhost</span><span class="o">=</span><span class="n">verifyhost</span><span class="p">,</span> <span class="n">verifypeer</span><span class="o">=</span><span class="n">verifypeer</span><span class="p">,</span>
+                                <span class="n">proxy</span><span class="o">=</span><span class="n">proxy</span><span class="p">)</span>
+    <span class="n">cat_handle</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">openCatalog</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
+    <span class="n">repo_exists</span> <span class="o">=</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">cat_handle</span><span class="o">.</span><span class="n">listRepositories</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">repo_exists</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">create</span><span class="p">:</span>
+            <span class="n">repo_handle</span> <span class="o">=</span> <span class="n">cat_handle</span><span class="o">.</span><span class="n">createRepository</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Store </span><span class="si">%s</span><span class="s1"> does not exist.&#39;</span> <span class="o">%</span> <span class="n">repo</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fail_if_exists</span> <span class="ow">and</span> <span class="n">create</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Store </span><span class="si">%s</span><span class="s1"> already exists.&#39;</span> <span class="o">%</span> <span class="n">repo</span><span class="p">)</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">Repository</span><span class="o">.</span><span class="n">RENEW</span> <span class="k">if</span> <span class="n">clear</span> <span class="k">else</span> <span class="n">Repository</span><span class="o">.</span><span class="n">OPEN</span>
+        <span class="n">repo_handle</span> <span class="o">=</span> <span class="n">cat_handle</span><span class="o">.</span><span class="n">getRepository</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">RepositoryConnection</span><span class="p">(</span><span class="n">repo_handle</span><span class="p">,</span> <span class="n">close_repo</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">session</span><span class="p">:</span>
+        <span class="c1"># conn.close will close it if necessary</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">openSession</span><span class="p">(</span><span class="n">autocommit</span><span class="o">=</span><span class="n">autocommit</span><span class="p">,</span> <span class="n">lifetime</span><span class="o">=</span><span class="n">lifetime</span><span class="p">,</span> <span class="n">loadinitfile</span><span class="o">=</span><span class="n">loadinitfile</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">conn</span></div>
+</pre></div>
+
+  
+    <div class="nav-links nav-links-footer">
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

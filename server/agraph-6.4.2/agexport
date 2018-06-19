@@ -1,0 +1,4 @@
+#!/bin/bash -e
+prefix=""
+if [[ $0 == */* ]] ; then prefix=${0%/*}/ ; else prefix=""; fi
+${prefix}agtool export "$@"

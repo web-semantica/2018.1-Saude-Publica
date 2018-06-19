@@ -1,0 +1,905 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>franz.openrdf.sail package &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="franz.openrdf.util package" href="franz.openrdf.util.html" />
+    <link rel="prev" title="franz.openrdf.rio package" href="franz.openrdf.rio.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+        &laquo;<a href="franz.openrdf.rio.html" title="previous chapter">franz.openrdf.rio package</a>
+      <a href="franz.openrdf.util.html" title="next chapter">franz.openrdf.util package</a> 
+      &raquo;
+    </div>
+  
+    
+  <div class="section" id="franz-openrdf-sail-package">
+<h1>franz.openrdf.sail package<a class="headerlink" href="#franz-openrdf-sail-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-franz.openrdf.sail.allegrographserver">
+<span id="franz-openrdf-sail-allegrographserver-module"></span><h2>franz.openrdf.sail.allegrographserver module<a class="headerlink" href="#module-franz.openrdf.sail.allegrographserver" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer">
+<em class="property">class </em><code class="descclassname">franz.openrdf.sail.allegrographserver.</code><code class="descname">AllegroGraphServer</code><span class="sig-paren">(</span><em>host=None</em>, <em>port=None</em>, <em>user=None</em>, <em>password=None</em>, <em>cainfo=None</em>, <em>sslcert=None</em>, <em>verifyhost=None</em>, <em>verifypeer=None</em>, <em>protocol=None</em>, <em>proxy=None</em>, <em>**options</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>The AllegroGraphServer object represents a remote AllegroGraph server on
+the network. It is used to inventory and access the catalogs of that
+server.</p>
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>host=None</em>, <em>port=None</em>, <em>user=None</em>, <em>password=None</em>, <em>cainfo=None</em>, <em>sslcert=None</em>, <em>verifyhost=None</em>, <em>verifypeer=None</em>, <em>protocol=None</em>, <em>proxy=None</em>, <em>**options</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define the connection to the AllegroGraph HTTP server.</p>
+<p>Pass either <code class="docutils literal"><span class="pre">user</span></code> and <code class="docutils literal"><span class="pre">password</span></code> for Basic Authentication or
+<code class="docutils literal"><span class="pre">cainfo</span></code>, <code class="docutils literal"><span class="pre">sslcert</span></code> values for client X.509 certificate
+authentication.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>host</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Address of the AllegroGraph server to connect to.
+This can also include protocol and port
+(e.g. <a class="reference external" href="http://localhost:10035">http://localhost:10035</a>). Can also be specified in
+the <code class="docutils literal"><span class="pre">AGRAPH_HOST</span></code> environment variable.
+The default value is <code class="docutils literal"><span class="pre">'localhost'`</span></code>.</li>
+<li><strong>port</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – Port on which the server is listening.
+The default is 10035 if <code class="docutils literal"><span class="pre">protocol</span></code> is <code class="docutils literal"><span class="pre">'http'</span></code>
+and 10036 if it is <code class="docutils literal"><span class="pre">'https'</span></code>. Can also be specified in
+the <code class="docutils literal"><span class="pre">AGRAPH_PORT</span></code> environment variable.
+If passed explicitly this parameter overrides any value
+that might have been specified as a part of the <code class="docutils literal"><span class="pre">host</span></code> string.</li>
+<li><strong>protocol</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Connection protocol, either <code class="docutils literal"><span class="pre">'http'</span></code> or <code class="docutils literal"><span class="pre">'https'</span></code>.
+The default is <code class="docutils literal"><span class="pre">'http'</span></code> if no SSL parameters are set
+and <cite>‘https’`</cite> otherwise.
+If passed explicitly this parameter overrides any value
+that might have been specified as a part of the <code class="docutils literal"><span class="pre">host</span></code> string.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Username (when using Basic authentication). Can also be specified in
+the <code class="docutils literal"><span class="pre">AGRAPH_USER</span></code> environment variable.</li>
+<li><strong>password</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Password (when using Basic authentication). Can also be specified in
+the <code class="docutils literal"><span class="pre">AGRAPH_PASSWORD</span></code> environment variable.</li>
+<li><strong>cainfo</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Path to a file or directory containing CA certificates that
+will be used to validate the server’s certificate.</li>
+<li><strong>sslcert</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Client certificate path (when using SSL authentication).</li>
+<li><strong>verifyhost</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – <p>If set to <code class="docutils literal"><span class="pre">0</span></code> it will not be an error if the server’s
+SSL certificate does not match the server’s address.
+The default value is <code class="docutils literal"><span class="pre">2</span></code>, meaning that the host name will
+be validated against the certificate.</p>
+<p>..seealso:: <a class="reference external" href="https://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html">https://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html</a></p>
+</li>
+<li><strong>verifypeer</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – <p>If set to <code class="docutils literal"><span class="pre">1</span></code> (the default) the validity of the server’s
+SSL certificate will be checked. Set to <code class="docutils literal"><span class="pre">0</span></code> to disable
+the validation.</p>
+<p>..seealso:: <a class="reference external" href="https://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYPEER.html">https://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYPEER.html</a></p>
+</li>
+<li><strong>proxy</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Proxy specification string. The format is SCHEME://HOST:PORT.
+Supported schemes are ‘http’, ‘socks4’ and ‘socks5’.
+Note that for SOCKS proxies DNS requests are performed by the
+proxy server.
+The default value is taken from the AGRAPH_PROXY environment
+variable.</li>
+<li><strong>options</strong> – Ignored.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRole">
+<code class="descname">addRole</code><span class="sig-paren">(</span><em>role</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.addRole"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new role.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRoleAccess">
+<code class="descname">addRoleAccess</code><span class="sig-paren">(</span><em>role</em>, <em>read</em>, <em>write</em>, <em>catalog='*'</em>, <em>repository='*'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.addRoleAccess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRoleAccess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grant read/write access to a role. See here for the parameters
+that are expected.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRolePermission">
+<code class="descname">addRolePermission</code><span class="sig-paren">(</span><em>role</em>, <em>_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.addRolePermission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRolePermission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grants a role a certain permission. type should be super, eval, or session.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRoleSecurityFilter">
+<code class="descname">addRoleSecurityFilter</code><span class="sig-paren">(</span><em>role</em>, <em>_type</em>, <em>s=None</em>, <em>p=None</em>, <em>o=None</em>, <em>g=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.addRoleSecurityFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addRoleSecurityFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a security filter for the user.</p>
+<p>role - role name
+_type - one of ‘allow’ or ‘disallow’
+s - optional subject
+p - optional predicate
+o - optional predicate
+g - optional graph</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addScript">
+<code class="descname">addScript</code><span class="sig-paren">(</span><em>module</em>, <em>code</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.addScript"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addScript" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create or replace a sitescript.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>module</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Script name.</li>
+<li><strong>code</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Script content.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUser">
+<code class="descname">addUser</code><span class="sig-paren">(</span><em>name</em>, <em>password=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.addUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new user. Expects a password parameter, which specifies the
+user’s password (can be left off when creating the anonymous user).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserAccess">
+<code class="descname">addUserAccess</code><span class="sig-paren">(</span><em>name</em>, <em>read</em>, <em>write</em>, <em>catalog='*'</em>, <em>repository='*'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.addUserAccess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserAccess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grant read/write access to a user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>read</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – Whether to grant read access. Defaults to <code class="docutils literal"><span class="pre">False</span></code>.</li>
+<li><strong>write</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – Whether to grant write access. Defaults to <code class="docutils literal"><span class="pre">False</span></code>.</li>
+<li><strong>catalog</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Which catalog to grant the access on. Leave off or pass <code class="docutils literal"><span class="pre">&quot;*&quot;</span></code> to grant
+access on all catalogs. Use <code class="docutils literal"><span class="pre">&quot;/&quot;</span></code> for the root catalog.</li>
+<li><strong>repository</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Specifies the repository that access is granted on. Passing <code class="docutils literal"><span class="pre">&quot;*&quot;</span></code>,
+or leaving the parameter off, means all repositories in the
+given catalog.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserPermission">
+<code class="descname">addUserPermission</code><span class="sig-paren">(</span><em>name</em>, <em>_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.addUserPermission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserPermission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assigns the given permission to this user. type should be super, eval,
+replication, or session.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserRole">
+<code class="descname">addUserRole</code><span class="sig-paren">(</span><em>name</em>, <em>role</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.addUserRole"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserRole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a role to a user.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserSecurityFilter">
+<code class="descname">addUserSecurityFilter</code><span class="sig-paren">(</span><em>name</em>, <em>_type</em>, <em>s=None</em>, <em>p=None</em>, <em>o=None</em>, <em>g=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.addUserSecurityFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.addUserSecurityFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a security filter for the user.</p>
+<p>name - user name
+_type - one of ‘allow’ or ‘disallow’
+s - optional subject
+p - optional predicate
+o - optional predicate
+g - optional graph</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.changeUserPassword">
+<code class="descname">changeUserPassword</code><span class="sig-paren">(</span><em>name</em>, <em>password</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.changeUserPassword"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.changeUserPassword" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the password for the given user.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRole">
+<code class="descname">deleteRole</code><span class="sig-paren">(</span><em>role</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.deleteRole"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a role.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRoleAccess">
+<code class="descname">deleteRoleAccess</code><span class="sig-paren">(</span><em>role</em>, <em>read</em>, <em>write</em>, <em>catalog='*'</em>, <em>repository='*'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.deleteRoleAccess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRoleAccess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Revoke read/write access for a role. Accepts the same parameters as above.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRolePermission">
+<code class="descname">deleteRolePermission</code><span class="sig-paren">(</span><em>role</em>, <em>_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.deleteRolePermission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRolePermission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Revokes a permission for a role.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRoleSecurityFilter">
+<code class="descname">deleteRoleSecurityFilter</code><span class="sig-paren">(</span><em>role</em>, <em>_type</em>, <em>s=None</em>, <em>p=None</em>, <em>o=None</em>, <em>g=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.deleteRoleSecurityFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteRoleSecurityFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a security filter for the user.</p>
+<p>role - role name
+_type - one of ‘allow’ or ‘disallow’
+s - optional subject
+p - optional predicate
+o - optional predicate
+g - optional graph</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteScript">
+<code class="descname">deleteScript</code><span class="sig-paren">(</span><em>module</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.deleteScript"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteScript" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a sitescript.
+:param module: Script name.
+:type module: string</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUser">
+<code class="descname">deleteUser</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.deleteUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a user.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserAccess">
+<code class="descname">deleteUserAccess</code><span class="sig-paren">(</span><em>name</em>, <em>read</em>, <em>write</em>, <em>catalog='*'</em>, <em>repository='*'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.deleteUserAccess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserAccess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes the same parameters as PUT on this URL, but revokes the access instead of granting it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserPermission">
+<code class="descname">deleteUserPermission</code><span class="sig-paren">(</span><em>name</em>, <em>_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.deleteUserPermission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserPermission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Revokes the given permission for this user.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserRole">
+<code class="descname">deleteUserRole</code><span class="sig-paren">(</span><em>name</em>, <em>role</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.deleteUserRole"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserRole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a role from a user.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserSecurityFilter">
+<code class="descname">deleteUserSecurityFilter</code><span class="sig-paren">(</span><em>name</em>, <em>_type</em>, <em>s=None</em>, <em>p=None</em>, <em>o=None</em>, <em>g=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.deleteUserSecurityFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.deleteUserSecurityFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a security filter for the user.</p>
+<p>name - user name
+_type - one of ‘allow’ or ‘disallow’
+s - optional subject
+p - optional predicate
+o - optional predicate
+g - optional graph</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.getInitfile">
+<code class="descname">getInitfile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.getInitfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.getInitfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the contents of the server initialization file.</p>
+<p>The initialization file is a collection of Common Lisp code
+that is executed in every back-end as it is created.
+:return: Init file content.
+:rtype: string</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.getScript">
+<code class="descname">getScript</code><span class="sig-paren">(</span><em>module</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.getScript"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.getScript" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the body of a sitescript.
+:param module: Script name.
+:type module: string
+:return: Script content.
+:rtype: string</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listCatalogs">
+<code class="descname">listCatalogs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.listCatalogs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listCatalogs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of catalogs on this server.</p>
+<p>A value of <code class="docutils literal"><span class="pre">None</span></code> will be included in this list to
+represent the root catalog.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of catalog names.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list[<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)">string</a>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRoleAccess">
+<code class="descname">listRoleAccess</code><span class="sig-paren">(</span><em>role</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.listRoleAccess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRoleAccess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query the access granted to a role. Returns a result in the same
+format as the equivalent service for users.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRolePermissions">
+<code class="descname">listRolePermissions</code><span class="sig-paren">(</span><em>role</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.listRolePermissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRolePermissions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists the permission flags granted to a role.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRoleSecurityFilters">
+<code class="descname">listRoleSecurityFilters</code><span class="sig-paren">(</span><em>role</em>, <em>_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.listRoleSecurityFilters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRoleSecurityFilters" title="Permalink to this definition">¶</a></dt>
+<dd><p>List security filters for user.</p>
+<p>_type is one of “allow”, “disallow”</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRoles">
+<code class="descname">listRoles</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.listRoles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listRoles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the names of all defined roles.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listScripts">
+<code class="descname">listScripts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.listScripts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listScripts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of Sitescripts currently on the server.</p>
+<p>When a user creates a session, they can choose to load one or more
+of these scripts into the session.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of script names.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list[<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)">string</a>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserAccess">
+<code class="descname">listUserAccess</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.listUserAccess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserAccess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the read/write access for a user. This returns a result set,
+each element of which has a read, write, catalog, and repository
+component. The first two are booleans, the latter two strings. For
+permissions granted globally, catalog and repository will have a
+value of “*”, for those granted per-catalog, only repository will
+be “*”. catalog normally contains the catalog name, but for the rootAs above, but also includes the access granted to roles that this user has.
+catalog “/” is used.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserEffectiveAccess">
+<code class="descname">listUserEffectiveAccess</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.listUserEffectiveAccess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserEffectiveAccess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Like listUserAccess, but also includes the access granted to roles that this user has.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserEffectivePermissions">
+<code class="descname">listUserEffectivePermissions</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.listUserEffectivePermissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserEffectivePermissions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the permission flags assigned to the user, or any of its roles.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserPermissions">
+<code class="descname">listUserPermissions</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.listUserPermissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserPermissions" title="Permalink to this definition">¶</a></dt>
+<dd><p>List the permission flags that have been assigned to a user (any of
+super, eval, session, replication).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserRoles">
+<code class="descname">listUserRoles</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.listUserRoles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserRoles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves a list of role names for this user name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserSecurityFilters">
+<code class="descname">listUserSecurityFilters</code><span class="sig-paren">(</span><em>name</em>, <em>_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.listUserSecurityFilters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUserSecurityFilters" title="Permalink to this definition">¶</a></dt>
+<dd><p>List security filters for user.</p>
+<p>_type is one of “allow”, “disallow”</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUsers">
+<code class="descname">listUsers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.listUsers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listUsers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of names of all the users that have been defined.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.openCatalog">
+<code class="descname">openCatalog</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.openCatalog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.openCatalog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open a catalog by name. Pass None to open the root catalog.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> – One of the catalog names from <a class="reference internal" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.listCatalogs" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.listCatalogs"><code class="xref py py-meth docutils literal"><span class="pre">listCatalogs()</span></code></a>
+or <code class="docutils literal"><span class="pre">None</span></code> to open the root catalog.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A catalog object.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#franz.openrdf.sail.allegrographserver.Catalog" title="franz.openrdf.sail.allegrographserver.Catalog">Catalog</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.openFederated">
+<code class="descname">openFederated</code><span class="sig-paren">(</span><em>repositories</em>, <em>autocommit=False</em>, <em>lifetime=None</em>, <em>loadinitfile=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.openFederated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.openFederated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open a session that federates several repositories. The
+repositories argument should be an array containing store
+designators, which can be Repository or RepositoryConnection
+objects, strings (naming a store in the root catalog, or the
+URL of a store), or (storename, catalogname) tuples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repositories</strong> (<em>list</em><em>[</em><em>string|</em><em>(</em><a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a><em>, </em><a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a><em>)</em><em>|Repository|RepositoryConnection</em><em>]</em>) – List of repositories to federate.</li>
+<li><strong>autocommit</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – Autocommit mode (default: <code class="docutils literal"><span class="pre">False</span></code> = start a transaction).</li>
+<li><strong>lifetime</strong> – The number of seconds a session can be idle before being terminated.
+The default value is 300 (5 minutes). The maximum acceptable value
+is 21600 (6 hours).</li>
+<li><strong>loadinitfile</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – If <code class="docutils literal"><span class="pre">True</span></code> the init file will be loaded into the new session.
+The default is False.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A connection to the new session.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection">RepositoryConnection</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.openSession">
+<code class="descname">openSession</code><span class="sig-paren">(</span><em>spec</em>, <em>autocommit=False</em>, <em>lifetime=None</em>, <em>loadinitfile=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.openSession"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.openSession" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open a session on a federated, reasoning, or filtered store.</p>
+<p>Use the helper functions in the <a class="reference internal" href="#module-franz.openrdf.sail.spec" title="franz.openrdf.sail.spec"><code class="xref py py-mod docutils literal"><span class="pre">franz.openrdf.sail.spec</span></code></a> module
+to create the spec string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>spec</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Session <a class="reference internal" href="#module-franz.openrdf.sail.spec" title="franz.openrdf.sail.spec"><code class="xref py py-mod docutils literal"><span class="pre">specification</span> <span class="pre">string</span></code></a>.</li>
+<li><strong>autocommit</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – Autocommit mode (default: <code class="docutils literal"><span class="pre">False</span></code> = start a transaction).</li>
+<li><strong>lifetime</strong> – The number of seconds a session can be idle before being terminated.
+The default value is 300 (5 minutes). The maximum acceptable value
+is 21600 (6 hours).</li>
+<li><strong>loadinitfile</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – If <code class="docutils literal"><span class="pre">True</span></code> the init file will be loaded into the new session.
+The default is False.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A connection to the new session.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection">RepositoryConnection</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.setInitfile">
+<code class="descname">setInitfile</code><span class="sig-paren">(</span><em>content=None</em>, <em>restart=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#AllegroGraphServer.setInitfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.setInitfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace the current initialization file contents with the
+<code class="docutils literal"><span class="pre">content</span></code> string or remove if None.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>content</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – New init file conent.</li>
+<li><strong>restart</strong> – specifies whether any running shared back-ends should
+be shut down, so that subsequent requests will be handled by
+back-ends that include the new code. Default is <code class="docutils literal"><span class="pre">True</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.url">
+<code class="descname">url</code><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the server’s URL.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.sail.allegrographserver.AllegroGraphServer.version">
+<code class="descname">version</code><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the server’s version as a string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="franz.openrdf.sail.allegrographserver.Catalog">
+<em class="property">class </em><code class="descclassname">franz.openrdf.sail.allegrographserver.</code><code class="descname">Catalog</code><span class="sig-paren">(</span><em>name</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#Catalog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.Catalog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Container of multiple repositories (triple stores).</p>
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.Catalog.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>name</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#Catalog.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.Catalog.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.Catalog.createRepository">
+<code class="descname">createRepository</code><span class="sig-paren">(</span><em>name</em>, <em>indices=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#Catalog.createRepository"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.Catalog.createRepository" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new repository with the given name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Repository name.</li>
+<li><strong>indices</strong> (<em>list</em><em>[</em><a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a><em>]</em>) – If provided, creates a store with the given indices.
+(e.g. <code class="docutils literal"><span class="pre">[&quot;spogi,</span> <span class="pre">&quot;gspoi&quot;,</span> <span class="pre">...]</span></code>)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A repository object.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository" title="franz.openrdf.repository.repository.Repository">Repository</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.Catalog.deleteRepository">
+<code class="descname">deleteRepository</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#Catalog.deleteRepository"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.Catalog.deleteRepository" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a repository.
+:param name: Repository name.
+:type name: string</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.Catalog.getName">
+<code class="descname">getName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#Catalog.getName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.Catalog.getName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the catalog name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.Catalog.getRepository">
+<code class="descname">getRepository</code><span class="sig-paren">(</span><em>name</em>, <em>access_verb</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#Catalog.getRepository"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.Catalog.getRepository" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates or opens a repository.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Repository name.</li>
+<li><strong>access_verb</strong> – <p>Determines mode of operation. Possible values are:</p>
+<ul>
+<li><dl class="first docutils">
+<dt><strong>Repository.RENEW</strong> clears the contents of an existing</dt>
+<dd>repository before opening. If the indicated repository does not
+exist, it creates one.</dd>
+</dl>
+</li>
+<li><strong>Repository.OPEN</strong> opens an existing repository, or throws an
+exception if the repository is not found.</li>
+<li><strong>Repository.ACCESS</strong> opens an existing repository, or creates a
+new one if the repository is not found.</li>
+<li><strong>Repository.CREATE</strong> creates a new repository, or throws an
+exception if one by that name already exists.</li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A repository object.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="franz.openrdf.repository.html#franz.openrdf.repository.repository.Repository" title="franz.openrdf.repository.repository.Repository">Repository</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.sail.allegrographserver.Catalog.listRepositories">
+<code class="descname">listRepositories</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/allegrographserver.html#Catalog.listRepositories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.Catalog.listRepositories" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of names of repositories (triple stores) managed by
+this catalog.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.sail.allegrographserver.Catalog.name">
+<code class="descname">name</code><a class="headerlink" href="#franz.openrdf.sail.allegrographserver.Catalog.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the catalog name.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-franz.openrdf.sail.spec">
+<span id="franz-openrdf-sail-spec-module"></span><h2>franz.openrdf.sail.spec module<a class="headerlink" href="#module-franz.openrdf.sail.spec" title="Permalink to this headline">¶</a></h2>
+<p>Helper functions for creating session specification strings.
+See <a class="reference internal" href="#franz.openrdf.sail.allegrographserver.AllegroGraphServer.openSession" title="franz.openrdf.sail.allegrographserver.AllegroGraphServer.openSession"><code class="xref py py-meth docutils literal"><span class="pre">openSession()</span></code></a></p>
+<dl class="function">
+<dt id="franz.openrdf.sail.spec.federate">
+<code class="descclassname">franz.openrdf.sail.spec.</code><code class="descname">federate</code><span class="sig-paren">(</span><em>*stores</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/spec.html#federate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.spec.federate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a session spec for connecting to a federated store.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stores</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a><em>]</em>) – List of session specs to federate.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A session spec string.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)">string</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="franz.openrdf.sail.spec.graphFilter">
+<code class="descclassname">franz.openrdf.sail.spec.</code><code class="descname">graphFilter</code><span class="sig-paren">(</span><em>store</em>, <em>graphs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/spec.html#graphFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.spec.graphFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a graph-filtered session spec.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>store</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Base session spec.</li>
+<li><strong>graphs</strong> (<em>list</em><em>[</em><a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a><em>]</em>) – List of graph names. <cite>None</cite> means the default graph.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A session spec string.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)">string</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="franz.openrdf.sail.spec.local">
+<code class="descclassname">franz.openrdf.sail.spec.</code><code class="descname">local</code><span class="sig-paren">(</span><em>name</em>, <em>catalog=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/spec.html#local"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.spec.local" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a session spec for connecting to a store on the local server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Store name.</li>
+<li><strong>catalog</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Catalog name (None = root catalog).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A session spec string.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)">string</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="franz.openrdf.sail.spec.reason">
+<code class="descclassname">franz.openrdf.sail.spec.</code><code class="descname">reason</code><span class="sig-paren">(</span><em>store</em>, <em>reasoner='rdfs++'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/spec.html#reason"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.spec.reason" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a session spec that adds reasoning support to another session.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>store</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Base session spec.</li>
+<li><strong>reasoner</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Reasoning type (e.g. <cite>“rdfs++”`or `”restriction”</cite>).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A session spec string.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)">string</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="franz.openrdf.sail.spec.remote">
+<code class="descclassname">franz.openrdf.sail.spec.</code><code class="descname">remote</code><span class="sig-paren">(</span><em>name</em>, <em>catalog=None</em>, <em>host='localhost'</em>, <em>port=None</em>, <em>protocol='http'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/spec.html#remote"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.spec.remote" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a session spec for connecting to a store on another server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Store name.</li>
+<li><strong>catalog</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Catalog name (None = root catalog).</li>
+<li><strong>host</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Remote host address.</li>
+<li><strong>port</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – Port number on the remote host (default: 10035 for http, 10036 for https).</li>
+<li><strong>protocol</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – Protocol - <cite>“http”</cite> or <cite>“https”</cite>, the default is <cite>“http”</cite>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A session spec string.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)">string</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="franz.openrdf.sail.spec.url">
+<code class="descclassname">franz.openrdf.sail.spec.</code><code class="descname">url</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/sail/spec.html#url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.sail.spec.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a session spec for connecting to a remote store with known URL.
+:param url: Remote store’s address.
+:type url: string
+:return: A session spec string.
+:rtype: string</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-franz.openrdf.sail">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-franz.openrdf.sail" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+  
+    <div class="nav-links nav-links-footer">
+        &laquo;<a href="franz.openrdf.rio.html" title="previous chapter">franz.openrdf.rio package</a>
+      <a href="franz.openrdf.util.html" title="next chapter">franz.openrdf.util package</a> 
+      &raquo;
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">AllegroGraph Python API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="modules.html">src</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#allegrographserver-class">AllegroGraphServer class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#catalog-class">Catalog class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-franz.openrdf.sail.spec">Spec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#repository-class">Repository class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utility-connection-functions">Utility connection functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#repositoryconnection-class">RepositoryConnection class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#query-class-and-subclasses">Query Class (and Subclasses)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#queryresult-class">QueryResult Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#repositoryresult-class">RepositoryResult class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#statement-class">Statement Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#valuefactory-class">ValueFactory Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../api.html">AllegroGraph Python API Reference</a><ul>
+  <li><a href="modules.html">src</a><ul>
+  <li><a href="franz.html">franz package</a><ul>
+  <li><a href="franz.openrdf.html">franz.openrdf package</a><ul>
+      <li>Previous: <a href="franz.openrdf.rio.html" title="previous chapter">franz.openrdf.rio package</a></li>
+      <li>Next: <a href="franz.openrdf.util.html" title="next chapter">franz.openrdf.util package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/_gen/franz.openrdf.sail.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Backup and Restore | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="backup-and-restore"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>      <h1>AllegroGraph 6.4.2 Backup and Restore Guide</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-7' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-11' title='Backing up/restoring AllegroGraph releases prior to 4.12.2'>Backing up/restoring AllegroGraph releases prior to 4.12.2</a></li>
+<li><a href='#header2-13' title='Backing up/restoring AllegroGraph releases prior to 6.2.0'>Backing up/restoring AllegroGraph releases prior to 6.2.0</a></li>
+<li><a href='#header2-16' title='Nomenclature and repository specification'>Nomenclature and repository specification</a></li>
+<li><a href='#header2-25' title='The agtool archive program'>The agtool archive program</a></li>
+<li><a href='#archive-dir' title='Backup archive directory structure'>Backup archive directory structure</a></li>
+<li><a href='#superseding' title='Overwriting files and repositories'>Overwriting files and repositories</a></li>
+<li><a href='#header2-63' title='agtool archive notes'>agtool archive notes</a></li>
+<li><a href='#upgrade' title='Using agtool archive to upgrade'>Using agtool archive to upgrade</a></li>
+<li><a href='#back-comm' title='The backup and backup-all commands'>The backup and backup-all commands</a></li>
+<li><a href='#rest-comm' title='The restore and restore-all commands'>The restore and restore-all commands</a></li>
+<li><a href='#bs-comm' title='The backup-settings and restore-settings commands'>The backup-settings and restore-settings commands</a></li>
+<li><a href='#list-comm' title='The list command'>The list command</a>
+<ul>
+<li><a href='#header3-171' title='agtool archive list examples'>agtool archive list examples</a></li></ul></li>
+<li><a href='#stdin-out' title='Reading from standard input/ writing to standard output'>Reading from standard input/ writing to standard output</a></li>
+<li><a href='#header2-187' title='Using agtool archive to copy repositories'>Using agtool archive to copy repositories</a></li>
+<li><a href='#header2-191' title='Restoring a Pre-v4.1 backup'>Restoring a Pre-v4.1 backup</a></li>
+<li><a href='#header2-193' title='agtool archive help'>agtool archive help</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-7' id='header2-7'></a><h2>Introduction</h2><p>AllegroGraph supports online full backups. A full backup contains all data files and information required to restore a repository to the state it was in at the time of the backup. Backups are performed while the repository is open in a server. </p><p>The backup program is used both for backing up data for use later by the same server and for backing up data which will be upgraded to a new (later) version. </p><p>The backup utility backs up the data (all the triples) and the server configuration. This makes upgrading straightforward.  See <a href="#upgrade">below</a> and <a href="upgrade-guide.html">Repository Upgrade</a>. </p><a name='header2-11' id='header2-11'></a><h2>Backing up/restoring AllegroGraph releases prior to 4.12.2</h2><p>Please contact allegrograph-support@franz.com if you wish to backup data from a running AllegroGraph release prior to 4.12.2 or restore data backup up from such a release. Various programmatic changes means the procedure is different from what is in this document. </p><a name='header2-13' id='header2-13'></a><h2>Backing up/restoring AllegroGraph releases prior to 6.2.0</h2><p>In releases prior to 6.2.0, the program for backing up and restoring data was <strong>agraph-backup</strong>. Starting in release 6.2.0, it is the <strong>agtool archive</strong> program. (Most command-line programs have been folded into the single <a href="agtool.html">agtool</a> program, whose first argument specifies the utility to run.) The calling template for the older <em>*agraph-backup</em> and the new <strong>agtool archive</strong> are the same. Anywhere in this document where it may say to run <strong>agtool archive</strong> in a release prior to 6.2.0, run <strong>agraph-backup</strong> instead. </p><p><a name="repo-spec"></a> </p><a name='header2-16' id='header2-16'></a><h2>Nomenclature and repository specification</h2><p>In AllegroGraph, data are stored in <em>repositories</em>, or <em>repos</em> for short. These are occasionally informally called <em>databases</em> but <em>repository</em> is the correct name. Repositories are organized into <em>catalogs</em>. There is a special, unnamed catalog called the <em>root</em> catalog which can contain repositories. </p><p>A repository is identified by a <em>repository specification</em>, abbreviated <em>repo-spec</em>. The repo-spec for a repository in the root catalog is the repository name. The repo-spec for a repository in a named catalog is </p>
+<pre><code>catalog-name:repository-name </code></pre><p>So suppose you have two named catalogs along with the root catalog (the root catalog always exists, named catalogs have to be defined). These named catalogs are named <em>my-cat-1</em> and <em>my-cat-2</em>. <em>my-cat-1</em> contains the repos <em>employees</em> and <em>customers</em>. <em>my-cat-2</em> contains the repo <em>shareholders</em>. The root catalog contains the repos <em>products</em> and <em>locations</em>. Here are the repo-specs for all these repositories: </p>
+<pre><code>products  
+locations  
+my-cat-1:employees  
+my-cat-1:customers  
+my-cat-2:shareholders </code></pre><p>AllegroGraph servers have catalogs defined in them and repositories defined in the catalogs, along with repositories defined in the root catalog. </p><p>In what follows, <em>repo-spec</em> arguments are repository specifications as defined above, that is <em>catalog-name:repo-name</em> for repos in named catalogs and <em>repo-name</em> for repos in the root catalog. </p><p><a name="agraph-backup-program"></a> </p><a name='header2-25' id='header2-25'></a><h2>The agtool archive program</h2><p>The single program <strong>agtool archive</strong> does both backing up and restoring, and a few additional bookkeeping tasks. The general calling template for <strong>agtool archive</strong> is: </p>
+<pre><code>agtool archive [options] command [command-args] </code></pre><p><em>options</em> are prefixed with double dashes (single dash in some cases) and may also take arguments. </p><p>The commands which write to or read from files (<strong>backup</strong>, <strong>backup-all</strong>, <strong>backup-settings</strong>, <strong>restore</strong>, <strong>restore-all</strong>, and <strong>restore-settings</strong>) are passed a directory and perhaps additional information like a <a href="#repo-spec">repo-spec</a>. The specific files are located and named within that directory following standard rules described <a href="#archive-dir">below</a>. Unless the <code>--supersede</code> option is specified to backup commands, the archive directory must either not exist or be empty. See <a href="#superseding">below</a> for more information. </p><p>The supported commands are as follows: </p>
+<dl><dt><em></em>backup <em>repo-spec</em> <em>archive-dir</em> <em></em> </dt>
+<dd>This command saves the contents of the repository <a href="#repo-spec"><em>repo-spec</em></a> to a file in the directory named by <em>archive-dir</em>.  See more on this command, including details of the options, <a href="#back-comm">below</a>. </dd><dt><em></em>backup-all <em>archive-dir</em> <em></em> </dt>
+<dd>This command backs up all repositories in the running AllegroGraph server to the directory <em>archive-dir</em>. It also backs up settings (unless the <code>--nosettings</code> option is specified). See <a href="#back-comm">below</a> for more on this command, including details of the options. </dd><dt><em></em>restore <em>repo-spec</em> <em>archive-dir</em> [<em>archive-repo-spec</em>]<em></em> </dt>
+<dd>This command restores the data from <em>archive-repo-spec</em> from the archive <em>archive-dir</em> into <em>repo-spec</em>. If <em>archive-repo-spec</em> is omitted, the archived repository searched for is <em>repo-spec</em>. <em>archive-dir</em> can also be a specific backup file, which will be restored into <em>repo-spec</em>. When <em>archive-dir</em> is a file, <em>archive-repo-name</em>, even if supplied, is ignored. See <a href="#rest-comm">below</a> for more on this command, including details of the options. Note that the first argument <em>repo-spec</em> need not be the same as the repo-spec in the optional <em>archive-repo-spec</em> argument. </dd><dt><em></em>restore-all <em>archive-dir</em> <em></em> </dt>
+<dd>This command restores multiple repositories and settings information previously archived in <em>archive-dir</em> by the <strong>backup-all</strong> command. See <a href="#rest-comm">below</a> for more on this command, including details of the options. </dd><dt><em></em>backup-settings <em>archive-dir</em> <em></em> </dt>
+<dd>This command backs up the settings information (users, stored queries/procedures, etc.) The settings themselves are copied directly from the filesystem. Knowledge of where the settings reside comes from either a running server or the config file. See <a href="#bs-comm">below</a> for more on this command, including details of the options. </dd><dt><em></em>restore-settings <em>archive-dir</em> <em></em> </dt>
+<dd>This command restores the settings information (users, stored queries/procedures, etc.) stored in the <strong>settings</strong> subdirectory of <em>archive-dir</em>. If settings are restored, the server must be restarted for them to take effect. See <a href="#bs-comm">below</a> for more on this command, including details of the options. </dd><dt><em></em>list <em>archive-file</em> <em></em> </dt>
+<dd>This command shows the contents of <em>archive-file</em>, which must be a backup file that contains repository data. See <a href="#list-comm">below</a> for more details. </dd><dt><strong>no options or commands specified</strong> </dt>
+<dd><strong>agtool archive</strong> called with no options and no command prints help documentation. </dd></dl><a name='archive-dir' id='archive-dir'></a> <h2>Backup archive directory structure</h2><p>Most commands take a directory as a location argument. The &lt;archive-dir&gt; directory has two subdirectories, <strong>archives/</strong> and <strong>settings/</strong>. Here is the structure of the <strong>archives/</strong> directory for a repository in a named catalog: </p>
+<pre><code>&lt;archive-dir&gt;/archives/&lt;catalog-name&gt;/&lt;repo-name&gt;/ </code></pre><p>For a repository in the root catalog, the archive directory is </p>
+<pre><code>&lt;archive-dir&gt;/archives/root/&lt;repo-name&gt;/ </code></pre><p>This directory contains repository data for &lt;repo-name&gt; as well as settings specific to that repository. Triples data are stored in a file named <repo-name> .agbackup. Any other files or subdirectories in the directory store settings information. </p><p>Server settings information is stored in files and subdirectories of </p>
+<pre><code>&lt;archive-dir&gt;/settings/ </code></pre><p><strong>agtool archive</strong> can find the files it needs based on the supplied archive directory, catalog name (which defaults to 'root'), and repository name. There is in general no need to refer to specific filenames, although the <strong>restore</strong> command will accept a file argument instead of a directory. </p><p>Note that this structure was new in release 4.12.2. <strong>agtool archive</strong> knows the directory structures of earlier releases, so upgrading also only requires a directory name, but the information in this document does not apply to earlier releases. </p><a name='superseding' id='superseding'></a> <h2>Overwriting files and repositories</h2><p>If a non-empty directory is given as an argument to the <strong>backup</strong> or <strong>backup-all</strong> or <strong>backup-settings</strong> commands, these commands will fail (with an error message) unless the <code>--supersede</code> option is specified. If <code>--supersede</code> is specified, the contents of the &lt;archive-dir&gt; directory will be removed entirely, and then the new backup files will be written.  <strong>Warning: you cannot update the backup of a specific repository with the </strong>backup<strong> command or update saved settings with </strong>backup-settings** to an existing archive directory because if you specify <code>--supersede</code>, all data in the archive directory is deleted.** </p><p>Similarly, if you try to restore an existing repository, that restore will fail unless the <code>--supersede</code> option is specified. When the <code>--supersede</code> option is specified, repositories that exist on the server but not in the archive will not be removed. </p><p>The <strong>restore-settings</strong> command ignores the <code>--supersede</code> option because there are always settings, so restoring settings of necessity overwrites existing settings. </p><a name='header2-63' id='header2-63'></a><h2>agtool archive notes</h2>
+<ul>
+<li><p><strong>agtool archive</strong> must be run by the user id under   which the AllegroGraph server is running (commonly the <code>agraph</code>   user). </p></li>
+<li><p>The <strong>agtool archive</strong> program must be run on the same machine as the AllegroGraph server.</p></li>
+<li><p>There are many options and most apply to only certain   commands. Specifying an option not relevant to the command specified   is not an error. The irrelevant option will be ignored. </p></li></ul><a name='upgrade' id='upgrade'></a> <h2>Using agtool archive to upgrade</h2><p>When you have a new version of AllegroGraph, you can migrate your repositories from the old version to the new using <strong>agtool archive</strong>. Let us say you are upgrading from AllegroGraph 6.1 to AllegroGraph 6.4.2. The steps are: </p>
+<ol>
+<li><p>Start the AllegroGraph 6.1 server using port P. Choose a directory <em>D</em> (which must not exist) for the backup archive. </p>
+<li><p><strong>su</strong> to the user id under which the AllegroGraph server is   running (usually the <strong>agraph</strong> user). </p></li>
+<li><p>Run the 6.1 version of <strong>agraph-backup</strong> with the <strong>backup-all</strong> command (for additional options, see the AllegroGraph 6.1 documentation -- note we call <strong>agraph-backup</strong> because <strong>agtool</strong> was not introduced until version 6.2.0): </p></li></li><p>agraph-backup --port P backup-all D </p>
+<li><p>Stop the AllegroGraph 6.1 server. </p></li>
+<li><p>Start the 6.4.2 server, using port P1. </p>
+<li><p>Run the 6.4.2 version of <strong>agtool archive</strong> using port P1 with the <strong>restore-all</strong> command (see <a href="#rest-comm">below</a> for the full set of command options): </p></li></li><p>agtool archive --port P1 restore-all D </p></ol><p>Please contact support@franz.com if you plan to restore AllegroGraph v4.0 backups into AllegroGraph v4.1 or newer, or any backups from a pre-4.0 version of AllegroGraph. </p><a name='back-comm' id='back-comm'></a> <h2>The backup and backup-all commands</h2><p>The <strong>backup</strong> and <strong>backup-all</strong> commands backup a single repository or all repositories, respectively. <strong>backup-all</strong> additionally backs up settings unless the <code>--nosettings</code> option is specified. </p><p><strong>backup</strong> takes a <a href="#repo-spec">repo-spec</a> and an archive directory as its arguments. </p><p><strong>backup-all</strong> takes an archive directory as its argument. </p><p>The archive directory must either not exist or be empty unless the <code>--supersede</code> option is specified. If <code>--supersede</code> is specified, and the archive directory exists, the archive directory will be cleared of all contents before new data is written to it. Therefore, you cannot update the backup of a single repository to an existing archive directory with <strong>backup</strong> because other data in the directory will be deleted. </p><p>For <strong>backup</strong> only, &lt;archive-dir&gt; can be <strong>-</strong>, which means send the output to standard output rather than to a file. See <a href="#stdin-out">below</a> for details. </p><p>With either backup command, repository data archives are written to files named &lt;archive&gt;/archives/&lt;catalog&gt;/&lt;repo-name&gt;/&lt;repo-name&gt;.agbackup. /&lt;catalog&gt; is <code>/root</code> for repos in the root catalog. </p><p>Here are the relevant options. Unless indicated, they apply to either command: </p>
+<dl><dt><strong>--port port | -p port</strong> </dt>
+<dd>the port with which to communicate with the running server.</dd><dt><strong>--config config-file</strong> </dt>
+<dd>if supplied, settings location will come from the config file. This argument can be supplied but is not necessary as the config file location is available from the server, which must be running and listening on the specified port. </dd><dt><strong>--catalog</strong> </dt>
+<dd>This argument is no longer supported. Specify a catalog as part of the <a href="#repo-spec">repo-spec</a>. </dd><dt><strong>--supersede</strong> </dt>
+<dd>If specified, an existing archive directory will be emptied (all existing files and subdirectories removed) before its standard directory structure is reestablished, and the desired backup files are written (for a single repository for <strong>backup</strong>, for all repositories and for settings for <strong>backup-all</strong>). </dd><dt><strong>--nosettings</strong> </dt>
+<dd>For <strong>backup-all</strong>, do not save settings (such as users, roles and stored procedures). This is an unusual option. For <strong>backup</strong>, do not save settings for the specified repository. This is an unusual option. </dd><dt><strong>--ext-backup-command</strong> </dt>
+<dd>This option has been deprecated.</dd></dl><p>So, the template for a call to <strong>agtool archive</strong> using the <strong>backup</strong> command is: </p>
+<pre><code>agtool archive \  
+       [--port port ] [--supersede] \  
+       backup repo-spec &lt;archive-dir&gt; </code></pre><p>See the <a href="#repo-spec">Repository specification section</a> for the format of repo-specs. </p><p>The template using the <strong>backup-all</strong> command is </p>
+<pre><code>agtool archive \  
+       [--port port ] [--supersede] [--nosettings] \  
+       backup-all &lt;archive-dir&gt;  
+</code></pre><a name='rest-comm' id='rest-comm'></a> <h2>The restore and restore-all commands</h2><p>The <strong>restore</strong> and <strong>restore-all</strong> commands restore one or more repositories archived with <strong>agtool archive</strong> with the <strong>backup</strong> or <strong>backup-all</strong> commands. <strong>restore-all</strong> also restores settings if present, unless <code>--nosettings</code> is specified. If settings are restored, you must restart the server before continuing. </p><p>During a restore, a progress report is periodically printed to stdout, showing the fraction of the archive which has been processed and an estimate of the completion time. </p><p>The catalog specified by the <a href="#repo-spec">repo-specs</a> must exist for <strong>restore</strong>. A repo-spec name with no catalog prefix is taken to be in the root catalog. For <strong>restore-all</strong>, all archived catalogs must exist (the subdirectories of &lt;archive&gt;/archives/ are catalog names) in the running server. The root catalog always exists. </p><p>Here are the relevant options. Unless indicated, they apply to either command: </p>
+<dl><dt><strong>--port port | -p port</strong> </dt>
+<dd>the port with which to communicate with the running server.</dd><dt><strong>--config config-file</strong> </dt>
+<dd>if supplied, settings location will come from the config file. This argument can be supplied but is not necessary as the config file location is available from the server, which must be running and listening on the specified port. </dd><dt><strong>--nocommit</strong> </dt>
+<dd>When specified, the newly restored repository will be set to no-commit mode. no-commit mode means that the repository will not accept commits. Replicas must be created in no-commit mode. See <a href="replication.html">Replication</a>. </dd><dt><strong>--newuuid</strong> </dt>
+<dd>When specified, a new uuid will be generated for the repository.</dd><dt><strong>--recover</strong> </dt>
+<dd>Shorthand for specifying both <code>--nocommit</code> and <code>--newuuid</code>.</dd><dt><strong>--replica</strong> </dt>
+<dd>When specified, the restored repository is assumed to be a replication secondary (warmstandby client). It will cause <code>--nocommit</code> to be set. This flag is incompatible with <code>--newuuid</code> and <code>--recover.</code> Warm standby is discussed in <a href="warm-standby.html">Replication Details</a>. </dd><dt><strong>--noconvert</strong> </dt>
+<dd>Only relevant when the AllegroGraph version which created the archive is different (earlier) than the one which is restoring the archive. Normally, the restore operation converts such archives to the new version. When <code>--noconvert</code> is specified, it does not do that conversion. if you specify this option, you will need to run the <strong>agtool upgrade</strong> command before accessing the restored repository. </dd><dt><strong>--catalog</strong> </dt>
+<dd>This argument is no longer supported. The <a href="#repo-spec">respository specification</a> contains the catalog name (no name for the root catalog). </dd><dt><strong>--nosettings</strong> </dt>
+<dd>With <strong>restore-all</strong>, when specified, do not restore settings information from the restored archive. (If <strong>backup-all</strong> was called with the <code>--nosettings</code> option, the settings will not be available in any case.) With <strong>restore</strong>, when specified, do not restore repository settings information. </dd><dt><strong>--supersede</strong> </dt>
+<dd>if specified, existing repositories in the server will be overwritten if backup data exists in &lt;archive&gt; (for the single repository being restored by <strong>restore</strong> or all repositories for <strong>restore-all</strong>). </dd></dl><p>So, the template for a call to <strong>agtool archive</strong> using the <strong>restore</strong> command is: </p>
+<pre><code>agtool archive \  
+     [--port port | -p port] [--nocommit] [--newuuid] \  
+     [--recover] [--replica] [--supersede] \  
+     restore &lt;repo-spec&gt; &lt;archive-dir&gt; [repo-spec-from-archive] </code></pre><p>Note that you can change the repository name and catalog containing it from what it is in the archive to what you want in the server by using the final optional <code>[repo-spec-from-archive]</code> argument. So if the required &lt;repo-spec&gt; argument is <code>my-cat:my-repo</code> and no final optional argument is specified, that repo-spec will be looked for in and restored from the archive. But if the final argument is supplied as <code>my-old-cat:my-old-repo</code>, my-old-repo will be looked for in the my-old-cat subdirectory and that repository will be restored to my-repo in catalog my-cat. (Of course, <code>repo-spec</code> and <code>repo-spec-from-archive</code> can be the same, but in that case specifying <code>repo-spec-from-archive</code> is redundant.) Repository specifications are described <a href="#repo-spec">above</a>. </p><p>For <strong>restore</strong>, &lt;archive&gt; may also name a backup file or may be <strong>-</strong> (a dash), which means get the input from standard input rather than from a file. See <a href="#stdin-out">below</a> for details. If &lt;archive&gt; is a file or <strong>-</strong>, &lt;repo-spec-from-archive&gt; is ignored even if supplied. </p><p>And the template using the <strong>restore-all</strong> command is </p>
+<pre><code>agtool archive \  
+       [--port port | -p port] [--nocommit] [--newuuid] \  
+       [--recover] [--replica] [--nosettings] [--supersede] \  
+       restore-all &lt;archive-dir&gt; </code></pre><p>The <em>archive-dir</em> argument for <strong>restore</strong> and <strong>restore-all</strong> should name a directory created by the <strong>backup</strong> command or the <strong>backup-all</strong> command. (Directories created by earlier AllegroGraph version will also work.) </p><p>For <strong>restore-all</strong> the repo names and catalogs will be taken from the various archive files. All catalogs must exist in the server before their repositories can be restored. </p><p>Here are some <strong>restore</strong> examples: </p>
+<pre><code>agtool archive [options] restore my-repo archive-dir  
+ 
+  This command will search *archive-dir* for data in the my-repo repository  
+  in the root catalog and restore it. (We are assuming *my-repo* is  
+  a [repo-spec](#repo-spec) without a catalog specified.)  
+ 
+agtool archive [options] restore my-repo agbackup-file  
+ 
+  This command restores data from the file *agbackup-file* and puts it  
+  into the my-repo repository in the root catalog. (We are assuming *my-repo* is  
+  a [repo-spec](#repo-spec) without a catalog specified.)  
+ 
+agtool archive [options] restore my-repo-spec agbackup-file  
+ 
+  This command restores data from the file *agbackup-file* and puts it  
+  into the catalog and repository specified by [my-repo-spec](#repo-spec).  
+ 
+agtool archive [options] restore my-new-repo-spec archive-dir my-old-repo-spec  
+ 
+  This command finds the stored data for *my-old-repo-spec* in *archive-dir*  
+  and restores it into the catalog and repository specified  
+  by *my-new-repo-spec*. </code></pre><a name='bs-comm' id='bs-comm'></a> <h2>The backup-settings and restore-settings commands</h2><p>The <strong>backup-settings</strong> command will store settings (users, stored queries/procedures, etc.) information. The &lt;archive&gt; directory must either not exist or be empty unless the <code>--supersede</code> option is specified, in which case all files and subdirectories of an existing directory will be deleted before the settings information is written. Therefore, you cannot specify an existing backup archive directory and just have the settings superseded. Settings are written to the <strong>settings/</strong> subdirectory of &lt;archive&gt;. You can manually replace the <strong>settings/</strong> subdirectory of one backup archive with a different <strong>settings/</strong> subdirectory if you want to change the saved settings in an archive. </p><p>The options are: </p>
+<dl><dt><strong>--config</strong> </dt>
+<dd>must be the path of an AllegroGraph config file. If specified (and no value is specified for <code>--port</code>), <strong>agtool archive</strong> will look in the config file for the location on disk of settings information. The server need not be running. </dd><dt><strong>--port port | -p port</strong> </dt>
+<dd>the port with which to communicate with the running server. Not needed if the optional <strong>config-file</strong> argument is specified. If both are specified, the port takes precedence. </dd><dt><strong>--supersede</strong> </dt>
+<dd>if specified, the &lt;archive&gt; directory, if it exists and is non-empty, will be cleared (all subdirectories and files deleted) before the standard subdirectory structure is reestablished and settings information is written out. (Do not specify <code>--supersede</code> if you just want to update settings information in an existing backup archive as doing so will cause all other data to be deleted.) </dd></dl><p>The call template thus is: </p>
+<pre><code>agtool archive \  
+       [--port port ] [--config &lt;config-file&gt;] [--supersede] \  
+       backup-settings &lt;archive&gt; </code></pre><p>The <strong>restore-settings</strong> command replaces settings in a running server.  It takes an &lt;archive&gt; argument and finds the settings data in that file and replaces the existing stored settings of the running server with the new settings. (If &lt;archive&gt; does not have any settings data, no change is made.) The <code>--supersede</code> option is ignored since there are always settings, so restoring settings to a running server of necessity supersedes the existing ones. </p><p>You must restart the server for the new settings to take effect. </p><p>The call template thus is: </p>
+<pre><code>agtool archive [--port port ] restore-settings &lt;archive&gt; </code></pre><a name='list-comm' id='list-comm'></a> <h2>The list command</h2><p>The <strong>list</strong> command displays information about the contents of an archive file, that is a single dbase.agbackup file, or an archive directory, that is a directory containing such files. The structure of an archive directory is </p>
+<pre><code>&lt;archive&gt;/archives/&lt;catalog-name&gt;/&lt;repo-name&gt;/ </code></pre><p>The backup files have names and types </p>
+<pre><code>&lt;repo-name&gt;.agbackup </code></pre><p>The call template for a single file is: </p>
+<pre><code>agtool archive list &lt;archive-file&gt; </code></pre><p>The call template for an archive directory is: </p>
+<pre><code>agtool archive [options] list &lt;archive-directory&gt; [repo-in-archive] </code></pre><p>If <code>repo-in-archive</code> is supplied, it must be a <a href="#repo-spec">repo-spec</a> and only information on that repository will be displayed (just as if its single backup file had been specified). </p><p>Only one list option is available when calling <strong>agtool archive list</strong> on an archive directory: </p>
+<dl><dt><strong>--summary</strong> </dt>
+<dd>if supplied, repositories present in the archive will be listed without further details. </dd></dl><a name='header3-171' id='header3-171'></a><h3>agtool archive list examples</h3><p>A user has the following subdirectories of the user's home directory, and each has a backup file: </p>
+<pre><code>~/db-archive/archives/cat1/my-db-1/my-db-1.backup  
+~/db-archives/archives/cat2/my-db-2/my-db-2.backup  
+~/db-archives/archives/cat2/my-db-3/my-db-3.backup  
+~/db-archives/archives/root/my-db-4/my-db-4.backup </code></pre><p>The &lt;archive&gt; directory is ~/db-archive/. There are two named catalogs, <em>cat1</em> and <em>cat2</em>. <em>cat1</em> contains one repository named <em>my-db-1</em>. <em>cat2</em> contains two repositories named <em>my-db-2</em> and <em>my-db-3</em>. There is also a repository in the <em>root</em> catalog named <em>my-db-4</em>. </p><p>Here are some sample <strong>list</strong> commands. We have pared the output down by removing some information to make the examples more readable. It is the commands and the general look of the output that we are showing rather than the actual repository information. </p><p><strong>The old style listing of a single backup file:</strong> </p>
+<pre><code>$ agtool archive list ~/db-archive/archives/cat1/my-db-1/my-db-1.backup  
+Triple store: cat1:my-db-1  
+UUID                          : b9c3592c-9c83-1814-b8a9-61ec65c4b3b0  
+AllegroGraph Server version: 6.4.2  
+Database format version: 41  
+Backup format version: 1  
+Backed up at 2018-04-23 13:56:57  
+9 files:  
+tlog-b9c3592c-9c83-1814-b8a9-61ec65c4b3b0-1 (~/agtmp/cat1/my-db-1/tlog-b9c3592c-9c83-1814-b8a9-61ec65c4b3b0-1) 1351680 bytes  
+ckpt (~/agtmp/cat1/my-db-1/ckpt) 8 bytes  
+tlmgr (~/agtmp/cat1/my-db-1/tlmgr) 108 bytes  
+version (~/agtmp/cat1/my-db-1/version) 4 bytes  
+parameters.dat (~/agtmp/cat1/my-db-1/parameters.dat) 602 bytes  
+uuid (~/agtmp/cat1/my-db-1/uuid) 36 bytes  
+sstab-strings (~/agtmp/cat1/my-db-1/sstab-strings) 4194304 bytes  
+sstab-large-strings (~/agtmp/cat1/my-db-1/sstab-large-strings) 4194304 bytes  
+sstab-chunk (~/agtmp/cat1/my-db-1/sstab-chunk) 1572864 bytes  
+reading archive file: 10.8 MB/s </code></pre><p><strong>The same information specifying the archive directory and using the optional repo-in-archive argument:</strong> </p>
+<pre><code>$ agtool archive list ~/db-archive/ cat1:my-db-1  
+Triple store: cat1:my-db-1  
+UUID                          : b9c3592c-9c83-1814-b8a9-61ec65c4b3b0  
+AllegroGraph Server version: 6.4.2  
+Database format version: 41  
+[etc. -- same as above] </code></pre><p><strong>Command listing all repositories in the archive:</strong> </p>
+<pre><code>agtool archive list ~/backups/ag-archives  
+Triple store: cat1:my-db-1  
+[...]  
+Triple store: cat2:my-db-2  
+[...]  
+Triple store: cat2:my-db-3  
+[...]  
+Triple store: my-db-4  
+[...] </code></pre><p><strong>Command providing a summary of the repositories in the archive:</strong> </p>
+<pre><code>agtool archive --summary list ~/backups/ag-archives  
+cat1:my-db-1  
+cat2:my-db-2  
+cat2:my-db-3  
+my-db-4 </code></pre><a name='stdin-out' id='stdin-out'></a> <h2>Reading from standard input/ writing to standard output</h2><p>If you specify <strong>-</strong> (a dash) in place of an archive with the <strong>backup</strong> and <strong>restore</strong> commands, the <strong>backup</strong> command will write to standard output and the <strong>restore</strong> command will read from standard input. This is useful when you wish to copy a repository, as we describe in the next section, and also for streaming backups over a network. </p><a name='header2-187' id='header2-187'></a><h2>Using agtool archive to copy repositories</h2><p><strong>agtool archive</strong> can be used to copy a repository to a new name and/or catalog.  This is achieved by setting up a pipe with <strong>agtool archive</strong> <strong>backup</strong> writing the repository to standard output, and <strong>agtool archive</strong> <strong>restore</strong> reading the backup archive into a different repository.  For example, to make a copy of the repository <strong>lubm1</strong> under the name <strong>lubm1</strong> in the catalog <strong>experiments</strong>, the following command line could be used: </p>
+<pre><code>agtool archive backup lubm1 - \  
+       | agtool archive  --newuuid restore experiments:lubm1 - </code></pre><p>Note that a triple-store copy needs a --<strong>newuuid</strong> if it is to run on the same server as the original triple store. Alternately, you could specify the --<strong>port</strong> number to send the copy to a different server on the same computer. In that case the --<strong>newuuid</strong> isn't necessary. </p><a name='header2-191' id='header2-191'></a><h2>Restoring a Pre-v4.1 backup</h2><p>AllegroGraph versions prior to v4.1 used a different backup mechanism. Please contact support@franz.com if you require assistance restoring v4.0 backups into AllegroGraph v4.1 or newer. </p><a name='header2-193' id='header2-193'></a><h2>agtool archive help</h2><p>Calling <strong>agtool archive --help</strong> displays help information. </p></div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

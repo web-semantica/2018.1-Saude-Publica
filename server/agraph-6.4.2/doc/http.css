@@ -1,0 +1,35 @@
+.httpPath {
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+
+.httpDocs {
+	margin-left: 2em;
+}
+
+.httpMethod {
+	font-weight: bold;
+}
+
+div.httpCommand {
+	border-top: 1px solid #d5d5d5;
+	padding-top: 10px;
+}
+
+div .httpCommand .httpMethod {
+	font-weight: bold;
+	float: right;
+}
+
+.httpCommand {
+	margin-top: 0.5em;
+}
+
+.httpArgs ul {
+	margin-top: 0;
+}
+
+.httpArgs h3 {
+	font-style: italic;
+	font-variant: small-caps;
+	font-size: 10pt;
+}

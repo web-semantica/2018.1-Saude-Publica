@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Stored Procedures | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="stored-procedures"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>Stored Procedures in AllegroGraph 6.4.2</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Stored Procedure introduction'>Stored Procedure introduction</a></li>
+<li><a href='#header2-17' title='Defining stored procedures'>Defining stored procedures</a></li>
+<li><a href='#header2-24' title='Errors in stored procedures'>Errors in stored procedures</a></li>
+<li><a href='#header2-26' title='Security issues with stored procedures'>Security issues with stored procedures</a></li>
+<li><a href='#lisp-stored-proc-api' title='Lisp API'>Lisp API</a></li>
+<li><a href='#header2-36' title='Procedure for using the Lisp API to define a stored procedure'>Procedure for using the Lisp API to define a stored procedure</a>
+<ul>
+<li><a href='#header3-38' title='1. Write the stored procedure definition in a file.'>1. Write the stored procedure definition in a file.</a></li>
+<li><a href='#header3-40' title='2. Upload the file to the server.'>2. Upload the file to the server.</a></li></ul></li>
+<li><a href='#header2-45' title='Running a Lisp stored procedure'>Running a Lisp stored procedure</a></li>
+<li><a href='#header2-51' title='JavaScript API'>JavaScript API</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Stored Procedure introduction</h2><p>A <strong>stored procedure</strong> is database code that runs on the server side, is generally invoked by a remote client, is precompiled, generally runs faster than the same set of code issued by the client and almost always leads to less network traffic between the client and server. </p><p>Values are passed in to the procedure, the procedure runs, and values are returned by the procedure to the caller. </p><p>The procedure is always called in the context of a database, thus when the procedure runs that database is open. </p><p>Stored procedures can perform many tasks. Although a stored procedure must be associated with a database, it need not in fact query, access, or modify the database. </p><p>The following are some examples of possible uses of stored procedures. This list is not by any means complete. The ability to define stored procedures is a very flexible tool with many uses. </p>
+<ul>
+<li><p>Modifying the database in a specified way. Suppose, for example, you   have a database of employees and a new employee is hired. A stored   procedure could take strings as arguments (first name, last name,   salary) and create triples for the new employee (first name, last   name, salary), assign an employee number, delete the ("company"   "number of employees" "N") triple, and add the ("company" "number of   employees" "N+1") triple, etc. And then commits the changes. </p></li>
+<li><p>Following on the first example, an advantage is the stored procedure   takes strings as arguments and makes specific modifications to the   database. The person entering the data may be a low-level clerk who   does not know about database functionality. He or she just has a   form which they fill in. The stored procedure does all the   modification and ensures all necessary steps are performed. </p></li>
+<li><p>Suppose you are a lender. A borrower wants $1,000 at 5% for a year   and wants to know the monthly payment. A stored procedure could   calculate this. This is an example with no database access. It could   of course be done in a separate program independently of   AllegroGraph, but if AllegroGraph does the calculation, it will have   exactly the same results if later the loan is made (such as same   monthly payment -- a different program might produce slightly   different results because of rounding). </p></li></ul><a name='header2-17' id='header2-17'></a><h2>Defining stored procedures</h2><p>Stored procedures are defined in files which are uploaded to the server (they may be compiled or not before being uploaded). Once the compiled file is available to the server, new client sessions can specify, on startup, which stored procedure files to use. (You cannot upload a stored procedure and start using it after a session has started.) </p><p>Stored procedures have permissions which specify the users who can execute them. The permissions are some subset of <strong>rwWes</strong>. </p><p><strong>s</strong> means superuser (so only superusers can run the stored procedure). If <strong>s</strong> is specified, the other permissions are effectively ignored since any superuser can run any stored procedure anyway, regardless of whether <strong>s</strong> is specified.  (The purpose of the permission <strong>s</strong> is to restrict the procedure to superusers). </p><p><strong>r</strong> means the user must have read permission, <strong>w</strong> write   permission, <strong>e</strong> eval permission. The user must have all the   permissions specified: so if the permissions are <strong>rw</strong>, only users   with read <em>and</em> write permission can run the procedure. <strong>W</strong> means   read or write. the default is <em>rwW</em> (the <em>W</em> is in fact redundant in   the default case). </p><p>You must have superuser access to upload a stored procedure to the server. </p><p>In Lisp, stored procedures are defined with the macro <strong>def-stored-proc</strong>, which we define <a href="#lisp-stored-proc-api">below</a>. </p><a name='header2-24' id='header2-24'></a><h2>Errors in stored procedures</h2><p>Stored procedures are wrapped in code which catches signaled conditions (whether subtypes of error or others). If an error (or indeed any condition) is signaled, it is caught and the stored procedure terminates returning a vector whose first element is the string "_fail_" and whose second element is the error message (also a string). </p><a name='header2-26' id='header2-26'></a><h2>Security issues with stored procedures</h2><p>A stored procedure can do things to a database that the user running the stored procedure cannot himself or herself do. For example, a stored procedure could modify the database by adding and deleting triples even if the user does not have write permission. Indeed, this is one of the important uses of stored procedures: to give low-level users the ability to perform specific tasks modifying the database while protecting the database from other unauthorized modification by that user. </p><p>So when specifying permissions and user access, do remember that the usual permissions that restrict the actions of a user (such as no write permission) do not restrict the action of stored procedures the user can run (which might write to the database). </p><p>Only superusers can define stored procedures. Whatever protections you have to control and check what superusers do should be applied to their work defining stored procedures. </p><a name='lisp-stored-proc-api' id='lisp-stored-proc-api'></a> <h2>Lisp API</h2><p>You can use Lisp to define a stored procedure. The following macro defines the procedure. The definition must be in a file which can be uploaded to the server. </p>
+<a name="macro.def-stored-proc" id="macro.def-stored-proc"></a>
+<a name="def-stored-proc" id="def-stored-proc"></a>
+<div class="documentation macro"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">def-stored-proc</span>
+<span class="documentation-arguments"><span class="argument">name</span> &nbsp;<span class="argument">arglist</span> &nbsp;<span class="marker">&amp;body</span> &nbsp;<span class="argument">body</span></span>
+</div>
+<span class="documentation-kind">macro</span>
+</div>
+<div class="documentation contents"><p>The macro defines a stored procedure, which is a routine which can be run    by the AllegroGraph server when requested by a client with the    appropriate permissions. </p><p>  <code>name</code> should be a string or a symbol (in which case the symbol-name    will be used). </p><p>  <code>arglist</code> should be a list whose start is a Lisp function   argument list (with certain restrictions)   and which optionally ends with the lambda-list keyword   <code>&amp;perm</code> followed by one or more of the keywords :w, :r, :W, :e, :s,   which specify the permissions needed for users to run the stored procedure. </p><p>  The Lisp argument list can have required, optional and rest arguments, but   not keyword or other types of arguments, or can have &amp;whole followed   by a symbol whose value will be a vector. So <code>arglist</code> looks like   the following: </p>
+<pre><code>(&lt;required args&gt; [&amp;optional &lt;optional args&gt;] [&amp;rest args] [&amp;perm [:r] [:w] [:W] [:e] [:s]]) </code></pre><p>   or like </p>
+<pre><code> (&amp;whole argvec [&amp;perm [:r] [:w] [:W] [:e] [:s]]) </code></pre><p> Here are a couple of examples: </p>
+<pre><code>(a b c &amp;optional d (e e-def) &amp;perm :r :w :e)  
+ 
+(&amp;whole argvec &amp;perm :r :w :e) </code></pre><p> The default for permissions is :r :w :W. :W is equivalent to :r or :w which  cannot be specified in any other way. </p><p> A user will be able to run the stored procedure if the user is a superuser    or if the user's permissions are a superset of the specified permissions.    So if &amp;perm is :r :w, users with read and write permission can run the procedure    but users with read but not write or write but not read permission cannot.    To allow users with only one of read and write, specify :W as the value of &amp;perm.    If :s is included in &amp;perm, only superusers can run the procedure. </p><p>  Note that the permissions affect which users can run a stored procedure, not   what the stored procedure can do. A stored procedure can write to the database   even if <code>&amp;perm :r</code> is the specified stored procedure permissions. </p><p>   Only nil, strings, integers, lists, UPIs, and vectors whose values    are nil, strings, integers, lists, UPIs or similar vectors can be    passed as arguments to the stored procedure. (The actual    communication between the AllegroGraph client and server is via a    string, and those types of values can be converted to strings.) The    <code>&amp;whole argvec</code> style supports existing code but the more general    format is more flexible and also triggers checking that the number    of arguments passed is correct when the procedure is run. If you    use the <code>&amp;whole argvec</code> style, you must check that the vector is of    the right size and has the right number of values in the stored    procedure code. </p><p>  The body is Lisp forms that implement the stored procedure. </p><p>  Stored procedures should return an integer, a string, or a vector whose   values are integers or strings or similar vectors. </p><p>  If there is an error (or any other condition is signaled)   when the stored procedure runs, the error (or other signal) is caught.   The procedure then returns a vector whose first element is the string "_fail_" and whose second element   is a string containing information about the failure (such as the error message). </p>
+</div>
+</div>
+  <p>Once defined, you can call a stored procedure using <code>ag-call</code>: </p>
+<a name="function.ag-call" id="function.ag-call"></a>
+<a name="ag-call" id="ag-call"></a>
+<div class="documentation function"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">ag-call</span>
+<span class="documentation-arguments"><span class="argument">name-and-spec</span> &nbsp;<span class="marker">&amp;rest</span> &nbsp;<span class="argument">args</span></span>
+</div>
+<span class="documentation-kind">function</span>
+</div>
+<div class="documentation contents"><p>Call a stored procedure defined by <code>def-stored-proc</code>. </p>
+<ul>
+<li><p><code>name-and-spec</code> specifies the name of the stored procedure and the specification used to find it on the server (see below). </p></li>
+<li><p><code>args</code> are the arguments passed to the stored procedure. These must all be serializable as strings (i.e., nil, strings, integers, and UPIs or lists and vectors composed of nil, strings, integers, UPIs, lists, and vectors). </p></li></ul><p><code>name-and-spec</code> is used to specify the stored procedure and how to find it on the server. If the session is started with stored procedures loaded (e.g., in an init file), then no additional information is needed to find the procedure and <code>name-and-spec</code> can be a symbol or string. Otherwise, <code>name-and-spec</code> must be a list of the form </p>
+<pre><code>(procedure-name script-name &amp;optional db-name &amp;key scheme catalog user password server port) </code></pre><p>If <code>db-name</code> etc. are not supplied, then the parameters used to find the server will be taken from the current triple-store (*db*) </p><p>Note that <code>ag-call</code> will only work with *db* if it is a <code>remote-triple-store</code>. </p><p>The following are all valid examples for <code>name-and-spec</code>: </p>
+<ul>
+<li>'remote-procedure-name</li>
+<li>"remote-procedure-name"</li>
+<li>'(remote-procedure-name "test-script.cl")</li>
+<li>'(remote-procedure-name "test-script.cl" "my-db" :port 12345  :server "localhost") </li></ul><p><code>ag-call</code> will return the value from the stored-procedure. If there is an error, then it will return a vector whose first element is the string "_fail_" and whose other elements contain information about the error. </p>
+</div>
+</div>
+  <a name='header2-36' id='header2-36'></a><h2>Procedure for using the Lisp API to define a stored procedure</h2><p>The steps are as follows: </p><a name='header3-38' id='header3-38'></a><h3>1. Write the stored procedure definition in a file.</h3><p>The file can contain as many stored procedures definitions as you like, and also additional definitions as might be necessary. </p><a name='header3-40' id='header3-40'></a><h3>2. Upload the file to the server.</h3><p>You can do this with the HTTP API (<code>PUT</code> to <code>/scripts/&lt;filename&gt;.cl</code>) or using WebView as a Site Script. You can upload fasl files as well as source files. <code>fasl</code> files must be compiled with the same platform and Lisp version as the server uses. </p><p>For example, to use <code>curl</code> to upload a script named <code>test-script.cl</code> into a file named <code>stored-proc.cl</code> on the server, you could use: </p>
+<pre><code>curl -X PUT --user USER:PASSWORD --data-binary @test-script.cl "http://HOST:PORT/scripts/stored-proc.cl" </code></pre><p>Once the file is uploaded, you can see the available stored procedures with the HTTP GET command (<code>GET</code> to <code>/scripts/</code>). See <a href="http-protocol.html">HTTP Protocol</a> for more on the general HTTP interface. </p><a name='header2-45' id='header2-45'></a><h2>Running a Lisp stored procedure</h2><p>Here is an example. </p><p>Define the stored procedure by uploading a .cl file which contains the following stored procedure definition (or by creating such a .cl file Sitescript in WebView): </p>
+<pre><code>(def-stored-proc update-salary (person-name new-salary)  
+  (let* ((person (resource (format nil "http://franz.com/example/person/#~a" person-name)))  
+         (old-value (first (get-triples-list :s person :p !&lt;http://franz.com/example/#salary&gt;))))  
+    (delete-triples :s person :p !&lt;http://franz.com/example/#salary&gt;)  
+    (add-triple person !&lt;http://franz.com/example/#salary&gt; (literal new-salary))  
+    (commit-triple-store)  
+    (when old-value (object old-value)))) </code></pre><p>Then call it from a remote lisp client: </p>
+<pre><code>(open-triple-store "foobar" :triple-store-class 'remote-triple-store  
+                    :user "super" :password "super")  
+(ag-call '(update-salary "testscript.cl") "Andreas" "92039")  
+=&gt; {2000} </code></pre><a name='header2-51' id='header2-51'></a><h2>JavaScript API</h2><p>JavaScript stored procedures use the REST (Representational State Transfer) API. To create a JavaScript stored procedure, open the Scripts tab, and make sure <strong>JavaScript</strong> is selected for <strong>Language</strong>. Then, enter the code, for example: </p>
+<pre><code>server.defineService("post", "changeSalary", function(request) {  
+  var employeeName = request.param('employee');  
+  var employee = '&lt;http://franz.com/example/person/#' + employeeName + '&gt;';  
+  var oldStatements = store.getTriplesArray(employee,  
+'&lt;http://franz.com/example#salary&gt;', null, null);  
+ 
+  store.deleteTriples(employee, '&lt;http://franz.com/example#salary&gt;',  
+null, null);  
+  store.addTriple(employee, '&lt;http://franz.com/example#salary&gt;', '"' +  
+request.param('salary') + '"');  
+  store.commit();  
+  if(oldStatements.length &gt; 0) {  
+    return oldStatements[0];    // return old salary  
+  }  
+}); </code></pre><p>Then enter a name (ending in ".js"), and select "Sitescript" in the "Save as" drop-down box. I'll assume you named it "jstest.js" </p><p>Now you have defined a JavaScript stored procedure. Now using the RESTful interface to such procedures, define it in a session at URL /custom/changeSalary that accepts two parameters (either via the HTTP query string or via the POST body), "employee" and "salary". It will look up the old value for the employee's salary, update the salary to the desired new salary and return the old value. </p><p>To use this web service, specify it when creating the session, like so (in the HTTP API): </p>
+<pre><code>$ curl -X POST http://test:xyzzy@localhost:10035/repositories/foobar/session  
+-d 'script=jstest.js' </code></pre><p>(This uses the curl command line program to create a new session on the store "foobar", with the script that we saved above loaded.) </p><p>This will output a new URL which is the HTTP API endpoint for the session. With this, we can call the stored procedure: </p>
+<pre><code>$ curl -X POST http://test:xyzzy@localhost:52787/custom/changeSalary -d  
+employee=Andreas\&amp;salary=20030 </code></pre><p>This sets the salary for employee "Andreas" to the value literal string "20030". </p></div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

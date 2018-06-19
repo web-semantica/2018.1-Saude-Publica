@@ -1,0 +1,775 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Example 17: Triple attributes &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example 18: Pandas support" href="example018.html" />
+    <link rel="prev" title="Example 16: Federated repositories" href="example016.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+        &laquo;<a href="example016.html" title="previous chapter">Example 16: Federated repositories</a>
+      <a href="example018.html" title="next chapter">Example 18: Pandas support</a> 
+      &raquo;
+    </div>
+  
+    
+  <div class="section" id="example-17-triple-attributes">
+<span id="example17"></span><h1>Example 17: Triple attributes<a class="headerlink" href="#example-17-triple-attributes" title="Permalink to this headline">¶</a></h1>
+<p>Triples offer a way of describing model elements and relationships
+between them. In come cases, however, it is also convenient to be able
+to store data that is associated with a triple as a whole rather than
+with a particular element. For instance one might wish to record the
+source from which a triple has been imported or access level necessary
+to include it in query results. Traditional solutions of this problem
+include using graphs, RDF reification or triple IDs. All of these
+approaches suffer from various flexibility and performance issues. For
+this reason AllegroGraph offers an alternative: triple attributes.</p>
+<p>Attributes are key-value pairs associated with a triple. Keys refer to
+attribute definitions that must be added to the store before they are
+used. Values are strings. The set of legal values of an attribute can
+be constrained by the definition of that attribute. It is possible to
+associate multiple values of a given attribute with a single triple.</p>
+<p>Possible uses for triple attributes include:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Access control: It is possible to instruct AllegroGraph to
+prevent an user from accessing triples with certain attributes.</li>
+<li>Sharding: Attributes can be used to ensure that related triples
+are always placed in the same shard when AllegroGraph acts as a
+distributed triple store.</li>
+</ul>
+</div></blockquote>
+<p>Like all other triple components, attribute values are immutable. They
+must be provided when the triple is added to the store and cannot be
+changed or removed later.</p>
+<p>To illustrate the use of triple attributes we will construct an
+artificial data set containing a log of information about contacts
+detected by a submarine at a single moment in time.</p>
+<div class="section" id="managing-attribute-definitions">
+<h2>Managing attribute definitions<a class="headerlink" href="#managing-attribute-definitions" title="Permalink to this headline">¶</a></h2>
+<p>Before we can add triples with attributes to the store we must create
+appropriate attribute definitions.</p>
+<p>First let’s open a connection</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.connect</span> <span class="kn">import</span> <span class="n">ag_connect</span>
+
+<span class="n">conn</span> <span class="o">=</span> <span class="n">ag_connect</span><span class="p">(</span><span class="s1">&#39;python-tutorial&#39;</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Attribute definitions are represented by <code class="xref py py-class docutils literal"><span class="pre">AttributeDefinition</span></code>
+objects. Each definition has a name, which must be unique, and a few
+optional properties (that can also be passed as constructor arguments):</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">allowed_values</span></code>: a list of strings. If this property is set
+then only the values from this list can be used for the defined
+attribute.</li>
+<li><code class="docutils literal"><span class="pre">ordered</span></code>: a boolean. If true then attribute value comparisons
+will use the ordering defined by <code class="docutils literal"><span class="pre">allowed_values</span></code>. The default
+is false.</li>
+<li><code class="docutils literal"><span class="pre">minimum_number</span></code>, <code class="docutils literal"><span class="pre">maximum_number</span></code>: integers that can be used
+to constrain the cardinality of an attribute. By default there are
+no limits.</li>
+</ul>
+</div></blockquote>
+<p>Let’s define a few attributes that we will later use to demonstrate
+various attribute-related capabilities of AllegroGraph. To do this, we
+will use the <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.setAttributeDefinition" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.setAttributeDefinition"><code class="xref py py-meth docutils literal"><span class="pre">setAttributeDefinition()</span></code></a> method of the connection
+object.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.repository.attributes</span> <span class="kn">import</span> <span class="n">AttributeDefinition</span>
+
+<span class="c1"># A simple attribute with no constraints governing the set</span>
+<span class="c1"># of legal values or the number of values that can be</span>
+<span class="c1"># associated with a triple.</span>
+<span class="n">tag</span> <span class="o">=</span> <span class="n">AttributeDefinition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;tag&#39;</span><span class="p">)</span>
+
+<span class="c1"># An attribute with a limited set of legal values.</span>
+<span class="c1"># Every bit of data can come from multiple sources.</span>
+<span class="c1"># We encode this information in triple attributes,</span>
+<span class="c1"># since it refers to the tripe as a whole. Another</span>
+<span class="c1"># way of achieving this would be to use triple ids</span>
+<span class="c1"># or RDF reification.</span>
+<span class="n">source</span> <span class="o">=</span> <span class="n">AttributeDefinition</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;source&#39;</span><span class="p">,</span>
+    <span class="n">allowed_values</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sonar&#39;</span><span class="p">,</span> <span class="s1">&#39;radar&#39;</span><span class="p">,</span> <span class="s1">&#39;esm&#39;</span><span class="p">,</span> <span class="s1">&#39;visual&#39;</span><span class="p">])</span>
+
+<span class="c1"># Security level - notice that the values are ordered</span>
+<span class="c1"># and each triple *must* have exactly one value for</span>
+<span class="c1"># this attribute. We will use this to prevent some</span>
+<span class="c1"># users from accessing classified data.</span>
+<span class="n">level</span> <span class="o">=</span> <span class="n">AttributeDefinition</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;level&#39;</span><span class="p">,</span>
+    <span class="n">allowed_values</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;low&#39;</span><span class="p">,</span> <span class="s1">&#39;medium&#39;</span><span class="p">,</span> <span class="s1">&#39;high&#39;</span><span class="p">],</span>
+    <span class="n">ordered</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">minimum_number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">maximum_number</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># An attribute like this could be used for sharding.</span>
+<span class="c1"># That would ensure that data related to a particular</span>
+<span class="c1"># contact is never partitioned across multiple shards.</span>
+<span class="c1"># Note that this attribute is required, since without</span>
+<span class="c1"># it an attribute-sharded triple store would not know</span>
+<span class="c1"># what to do with a triple.</span>
+<span class="n">contact</span> <span class="o">=</span> <span class="n">AttributeDefinition</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;contact&#39;</span><span class="p">,</span>
+    <span class="n">minimum_number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">maximum_number</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># So far we have created definition objects, but we</span>
+<span class="c1"># have not yet sent those definitions to the server.</span>
+<span class="c1"># Let&#39;s do this now.</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">setAttributeDefinition</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">setAttributeDefinition</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">setAttributeDefinition</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">setAttributeDefinition</span><span class="p">(</span><span class="n">contact</span><span class="p">)</span>
+
+<span class="c1"># This line is not strictly necessary, because our</span>
+<span class="c1"># connection operates in autocommit mode.</span>
+<span class="c1"># However, it is important to note that attribute</span>
+<span class="c1"># definitions have to be committed before they can</span>
+<span class="c1"># be used by other sessions.</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>It is possible to retrieve the list of attribute definitions from a
+repository by using the <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getAttributeDefinitions" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getAttributeDefinitions"><code class="xref py py-meth docutils literal"><span class="pre">getAttributeDefinitions()</span></code></a> method:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">conn</span><span class="o">.</span><span class="n">getAttributeDefinitions</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Name: {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Allowed values: {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">)))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Ordered: {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s1">&#39;Y&#39;</span> <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">ordered</span> <span class="k">else</span> <span class="s1">&#39;N&#39;</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Min count: {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">minimum_number</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Max count: {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">maximum_number</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Notice that in cases where the maximum cardinality has not been
+explicitly defined, the server replaced it with a default value. In
+practice this value is high enough to be interpreted as ‘no limit’.</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span> Name: tag
+ Min count: 0
+ Max count: 1152921504606846975
+
+ Name: source
+ Allowed values: sonar, radar, esm, visual
+ Min count: 0
+ Max count: 1152921504606846975
+ Ordered: N
+
+ Name: level
+ Allowed values: low, medium, high
+ Ordered: Y
+ Min count: 1
+ Max count: 1
+
+ Name: contact
+ Min count: 1
+ Max count: 1
+</pre></div>
+</div>
+<p>Attribute definitions can be removed (provided that the attribute is
+not used by the static attribute filter, which will be discussed
+later) by calling <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.deleteAttributeDefinition" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.deleteAttributeDefinition"><code class="xref py py-meth docutils literal"><span class="pre">deleteAttributeDefinition()</span></code></a>:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">deleteAttributeDefinition</span><span class="p">(</span><span class="s1">&#39;tag&#39;</span><span class="p">)</span>
+<span class="n">defs</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">getAttributeDefinitions</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">defs</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>contact, level, source
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-triples-with-attributes">
+<h2>Adding triples with attributes<a class="headerlink" href="#adding-triples-with-attributes" title="Permalink to this headline">¶</a></h2>
+<p>Now that the attribute definitions have been established we can
+demonstrate the process of adding triples with attributes. This can be
+achieved using various methods. A common element of all these methods
+is the way in which triple attributes are represented. In all cases
+dictionaries with attribute names as keys and strings or lists of
+strings as values are used.</p>
+<p>When <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.addTriple" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.addTriple"><code class="xref py py-meth docutils literal"><span class="pre">addTriple()</span></code></a> is used it is possible to pass attributes in a
+keyword parameter, as shown below:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">ex</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">namespace</span><span class="p">(</span><span class="s1">&#39;ex://&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">addTriple</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">S1</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">cls</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">Udaloy</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="s1">&#39;sonar&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;low&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;contact&#39;</span><span class="p">:</span> <span class="s1">&#39;S1&#39;</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.addStatement" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.addStatement"><code class="xref py py-meth docutils literal"><span class="pre">addStatement()</span></code></a> method works in similar way. Note that it is
+not possible to include attributes in the <a class="reference internal" href="../_gen/franz.openrdf.model.html#franz.openrdf.model.Statement" title="franz.openrdf.model.Statement"><code class="xref py py-class docutils literal"><span class="pre">Statement</span></code></a> object
+itself.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.model</span> <span class="kn">import</span> <span class="n">Statement</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">Statement</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">M1</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">cls</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">Zumwalt</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">addStatement</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;sonar&#39;</span><span class="p">,</span> <span class="s1">&#39;esm&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;medium&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;contact&#39;</span><span class="p">:</span> <span class="s1">&#39;M1&#39;</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>When adding multiple triples with <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.addTriples" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.addTriples"><code class="xref py py-meth docutils literal"><span class="pre">addTriples()</span></code></a> one can add a
+fifth element to each tuple to represent attributes. Let us illustrate
+this by adding an aircraft to our dataset.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">addTriples</span><span class="p">(</span>
+    <span class="p">[(</span><span class="n">ex</span><span class="o">.</span><span class="n">R1</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">cls</span><span class="p">,</span> <span class="n">ex</span><span class="p">[</span><span class="s1">&#39;Ka-27&#39;</span><span class="p">],</span> <span class="bp">None</span><span class="p">,</span>
+      <span class="p">{</span><span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="s1">&#39;radar&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;low&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;contact&#39;</span><span class="p">:</span> <span class="s1">&#39;R1&#39;</span><span class="p">}),</span>
+     <span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">R1</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">altitude</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+      <span class="p">{</span><span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="s1">&#39;radar&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;medium&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;contact&#39;</span><span class="p">:</span> <span class="s1">&#39;R1&#39;</span><span class="p">})])</span>
+</pre></div>
+</div>
+<p>When all or most of the added triples share the same attribute set it
+might be convenient to use the <code class="docutils literal"><span class="pre">attributes</span></code> keyword parameter. This
+provides default values, but is completely ignored for all tuples that
+already contain attributes (the dictionaries are not merged). In the
+example below we add a triple representing an aircraft carrier and a
+few more triples that specify its position. Notice that the first
+triple has a lower security level and multiple sources. The common
+‘contact’ attribute could be used to ensure that all this data will
+remain on a single shard.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">addTriples</span><span class="p">(</span>
+    <span class="p">[(</span><span class="n">ex</span><span class="o">.</span><span class="n">M2</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">cls</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">Kuznetsov</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;sonar&#39;</span><span class="p">,</span> <span class="s1">&#39;radar&#39;</span><span class="p">,</span> <span class="s1">&#39;visual&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;contact&#39;</span><span class="p">:</span> <span class="s1">&#39;M2&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;low&#39;</span><span class="p">,</span>
+     <span class="p">}),</span>
+     <span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">M2</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">pos343</span><span class="p">),</span>
+     <span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">pos343</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="mf">430.0</span><span class="p">),</span>
+     <span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">pos343</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mf">240.0</span><span class="p">)],</span>
+    <span class="n">attributes</span><span class="o">=</span><span class="p">{</span>
+       <span class="s1">&#39;contact&#39;</span><span class="p">:</span> <span class="s1">&#39;M2&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="s1">&#39;radar&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;medium&#39;</span>
+    <span class="p">})</span>
+</pre></div>
+</div>
+<p>Another method of adding triples with attributes is to use the NQX
+file format. This works both with <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.addFile" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.addFile"><code class="xref py py-meth docutils literal"><span class="pre">addFile()</span></code></a> and <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.addData" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.addData"><code class="xref py py-meth docutils literal"><span class="pre">addData()</span></code></a>
+(illustrated below):</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.rio.rdfformat</span> <span class="kn">import</span> <span class="n">RDFFormat</span>
+
+<span class="n">conn</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="nv">&lt;ex://S2&gt;</span><span class="w"> </span><span class="nv">&lt;ex://cls&gt;</span><span class="w"> </span><span class="nv">&lt;ex://Alpha&gt;</span><span class="w"> </span><span class="err">\</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sonar&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;medium&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;contact&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;S2&quot;</span><span class="p">}</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="nv">&lt;ex://S2&gt;</span><span class="w"> </span><span class="nv">&lt;ex://depth&gt;</span><span class="w"> </span><span class="s">&quot;300&quot;</span><span class="w"> </span><span class="err">\</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sonar&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;medium&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;contact&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;S2&quot;</span><span class="p">}</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="nv">&lt;ex://S2&gt;</span><span class="w"> </span><span class="nv">&lt;ex://speed_kn&gt;</span><span class="w"> </span><span class="s">&quot;15.0&quot;</span><span class="w"> </span><span class="err">\</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sonar&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;medium&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;contact&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;S2&quot;</span><span class="p">}</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="s1">&#39;&#39;&#39;</span><span class="p">,</span> <span class="n">rdf_format</span><span class="o">=</span><span class="n">RDFFormat</span><span class="o">.</span><span class="n">NQX</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When importing from a format that does not support attributes, it is
+possible to provide a common set of attribute values with a keyword
+parameter:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.rio.rdfformat</span> <span class="kn">import</span> <span class="n">RDFFormat</span>
+
+<span class="n">conn</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="nv">&lt;ex://V1&gt;</span><span class="w"> </span><span class="nv">&lt;ex://cls&gt;</span><span class="w"> </span><span class="nv">&lt;ex://Walrus&gt;</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">              </span><span class="nv">&lt;ex://altitude&gt;</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">              </span><span class="nv">&lt;ex://speed_kn&gt;</span><span class="w"> </span><span class="mf">12.0e+8</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="nv">&lt;ex://V2&gt;</span><span class="w"> </span><span class="nv">&lt;ex://cls&gt;</span><span class="w"> </span><span class="nv">&lt;ex://Walrus&gt;</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">              </span><span class="nv">&lt;ex://altitude&gt;</span><span class="w"> </span><span class="mi">200</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">              </span><span class="nv">&lt;ex://speed_kn&gt;</span><span class="w"> </span><span class="mf">12.0e+8</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="nv">&lt;ex://V3&gt;</span><span class="w"> </span><span class="nv">&lt;ex://cls&gt;</span><span class="w"> </span><span class="nv">&lt;ex://Walrus&gt;</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">              </span><span class="nv">&lt;ex://altitude&gt;</span><span class="w"> </span><span class="mi">300</span><span class="p">;</span><span class="w"></span>
+<span class="w">              </span><span class="nv">&lt;ex://speed_kn&gt;</span><span class="w"> </span><span class="mf">12.0e+8</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="nv">&lt;ex://V4&gt;</span><span class="w"> </span><span class="nv">&lt;ex://cls&gt;</span><span class="w"> </span><span class="nv">&lt;ex://Walrus&gt;</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">              </span><span class="nv">&lt;ex://altitude&gt;</span><span class="w"> </span><span class="mi">400</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">              </span><span class="nv">&lt;ex://speed_kn&gt;</span><span class="w"> </span><span class="mf">12.0e+8</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="nv">&lt;ex://V5&gt;</span><span class="w"> </span><span class="nv">&lt;ex://cls&gt;</span><span class="w"> </span><span class="nv">&lt;ex://Walrus&gt;</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">              </span><span class="nv">&lt;ex://altitude&gt;</span><span class="w"> </span><span class="mi">500</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">              </span><span class="nv">&lt;ex://speed_kn&gt;</span><span class="w"> </span><span class="mf">12.0e+8</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="nv">&lt;ex://V6&gt;</span><span class="w"> </span><span class="nv">&lt;ex://cls&gt;</span><span class="w"> </span><span class="nv">&lt;ex://Walrus&gt;</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">              </span><span class="nv">&lt;ex://altitude&gt;</span><span class="w"> </span><span class="mi">600</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">              </span><span class="nv">&lt;ex://speed_kn&gt;</span><span class="w"> </span><span class="mf">12.0e+8</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="s1">&#39;&#39;&#39;</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="s1">&#39;visual&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;high&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;contact&#39;</span><span class="p">:</span> <span class="s1">&#39;a therapist&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>The data above represents six visually observed Walrus-class
+submarines, flying at different altitudes and well above the speed of
+light. It has been highly classified to conceal the fact that someone
+has clearly been drinking while on duty - after all there are only
+four Walrus-class submarines currently in service, so the observation
+is obviously incorrect.</p>
+</div>
+<div class="section" id="retrieving-attribute-values">
+<h2>Retrieving attribute values<a class="headerlink" href="#retrieving-attribute-values" title="Permalink to this headline">¶</a></h2>
+<p>We will now print all the data we have added to the store, including
+attributes, to verify that everything worked as expected.  The only
+way to do that is through a SPARQL query using the appropriate
+<a class="reference external" href="https://franz.com/ns/allegrograph/6.2.0/attributes">magic property</a> to access the attributes. The query below binds
+a literal containing a JSON representation of triple attributes to
+the <cite>?a</cite> variable:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span><span class="s2">&#39;&#39;&#39;</span>
+   <span class="k">PREFIX</span> <span class="nn">attr</span><span class="p">:</span> <span class="nl">&lt;http://franz.com/ns/allegrograph/6.2.0/&gt;</span>
+   <span class="k">SELECT</span> <span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span> <span class="nv">?a</span> <span class="p">{</span>
+       <span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span> <span class="p">.</span>
+       <span class="nv">?a</span> <span class="nn">attr</span><span class="p">:</span><span class="nt">attributes</span> <span class="p">(</span><span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span><span class="p">)</span> <span class="p">.</span>
+   <span class="p">}</span> <span class="k">ORDER BY</span> <span class="nv">?s</span> <span class="nv">?p</span> <span class="nv">?o</span><span class="s1">&#39;&#39;&#39;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">r</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">])</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">label</span><span class="p">),</span>
+                         <span class="n">sort_keys</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                         <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The result contains all the expected triples with pretty-printed
+attributes.</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>&lt;ex://M1&gt; &lt;ex://cls&gt; &lt;ex://Zumwalt&gt;
+{
+    &quot;contact&quot;: &quot;M1&quot;,
+    &quot;level&quot;: &quot;medium&quot;,
+    &quot;source&quot;: [
+        &quot;esm&quot;,
+        &quot;sonar&quot;
+    ]
+}
+&lt;ex://M2&gt; &lt;ex://cls&gt; &lt;ex://Kuznetsov&gt;
+{
+    &quot;contact&quot;: &quot;M2&quot;,
+    &quot;level&quot;: &quot;low&quot;,
+    &quot;source&quot;: [
+        &quot;visual&quot;,
+        &quot;radar&quot;,
+        &quot;sonar&quot;
+    ]
+}
+&lt;ex://M2&gt; &lt;ex://position&gt; &lt;ex://pos343&gt;
+{
+    &quot;contact&quot;: &quot;M2&quot;,
+    &quot;level&quot;: &quot;medium&quot;,
+    &quot;source&quot;: &quot;radar&quot;
+}
+&lt;ex://R1&gt; &lt;ex://altitude&gt; &quot;200&quot;^^...
+{
+    &quot;contact&quot;: &quot;R1&quot;,
+    &quot;level&quot;: &quot;medium&quot;,
+    &quot;source&quot;: &quot;radar&quot;
+}
+&lt;ex://R1&gt; &lt;ex://cls&gt; &lt;ex://Ka-27&gt;
+{
+    &quot;contact&quot;: &quot;R1&quot;,
+    &quot;level&quot;: &quot;low&quot;,
+    &quot;source&quot;: &quot;radar&quot;
+}
+&lt;ex://S1&gt; &lt;ex://cls&gt; &lt;ex://Udaloy&gt;
+{
+    &quot;contact&quot;: &quot;S1&quot;,
+    &quot;level&quot;: &quot;low&quot;,
+    &quot;source&quot;: &quot;sonar&quot;
+}
+&lt;ex://S2&gt; &lt;ex://cls&gt; &lt;ex://Alpha&gt;
+{
+    &quot;contact&quot;: &quot;S2&quot;,
+    &quot;level&quot;: &quot;medium&quot;,
+    &quot;source&quot;: &quot;sonar&quot;
+}
+&lt;ex://S2&gt; &lt;ex://depth&gt; &quot;300&quot;
+{
+    &quot;contact&quot;: &quot;S2&quot;,
+    &quot;level&quot;: &quot;medium&quot;,
+    &quot;source&quot;: &quot;sonar&quot;
+}
+&lt;ex://S2&gt; &lt;ex://speed_kn&gt; &quot;15.0&quot;
+{
+    &quot;contact&quot;: &quot;S2&quot;,
+    &quot;level&quot;: &quot;medium&quot;,
+    &quot;source&quot;: &quot;sonar&quot;
+}
+&lt;ex://V1&gt; &lt;ex://altitude&gt; &quot;100&quot;^^...
+{
+    &quot;contact&quot;: &quot;a therapist&quot;,
+    &quot;level&quot;: &quot;high&quot;,
+    &quot;source&quot;: &quot;visual&quot;
+}
+&lt;ex://V1&gt; &lt;ex://cls&gt; &lt;ex://Walrus&gt;
+{
+    &quot;contact&quot;: &quot;a therapist&quot;,
+    &quot;level&quot;: &quot;high&quot;,
+    &quot;source&quot;: &quot;visual&quot;
+}
+&lt;ex://V1&gt; &lt;ex://speed_kn&gt; &quot;1.2E9&quot;^^...
+{
+    &quot;contact&quot;: &quot;a therapist&quot;,
+    &quot;level&quot;: &quot;high&quot;,
+    &quot;source&quot;: &quot;visual&quot;
+}
+...
+&lt;ex://pos343&gt; &lt;ex://x&gt; &quot;4.3E2&quot;^^...
+{
+    &quot;contact&quot;: &quot;M2&quot;,
+    &quot;level&quot;: &quot;medium&quot;,
+    &quot;source&quot;: &quot;radar&quot;
+}
+&lt;ex://pos343&gt; &lt;ex://y&gt; &quot;2.4E2&quot;^^...
+{
+    &quot;contact&quot;: &quot;M2&quot;,
+    &quot;level&quot;: &quot;medium&quot;,
+    &quot;source&quot;: &quot;radar&quot;
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="attribute-filters">
+<h2>Attribute filters<a class="headerlink" href="#attribute-filters" title="Permalink to this headline">¶</a></h2>
+<p>Triple attributes can be used to provide fine-grained access
+control. This can be achieved by using <a class="reference external" href="https://franz.com/agraph/support/documentation/current/triple-attributes.html#static-filters">static attribute filters</a>.</p>
+<p>Static attribute filters are simple expressions that control which
+triples are visible to a query based on triple attributes. Each
+repository has a single, global attribute filter that can be modified
+using <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.setAttributeFilter" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.setAttributeFilter"><code class="xref py py-meth docutils literal"><span class="pre">setAttributeFilter()</span></code></a>. The values passed to this method
+must be either strings (the syntax is described in the documentation
+of <a class="reference external" href="https://franz.com/agraph/support/documentation/current/triple-attributes.html#static-filters">static attribute filters</a>) or filter objects.</p>
+<p>Filter objects are created by applying set operators to ‘attribute
+sets’. These can then be combined using filter operators.</p>
+<p>An attribute set can be one of the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li>a string or a list of strings: represents a constant set of
+values.</li>
+<li><cite>TripleAttribute.name</cite>: represents the value of the <cite>name</cite>
+attribute associated with the currently inspected triple.</li>
+<li><cite>UserAttribute.name</cite>: represents the value of the <cite>name</cite>
+attribute associated with current query. User attributes will be
+discussed in more detail later.</li>
+</ul>
+</div></blockquote>
+<p>Available set operators are shown in the table below. All classes
+and functions mentioned here can be imported from the
+<code class="docutils literal"><span class="pre">franz.openrdf.repository.attributes</span></code> package:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="46%" />
+<col width="54%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Syntax</th>
+<th class="head">Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Empty(x)</span></code></td>
+<td>True if the specified attribute set
+is empty.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">Overlap(x,</span> <span class="pre">y)</span></code></td>
+<td>True if there is at least one
+matching value between the two
+attribute sets.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Subset(x,</span> <span class="pre">y)</span></code>, <code class="docutils literal"><span class="pre">x</span> <span class="pre">&lt;&lt;</span> <span class="pre">y</span></code></td>
+<td>True if every element of <cite>x</cite> can be
+found in <cite>y</cite></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">Superset(x,</span> <span class="pre">y)</span></code>, <code class="docutils literal"><span class="pre">x</span> <span class="pre">&gt;&gt;</span> <span class="pre">y</span></code></td>
+<td>True if every element of <cite>y</cite> can be
+found in <cite>x</cite></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Equal(x,</span> <span class="pre">y)</span></code>, <code class="docutils literal"><span class="pre">x</span> <span class="pre">==</span> <span class="pre">y</span></code></td>
+<td>True if <cite>x</cite> and <cite>y</cite> have exactly
+the same contents.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">Lt(x,</span> <span class="pre">y)</span></code>, <code class="docutils literal"><span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">y</span></code></td>
+<td>True if both sets are singletons,
+at least one of the sets refers to
+a triple or user attribute,
+the attribute is ordered and the
+value of the single element of <cite>x</cite>
+occurs before the single value of
+<cite>y</cite> in the <code class="docutils literal"><span class="pre">lowed_values</span></code> list of
+the attribute.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Le(x,</span> <span class="pre">y)</span></code>, <code class="docutils literal"><span class="pre">x</span> <span class="pre">&lt;=</span> <span class="pre">y</span></code></td>
+<td>True if <cite>y &lt; x</cite> is false.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">Eq(x,</span> <span class="pre">y)</span></code></td>
+<td>True if both <cite>x &lt; y</cite> and <cite>y &lt; x</cite>
+are false. Note that using the <cite>==</cite>
+Python operator translates to
+<cite>Eqauls</cite>, not <cite>Eq</cite>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Ge(x,</span> <span class="pre">y)</span></code>, <code class="docutils literal"><span class="pre">x</span> <span class="pre">&gt;=</span> <span class="pre">y</span></code></td>
+<td>True if <cite>x &lt; y</cite> is false.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">Gt(x,</span> <span class="pre">y)</span></code>, <code class="docutils literal"><span class="pre">x</span> <span class="pre">&gt;</span> <span class="pre">y</span></code></td>
+<td>True if <cite>y &lt; x</cite>.</td>
+</tr>
+</tbody>
+</table>
+<p>Note that the overloaded operators only work if at least one of the
+attribute sets is a <code class="docutils literal"><span class="pre">UserAttribute</span></code> or <code class="docutils literal"><span class="pre">TripleAttribute</span></code>
+reference - if both arguments are strings or lists of strings the
+default Python semantics for each operator are used. The prefix syntax
+always produces filters.</p>
+<p>Filters can be combined using the following operators:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="46%" />
+<col width="54%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Syntax</th>
+<th class="head">Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Not(x)</span></code>, <code class="docutils literal"><span class="pre">~x</span></code></td>
+<td>Negates the meaning of the filter.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">And(x,</span> <span class="pre">y,</span> <span class="pre">...)</span></code>, <code class="docutils literal"><span class="pre">x</span> <span class="pre">&amp;</span> <span class="pre">y</span></code></td>
+<td>True if all subfilters are true.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Or(x,</span> <span class="pre">y,</span> <span class="pre">...)</span></code>, <code class="docutils literal"><span class="pre">x</span> <span class="pre">|</span> <span class="pre">y</span></code></td>
+<td>True if at least one subfilter
+is true.</td>
+</tr>
+</tbody>
+</table>
+<p>Filter operators also work with raw strings, but overloaded operators
+will only be recognized if at least one argument is a filter object.</p>
+</div>
+<div class="section" id="using-filters-and-user-attributes">
+<h2>Using filters and user attributes<a class="headerlink" href="#using-filters-and-user-attributes" title="Permalink to this headline">¶</a></h2>
+<p>The example below displays all classes of vessels from the dataset
+after establishing a static attribute filter which ensures that only
+sonar contacts are visible:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.repository.attributes</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">conn</span><span class="o">.</span><span class="n">setAttributeFilter</span><span class="p">(</span><span class="n">TripleAttribute</span><span class="o">.</span><span class="n">source</span> <span class="o">&gt;&gt;</span> <span class="s1">&#39;sonar&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span>
+    <span class="s1">&#39;</span><span class="k">select</span> <span class="nv">?class</span> <span class="p">{</span> <span class="nv">?s</span> <span class="nl">&lt;ex://cls&gt;</span> <span class="nv">?class</span> <span class="p">}</span> <span class="k">order by</span> <span class="nv">?class</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output contains neither the visually observed Walruses nor the
+radar detected ASW helicopter.</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>------------------
+| class          |
+==================
+| ex://Alpha     |
+| ex://Kuznetsov |
+| ex://Udaloy    |
+| ex://Zumwalt   |
+------------------
+</pre></div>
+</div>
+<p>To avoid having to set a static filter before each query (which would
+be inefficient and cause concurrency issues) we can employ user
+attributes.  User attributes are specific to a particular connection
+and are sent to the server with each query. The static attribute
+filter can refer to these and compare them with triple
+attributes. Thus we can use code presented below to create a filter
+which ensures that a connection only accesses data at or below the
+chosen clearance level.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">setUserAttributes</span><span class="p">({</span><span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;low&#39;</span><span class="p">})</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">setAttributeFilter</span><span class="p">(</span>
+    <span class="n">TripleAttribute</span><span class="o">.</span><span class="n">level</span> <span class="o">&lt;=</span> <span class="n">UserAttribute</span><span class="o">.</span><span class="n">level</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executeTupleQuery</span><span class="p">(</span>
+    <span class="s1">&#39;</span><span class="k">select</span> <span class="nv">?class</span> <span class="p">{</span> <span class="nv">?s</span> <span class="nl">&lt;ex://cls&gt;</span> <span class="nv">?class</span> <span class="p">}</span> <span class="k">order by</span> <span class="nv">?class</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can see that the output here contains only contacts with the access
+level of <cite>low</cite>. It omits the destroyer and Alpha submarine (these
+require <cite>medium</cite> level) as well as the top-secret Walruses.</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>------------------
+| class          |
+==================
+| ex://Ka-27     |
+| ex://Kuznetsov |
+| ex://Udaloy    |
+------------------
+</pre></div>
+</div>
+<p>The main advantage of the code presented above is that the filter can be
+set globally during the application setup and access control can then
+be achieved by varying user attributes on connection objects.</p>
+<p>Let us now remove the attribute filter to prevent it from interfering with other examples. We will use the <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.clearAttributeFilter" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.clearAttributeFilter"><code class="xref py py-meth docutils literal"><span class="pre">clearAttributeFilter()</span></code></a> method.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">clearAttributeFilter</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>It might be useful to change connection’s attributes temporarily for
+the duration of a single code block and restore prior attributes after
+that. This can be achieved using the <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.temporaryUserAttributes" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.temporaryUserAttributes"><code class="xref py py-meth docutils literal"><span class="pre">temporaryUserAttributes()</span></code></a>
+method, which returns a context manager. The example below illustrates
+its use. It also shows how to use <a class="reference internal" href="../_gen/franz.openrdf.repository.html#franz.openrdf.repository.repositoryconnection.RepositoryConnection.getUserAttributes" title="franz.openrdf.repository.repositoryconnection.RepositoryConnection.getUserAttributes"><code class="xref py py-meth docutils literal"><span class="pre">getUserAttributes()</span></code></a> to
+inspect user attributes.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">temporaryUserAttributes</span><span class="p">({</span><span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;high&#39;</span><span class="p">}):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;User attributes inside the block:&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">conn</span><span class="o">.</span><span class="n">getUserAttributes</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;{0}: {1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;User attributes outside the block:&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">conn</span><span class="o">.</span><span class="n">getUserAttributes</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;{0}: {1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>User attributes inside the block:
+level: high
+
+User attributes outside the block:
+level: low
+</pre></div>
+</div>
+</div>
+</div>
+
+
+  
+    <div class="nav-links nav-links-footer">
+        &laquo;<a href="example016.html" title="previous chapter">Example 16: Federated repositories</a>
+      <a href="example018.html" title="next chapter">Example 18: Pandas support</a> 
+      &raquo;
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#setting-the-environment-for-the-tutorial">Setting the environment for the tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#terminology">Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#creating-users-with-webview">Creating Users with WebView</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example001.html">Example 1: Creating a repository and triple indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example002.html">Example 2: Asserting and retracting triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example003.html">Example 3: A SPARQL query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example004.html">Example 4: Statement matching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example005.html">Example 5: Literal values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example006.html">Example 6: Importing triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example007.html">Example 7: Querying multiple contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example008.html">Example 8: Exporting triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example009.html">Example 9: Exporting query results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example010.html">Example 10: Graphs in SPARQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example011.html">Example 11: Namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example012.html">Example 12: Free Text indexing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example013.html">Example 13: SPARQL query forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example014.html">Example 14: Parametric queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example015.html">Example 15: Range queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example016.html">Example 16: Federated repositories</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Example 17: Triple attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example018.html">Example 18: Pandas support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fedex.html">Running AG on AWS EC2</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../tutorial.html">Tutorial</a><ul>
+      <li>Previous: <a href="example016.html" title="previous chapter">Example 16: Federated repositories</a></li>
+      <li>Next: <a href="example018.html" title="next chapter">Example 18: Pandas support</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/tutorial/example017.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Integrating AllegroGraph with MongoDB</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="mongo-interface"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>Interfacing with MongoDB</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-11' title='Interfacing with MongoDB'>Interfacing with MongoDB</a>
+<ul>
+<li><a href='#header3-17' title='Installing MongoDB'>Installing MongoDB</a></li>
+<li><a href='#header3-20' title='Synchronizing MongoDB data with AllegroGraph'>Synchronizing MongoDB data with AllegroGraph</a></li></ul></li>
+<li><a href='#header2-28' title='Configuring AllegroGraph with MongoDB connection settings'>Configuring AllegroGraph with MongoDB connection settings</a>
+<ul>
+<li><a href='#header3-29' title='MongoDB connection settings'>MongoDB connection settings</a>
+<ul>
+<li><a href='#header4-36' title='The AGWebView interface'>The AGWebView interface</a></li>
+<li><a href='#header4-41' title='The HTTP interface'>The HTTP interface</a></li>
+<li><a href='#header4-43' title='The Lisp interface'>The Lisp interface</a></li></ul></li></ul></li>
+<li><a href='#header2-47' title='MongoDB and SPARQL 1.1'>MongoDB and SPARQL 1.1</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>AllegroGraph has implemented extensions allowing users to query <a href="http://www.mongodb.org/">MongoDB</a> databases using SPARQL and to execute heterogeneous joins, even though <a href="http://www.mongodb.org/">MongoDB</a>, a NoSQL JSON document store, does not natively support joins, SPARQL or RDF-enabled linked data. </p><p>In this document, we describe how to configure AllegroGraph and MongoDB to work together. </p><a name='header2-11' id='header2-11'></a><h2>Interfacing with MongoDB</h2><p>The steps for using MongoDB with AllegroGraph are: </p>
+<ul>
+<li>Installing MongoDB</li>
+<li>Synchronizing MongoDB data with AllegroGraph data</li>
+<li>Configuring AllegroGraph with MongoDB connection settings</li></ul><p>Please note that populating and maintaining the MongoDB database is separate from adding or deleting triples from the AllegroGraph triple-store.  Adding or deleting data from one does not automatically synchronize with the other. </p><a name='header3-17' id='header3-17'></a><h3>Installing MongoDB</h3><p>MongoDB is not a Franz Inc. product. Setting up and maintaining a MongoDB database is a separate task and must be accomplished outside of AllegroGraph. See the <a href="http://www.mongodb.org/">MongoDB</a> website for details. </p><p><strong>In the rest of this document, we assume you have the MongoDB server installed and running on a computer you can access.</strong> </p><a name='header3-20' id='header3-20'></a><h3>Synchronizing MongoDB data with AllegroGraph</h3><p>You must link AllegroGraph data and MongoDB data referring to the same object. Use the MongoDB <a href="http://docs.mongodb.org/manual/reference/glossary/#term-id" title="ID" class="external" target="_blank"><code>_id</code></a> field as the linking variable between the two databases. That value is typically an ObjectId but that is not a requirement. This means that you need to add a triple like (for example) </p>
+<pre><code>    ex:subject1001 &lt;http://www.franz.com/hasMongoId&gt; 4561 </code></pre><p>where <code>4561</code> is the unique MongoDB id for the document associated with <code>ex:subject1001</code> in the triple-store. The datatype of that triple's object is significant and will depend on the datatype you use for the <code>id</code>s in you MongoDB documents. Use the following RDF datatypes for each <code>id</code> type in MongoDB: </p>
+<ul>
+<li><a href="http://docs.mongodb.org/manual/reference/object-id/" title="Object ID" class="external" target="_blank">ObjectId</a> -   use a plain literal whose value is the hexadecimal string representation   of the ObjectId, </li>
+<li>Integer - use a datatype of <code>xsd:Long</code></li>
+<li>Numeric (non-integer) - use a datatype of <code>xsd:Double</code></li>
+<li>Anything else - use a plain literal</li></ul><a name='header2-28' id='header2-28'></a><h2>Configuring AllegroGraph with MongoDB connection settings</h2><a name='header3-29' id='header3-29'></a><h3>MongoDB connection settings</h3>
+<ol>
+<li><p>The server where MongoDB is running </p></li>
+<li><p>The port on which MongoDB is listening </p></li>
+<li><p>The name of the database you are using </p></li>
+<li><p>The name of the MongoDB collection you are using </p></li>
+<li><p>(Optional unless you are using authentication) the username and  password that will let you connect to the database </p></li></ol><p>These parameters can be set using AGWebView, the HTTP interface, or the Lisp interface, as we describe below in this document. </p><a name='header4-36' id='header4-36'></a><h4>The AGWebView interface</h4><p><a href="http://franz.com/agraph/agwebview/index.lhtml" target="_blank">AGWebView</a> is the browser-based interface to AllegroGraph. To use it with MongoDB, go to <a href="agwebview.html#RepositoryOverviewPage">the Repository Overview page</a> and click on the link under <strong>Store Control</strong> which says <code>Manage external MongoDB connection</code> (indicated by a red arrow): </p><p><img src="wv-repo.png" alt="WebView link to MongoDB"></img> </p><p>On the linked page, you can set the necessary MongoDB parameters. </p><p><img src="wv-mongo-interface.png" alt="WebView Mongo page"></img> </p><a name='header4-41' id='header4-41'></a><h4>The HTTP interface</h4><p>The AllegroGraph HTTP Protocol supports <a href="http-protocol.html#get-mongoParameters">GET mongoParameters</a> and <a href="http-protocol.html#post-mongoParameters">POST mongoParameters</a>. See <a href="http-protocol.html">The HTTP Protocol</a>. </p><a name='header4-43' id='header4-43'></a><h4>The Lisp interface</h4><p>Use these Lisp functions to get and set these parameters: </p>
+<a name="function.get-mongo-parameters" id="function.get-mongo-parameters"></a>
+<a name="get-mongo-parameters" id="get-mongo-parameters"></a>
+<div class="documentation function"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">get-mongo-parameters</span>
+<span class="documentation-arguments"><span class="marker">&amp;key</span> &nbsp;<span class="argument">db</span></span>
+</div>
+<span class="documentation-kind">function</span>
+</div>
+<div class="documentation contents"><p>Returns the current Mongo connection parameters in a property list. </p><p>Currently it contains these items: </p>
+<ul>
+<li><code>:server</code> - The server name where MongoDB is running</li>
+<li><code>:port</code> - The port to use to communicate with MongoDB</li>
+<li><code>:database-name</code> - The name of the database to use when querying MongoDB</li>
+<li><code>:collection-name</code> - The name of the collection to use when querying MongoDB</li>
+<li><code>:user</code> - Used to authenticate to the Mongo DB server</li></ul><p>Note, the :password from set-mongo-parameters is not returned. </p>
+</div>
+</div>
+  
+<a name="function.set-mongo-parameters" id="function.set-mongo-parameters"></a>
+<a name="set-mongo-parameters" id="set-mongo-parameters"></a>
+<div class="documentation function"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">set-mongo-parameters</span>
+<span class="documentation-arguments"><span class="marker">&amp;rest</span> &nbsp;<span class="argument">args</span> &nbsp;<span class="marker">&amp;key</span> &nbsp;<span class="argument">db</span> &nbsp;<span class="argument">port</span> &nbsp;<span class="argument">server</span> &nbsp;<span class="argument">database-name</span> &nbsp;<span class="argument">collection-name</span> &nbsp;<span class="argument">user</span> &nbsp;<span class="argument">password</span></span>
+</div>
+<span class="documentation-kind">function</span>
+</div>
+<div class="documentation contents"><p>Set MongoDB connection parameters. </p><p>You can set any combination of: </p>
+<ul>
+<li><code>:server</code></li>
+<li><code>:port</code></li>
+<li><code>:database-name</code></li>
+<li><code>:collection-name</code> - required to be non-empty</li>
+<li><code>:user</code> - optional</li>
+<li><code>:password</code> - optional</li></ul>
+</div>
+</div>
+  <a name='header2-47' id='header2-47'></a><h2>MongoDB and SPARQL 1.1</h2><p>Once you have a MongoDB database set up and running and have added the linking triples to its associated AllegroGraph triple-store, you can query it using the SPARQL 1.1 query engine. </p><p>To query MongoDB with SPARQL, use the following <a href="magic-properties.html">magic predicate</a> (note /4.7/ rather than the current release number -- the initial release for the interface is used and not updated so code does not have to be changed when you upgrade to a later release): </p>
+<pre><code>&lt;http://franz.com/ns/allegrograph/4.7/mongo/find&gt; </code></pre><p>As MongoDB is a JSON-style document store, it is also queried using a JSON-style notation. Given the following data in MongoDB: </p>
+<pre><code>{ _id: "1",  
+  Name: "Finn",  
+  Occupation: "Great Hero",  
+  Alignment: "Good" }  
+{ _id: "2",  
+  Name: "Jake",  
+  Occupation: "Best Friend",  
+  Alignment: "Good" }  
+{ _id: "3",  
+  Name: "Ice King",  
+  Occupation: "King",  
+  Alignment: "Bad" }  
+{ _id: "4",  
+  Name: "Gunter",  
+  Occupation: "Servant",  
+  Alignment: "Bad" } </code></pre><p>and the following linking triples in AllegroGraph
+<a name="fnr0-2018-06-08" id="fnr0-2018-06-08"></a>
+<sup><a href="#fn0-2018-06-08">1</a></sup> : </p>
+<pre><code>@prefix f: &lt;http://www.franz.com/&gt; .  
+@prefix id: &lt;http://www.example.com/id#&gt; .  
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .  
+ 
+id:subject1 f:hasMongoId "1" ;  
+            f:likes id:subject3 ;  
+            f:likes id:subject2 .  
+ 
+id:subject2 f:hasMongoId "2" .  
+id:subject3 f:hasMongoId "3" .  
+id:subject4 f:hasMongoId "4" . </code></pre><p>A query which finds people with Good Alignment who like people with Bad Alignment would look like: </p>
+<pre><code>prefix mongo: &lt;http://franz.com/ns/allegrograph/4.7/mongo/&gt;  
+prefix f: &lt;http://www.franz.com/&gt;  
+select ?good ?bad {  
+  ?good mongo:find '{ Alignment: "Good" }' .  
+  ?bad mongo:find '{ Alignment: Bad" }' .  
+  ?good f:likes ?bad .  
+} </code></pre><p>which returns </p>
+<pre><code>?good     ?bad  
+==================  
+subject1  subject3  
+</code></pre><hr/><div id="footnotes"> <h2>Footnotes</h2>
+<div class="footnotes">
+<ol>
+<li>
+<a name="fn0-2018-06-08" id="fn0-2018-06-08"></a>
+Note that both the <code>ObjectID</code>s in MongoDB and the objects of the linking triples use plain literals. <a href="#fnr0-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 1 in the text">&#8617;</a></li>
+</ol>
+</div>  </div>  </div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

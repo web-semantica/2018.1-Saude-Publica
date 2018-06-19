@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Lisp Freetext Indexing Tutorial | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="freetext-lisp-tutorial"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>      <h1>AllegroGraph 6.4.2 Freetext Indexing Tutorial</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-9' title='Setting Up'>Setting Up</a></li>
+<li><a href='#header2-14' title='Basic Queries'>Basic Queries</a></li>
+<li><a href='#header2-23' title='Wild-card and Fuzzy Matching'>Wild-card and Fuzzy Matching</a></li>
+<li><a href='#header2-28' title='Indexing By Predicate'>Indexing By Predicate</a></li>
+<li><a href='#header2-35' title='Ignored Words'>Ignored Words</a></li>
+<li><a href='#header2-40' title='Indexing Subject, Predicate, and Graph Fields'>Indexing Subject, Predicate, and Graph Fields</a></li>
+<li><a href='#header2-47' title='Searching from SPARQL'>Searching from SPARQL</a></li>
+<li><a href='#header2-51' title='Textual Query Syntax'>Textual Query Syntax</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <p>As in the other tutorials, you should read this while running an interactive Lisp session. The forms should be evaluated one after another from the top of the tutorial to the bottom. </p><p>Freetext indices provide a way to quickly retrieve triples containing a given word, allowing queries similar to those understood by Web search engines. </p><a name='header2-9' id='header2-9'></a><h2>Setting Up</h2><p>We start by creating a triple store with a text index: </p>
+<pre><code>&gt; (create-triple-store "fti")  
+&gt; (create-freetext-index "index1") </code></pre><p>And add a few triples: </p>
+<pre><code>&gt; (enable-!-reader)  
+&gt; (register-namespace "ex" "http://franz.com/example#")  
+&gt; (add-triple !ex:Nietzsche !ex:quote  
+              !"We have art in order not to die of the truth.")  
+&gt; (add-triple !ex:Picasso !ex:quote  
+              !"Art is the lie that enables us to realize the truth.")  
+&gt; (add-triple !ex:Wilde !ex:quote !"All art is quite useless.") </code></pre><a name='header2-14' id='header2-14'></a><h2>Basic Queries</h2><p>The words in the subjects of each of these triples are indexed. We can now use <a href="lisp-reference.html#freetext-get-triples" title="description of freetext-get-triples">freetext-get-triples</a> to query them. This function returns a cursor, from which we just collect the subjects: </p>
+<pre><code>&gt; (collect-cursor (freetext-get-triples "art") :transform 'subject)  
+({Nietzsche} {Picasso} {Wilde}) </code></pre><p>Here, the query is simply <code>"art"</code>. The index is case-insensitive, so the triple where the word 'art' is capitalized is also found, and a query of <code>"ART"</code> would have returned the same results. </p><p>More complicated queries can be made by combining queries with boolean operators: </p>
+<pre><code>&gt; (collect-cursor (freetext-get-triples '(and "art" "truth"))  
+                  :transform 'subject)  
+({Nietzsche} {Picasso})  
+&gt; (collect-cursor (freetext-get-triples '(or "useless" "die"))  
+                  :transform 'subject)  
+({Nietzsche} {Wilde}) </code></pre><p>To match an exact phrase, a query can use the <code>phrase</code> operator, as in: </p>
+<pre><code>&gt; (collect-cursor (freetext-get-triples '(phrase "art is"))  
+                  :transform 'subject)  
+({Picasso} {Wilde}) </code></pre><p>Note that <code>and</code> and <code>or</code> allow any kind of query to appear as their argument, so <code>(and (phrase "art is") "truth")</code> is a valid query. </p><a name='header2-23' id='header2-23'></a><h2>Wild-card and Fuzzy Matching</h2><p>Freetext indices support wild-card matching with the <code>match</code> operator: </p>
+<pre><code>&gt; (collect-cursor (freetext-get-triples '(match "reali?e"))  
+                  :transform 'subject)  
+({Picasso}) </code></pre><p>The string given to <code>match</code> can contain question marks to match single characters, or asterisks to match any number of characters. Be aware that when an asterisk appears early in the string, as in <code>"*tastic"</code>, it is impossible for AllegroGraph to make effective use of the text index, and the query will be slower. </p><p>Another form of non-exact matching can be done with the <code>fuzzy</code> operator. This one matches all words within a given Levenshtein distance (or edit distance) of the given term. The Levenshtein distance between two strings is the amount of edits that have to be made to change the one into the other, where an edit is the insertion or deletion of a single character, or the replacement of a character with another one. <code>(fuzzy "realise" 1)</code> will match <code>realise</code>, <code>realize</code>, <code>realist</code>, and so on. If the distance argument is omitted, one fifth of the word length (rounded up) is used. </p><a name='header2-28' id='header2-28'></a><h2>Indexing By Predicate</h2><p>The <a href="lisp-reference.html#create-freetext-index" title="description of create-freetext-index">create-freetext-index</a> function takes a lot more arguments than just a name. It is, for example, possible to only index triples that have certain predicates: </p>
+<pre><code>&gt; (create-freetext-index "name-index" :predicates (list !ex:name))  
+&gt; (list-freetext-indices)  
+("name-index" "index1") </code></pre><p>This new index will not index the triples with the <code>!ex:quote</code> predicate. But it will index these: </p>
+<pre><code>&gt; (add-triple !ex:Nietzsche !ex:name !"Friedrich Wilhelm Nietzsche")  
+&gt; (add-triple !ex:Picasso !ex:name !"Pablo Diego José Francisco de Paula  
+    Juan Nepomuceno María de los Remedios Cipriano de la Santísima Trinidad  
+    Ruiz y Picasso") </code></pre><p><a href="lisp-reference.html#freetext-get-triples" title="description of freetext-get-triples">freetext-get-triples</a> takes an <code>:index</code> keyword argument that is used to only use a single index. If not given, all existing indices in the store are used. </p>
+<pre><code>&gt; (count-cursor (freetext-get-triples "art"))  
+3  
+&gt; (count-cursor (freetext-get-triples "art" :index "name-index"))  
+0  
+&gt; (count-cursor (freetext-get-triples "Pablo" :index "name-index"))  
+1 </code></pre><a name='header2-35' id='header2-35'></a><h2>Ignored Words</h2><p>Several of our quotes contain the word <code>is</code>, yet when we search for that, we get nothing: </p>
+<pre><code>&gt; (collect-cursor (freetext-get-triples "is") :transform 'subject)  
+() </code></pre><p>To prevent the index from containing useless information, by default all words shorter than three characters are ignored. On top of that, there is a stop-word list, the content of which is also ignored. By default this list contains a number of common English words. If we <em>are</em> interested in short and common words, we can create an index that indexes them: </p>
+<pre><code>&gt; (create-freetext-index "index2" :min-word-size 2 :stop-words ())  
+&gt; (collect-cursor (freetext-get-triples "is") :transform 'subject)  
+({Picasso} {Wilde}) </code></pre><a name='header2-40' id='header2-40'></a><h2>Indexing Subject, Predicate, and Graph Fields</h2><p><a href="lisp-reference.html#create-freetext-index" title="description of create-freetext-index">create-freetext-index</a> also allows control over which part of a triple are indexed. The <code>:index-fields</code> argument defaults to <code>(:object)</code>, meaning only the object is indexed, but may contain any of <code>:subject</code>, <code>:predicate</code>, <code>:object</code>, and <code>:graph</code>. Our subjects and predicates contain resources, not literals, though, and by default those are not indexed. We can set <code>:index-resources</code> to <code>T</code> when creating an index to fix this. Another possible value is <code>:short</code>, which will cause only the part of the resource after the last <code>/</code> or <code>#</code> to be indexed. </p>
+<pre><code>&gt; (create-freetext-index "sp-index"  
+                         :index-fields '(:subject :predicate)  
+                         :index-resources :short)  
+&gt; (collect-triples (freetext-get-triples "Nietzsche" :index "sp-index"))  
+(&lt;Nietzsche quote We have art in order not to die of the truth.&gt;  
+ &lt;Nietzsche name Friedrich Wilhelm Nietzsche&gt;) </code></pre><p>A similar setting exists to control the indexing of literals, <code>:index-literals</code>. This defaults to <code>T</code>, causing all literals to be indexed, but can be set to <code>nil</code> to not index literals, or to a list of resources to index only literals with the given types. </p>
+<pre><code>&gt; (create-freetext-index "typed-literals"  
+                         :predicates (list !ex:test)  
+                         :index-literals (list !ex:indexme))  
+&gt; (add-triple !ex:A !ex:test !"hello")  
+&gt; (add-triple !ex:B !ex:test !"hello"^^ex:indexme)  
+&gt; (collect-cursor (freetext-get-triples "hello" :index "typed-literals")  
+                  :transform 'subject)  
+({B}) </code></pre><p>Indices can be deleted at any time with <a href="lisp-reference.html#drop-freetext-index" title="description of drop-freetext-index">drop-freetext-index</a>: </p>
+<pre><code>&gt; (drop-freetext-index "typed-literals")  
+&gt; (list-freetext-indices)  
+("sp-index" "name-index" "index1") </code></pre><a name='header2-47' id='header2-47'></a><h2>Searching from SPARQL</h2><p>The AllegroGraph SPARQL engine defines a 'magic' predicate <code>&lt;http://franz.com/ns/allegrograph/2.2/textindex/match&gt;</code>, which can be used to generate bindings for the subjects of triples that match a given freetext query. </p>
+<pre><code>&gt; (sparql:run-sparql   
+   "PREFIX fti: &lt;http://franz.com/ns/allegrograph/2.2/textindex/&gt;   
+    SELECT ?x WHERE { ?x fti:match 'remedios' }"  
+   :results-format :lists)  
+(({Picasso}))  
+:select  
+(?x) </code></pre><p>This matches only <code>ex:Picasso</code> because the only triple in which <code>"remedios"</code> occurs is Picasso's name. </p><a name='header2-51' id='header2-51'></a><h2>Textual Query Syntax</h2><p>To express more complicated queries, the <code>fti:match</code> predicate understands a simple language, where multiple words mean <code>and</code>, and a pipe character means <code>or</code>. </p>
+<pre><code>&gt; (sparql:run-sparql   
+   "PREFIX fti: &lt;http://franz.com/ns/allegrograph/2.2/textindex/&gt;   
+    SELECT ?x WHERE { ?x fti:match '(art | truth) useless' }"  
+   :results-format :lists)  
+(({Wilde}))  
+:select  
+(?x) </code></pre><p>Furthermore, double-quotes around a piece of text can be used to express the <code>phrase</code> operator, which matches only triples that contain the whole phrase. Wild-card matching can be done simply by including question marks and asterisks in words, and fuzzy matching is done by appending a tilde (<code>~</code>) to a word, optionally followed by a maximum edit distance. </p><p>The function <code>ag.text-index:parse-query</code> transforms such a textual query into an S-expression. </p>
+<pre><code>&gt; (ag.text-index:parse-query  
+   "allegro* \"freetext index\" (fuzzy | levenshtein~2)")  
+(:and (:match "allegro*") (:phrase "freetext index")  
+ (:or "fuzzy " (:fuzzy "levenshtein" 2))) </code></pre></div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

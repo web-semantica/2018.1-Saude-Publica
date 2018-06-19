@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Security Implementation | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="security"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>AllegroGraph 6.4.2 Security Implementation</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-19' title='What can a role specify?'>What can a role specify?</a></li>
+<li><a href='#header2-32' title='Implementing security'>Implementing security</a></li>
+<li><a href='#header2-37' title='Classes of roles'>Classes of roles</a></li>
+<li><a href='#header2-43' title='Accessing AllegroGraph'>Accessing AllegroGraph</a></li>
+<li><a href='#header2-46' title='Managing Users'>Managing Users</a>
+<ul>
+<li><a href='#header3-50' title='Initial Superuser'>Initial Superuser</a></li>
+<li><a href='#header3-55' title='Usernames and passwords'>Usernames and passwords</a></li>
+<li><a href='#header3-57' title='User passwords'>User passwords</a></li>
+<li><a href='#header3-62' title='Other restrictions on users'>Other restrictions on users</a></li>
+<li><a href='#header3-67' title='Email notification of certain changes to user status'>Email notification of certain changes to user status</a></li>
+<li><a href='#header3-69' title='Ports Ports '>Ports </a></li>
+<li><a href='#header3-71' title='Issues with transferring passwords over the internet InternetSecurity '>Issues with transferring passwords over the internet </a></li></ul></li>
+<li><a href='#filters' title='Security filters'>Security filters</a>
+<ul>
+<li><a href='#header3-76' title='What threats do triple-level security filters prevent?'>What threats do triple-level security filters prevent?</a></li>
+<li><a href='#header3-79' title='Setting security filters for a user or a role'>Setting security filters for a user or a role</a></li>
+<li><a href='#header3-85' title='Effect of "allowing" or "disallowing" a triple pattern'>Effect of "allowing" or "disallowing" a triple pattern</a></li>
+<li><a href='#header3-90' title='Composing security filters'>Composing security filters</a></li>
+<li><a href='#header3-97' title='Effect of security filters on local stores (security relevant)'>Effect of security filters on local stores (security relevant)</a></li></ul></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>This document describes the security implementation in AllegroGraph. See <a href="security-overview.html">Security Overview</a> for an overview of all security features in AllegroGraph. </p><p>Database security is primarily concerned with protecting the database from unauthorized access. This includes preventing unauthorized people from accessing data in any fashion (reading, adding, or deleting), and preventing authorized persons from doing things they are not authorized to do (preventing, for example, someone authorized only to read data from modifying data). </p><p>AllegroGraph uses industry-leading security features which allow you to protect your databases from unauthorized access and modification. </p><p>It does this by (1) only permitting registered users to access the system, (2) defining <em>roles</em> which grant specific permissions, and (3) assigning each user to one or more roles. </p><p>The distinction between <em>authentication</em> and <em>authorization</em> is important. </p><p><em>Users</em> are <em>authenticated</em> when they access the database by providing a username and password which are known to AllegroGraph or, optionally depending on configuration parameters, when they provide an SSL certificate (see the various configuration options relating to SSL authentication in the <a href="daemon-config.html#TopLevelSSL">Top-level directives for SSL</a> section in the <a href="daemon-config.html">Server Configuration and Control</a> document). </p><p><em>Authorization</em> is an aspect of a <em>role</em>: are users assigned to a role authorized to access, add, or modify specific data? Roles are defined by an administrator, as described below, and users assigned to a role have a specific list of permissions, as we describe below. A user may have more than one role. </p><p>Note that user security depends in part on users keeping their relevant information secure. If someone other than the actual user knows the username and password and has access to other relevant information, the AllegroGraph will not be able to prevent that person from accessing data. There is support for anonymous users. These usually have a single, typically limited role assigned to them </p><p>All administrators and users should note that security is a joint responsibility. AllegroGraph cannot protect against access when passwords are compromised or when people can access the machine running the AllegroGraph server when they should not. </p><p>Administrators can use the tools provided by AllegroGraph along with their own policies and common sense to protect data from unauthorized use and modification and to facilitate authorized users in performing their legitimate tasks. </p><a name='header2-19' id='header2-19'></a><h2>What can a role specify?</h2><p>AllegroGraph administrators can define roles, and assign each user to one or more roles. </p><p>Here is what can be done to an AllegroGraph database: </p>
+<ol>
+<li><p>Triples can be queried. </p></li>
+<li><p>Triples can be added. </p></li>
+<li><p>Triples can be deleted. </p></li>
+<li><p>Configuration parameters can be modified. </p></li></ol><p>If you can modify configuration parameters, then in fact you can do 1-3 as well. In general, only a few roles (typically assigned to users called superusers) should be authorized to do so. </p><p>For 1-3, it is desirable to be able to limit which triples can be accessed.   The limits might be different for querying, adding, or deleting. Suppose, for example, the database contains information about employees at a company. Here are some possible roles and permissions: </p>
+<ul>
+<li><p>Any employee can access other employees name, extension, title, and   supervisor. </p></li>
+<li><p>Employees can choose to allow their personal address and phone   number to be accessed by any employee. </p></li>
+<li><p>People in payroll can view salary data.</p></li>
+<li><p>People in human resources can access and modify all employee   data. They are the only people who can modify data. </p></li></ul><a name='header2-32' id='header2-32'></a><h2>Implementing security</h2><p>Security in AllegroGraph is implemented by: </p>
+<ul>
+<li><p><strong>Defining users</strong>. A user is given a username and a password and   can only access the system using that username and password. Each   user has a set of permissions (from a system-defined list of   available permissions). </p></li>
+<li><p><strong>Defining roles</strong>. A role is a collection of permissions. Roles are   defined to make administration easier and more efficient. One could   achieve the same end result by simply giving each user the   permissions associated with the user's role(s). The permissions are   <em>Superuser</em>, <em>Start sessions</em>, <em>Evaluate arbitrary code</em>, and   <em>Control replication</em>. Further, read, write, or read/write   permission can be set for each catalog and repository. We will   discuss these permissions below. </p></li>
+<li><p><strong>Specifying filters</strong>. A <strong>security filter</strong>, described <a href="#filters">below</a>,   prevents roles or individual users from accessing (both reading and writing)   triples with specified subject, object, predicate, and/or graph. </p></li></ul><a name='header2-37' id='header2-37'></a><h2>Classes of roles</h2><p>Users can be grouped in various ways. Here are some suggested broad categories (these aren't AllegroGraph categories, just ideas about how you might classify your users): </p>
+<ul>
+<li><p><strong>Trusted expert</strong> roles: a trusted expert will usually be given all permissions. The administrator is a trusted expert and others may be as well. It is unusual for persons not part of your organization to be trusted. Users with all or most permissions have the ability to cause malicious damage. </p></li>
+<li><p><strong>Trusted ordinary</strong> roles: some users may be fully trusted but not programming experts. These persons usually are not given permissions which would allow them to accidentally compromise the system but are given all other permissions. Those permissions may be denied to ordinary users, even though they are trusted. </p></li>
+<li><p><strong>General internal users</strong>: often you will have databases which members of your organization will need to access, perhaps reading only, perhaps able to read and write. These users will normally not be given the same permissions as the trusted users. </p></li>
+<li><p><strong>Outsider</strong> roles: you may want your database to be viewable by outsiders. You may even want some outsiders to have the ability to write data. As a rule of thumb, outsiders should never have general permissions.  A passwordless user named <em>anonymous</em> may be configured if desired to support outsiders. </p></li></ul><a name='header2-43' id='header2-43'></a><h2>Accessing AllegroGraph</h2><p>A typical way to access AllegroGraph is through the <a href="agwebview.html">AGWebView interface</a>. It can also be accessed using a <a href="javadoc/index.html">Java</a> or <a href="python/index.html">Python</a> client, <a href="http://franz.com/agraph/gruff/" title="Gruff" class="external" target="_blank">Gruff</a>, or Lisp (see <a href="lisp-quickstart.html">Lisp Quick Start</a>). We will discuss AGWebView access security in this document. </p><p><a name="ManagingUsers"></a> </p><a name='header2-46' id='header2-46'></a><h2>Managing Users</h2><p>To open an AllegroGraph repository in <a href="agwebview.html">AGWebView</a> or using one of the AllegroGraph clients or to issue most commands using <a href="agtool.html">agtool</a> or using the REST interface, you must either supply an AllegroGraph user name and password (except the <em>anonymous</em> user which, if created, does not need a password) or authenticate with an SSL certificate. Passwords must be set up even if SSL authentication is used (see the various configuration options relating to SSL authentication in the <a href="daemon-config.html#TopLevelSSL">Top-level directives for SSL</a> section in the <a href="daemon-config.html">Server Configuration and Control</a> document). </p><p>This section briefly describes user-related tasks and how to perform them. The <a href="managing-users.html">Managing Users</a> document describes how to use <a href="agwebview.html">AGWebView</a> and <a href="agtool.html">agtool</a> to create and manage users. </p><p><a name="InitialSuperuser"></a> </p><a name='header3-50' id='header3-50'></a><h3>Initial Superuser</h3><p>An initial superuser is usually created during the AllegroGraph server installation. This user typically appears in AllegroGraph documentation as user "test" with password "xyzzy".  You should choose a completely different username and password for your superuser account. </p><p>This superuser can create and manage other users, start sessions, evaluate arbitrary code, and has read/write access to all repositories in all catalogs. </p><p>Note that you want to have at least one superuser at all times, because only a superuser can manage permissions and access for other accounts. </p><p><a name="usernames-passwords"></a> </p><a name='header3-55' id='header3-55'></a><h3>Usernames and passwords</h3><p>User names and passwords are case-sensitive.  A password is required for all users except for the <em>anonymous</em> user. </p><a name='header3-57' id='header3-57'></a><h3>User passwords</h3><p>A number of configuration options control user passwords (see <a href="daemon-config.html">Server Configuration and Control</a>) These options allow: </p>
+<ul>
+<li><p>Controlling whether a user can change their own password: the option   <code>PasswordChangeAllowed</code> determines whether users can change their   passwords.  The default is <code>yes</code> meaning users may change passwords.   If not allowed, password changes must be done by superusers. </p></li>
+<li><p>Controlling certain aspects of new passwords: the options   <code>PasswordMinLength</code>, <code>PasswordMinUppercaseChars</code>,   <code>PasswordMinDigitChars</code>, and <code>PasswordMinSpecialChars</code> can be used   to require that new password have a minimum length, and contain a   minimum number of uppercase letters, digits, and non-alphanumeric   characters. All these parameters default to 0. They must be set in   the configuration file in order for the associated restrictions to   have effect. </p></li>
+<li><p>Controlling whether passwords expire: the option <code>PasswordExpiry</code>   can be set so that passwords expire after a certain amount of time   after the last password change. When a password expires, the only   operation that the user can perform is changing their password. The   <code>PasswordExpiryGrace</code> option specifies the amount of time after a   password has expired during which a new password will be   accepted. After the grace period has expired, the user account is   disabled and can only be re-enabled by a superuser. </p></li></ul><a name='header3-62' id='header3-62'></a><h3>Other restrictions on users</h3><p>Other configuration options control other aspects of user behavior. In particular, sessions can timeout or users can be suspended or even deleted if: </p>
+<ul>
+<li><p>The idle time since the last action exceeds the limit set by the   <code>LoginTimeout</code> option. The user is logged out if the time is   exceeded. The default is no limit. </p></li>
+<li><p>If the number of failed logins (since the last successful login)   exceeds the value specified by <code>MaxFailedLogins</code>, the account will   be suspended.  Suspended accounts will be re-enabled   automatically if <code>AccountUnsuspendTimeout</code> is set. Otherwise, such   accounts must be re-enabled by a superuser. </p></li>
+<li><p>The time since the last use of an account is too great. If   <code>AccountExpiry</code> is set and the amount of time since the last   authenticated activity of the account exceeds the setting, the   account will be deleted.   By default, inactive accounts do not expire. </p></li></ul><a name='header3-67' id='header3-67'></a><h3>Email notification of certain changes to user status</h3><p>If you set up the <a href="daemon-config.html#SMTPHost"><code>SMTPHost</code></a> configuration option to specify an email account and also the <a href="daemon-config.html#AuditEventsToEmail"><code>AuditEventsToEmail</code></a> option, then emails will be sent via the specified SMTP host to the specified admin email address about user account status changes (suspended/unsuspended, disabled/enabled, password expired). </p><a name='header3-69' id='header3-69'></a><h3>Ports <a name="Ports"></a>  </h3><p>By default, the AllegroGraph server's HTTP API will open a random TCP port with a number greater than 1024 for new sessions (see the <em>Sessions</em> section in the <a href="http-protocol.html">HTTP Protocol - SPARQL Endpoint</a> document). In order to allow a firewall more effective control over access to the AllegroGraph server, we recommend specifying a SessionPorts range in the agraph.cfg file, and then filtering only these ports. </p><a name='header3-71' id='header3-71'></a><h3>Issues with transferring passwords over the internet <a name="InternetSecurity"></a>  </h3><p>When running an AllegroGraph server that is accessible from untrusted networks (e.g. the Internet), administrators need to be aware that passwords will be transferred in unencrypted form between AllegroGraph clients and the server. To avoid exposing users' AllegroGraph passwords to malicious third parties, you should open the AllegroGraph service to untrusted networks only on an SSLPort (using the correct SSLCertificate settings) or through an SSL-enabled reverse proxy. </p><a name='filters' id='filters'></a> <h2>Security filters</h2><p>A security filter can be set by an administrator (a superuser). It can prevent access (both read and write) to triples with a specified value for subject, predicate, object and/or graph. </p><a name='header3-76' id='header3-76'></a><h3>What threats do triple-level security filters prevent?</h3><p>Security filters can prevent users from accessing (both reading and writing) privacy-sensitive data. When querying, triples filtered out by a security filter will appear as if they weren't in the store in the first place. In contrast, attempts to add them or remove filtered triples will result in an error. </p><p>The administrator must take care to allow users access only to those triples that are safe for these users to see; this can be hard to accomplish with only subject/predicate/object-based filters when there is deep graph structure involved. In these cases, it is advisable to put triples that should be (or should not be) accessed by a certain set of users into their own graph, and define a filter set using that graph. </p><a name='header3-79' id='header3-79'></a><h3>Setting security filters for a user or a role</h3><p>Security filters can be set by a superuser in the user administration screen of AllegroGraph WebView. If you assign filters to roles, these filters will be merged into a set of effective filters for each user with that role accessing a store. </p><p>Enter the criteria for the filter pattern in the subject, predicate, object, graph fields of the filter table (use the regular part syntax for URIs: <uri> , and literals "literal" for literals), select either "allow" or "disallow" and click "add" to define a new filter. </p><p>To remove a filter, click the X mark next to the filter pattern. </p><p><img src="security-filters-1.png" alt="Security Filter in WebView"></img> </p><p>Updating the set of filter patterns takes effect only for new sessions; sessions that are running while you modify the set of filters will still use the same triple pattern as before. </p><a name='header3-85' id='header3-85'></a><h3>Effect of "allowing" or "disallowing" a triple pattern</h3><p>Each security filter pattern can specify to "allow" or "disallow" a certain pattern of triples. Both types of pattern can remove triples from the set of triples that a user will see: </p>
+<ul>
+<li><strong>disallow</strong> will filter out all triples that match the filter   pattern. </li>
+<li><strong>allow</strong> will filter out all triples that <em>do not</em> match the filter   pattern. </li></ul><p>This makes <strong>allow</strong> the more restrictive of the two filter types: it will remove every triple that doesn't match the filter pattern, whereas <strong>disallow</strong> only removes those triples that exactly match. </p><a name='header3-90' id='header3-90'></a><h3>Composing security filters</h3><p>As security filters are based on set intersection and set difference, a filter set with both <strong>allow</strong> and <strong>disallow</strong> filters will always result in the same set of triples when applied to a store, no matter in which order the filters are applied to the store. </p><p>The composition of the filters: </p>
+<ul>
+<li><strong>allow</strong> predicate:&lt;http://example.com/#only-this&gt;, object: &lt;http://example.com/#with-this&gt; </li>
+<li><strong>allow</strong> predicate:&lt;http://example.com/#or-only-this&gt;, object:&lt;http://example.com/#with-this&gt; </li>
+<li><strong>disallow</strong> subject:&lt;http://example.com/#some-sensitive-data&gt;</li></ul><p>will result in a store that appears to contain (from the perspective of the affected user/role) <em>only</em> triples with the predicates <code>&lt;http://example.com/#only-this&gt;</code> or <code>&lt;http://example.com/#or-only-this&gt;</code> and object <code>&lt;http://example.com/#with-this&gt;</code>, but will never contain any triples with the subject <code>&lt;http://example.com/#some-sensitive-data&gt;</code>. </p><a name='header3-97' id='header3-97'></a><h3>Effect of security filters on local stores (security relevant)</h3><p>Per-user and role security filters only affect HTTP clients, which does not include local Lisp clients. These have total access (read and write) to the store, no matter what security filters are in place. </p></div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

@@ -1,0 +1,362 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Prerequisites &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example 1: Creating a repository and triple indices" href="example001.html" />
+    <link rel="prev" title="Tutorial" href="../tutorial.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+        &laquo;<a href="../tutorial.html" title="previous chapter">Tutorial</a>
+      <a href="example001.html" title="next chapter">Example 1: Creating a repository and triple indices</a> 
+      &raquo;
+    </div>
+  
+    
+  <div class="section" id="prerequisites">
+<h1>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h1>
+<p>The tutorial examples can be run on any system which supports Python
+2.6, 2.7 and 3.4+. The tutorial assumes that AllegroGraph and the
+Python client have been installed and configured using the procedure
+described in the <a class="reference internal" href="../install.html#install"><span class="std std-ref">Installation</span></a> document.</p>
+<p>To make the code in this document compatible with Python 2 we need the
+following import statement (not required on Python 3):</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-the-environment-for-the-tutorial">
+<span id="setup"></span><h1>Setting the environment for the tutorial<a class="headerlink" href="#setting-the-environment-for-the-tutorial" title="Permalink to this headline">¶</a></h1>
+<p>Before running any of the tutorial examples it is necessary to set a
+few variables that describe the location of the AllegroGraph server
+and credentials used to access it. By default the Python client looks
+for these parameters in environment variables.</p>
+<p>The variables that must be set are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">AGRAPH_HOST</span></code>: Specifies the IP address or hostname of the
+agraph server. Defaults to <code class="docutils literal"><span class="pre">'127.0.0.1'</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">AGRAPH_PORT</span></code>: Specifies the port of the agraph server at
+<code class="docutils literal"><span class="pre">AGRAPH_HOST</span></code>. The port used by the server is specified in the
+agraph.cfg file. The default is <code class="docutils literal"><span class="pre">10035</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">AGRAPH_USER</span></code>: Specifies the username for authentication. For
+best results, this should name an agraph user with superuser
+privileges. If a non-superuser is specified, that user must have
+<strong>Start Session</strong> privileges to run example 6 and examples
+dependent on that example, and <strong>Evaluate Arbitrary Code</strong>
+privileges to run example 17. There is no default.</li>
+<li><code class="docutils literal"><span class="pre">AGRAPH_PASSWORD</span></code>: Specifies the password for authentication of
+<code class="docutils literal"><span class="pre">AGRAPH_USER</span></code>. There is no default..</li>
+</ul>
+</div></blockquote>
+<p>The <code class="docutils literal"><span class="pre">agraph.cfg</span></code> file (see the <a class="reference external" href="https://franz.com/agraph/support/documentation/current/server-installation.html">Server Installation</a> document) specifies values like the port
+used by the server and the catalogs defined. Refer to that file if
+necessary (or ask your system administrator if you do not have access
+to the file).</p>
+<div class="section" id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<p>If the tutorial examples throw a connection error in <a class="reference internal" href="example006.html#example6"><span class="std std-ref">Example 6: Importing triples</span></a>,
+see the discussion <a class="reference external" href="https://franz.com/agraph/support/documentation/current/server-installation.html#sessionport">Session Port Setup</a> in the <a class="reference external" href="https://franz.com/agraph/support/documentation/current/server-installation.html">Server
+Installation</a> document.</p>
+<p>If you see an error similar to the following</p>
+<div class="highlight-text"><div class="highlight"><pre><span></span>ImportError: pycurl: libcurl link-time ssl backend (nss) is
+different from compile-time ssl backend (none/other)
+</pre></div>
+</div>
+<p>Perform this procedure (replacing {agraph-version} with the actual
+version)</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="c1"># Uninstall pycurl</span>
+pip uninstall pycurl
+
+<span class="c1"># Set the required compile-time option for pycurl</span>
+<span class="nb">export</span> <span class="nv">PYCURL_SSL_LIBRARY</span><span class="o">=</span>nss
+
+<span class="c1"># Reinstall, but ignore cached packages (force recompile)</span>
+pip install --no-cache-dir agraph-<span class="o">{</span>agraph-version<span class="o">}</span>-client-python.tar.gz
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="terminology">
+<h1>Terminology<a class="headerlink" href="#terminology" title="Permalink to this headline">¶</a></h1>
+<p>We need to clarify some terminology before proceeding.</p>
+<p>“RDF” is the <a class="reference external" href="http://www.w3.org/RDF/">Resource Description Framework</a>
+defined by the <a class="reference external" href="http://www.w3.org/">World Wide Web Consortium</a> (W3C).
+It provides an elegantly simple means for describing multi-faceted
+resource objects and for linking them into complex relationship graphs.
+AllegroGraph Server creates, searches, and manages such RDF graphs.</p>
+<p>A “URI” is a <a class="reference external" href="https://tools.ietf.org/html/rfc3986">Uniform Resource Identifier</a>. It is label used to uniquely
+identify various types of entities in an RDF graph. A typical URI
+looks a lot like a web address:
+<code class="docutils literal"><span class="pre">&lt;http://www.company.com/project/class#number&gt;</span></code>. In spite of the
+resemblance, a URI is not a web address. It is simply a unique label.</p>
+<p>A “triple” is a data statement, a “fact”, stored in RDF format. It
+states that a resource has an attribute with a value. It consists of
+three fields:</p>
+<ul class="simple">
+<li>Subject: The first field contains the URI that uniquely identifies
+the resource that this triple describes.</li>
+<li>Predicate: The second field contains the URI identifying a property
+of this resource, such as its color or size, or a relationship
+between this resource and another one, such as parentage or
+ownership.</li>
+<li>Object: The third field is the value of the property. It could be a
+literal value, such as “red”, or the URI of a linked resource.</li>
+</ul>
+<p>A “quad” is a triple with an added “context” field, which is used to
+divide the repository into “subgraphs.” This context or subgraph is just
+a URI label that appears in the fourth field of related triples.</p>
+<p>A “resource description” is defined as a collection of triples that all
+have the same URI in the subject field. In other words, the triples all
+describe attributes of the same thing.</p>
+<p>A “statement” is a client-side Python object that describes a triple.</p>
+<p>In the context of AllegroGraph Server:</p>
+<blockquote>
+<div><ul class="simple">
+<li>A “catalog” is a list of repositories owned by an AllegroGraph
+server.</li>
+<li>A “repository” is a collection of triples within a catalog.</li>
+<li>A “context” is a subgraph of the triples in a repository.</li>
+<li>If contexts are not in use, the triples are stored in the default
+graph.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="creating-users-with-webview">
+<h1>Creating Users with WebView<a class="headerlink" href="#creating-users-with-webview" title="Permalink to this headline">¶</a></h1>
+<p>Each connection to an AllegroGraph server runs under the credentials of
+a registered AllegroGraph user account.</p>
+<div class="section" id="initial-superuser-account">
+<h2>Initial Superuser Account<a class="headerlink" href="#initial-superuser-account" title="Permalink to this headline">¶</a></h2>
+<p>The installation instructions for AllegroGraph advise you to create a
+<strong>superuser</strong> called “test”. This is the user which is used by the
+Python tutorial if the environment variables <code class="docutils literal"><span class="pre">AGRAPH_USER</span></code> and
+<code class="docutils literal"><span class="pre">AGRAPH_PASSWORD</span></code> are not set.</p>
+</div>
+<div class="section" id="users-permissions-access-rules-and-roles">
+<h2>Users, Permissions, Access Rules, and Roles<a class="headerlink" href="#users-permissions-access-rules-and-roles" title="Permalink to this headline">¶</a></h2>
+<p>AllegroGraph user accounts may be given any combination of the following
+three permissions:</p>
+<ul class="simple">
+<li>Superuser</li>
+<li>Start Session</li>
+<li>Evaluate Arbritrary Code</li>
+</ul>
+<p>In addition, a user account may be given read, write or read/write
+access to individual repositories.</p>
+<p>It is easiest to run the Python tutorial as a Superuser. That way you do
+not have to worry about permissions.</p>
+<p>If you run as a non-Superuser, you need <strong>Start Session</strong> permission
+for <a class="reference internal" href="example006.html#example6"><span class="std std-ref">Example 6: Importing triples</span></a> and other examples that require a session.  You
+also need read/write access on the appropriate catalogs and
+repositories.</p>
+<p>You can also define a <strong>role</strong> (such as “librarian”) and give the role
+a set of permissions and access rules. Then you can assign this shared
+role to several users. This lets you manage their permissions and
+access by editing the role instead of the individual user accounts.</p>
+<p>A <strong>superuser</strong> automatically has all possible permissions and unlimited
+access. A superuser can also create, manage and delete other user
+accounts. Non-superusers cannot view or edit account settings.</p>
+<p>A user with the <strong>Start Sessions</strong> permission can use the AllegroGraph
+features that require spawning a dedicated session, such as
+transactions and Social Network Analysis (SNA). If you try to use these
+features without the appropriate permission, you’ll encounter errors.</p>
+<p>A user with permission to <strong>Evaluate Arbitrary Code</strong> can run Prolog
+Rule Queries. This user can also do anything else that allows
+executing Lisp code, such as defining select-style generators, doing
+eval-in-server, or loading server-side files.</p>
+</div>
+<div class="section" id="webview">
+<h2>WebView<a class="headerlink" href="#webview" title="Permalink to this headline">¶</a></h2>
+<p>WebView is AllegroGraph’s browser-based graphical user interface for
+user and repository management. It allows you to create, query, and
+maintain repositories interactively.</p>
+<p>To connect to WebView, simply direct your web browser to the
+AllegroGraph port of your server. If you have installed AllegroGraph
+locally (and used the default port number), use:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">10035</span>
+</pre></div>
+</div>
+<p>You will be asked to log in. Use the superuser credentials described in
+the previous section.</p>
+<p>The first page of WebView is a summary of your catalogs and
+repositories. Select <span class="menuselection">Admin ‣ Users</span> from the
+navigation menu at the top of the page.</p>
+<p><a class="reference internal" href="../_images/user-menu.svg"><img alt="img-user-menu" src="../_images/user-menu.svg" width="80%" /></a></p>
+<p>This exposes the <code class="docutils literal"><span class="pre">Users</span> <span class="pre">and</span> <span class="pre">Roles</span></code> page. This is the page for
+creating and managing user accounts.</p>
+<p>To create a new user, click the <span class="guilabel">[add a user]</span> link.</p>
+<p><a class="reference internal" href="../_images/user-add.svg"><img alt="img-user-add" src="../_images/user-add.svg" width="80%" /></a></p>
+<p>This exposes a small form where you can enter the username and
+password. Click <span class="guilabel">OK</span> to save the new account.</p>
+<p><a class="reference internal" href="../_images/user-dialog.svg"><img alt="img-user-dialog" src="../_images/user-dialog.svg" width="80%" /></a></p>
+<p>The new user will appear in the list of users. Click the
+<span class="guilabel">[edit]</span> link to open a control panel for the new user
+account:</p>
+<p><a class="reference internal" href="../_images/user-click-edit.svg"><img alt="img-user-click-edit" src="../_images/user-click-edit.svg" width="80%" /></a></p>
+<p>Use the checkboxes to apply permissions to this account (start
+session is needed by <a class="reference internal" href="example006.html#example6"><span class="std std-ref">Example 6: Importing triples</span></a>).</p>
+<p><a class="reference internal" href="../_images/user-perms.svg"><img alt="img-user-perms" src="../_images/user-perms.svg" width="80%" /></a></p>
+<p>It is important that you set up access permissions for the new
+user. Use the form to create an access rule by selecting read, write
+or read/write access, naming a catalog (or <span class="guilabel">*</span> for all), and
+naming a repository within that catalog (or <span class="guilabel">*</span> for
+all). Click the <span class="guilabel">[add]</span> link.</p>
+<p><a class="reference internal" href="../_images/user-add-access.svg"><img alt="img-user-add-access" src="../_images/user-add-access.svg" width="80%" /></a></p>
+<p>This creates an access rule for your new user. The access rule will
+appear in the permissions display:</p>
+<p><a class="reference internal" href="../_images/user-done.svg"><img alt="img-user-done" src="../_images/user-done.svg" width="80%" /></a></p>
+<p>This new user can log in and perform transactions on any repository in
+the system.</p>
+<p>To repeat, the “test” superuser is all you need to run all of the
+tutorial examples. This section is for the day when you want to issue
+more modest credentials to some of your users.</p>
+</div>
+</div>
+
+
+  
+    <div class="nav-links nav-links-footer">
+        &laquo;<a href="../tutorial.html" title="previous chapter">Tutorial</a>
+      <a href="example001.html" title="next chapter">Example 1: Creating a repository and triple indices</a> 
+      &raquo;
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-the-environment-for-the-tutorial">Setting the environment for the tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#terminology">Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-users-with-webview">Creating Users with WebView</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example001.html">Example 1: Creating a repository and triple indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example002.html">Example 2: Asserting and retracting triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example003.html">Example 3: A SPARQL query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example004.html">Example 4: Statement matching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example005.html">Example 5: Literal values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example006.html">Example 6: Importing triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example007.html">Example 7: Querying multiple contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example008.html">Example 8: Exporting triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example009.html">Example 9: Exporting query results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example010.html">Example 10: Graphs in SPARQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example011.html">Example 11: Namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example012.html">Example 12: Free Text indexing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example013.html">Example 13: SPARQL query forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example014.html">Example 14: Parametric queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example015.html">Example 15: Range queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example016.html">Example 16: Federated repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example017.html">Example 17: Triple attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example018.html">Example 18: Pandas support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fedex.html">Running AG on AWS EC2</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../tutorial.html">Tutorial</a><ul>
+      <li>Previous: <a href="../tutorial.html" title="previous chapter">Tutorial</a></li>
+      <li>Next: <a href="example001.html" title="next chapter">Example 1: Creating a repository and triple indices</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/tutorial/setup.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

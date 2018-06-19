@@ -1,0 +1,450 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>franz.openrdf.rio package &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="franz.openrdf.sail package" href="franz.openrdf.sail.html" />
+    <link rel="prev" title="franz.openrdf.repository package" href="franz.openrdf.repository.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+        &laquo;<a href="franz.openrdf.repository.html" title="previous chapter">franz.openrdf.repository package</a>
+      <a href="franz.openrdf.sail.html" title="next chapter">franz.openrdf.sail package</a> 
+      &raquo;
+    </div>
+  
+    
+  <div class="section" id="franz-openrdf-rio-package">
+<h1>franz.openrdf.rio package<a class="headerlink" href="#franz-openrdf-rio-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-franz.openrdf.rio.formats">
+<span id="franz-openrdf-rio-formats-module"></span><h2>franz.openrdf.rio.formats module<a class="headerlink" href="#module-franz.openrdf.rio.formats" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="franz.openrdf.rio.formats.Format">
+<em class="property">class </em><code class="descclassname">franz.openrdf.rio.formats.</code><code class="descname">Format</code><span class="sig-paren">(</span><em>name</em>, <em>mime_types=None</em>, <em>charset='UTF-8'</em>, <em>file_extensions=None</em>, <em>register=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/rio/formats.html#Format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.rio.formats.Format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Represents the concept of a data serialization format. Data formats are
+identified by a <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> #getName() name} and can have one or more associated
+MIME types, zero or more associated file extensions and can specify a
+default character encoding.</p>
+<p>This is a base class used by format subclasses for specific types of data,
+such as triples and tuples</p>
+<p>When a subclass of this class is declared all upper case static fields
+that are dictionaries are converted to class instances. Data in the
+dictionary is passed as arguments to the constructor.</p>
+<dl class="method">
+<dt id="franz.openrdf.rio.formats.Format.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>name</em>, <em>mime_types=None</em>, <em>charset='UTF-8'</em>, <em>file_extensions=None</em>, <em>register=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/rio/formats.html#Format.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.rio.formats.Format.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a new format object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> – Human-readable name of the format.</li>
+<li><strong>mime_types</strong> – A list of MIME types used for this format.
+The first element of this list will be used
+as the content-type header during uploads.</li>
+<li><strong>charset</strong> – Character set used by the format.</li>
+<li><strong>file_extensions</strong> – List of file extensions for this format.</li>
+<li><strong>register</strong> – If True file extensions will be added to the map
+used by <a class="reference internal" href="#franz.openrdf.rio.formats.Format.format_for_file_name" title="franz.openrdf.rio.formats.Format.format_for_file_name"><code class="xref py py-func docutils literal"><span class="pre">Format.format_for_file_name()</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="franz.openrdf.rio.formats.Format.format_for_file_name">
+<em class="property">classmethod </em><code class="descname">format_for_file_name</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/rio/formats.html#Format.format_for_file_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.rio.formats.Format.format_for_file_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to guess appropriate RDF format from a file name.
+Return a pair (format, compression) where format is
+an RDF format or None (if no matching format was found)
+and compression is a supported compression method
+(currently either None or “gzip”).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – File path.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Format (or <code class="docutils literal"><span class="pre">None</span></code>) and compression type.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(RDFFormat|None, string|None)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="franz.openrdf.rio.formats.Format.mime_type_for_format">
+<em class="property">static </em><code class="descname">mime_type_for_format</code><span class="sig-paren">(</span><em>output_format</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/rio/formats.html#Format.mime_type_for_format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.rio.formats.Format.mime_type_for_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the preferred MIME type for a data format.
+Raise an error if the format is <cite>None</cite>.
+The format can be a string, in which case it is returned as-is.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output_format</strong> (<em>franz.openrdf.rio.formats.Format|str</em>) – the format to get the MIME type for.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A MIME type.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2.7/library/string.html#module-string" title="(in Python v2.7)">string</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="franz.openrdf.rio.formats.Format.register">
+<em class="property">classmethod </em><code class="descname">register</code><span class="sig-paren">(</span><em>fmt</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/rio/formats.html#Format.register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.rio.formats.Format.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a format object.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="franz.openrdf.rio.formats.FormatMeta">
+<em class="property">class </em><code class="descclassname">franz.openrdf.rio.formats.</code><code class="descname">FormatMeta</code><span class="sig-paren">(</span><em>name</em>, <em>bases</em>, <em>dct</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/rio/formats.html#FormatMeta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.rio.formats.FormatMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2.7/library/functions.html#type" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">type</span></code></a></p>
+<dl class="method">
+<dt id="franz.openrdf.rio.formats.FormatMeta.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>name</em>, <em>bases</em>, <em>dct</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/rio/formats.html#FormatMeta.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.rio.formats.FormatMeta.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-franz.openrdf.rio.rdfformat">
+<span id="franz-openrdf-rio-rdfformat-module"></span><h2>franz.openrdf.rio.rdfformat module<a class="headerlink" href="#module-franz.openrdf.rio.rdfformat" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="franz.openrdf.rio.rdfformat.RDFFormat">
+<em class="property">class </em><code class="descclassname">franz.openrdf.rio.rdfformat.</code><code class="descname">RDFFormat</code><span class="sig-paren">(</span><em>name</em>, <em>mime_types=None</em>, <em>charset='UTF-8'</em>, <em>file_extensions=None</em>, <em>supports_namespaces=False</em>, <em>supports_contexts=False</em>, <em>supports_attributes=False</em>, <em>register=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/rio/rdfformat.html#RDFFormat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.rio.rdfformat.RDFFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#franz.openrdf.rio.formats.Format" title="franz.openrdf.rio.formats.Format"><code class="xref py py-class docutils literal"><span class="pre">franz.openrdf.rio.formats.Format</span></code></a></p>
+<p>Represents the concept of an RDF data serialization format. RDF formats are
+identified by a name and can have one or more associated
+MIME types, zero or more associated file extensions and can specify a
+default character encoding. Some formats are able to encode context
+information while others are not; this is indicated by the value of
+supports_contexts field. Similaraly, formats for which the
+supports_attributes flag is <cite>True</cite> are capable of encoding triple 
+attributes.</p>
+<dl class="attribute">
+<dt id="franz.openrdf.rio.rdfformat.RDFFormat.NQUADS">
+<code class="descname">NQUADS</code><em class="property"> = RDFFormat.NQUADS: N-Quads</em><a class="headerlink" href="#franz.openrdf.rio.rdfformat.RDFFormat.NQUADS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.rio.rdfformat.RDFFormat.NQX">
+<code class="descname">NQX</code><em class="property"> = RDFFormat.NQX: Extended N-Quads (with attributes)</em><a class="headerlink" href="#franz.openrdf.rio.rdfformat.RDFFormat.NQX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.rio.rdfformat.RDFFormat.NTRIPLES">
+<code class="descname">NTRIPLES</code><em class="property"> = RDFFormat.NTRIPLES: N-Triples</em><a class="headerlink" href="#franz.openrdf.rio.rdfformat.RDFFormat.NTRIPLES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.rio.rdfformat.RDFFormat.RDFXML">
+<code class="descname">RDFXML</code><em class="property"> = RDFFormat.RDFXML: RDF/XML</em><a class="headerlink" href="#franz.openrdf.rio.rdfformat.RDFFormat.RDFXML" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.rio.rdfformat.RDFFormat.TABLE">
+<code class="descname">TABLE</code><em class="property"> = RDFFormat.TABLE: Table</em><a class="headerlink" href="#franz.openrdf.rio.rdfformat.RDFFormat.TABLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.rio.rdfformat.RDFFormat.TRIG">
+<code class="descname">TRIG</code><em class="property"> = RDFFormat.TRIG: TriG</em><a class="headerlink" href="#franz.openrdf.rio.rdfformat.RDFFormat.TRIG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.rio.rdfformat.RDFFormat.TRIX">
+<code class="descname">TRIX</code><em class="property"> = RDFFormat.TRIX: TriX</em><a class="headerlink" href="#franz.openrdf.rio.rdfformat.RDFFormat.TRIX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.rio.rdfformat.RDFFormat.TURTLE">
+<code class="descname">TURTLE</code><em class="property"> = RDFFormat.TURTLE: Turtle</em><a class="headerlink" href="#franz.openrdf.rio.rdfformat.RDFFormat.TURTLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.rio.rdfformat.RDFFormat.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>name</em>, <em>mime_types=None</em>, <em>charset='UTF-8'</em>, <em>file_extensions=None</em>, <em>supports_namespaces=False</em>, <em>supports_contexts=False</em>, <em>supports_attributes=False</em>, <em>register=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/rio/rdfformat.html#RDFFormat.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.rio.rdfformat.RDFFormat.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a new RDF format object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> – Human-readable name of the format.</li>
+<li><strong>mime_types</strong> – A list of MIME types used for this format.
+The first element of this list will be used
+as the content-type header during uploads.</li>
+<li><strong>charset</strong> – Character set used by the format.</li>
+<li><strong>file_extensions</strong> – List of file extensions for this format.</li>
+<li><strong>supports_namespaces</strong> – If true, the format supports namespaces
+and qualified names. This has no impact
+on the Python API.</li>
+<li><strong>supports_contexts</strong> – If True the format can store quads
+(and not just triples).</li>
+<li><strong>supports_attributes</strong> – If True the format can represent triple
+attributes.</li>
+<li><strong>register</strong> – If True file extensions will be added to the map
+used by <code class="xref py py-meth docutils literal"><span class="pre">Format.format_for_file_name()</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-franz.openrdf.rio.rdfwriter">
+<span id="franz-openrdf-rio-rdfwriter-module"></span><h2>franz.openrdf.rio.rdfwriter module<a class="headerlink" href="#module-franz.openrdf.rio.rdfwriter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="franz.openrdf.rio.rdfwriter.NTriplesWriter">
+<em class="property">class </em><code class="descclassname">franz.openrdf.rio.rdfwriter.</code><code class="descname">NTriplesWriter</code><span class="sig-paren">(</span><em>filePath=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/rio/rdfwriter.html#NTriplesWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.rio.rdfwriter.NTriplesWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#franz.openrdf.rio.rdfwriter.RDFWriter" title="franz.openrdf.rio.rdfwriter.RDFWriter"><code class="xref py py-class docutils literal"><span class="pre">franz.openrdf.rio.rdfwriter.RDFWriter</span></code></a></p>
+<p>Records the format as
+NTriples, and records the ‘filePath’ where the serialized RDF will
+be output to.  If ‘filePath’ is None, output is to standard output.</p>
+<p>TODO: THERE IS A WRITER PROTOCOL IMPLEMENTED IN RDFXMLWriter THAT ISN’T
+IMPLEMENTED HERE.  CONSIDER ADDING IT (OR NOT).</p>
+<dl class="method">
+<dt id="franz.openrdf.rio.rdfwriter.NTriplesWriter.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>filePath=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/rio/rdfwriter.html#NTriplesWriter.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.rio.rdfwriter.NTriplesWriter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="franz.openrdf.rio.rdfwriter.RDFWriter">
+<em class="property">class </em><code class="descclassname">franz.openrdf.rio.rdfwriter.</code><code class="descname">RDFWriter</code><span class="sig-paren">(</span><em>rdfFormat</em>, <em>filePath=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/rio/rdfwriter.html#RDFWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.rio.rdfwriter.RDFWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="franz.openrdf.rio.rdfwriter.RDFWriter.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>rdfFormat</em>, <em>filePath=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/rio/rdfwriter.html#RDFWriter.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.rio.rdfwriter.RDFWriter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.rio.rdfwriter.RDFWriter.getFilePath">
+<code class="descname">getFilePath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/rio/rdfwriter.html#RDFWriter.getFilePath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.rio.rdfwriter.RDFWriter.getFilePath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="franz.openrdf.rio.rdfwriter.RDFWriter.getRDFFormat">
+<code class="descname">getRDFFormat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/rio/rdfwriter.html#RDFWriter.getRDFFormat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.rio.rdfwriter.RDFWriter.getRDFFormat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-franz.openrdf.rio.rdfxmlwriter">
+<span id="franz-openrdf-rio-rdfxmlwriter-module"></span><h2>franz.openrdf.rio.rdfxmlwriter module<a class="headerlink" href="#module-franz.openrdf.rio.rdfxmlwriter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="franz.openrdf.rio.rdfxmlwriter.RDFXMLWriter">
+<em class="property">class </em><code class="descclassname">franz.openrdf.rio.rdfxmlwriter.</code><code class="descname">RDFXMLWriter</code><span class="sig-paren">(</span><em>filePath=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/rio/rdfxmlwriter.html#RDFXMLWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.rio.rdfxmlwriter.RDFXMLWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#franz.openrdf.rio.rdfwriter.RDFWriter" title="franz.openrdf.rio.rdfwriter.RDFWriter"><code class="xref py py-class docutils literal"><span class="pre">franz.openrdf.rio.rdfwriter.RDFWriter</span></code></a></p>
+<p>An implementation of the RDFWriter interface that writes RDF documents in
+XML-serialized RDF format.
+This records the format as
+RDF/XML, and records the ‘filePath’ where the serialized RDF will
+be output to.  If ‘filePath’ is None, output is to standard output.</p>
+<dl class="method">
+<dt id="franz.openrdf.rio.rdfxmlwriter.RDFXMLWriter.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>filePath=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/rio/rdfxmlwriter.html#RDFXMLWriter.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.rio.rdfxmlwriter.RDFXMLWriter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-franz.openrdf.rio.tupleformat">
+<span id="franz-openrdf-rio-tupleformat-module"></span><h2>franz.openrdf.rio.tupleformat module<a class="headerlink" href="#module-franz.openrdf.rio.tupleformat" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="franz.openrdf.rio.tupleformat.TupleFormat">
+<em class="property">class </em><code class="descclassname">franz.openrdf.rio.tupleformat.</code><code class="descname">TupleFormat</code><span class="sig-paren">(</span><em>name</em>, <em>mime_types=None</em>, <em>charset='UTF-8'</em>, <em>file_extensions=None</em>, <em>register=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/franz/openrdf/rio/tupleformat.html#TupleFormat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#franz.openrdf.rio.tupleformat.TupleFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#franz.openrdf.rio.formats.Format" title="franz.openrdf.rio.formats.Format"><code class="xref py py-class docutils literal"><span class="pre">franz.openrdf.rio.formats.Format</span></code></a></p>
+<p>Serialization formats for tuples returned by queries.
+See <a class="reference internal" href="#franz.openrdf.rio.formats.Format" title="franz.openrdf.rio.formats.Format"><code class="xref py py-class docutils literal"><span class="pre">Format</span></code></a>.</p>
+<dl class="attribute">
+<dt id="franz.openrdf.rio.tupleformat.TupleFormat.CSV">
+<code class="descname">CSV</code><em class="property"> = TupleFormat.CSV: SPARQL CSV</em><a class="headerlink" href="#franz.openrdf.rio.tupleformat.TupleFormat.CSV" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.rio.tupleformat.TupleFormat.JSON">
+<code class="descname">JSON</code><em class="property"> = TupleFormat.JSON: SPARQL JSON</em><a class="headerlink" href="#franz.openrdf.rio.tupleformat.TupleFormat.JSON" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.rio.tupleformat.TupleFormat.SPARQL">
+<code class="descname">SPARQL</code><em class="property"> = TupleFormat.SPARQL: SPARQL XML</em><a class="headerlink" href="#franz.openrdf.rio.tupleformat.TupleFormat.SPARQL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.rio.tupleformat.TupleFormat.TABLE">
+<code class="descname">TABLE</code><em class="property"> = TupleFormat.TABLE: Table</em><a class="headerlink" href="#franz.openrdf.rio.tupleformat.TupleFormat.TABLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="franz.openrdf.rio.tupleformat.TupleFormat.TSV">
+<code class="descname">TSV</code><em class="property"> = TupleFormat.TSV: SPARQL TSV</em><a class="headerlink" href="#franz.openrdf.rio.tupleformat.TupleFormat.TSV" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-franz.openrdf.rio">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-franz.openrdf.rio" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+  
+    <div class="nav-links nav-links-footer">
+        &laquo;<a href="franz.openrdf.repository.html" title="previous chapter">franz.openrdf.repository package</a>
+      <a href="franz.openrdf.sail.html" title="next chapter">franz.openrdf.sail package</a> 
+      &raquo;
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">AllegroGraph Python API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="modules.html">src</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#allegrographserver-class">AllegroGraphServer class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#catalog-class">Catalog class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-franz.openrdf.sail.spec">Spec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#repository-class">Repository class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utility-connection-functions">Utility connection functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#repositoryconnection-class">RepositoryConnection class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#query-class-and-subclasses">Query Class (and Subclasses)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#queryresult-class">QueryResult Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#repositoryresult-class">RepositoryResult class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#statement-class">Statement Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#valuefactory-class">ValueFactory Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../api.html">AllegroGraph Python API Reference</a><ul>
+  <li><a href="modules.html">src</a><ul>
+  <li><a href="franz.html">franz package</a><ul>
+  <li><a href="franz.openrdf.html">franz.openrdf package</a><ul>
+      <li>Previous: <a href="franz.openrdf.repository.html" title="previous chapter">franz.openrdf.repository package</a></li>
+      <li>Next: <a href="franz.openrdf.sail.html" title="next chapter">franz.openrdf.sail package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/_gen/franz.openrdf.rio.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

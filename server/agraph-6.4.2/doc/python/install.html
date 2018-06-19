@@ -1,0 +1,425 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Installation &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tutorial" href="tutorial.html" />
+    <link rel="prev" title="Welcome to AllegroGraph Python client’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+        &laquo;<a href="index.html" title="previous chapter">Welcome to AllegroGraph Python client’s documentation!</a>
+      <a href="tutorial.html" title="next chapter">Tutorial</a> 
+      &raquo;
+    </div>
+  
+    
+  <div class="section" id="installation">
+<span id="install"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>Python versions 2.6+ and 3.3+ are supported. The installation method
+described here uses the pip package manager. On some systems this
+might require installing an additional package (e.g. <code class="docutils literal"><span class="pre">python-pip</span></code> on
+RHEL/CentOS systems). All third-party libraries used by the Python
+client will be downloaded automatically during installation.</p>
+<p>See also the <a class="reference internal" href="#optional-requirements">Optional requirements</a> section below.</p>
+</div>
+<div class="section" id="id1">
+<h2>Installation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">It is highly recommended to perform the install in a
+<a class="reference external" href="https://virtualenv.pypa.io/">virtualenv</a> environment.</p>
+</div>
+<p>The client can be installed from <a class="reference external" href="https://pypi.python.org/">PyPI</a> using the <code class="docutils literal"><span class="pre">pip</span></code> package
+manager:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">agraph</span><span class="o">-</span><span class="n">python</span>
+</pre></div>
+</div>
+<p>Alternatively, a distribution archive can be obtained from
+<a class="reference external" href="ftp://ftp.franz.com/pub/agraph/python-client/">ftp://ftp.franz.com/pub/agraph/python-client/</a> and installed using <cite>pip</cite>:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">agraph</span><span class="o">-</span><span class="n">python</span><span class="o">-&lt;</span><span class="n">VERSION</span><span class="o">&gt;.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Python 2.6 users should consider installing the simplejson package:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">simplejson</span>
+</pre></div>
+</div>
+<p class="last">since the built-in JSON module in that version of Python offers
+unsatisfactory performance. The AllegroGraph Python client will
+detect and use simplejson automatically if it is installed.</p>
+</div>
+<div class="section" id="offline-installation">
+<h3>Offline installation<a class="headerlink" href="#offline-installation" title="Permalink to this headline">¶</a></h3>
+<p>If it is not possible to access <a class="reference external" href="https://pypi.python.org/">PyPI</a> from the target machine, the
+following steps should be taken:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">In a compatible environment with unrestricted network
+access run:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">wheel</span> <span class="n">agraph</span><span class="o">-</span><span class="n">python</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">If desired do the same for optional dependencies:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">wheel</span> <span class="n">pycurl</span> <span class="n">simplejson</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">This will generate a number of <code class="docutils literal"><span class="pre">.whl</span></code> files in the current
+directory. These files must be transferred to the target machine.</p>
+</li>
+<li><p class="first">On the target machine use this command to install:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">index</span> <span class="o">--</span><span class="n">find</span><span class="o">-</span><span class="n">links</span><span class="o">=&lt;</span><span class="n">DIR</span><span class="o">&gt;</span> <span class="n">agraph</span><span class="o">-</span><span class="n">python</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal"><span class="pre">&lt;DIR&gt;</span></code> is the directory containing the <code class="docutils literal"><span class="pre">.whl</span></code> files
+generated in the previous step.</p>
+</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>To validate the installation make sure that you have access to an
+AllegroGraph server and run the following Python script:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.connect</span> <span class="kn">import</span> <span class="n">ag_connect</span>
+<span class="k">with</span> <span class="n">ag_connect</span><span class="p">(</span><span class="s1">&#39;repo&#39;</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;HOST&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s1">&#39;PORT&#39;</span><span class="p">,</span>
+                <span class="n">user</span><span class="o">=</span><span class="s1">&#39;USER&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;PASS&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">conn</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Substitute appropriate values for the HOST/PORT/USER/PASS
+placeholders. If the script runs successfully a new repository named
+<cite>repo</cite> will be created.</p>
+</div>
+<div class="section" id="proxy-setup">
+<h2>Proxy setup<a class="headerlink" href="#proxy-setup" title="Permalink to this headline">¶</a></h2>
+<p>It is possible to configure the AllegroGraph Python client to use a
+proxy for all its connection to the server. This can be achieved by
+setting the <code class="docutils literal"><span class="pre">AGRAPH_PROXY</span></code> environment variable, as in the following
+example:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="c1"># Create a SOCKS proxy for tunneling to an internal network</span>
+<span class="n">ssh</span> <span class="o">-</span><span class="n">fN</span> <span class="o">-</span><span class="n">D</span> <span class="mi">1080</span> <span class="n">user</span><span class="nd">@gateway.example.com</span>
+<span class="c1"># Configure agraph-python to use this proxy</span>
+<span class="n">export</span> <span class="n">AGRAPH_PROXY</span><span class="o">=</span><span class="n">socks</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">1080</span>
+</pre></div>
+</div>
+<p>The format of the <code class="docutils literal"><span class="pre">AGRAPH_PROXY</span></code> value is <code class="docutils literal"><span class="pre">TYPE://HOST:PORT</span></code>,
+where <code class="docutils literal"><span class="pre">TYPE</span></code> can be either <code class="docutils literal"><span class="pre">http</span></code>, <code class="docutils literal"><span class="pre">socks4</span></code>, <code class="docutils literal"><span class="pre">socks5</span></code> or
+<code class="docutils literal"><span class="pre">socks</span></code> (a synonym for <code class="docutils literal"><span class="pre">socks5</span></code>). Note that if a SOCKS proxy is
+used, DNS lookups will be performed by the proxy server.</p>
+<div class="section" id="unit-tests">
+<h3>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h3>
+<p>The Python client includes a suite of unit tests that can be run after
+installation.  The tests are executed using the <code class="docutils literal"><span class="pre">pytest</span></code> framework
+and also use a few utilities from <code class="docutils literal"><span class="pre">nose</span></code>, so these two packages have
+to be installed:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pytest</span> <span class="n">nose</span>
+</pre></div>
+</div>
+<p>The tests require a running AllegroGraph server instance. The
+configuration of this server is passed to the tests through
+environment variables:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="c1"># Host and port where the server can be reached. These values are the</span>
+<span class="c1"># default, it is only necessary to define the variables below if your</span>
+<span class="c1"># setup is different</span>
+<span class="n">export</span> <span class="n">AGRAPH_HOST</span><span class="o">=</span><span class="n">localhost</span>
+<span class="n">export</span> <span class="n">AGRAPH_PORT</span><span class="o">=</span><span class="mi">10035</span>
+
+<span class="c1"># Tests will create repositories in this catalog.</span>
+<span class="c1"># It must exist on the server. Use &quot;/&quot; for the root catalog.</span>
+<span class="n">export</span> <span class="n">AGRAPH_CATALOG</span><span class="o">=</span><span class="n">tests</span>
+
+<span class="c1"># Login credentials for the AG server.</span>
+<span class="c1"># The user must have superuser privileges.</span>
+<span class="n">export</span> <span class="n">AGRAPH_USER</span><span class="o">=</span><span class="n">test</span>
+
+<span class="c1"># Use a prompt to read the password</span>
+<span class="n">read</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="n">r</span> <span class="o">-</span><span class="n">p</span> <span class="s2">&quot;Password for user ${AGRAPH_USER}: &quot;</span> <span class="n">AGRAPH_PASSWORD</span>
+<span class="n">export</span> <span class="n">AGRAPH_PASSWORD</span>
+</pre></div>
+</div>
+<p>To run the tests, type:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">pytest</span> <span class="o">--</span><span class="n">pyargs</span> <span class="n">franz</span><span class="o">.</span><span class="n">openrdf</span><span class="o">.</span><span class="n">tests</span><span class="o">.</span><span class="n">tests</span> <span class="o">--</span><span class="n">pyargs</span> <span class="n">franz</span><span class="o">.</span><span class="n">openrdf</span><span class="o">.</span><span class="n">tests</span><span class="o">.</span><span class="n">newtests</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="optional-requirements">
+<h2>Optional requirements<a class="headerlink" href="#optional-requirements" title="Permalink to this headline">¶</a></h2>
+<p>The Python client can utilize a few additional third-party libraries
+if these are available on the host system:</p>
+<blockquote>
+<div><ul class="simple">
+<li>pycurl: can be used as the HTTP backend. It might offer
+better performance than <code class="docutils literal"><span class="pre">requests</span></code> (the default backend).</li>
+<li>simplejson: recommended for Python 2.6 users to significantly
+improve performance. Has negligible impact on other Python
+versions.</li>
+</ul>
+</div></blockquote>
+<p>These can be downloaded and installed from <a class="reference external" href="https://pypi.python.org/">PyPI</a>:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pycurl</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">simplejson</span>
+</pre></div>
+</div>
+<p>Since the packages discussed here use native extensions, it is
+necessary to have a proper development environment set up so that the
+compilation may succeed. This environment must include:</p>
+<blockquote>
+<div><ul class="simple">
+<li>A C compiler</li>
+<li>Python development headers</li>
+<li>libcurl development headers</li>
+</ul>
+</div></blockquote>
+<p>Below we describe more detailed setup instructions for some of the
+supported systems.</p>
+</div>
+<div class="section" id="windows">
+<h2>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h2>
+<p>The required packages are available in binary form for Windows, so it is not
+necessary to install any compilers or headers.</p>
+<div class="section" id="rhel-6-7-and-compatible-systems">
+<h3>RHEL 6/7 and compatible systems<a class="headerlink" href="#rhel-6-7-and-compatible-systems" title="Permalink to this headline">¶</a></h3>
+<p>On RHEL-like systems the requirements mentioned above can be satisfied by
+following these steps (note that root privileges are required):</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Enable <a class="reference external" href="https://fedoraproject.org/wiki/EPEL">EPEL</a> repositories, since some of the required packages
+are only available there. The detailed instructions can be
+found <a class="reference external" href="https://fedoraproject.org/wiki/EPEL#How_can_I_use_these_extra_packages.3F">here</a>.
+On CentOS systems, simply run:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">epel</span><span class="o">-</span><span class="n">release</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Install the required packages:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">devel</span> <span class="n">python</span><span class="o">-</span><span class="n">pip</span> <span class="n">libcurl</span><span class="o">-</span><span class="n">devel</span> <span class="n">gcc</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Before installing the AllegroGraph Python client make sure that the
+following environment variable is set:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">PYCURL_SSL_LIBRARY</span><span class="o">=</span><span class="n">nss</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To use virtual environments (recommended) an additional package
+is needed:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">virtualenv</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="ubuntu">
+<h3>Ubuntu<a class="headerlink" href="#ubuntu" title="Permalink to this headline">¶</a></h3>
+<p>The following packages are required to use the client with Python 2:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">pip</span> <span class="n">libcurl</span><span class="o">-</span><span class="n">gnutls</span> <span class="n">libcurl4</span><span class="o">-</span><span class="n">gnutls</span><span class="o">-</span><span class="n">dev</span> <span class="n">libgnutls28</span><span class="o">-</span><span class="n">dev</span>
+</pre></div>
+</div>
+<p>For Python 3 this becomes:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python3</span><span class="o">-</span><span class="n">pip</span> <span class="n">libcurl</span><span class="o">-</span><span class="n">gnutls</span> <span class="n">libcurl4</span><span class="o">-</span><span class="n">gnutls</span><span class="o">-</span><span class="n">dev</span> <span class="n">libgnutls28</span><span class="o">-</span><span class="n">dev</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><em>Using different SSL backends.</em></p>
+<p>Ubuntu offers three variants of curl, built using different SSL
+libraries. These variants differ in their licensing and SSL related
+capabilities (see <a class="reference external" href="https://curl.haxx.se/docs/ssl-compared.html">https://curl.haxx.se/docs/ssl-compared.html</a> for
+more details). The instructions above use the GnuTLS version. In
+most cases this is an acceptable choice, but it is possible to use
+a different SSL implementation by installing appropriate packages
+before installing the AllegroGraph Python client.</p>
+<p>To use the OpenSSL backend in curl:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">libcurl4</span><span class="o">-</span><span class="n">openssl</span><span class="o">-</span><span class="n">dev</span> <span class="n">libssl</span><span class="o">-</span><span class="n">dev</span>
+</pre></div>
+</div>
+<p>For GnuTLS:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">libcurl4</span><span class="o">-</span><span class="n">gnutls</span><span class="o">-</span><span class="n">dev</span> <span class="n">libgnutls28</span><span class="o">-</span><span class="n">dev</span>
+</pre></div>
+</div>
+<p>For NSS:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">libcurl4</span><span class="o">-</span><span class="n">nss</span><span class="o">-</span><span class="n">dev</span> <span class="n">libnss3</span><span class="o">-</span><span class="n">dev</span>
+</pre></div>
+</div>
+<p>Note that if the client has already been installed it is necessary
+to reinstall the <code class="docutils literal"><span class="pre">pycurl</span></code> package in order to switch SSL
+backends:</p>
+<div class="last highlight-python_rdf"><div class="highlight"><pre><span></span><span class="c1"># Uninstall old package</span>
+<span class="n">pip</span> <span class="n">uninstall</span> <span class="n">pycurl</span>
+
+<span class="c1"># Reinstall, ignoring PIP cache (to force recompilation)</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">cache</span><span class="o">-</span><span class="nb">dir</span> <span class="n">pycurl</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="arch-linux">
+<h3>Arch Linux<a class="headerlink" href="#arch-linux" title="Permalink to this headline">¶</a></h3>
+<p>On Arch the following packages are needed to use the client with Python 2:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">pacman</span> <span class="o">-</span><span class="n">S</span> <span class="n">gcc</span> <span class="n">python2</span> <span class="n">python2</span><span class="o">-</span><span class="n">pip</span> <span class="n">libcurl</span>
+</pre></div>
+</div>
+<p>For Python 3 use:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">pacman</span> <span class="o">-</span><span class="n">S</span> <span class="n">gcc</span> <span class="n">python</span> <span class="n">python</span><span class="o">-</span><span class="n">pip</span> <span class="n">libcurl</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<p>If you see an error similar to the following:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="ne">ImportError</span><span class="p">:</span> <span class="n">pycurl</span><span class="p">:</span> <span class="n">libcurl</span> <span class="n">link</span><span class="o">-</span><span class="n">time</span> <span class="n">ssl</span> <span class="n">backend</span> <span class="p">(</span><span class="n">nss</span><span class="p">)</span> <span class="ow">is</span>
+<span class="n">different</span> <span class="kn">from</span> <span class="nn">compile</span><span class="o">-</span><span class="n">time</span> <span class="n">ssl</span> <span class="n">backend</span> <span class="p">(</span><span class="n">none</span><span class="o">/</span><span class="n">other</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Perform this procedure (replacing <cite>&lt;VERSION&gt;</cite> with the actual version):</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="c1"># Uninstall pycurl:</span>
+<span class="n">pip</span> <span class="n">uninstall</span> <span class="n">pycurl</span>
+
+<span class="c1"># Set the required compile-time option for pycurl</span>
+<span class="n">export</span> <span class="n">PYCURL_SSL_LIBRARY</span><span class="o">=</span><span class="n">nss</span>
+
+<span class="c1"># Reinstall, but ignore cached packages (force recompile)</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">cache</span><span class="o">-</span><span class="nb">dir</span> <span class="n">agraph</span><span class="o">-&lt;</span><span class="n">VERSION</span><span class="o">&gt;-</span><span class="n">python</span><span class="o">-</span><span class="n">client</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+  
+    <div class="nav-links nav-links-footer">
+        &laquo;<a href="index.html" title="previous chapter">Welcome to AllegroGraph Python client’s documentation!</a>
+      <a href="tutorial.html" title="next chapter">Tutorial</a> 
+      &raquo;
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#proxy-setup">Proxy setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optional-requirements">Optional requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#windows">Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to AllegroGraph Python client’s documentation!</a></li>
+      <li>Next: <a href="tutorial.html" title="next chapter">Tutorial</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/install.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

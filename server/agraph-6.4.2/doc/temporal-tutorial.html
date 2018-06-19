@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Temporal Tutorial | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="temporal-tutorial"><div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>        <h1>AllegroGraph 6.4.2 Temporal Tutorial</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-7' title='Introduction'>Introduction</a>
+<ul>
+<li><a href='#header3-11' title='Dates, times and datetimes'>Dates, times and datetimes</a></li>
+<li><a href='#header3-15' title='Points and Intervals'>Points and Intervals</a></li>
+<li><a href='#header3-17' title='Temporal Properties'>Temporal Properties</a></li>
+<li><a href='#header3-27' title='Situating Points on the Timeline'>Situating Points on the Timeline</a></li>
+<li><a href='#header3-30' title='Defining Intervals using two Points'>Defining Intervals using two Points</a></li>
+<li><a href='#header3-34' title='Defining Intervals using two Times'>Defining Intervals using two Times</a></li></ul></li>
+<li><a href='#header2-37' title='Temporal Queries'>Temporal Queries</a>
+<ul>
+<li><a href='#header3-43' title='Relations between two Points'>Relations between two Points</a></li>
+<li><a href='#header3-51' title='Relations between Points and Datetimes'>Relations between Points and Datetimes</a></li>
+<li><a href='#header3-59' title='Relations between Points and Intervals'>Relations between Points and Intervals</a></li>
+<li><a href='#header3-71' title='Relations between Intervals and Datetimes'>Relations between Intervals and Datetimes</a></li>
+<li><a href='#header3-83' title='Relations between two Intervals'>Relations between two Intervals</a></li>
+<li><a href='#header3-112' title='Relations between an Interval and a Datetime Range'>Relations between an Interval and a Datetime Range</a></li>
+<li><a href='#header3-140' title='Relations between Datetimes specified by Property and Subject'>Relations between Datetimes specified by Property and Subject</a></li></ul></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-7' id='header2-7'></a><h2>Introduction</h2><p>This tutorial provides an introduction to the temporal features that are available in AllegroGraph. We cover temporal points, temporal intervals, and how to locate each of these on a one-dimensional timeline. We provide a number of example queries demonstrating the supported temporal relations involving points, intervals and datetimes. </p><p>First, let's create a triple store and register namespaces for the tutorial. We will also use <a href="lisp-reference.html#ref-future-parts" title="">enable-!-reader</a> to make it easier to type URIs. For more details on getting up and running with AllegroGraph, see the <a href="lisp-quickstart.html">Quick Start</a>. Note that you will need to have the AllegroGraph server running. See if <a href="server-installation.html">installation guide</a> for more details. </p>
+<pre><code>(enable-!-reader)  
+(enable-print-decoded t)     
+(register-namespace "ex" "http://example.org/")  
+(register-namespace "t" "http://franz.com/ns/allegrograph/3.0/temporal/")  
+ 
+(create-triple-store "temporal-tutorial.db")  
+ 
+</code></pre><a name='header3-11' id='header3-11'></a><h3>Dates, times and datetimes</h3><p>AllegroGraph supports strings in <a href="http://en.wikipedia.org/wiki/ISO_8601" class="external" target="_blank">ISO 8601</a> format and provides functions for converting to and from encoded :date-time UPIs for efficient storage. </p>
+<a name="function.date-string-to-upi" id="function.date-string-to-upi"></a>
+<a name="date-string-to-upi" id="date-string-to-upi"></a>
+<div class="documentation function"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">date-string-to-upi</span>
+<span class="documentation-arguments"><span class="argument">iso8601-string</span> &nbsp;<span class="marker">&amp;optional</span> &nbsp;<span class="argument">upi</span></span>
+</div>
+<span class="documentation-kind">function</span>
+</div>
+<div class="documentation contents"><p>Converts an ISO8601 date string to a :date-time UPI. Values not included in the string are set to zero with the exception of the timezone which defaults to whatever is current for the application. </p><p>Returns <code>nil</code> if the string cannot be converted. </p>
+</div>
+</div>
+  
+<a name="function.date-thing-to-upi" id="function.date-thing-to-upi"></a>
+<a name="date-thing-to-upi" id="date-thing-to-upi"></a>
+<div class="documentation function"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">date-thing-to-upi</span>
+<span class="documentation-arguments"><span class="argument">input</span></span>
+</div>
+<span class="documentation-kind">function</span>
+</div>
+<div class="documentation contents">Takes as input a :date-time upi, an ISO8601 date string, or a number for universal time and returns the corresponding :date-time upi 
+</div>
+</div>
+  
+<a name="function.upi-to-date-string" id="function.upi-to-date-string"></a>
+<a name="upi-to-date-string" id="upi-to-date-string"></a>
+<div class="documentation function"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">upi-to-date-string</span>
+<span class="documentation-arguments"><span class="argument">upi</span></span>
+</div>
+<span class="documentation-kind">function</span>
+</div>
+<div class="documentation contents"><p>Converts a :date-time upi to an ISO8601 date string. </p><p>The string representation uses the current timezone. For examples, </p>
+<pre><code>;; in Seattle  
+&gt; (upi-to-date-string (date-string-to-upi "2009-01-01T04:30-08:00"))  
+"2009-01-01T04:30:00-08:00"  
+ 
+;; in New York  
+&gt; (upi-to-date-string (date-string-to-upi "2009-01-01T04:30-08:00"))  
+"2008-12-31T19:00:00-05:00" </code></pre>
+</div>
+</div>
+ 
+ 
+<a name="function.upi-to-date-time" id="function.upi-to-date-time"></a>
+<a name="upi-to-date-time" id="upi-to-date-time"></a>
+<div class="documentation function"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">upi-to-date-time</span>
+<span class="documentation-arguments"><span class="argument">upi</span></span>
+</div>
+<span class="documentation-kind">function</span>
+</div>
+<div class="documentation contents">Converts a :date-time upi to a util.date-time:date-time object 
+</div>
+</div>
+  
+<pre><code>Example: Convert from an ISO8601 date string to a :date-time UPI and back.  
+ 
+&gt; (date-string-to-upi "2008-02-01")  
+{3410841600}  
+ 
+&gt; (upi-to-date-string *)  
+"2008-02-01T00:00:00-08:00"  
+ 
+&gt; (date-string-to-upi "2008-02-01T00:00:00-08:00")  
+{3410841600} </code></pre><a name='header3-15' id='header3-15'></a><h3>Points and Intervals</h3><p>AllegroGraph supports <a href="http://en.wikipedia.org/wiki/Temporal_logic" class="external" target="_blank">Allen's temporal points and intervals</a>.  Points are an abstraction used to label moments such as "the moment John arrived".  Points exist independently of time, but can be positioned on a timeline if a time is known.  Intervals are another abstraction used to label a time period such as "Easter weekend, 2008"; these also exist independently of time but can be positioned on a timeline. </p><a name='header3-17' id='header3-17'></a><h3>Temporal Properties</h3><p>AllegroGraph supports the following temporal properties: </p>
+<ul>
+<li>http://franz.com/ns/allegrograph/3.0/temporal/time</li>
+<li>http://franz.com/ns/allegrograph/3.0/temporal/starttime</li>
+<li>http://franz.com/ns/allegrograph/3.0/temporal/endtime</li>
+<li>http://franz.com/ns/allegrograph/3.0/temporal/startpoint</li>
+<li>http://franz.com/ns/allegrograph/3.0/temporal/endpoint</li></ul><p>A <em>Point</em> is positioned on the timeline using the above time properties. Anything having the time property is a <em>Point</em>. </p><p>An <em>Interval</em> can be defined by specifying its <code>startpoint</code> and <code>endpoint</code>.<br />
+<em>Intervals</em> can be positioned on the timeline by positioning their start  and end points using the time property, or they can be positioned using the <code>starttime</code> and <code>endtime</code> properties.  Anything having a <code>startpoint</code>, <code>endpoint</code>, <code>starttime</code>, or <code>endtime</code> property is an <em>Interval</em>. </p><p>In the following sections we provide examples for using these properties. </p><a name='header3-27' id='header3-27'></a><h3>Situating Points on the Timeline</h3><p>Use the <code>t:time</code> property to position a point on the timeline.  The value must be a <code>:date-time</code> UPI. </p>
+<pre><code>;; situate 8 points on the timeline, each 1 day apart  
+(add-triple !ex:pt1 !t:time (date-string-to-upi "2008-02-01"))  
+(add-triple !ex:pt2 !t:time (date-string-to-upi "2008-02-02"))  
+(add-triple !ex:pt3 !t:time (date-string-to-upi "2008-02-03"))  
+(add-triple !ex:pt4 !t:time (date-string-to-upi "2008-02-04"))  
+(add-triple !ex:pt5 !t:time (date-string-to-upi "2008-02-05"))  
+(add-triple !ex:pt6 !t:time (date-string-to-upi "2008-02-06"))  
+(add-triple !ex:pt7 !t:time (date-string-to-upi "2008-02-07"))  
+(add-triple !ex:pt8 !t:time (date-string-to-upi "2008-02-08")) </code></pre><a name='header3-30' id='header3-30'></a><h3>Defining Intervals using two Points</h3><p>Use the <code>t:startpoint</code> and <code>t:endpoint</code> properties to associate points with an interval's start and end points. </p><p>Here we define a number of intervals in terms of the 8 points that were defined in the section above. </p>
+<pre><code>;; add all intervals starting at pt1  
+(add-triple !ex:i12 !t:startpoint !ex:pt1)  
+(add-triple !ex:i12 !t:endpoint !ex:pt2)  
+ 
+(add-triple !ex:i13 !t:startpoint !ex:pt1)  
+(add-triple !ex:i13 !t:endpoint !ex:pt3)  
+ 
+(add-triple !ex:i14 !t:startpoint !ex:pt1)  
+(add-triple !ex:i14 !t:endpoint !ex:pt4)  
+ 
+(add-triple !ex:i15 !t:startpoint !ex:pt1)  
+(add-triple !ex:i15 !t:endpoint !ex:pt5)  
+ 
+(add-triple !ex:i16 !t:startpoint !ex:pt1)  
+(add-triple !ex:i16 !t:endpoint !ex:pt6)  
+ 
+(add-triple !ex:i17 !t:startpoint !ex:pt1)  
+(add-triple !ex:i17 !t:endpoint !ex:pt7)  
+ 
+(add-triple !ex:i18 !t:startpoint !ex:pt1)  
+(add-triple !ex:i18 !t:endpoint !ex:pt8)  
+ 
+;; add a few intervals in the middle  
+(add-triple !ex:i45 !t:startpoint !ex:pt4)  
+(add-triple !ex:i45 !t:endpoint !ex:pt5)  
+ 
+(add-triple !ex:i36 !t:startpoint !ex:pt3)  
+(add-triple !ex:i36 !t:endpoint !ex:pt6)  
+ 
+(add-triple !ex:i27 !t:startpoint !ex:pt2)  
+(add-triple !ex:i27 !t:endpoint !ex:pt7)  
+ 
+;; add all other intervals ending at pt8  
+(add-triple !ex:i28 !t:startpoint !ex:pt2)  
+(add-triple !ex:i28 !t:endpoint !ex:pt8)  
+ 
+(add-triple !ex:i38 !t:startpoint !ex:pt3)  
+(add-triple !ex:i38 !t:endpoint !ex:pt8)  
+ 
+(add-triple !ex:i48 !t:startpoint !ex:pt4)  
+(add-triple !ex:i48 !t:endpoint !ex:pt8)  
+ 
+(add-triple !ex:i58 !t:startpoint !ex:pt5)  
+(add-triple !ex:i58 !t:endpoint !ex:pt8)  
+ 
+(add-triple !ex:i68 !t:startpoint !ex:pt6)  
+(add-triple !ex:i68 !t:endpoint !ex:pt8)  
+ 
+(add-triple !ex:i78 !t:startpoint !ex:pt7)  
+(add-triple !ex:i78 !t:endpoint !ex:pt8) </code></pre><a name='header3-34' id='header3-34'></a><h3>Defining Intervals using two Times</h3><p>Because they have <code>startpoint</code>s and <code>endpoint</code>s that are themselves situated the intervals above are already indirectly situated on a timeline. Below we show how to situate an interval on the timeline directly, using the <code>t:starttime</code> and <code>t:endtime</code> properties. </p>
+<pre><code>;; add starttime triples for the above intervals  
+(dolist (pair (select0-distinct (?i ?upi)  
+                (q ?i !t:startpoint ?pt)  
+                (q ?pt !t:time ?upi)))  
+  (add-triple (first pair) !t:starttime (second pair)))  
+ 
+;; add endtime triples for the above intervals  
+(dolist (pair (select0-distinct (?i ?upi)  
+                (q ?i !t:endpoint ?pt)  
+                (q ?pt !t:time ?upi)))  
+  (add-triple (first pair) !t:endtime (second pair))) </code></pre><a name='header2-37' id='header2-37'></a><h2>Temporal Queries</h2><p>Given a triple store containing information about datetimes, points, and intervals, AllegroGraph provides a number of Prolog functors for specifying temporal constraints in select queries. (See the <a href="prolog-tutorial.html">Prolog tutorial</a> for more details on querying AllegroGraph using Prolog). </p><div class='sidenote' id='prolog-documentation-note'> <p>This documentation uses the usual Prolog argument notation. A <code>+</code> prefix on an argument indicates that is must be supplied (it is input to the predicate), a <code>-</code> prefix indicates the argument is output and must not be supplied, and a &plusmn; prefix indicates the argument may be either. </p></div> <p>In the examples that follow we will use the triple store that was defined in the preceding sections as the basis for demonstrating a number of temporal queries. </p><a name='header3-43' id='header3-43'></a><h3>Relations between two Points</h3><p>There are 3 ways that two points can be related.<br />
+</p>
+<a name="functor.point-before" id="functor.point-before"></a>
+<a name="point-before" id="point-before"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">point-before</span>
+<div class="documentation-arguments">(point-before &plusmn;pt1 &plusmn;pt2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Point <code>?pt1</code> is before point <code>?pt2</code> on the timeline. 
+</div>
+</div>
+  
+<pre><code>Example: select all points that are before ex:pt3.  
+ 
+&gt; (select0 (?pt)  
+    (point-before ?pt !ex:pt3))  
+(({pt1}) ({pt2}))  
+t  
+ 
+Example: select all points that ex:pt3 is before.  
+ 
+&gt; (select0 (?pt)  
+    (point-before !ex:pt3 ?pt))  
+(({pt4}) ({pt5}) ({pt6}) ({pt7}) ({pt8}))  
+t </code></pre>
+<a name="functor.point-simultaneous" id="functor.point-simultaneous"></a>
+<a name="point-simultaneous" id="point-simultaneous"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">point-simultaneous</span>
+<div class="documentation-arguments">(point-simultaneous &plusmn;pt1 &plusmn;pt2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Point <code>?pt1</code> is simultaneous with point <code>?pt2</code> on the timeline. 
+</div>
+</div>
+  
+<pre><code>Example: select all points that are simultaneous with ex:pt3.  
+ 
+&gt; (select0 (?pt)  
+    (point-simultaneous ?pt !ex:pt3))  
+(({pt3}))  
+t </code></pre>
+<a name="functor.point-after" id="functor.point-after"></a>
+<a name="point-after" id="point-after"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">point-after</span>
+<div class="documentation-arguments">(point-after &plusmn;pt1 &plusmn;pt2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Point <code>?pt1</code> is after point <code>?pt2</code> on the timeline. 
+</div>
+</div>
+  
+<pre><code>Example: select all points that are after ex:pt6.  
+ 
+&gt; (select0 (?pt)  
+    (point-after ?pt !ex:pt6))  
+(({pt7}) ({pt8}))  
+t  
+ 
+Example: select all points that ex:pt6 is after.  
+ 
+&gt; (select0 (?pt)  
+    (point-after !ex:pt6 ?pt))  
+(({pt1}) ({pt2}) ({pt3}) ({pt4}) ({pt5}))  
+t </code></pre><a name='header3-51' id='header3-51'></a><h3>Relations between Points and Datetimes</h3><p>There are 3 ways to relate a Point and a Datetime. </p>
+<a name="functor.point-before-datetime" id="functor.point-before-datetime"></a>
+<a name="point-before-datetime" id="point-before-datetime"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">point-before-datetime</span>
+<div class="documentation-arguments">(point-before-datetime &plusmn;pt &plusmn;dt)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Point <code>?pt</code> is before the datetime <code>?dt</code> on the timeline. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0 (?pt)  
+    (point-before-datetime ?pt "2008-02-03"))  
+(({pt1}) ({pt2}))  
+t  
+ 
+&gt; (select0 (?dt)  
+    (point-before-datetime !ex:pt5 ?upi)  
+    (upi-to-date-string ?upi ?dt))  
+(("2008-02-06T00:00:00-08:00") ("2008-02-07T00:00:00-08:00") ("2008-02-08T00:00:00-08:00"))  
+t </code></pre>
+<a name="functor.point-datetime" id="functor.point-datetime"></a>
+<a name="point-datetime" id="point-datetime"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">point-datetime</span>
+<div class="documentation-arguments">(point-datetime &plusmn;pt &plusmn;dt)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Point <code>?pt</code> is simultaneous with the datetime <code>?dt</code> on the timeline. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0 (?pt)  
+    (point-datetime ?pt "2008-02-03"))  
+(({pt3}))  
+t  
+ 
+&gt; (select0 (?dt)  
+    (point-datetime !ex:pt5 ?upi)  
+    (upi-to-date-string ?upi ?dt))  
+(("2008-02-05T00:00:00-08:00"))  
+t  
+ 
+&gt; (select0 (?pt ?upi)  
+    (point-datetime ?pt ?upi))  
+(({pt1} {3410841600}) ({pt2} {3410928000}) ({pt3} {3411014400}) ({pt4} {3411100800})  
+ ({pt5} {3411187200}) ({pt6} {3411273600}) ({pt7} {3411360000}) ({pt8} {3411446400}))  
+t  
+ 
+&gt; (select0 (?pt ?dt)  
+    (point-datetime ?pt ?upi)  
+    (upi-to-date-string ?upi ?dt))  
+(({pt1} "2008-02-01T00:00:00-08:00") ({pt2} "2008-02-02T00:00:00-08:00")  
+ ({pt3} "2008-02-03T00:00:00-08:00") ({pt4} "2008-02-04T00:00:00-08:00")  
+ ({pt5} "2008-02-05T00:00:00-08:00") ({pt6} "2008-02-06T00:00:00-08:00")  
+ ({pt7} "2008-02-07T00:00:00-08:00") ({pt8} "2008-02-08T00:00:00-08:00"))  
+t </code></pre>
+<a name="functor.point-after-datetime" id="functor.point-after-datetime"></a>
+<a name="point-after-datetime" id="point-after-datetime"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">point-after-datetime</span>
+<div class="documentation-arguments">(point-after-datetime &plusmn;pt &plusmn;dt)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Point <code>?pt</code> is after the datetime <code>?dt</code> on the timeline. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0 (?pt)  
+    (point-after-datetime ?pt "2008-02-03"))  
+(({pt4}) ({pt5}) ({pt6}) ({pt7}) ({pt8}))  
+t  
+&gt; (select0 (?dt)  
+    (point-after-datetime !ex:pt5 ?upi)  
+    (upi-to-date-string ?upi ?dt))  
+(("2008-02-01T00:00:00-08:00") ("2008-02-02T00:00:00-08:00") ("2008-02-03T00:00:00-08:00")  
+ ("2008-02-04T00:00:00-08:00"))  
+t </code></pre><a name='header3-59' id='header3-59'></a><h3>Relations between Points and Intervals</h3><p>There are 5 ways to position a point relative to an interval. </p>
+<a name="functor.point-before-interval" id="functor.point-before-interval"></a>
+<a name="point-before-interval" id="point-before-interval"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">point-before-interval</span>
+<div class="documentation-arguments">(point-before-interval &plusmn;pt &plusmn;i)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Point <code>?pt</code> is before the startpoint of interval <code>?i</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0 (?pt)  
+    (point-before-interval ?pt !ex:i36))  
+(({pt1}) ({pt2}))  
+t </code></pre>
+<a name="functor.point-starts-interval" id="functor.point-starts-interval"></a>
+<a name="point-starts-interval" id="point-starts-interval"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">point-starts-interval</span>
+<div class="documentation-arguments">(point-starts-interval &plusmn;pt &plusmn;i)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Point <code>?pt</code> is simultaneous with the startpoint of interval <code>?i</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0 (?i)  
+    (point-starts-interval !ex:pt3 ?i))  
+(({i36}) ({i38}))  
+t </code></pre>
+<a name="functor.point-during-interval" id="functor.point-during-interval"></a>
+<a name="point-during-interval" id="point-during-interval"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">point-during-interval</span>
+<div class="documentation-arguments">(point-during-interval &plusmn;pt &plusmn;i)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Point <code>?pt</code> is after the startpoint but before the endpoint of interval <code>?i</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0 (?pt)  
+    (point-during-interval ?pt !ex:i36))  
+(({pt4}) ({pt5}))  
+t </code></pre>
+<a name="functor.point-ends-interval" id="functor.point-ends-interval"></a>
+<a name="point-ends-interval" id="point-ends-interval"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">point-ends-interval</span>
+<div class="documentation-arguments">(point-ends-interval &plusmn;pt &plusmn;i)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Point <code>?pt</code> is simultaneous with the endpoint of interval <code>?i</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0 (?i)  
+    (point-ends-interval !ex:pt6 ?i))  
+(({i16}) ({i36}))  
+t </code></pre>
+<a name="functor.point-after-interval" id="functor.point-after-interval"></a>
+<a name="point-after-interval" id="point-after-interval"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">point-after-interval</span>
+<div class="documentation-arguments">(point-after-interval &plusmn;pt &plusmn;i)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Point <code>?pt</code> is after the endpoint of interval <code>?i</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0 (?pt)  
+    (point-after-interval ?pt !ex:i36))  
+(({pt7}) ({pt8}))  
+t </code></pre><a name='header3-71' id='header3-71'></a><h3>Relations between Intervals and Datetimes</h3><p>There are 5 ways to relate an Interval to a Datetime. </p>
+<a name="functor.interval-before-datetime" id="functor.interval-before-datetime"></a>
+<a name="interval-before-datetime" id="interval-before-datetime"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-before-datetime</span>
+<div class="documentation-arguments">(interval-before-datetime &plusmn;i &plusmn;dt)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">The endpoint of interval <code>?i</code> is before the datetime <code>?dt</code> on the timeline. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?i)  
+    (interval-before-datetime ?i "2008-02-03"))  
+(({i12}))  
+t  
+ 
+&gt; (select0-distinct(?dt)  
+    (interval-before-datetime !ex:i36 ?upi)  
+    (upi-to-date-string ?upi ?dt))  
+(("2008-02-07T00:00:00-08:00") ("2008-02-08T00:00:00-08:00"))  
+t </code></pre>
+<a name="functor.interval-starttime" id="functor.interval-starttime"></a>
+<a name="interval-starttime" id="interval-starttime"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-starttime</span>
+<div class="documentation-arguments">(interval-starttime &plusmn;i &plusmn;dt)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">The startpoint of interval <code>?i</code> is simultaneous with the datetime <code>?dt</code> on the timeline. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct (?i)  
+    (interval-starttime ?i "2008-02-03"))  
+(({i36}) ({i38}))  
+t  
+ 
+&gt; (select0-distinct(?dt)  
+    (interval-starttime !ex:i36 ?upi)  
+    (upi-to-date-string ?upi ?dt))  
+(("2008-02-03T00:00:00-08:00"))  
+t </code></pre>
+<a name="functor.interval-contains-datetime" id="functor.interval-contains-datetime"></a>
+<a name="interval-contains-datetime" id="interval-contains-datetime"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-contains-datetime</span>
+<div class="documentation-arguments">(interval-contains-datetime &plusmn;i &plusmn;dt)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">The startpoint of interval <code>?i</code> is before the datetime <code>?dt</code>, and the endpoint of <code>?i</code> is after <code>?dt</code> on the timeline. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct (?i)  
+    (interval-contains-datetime ?i "2008-02-03"))  
+(({i15}) ({i14}) ({i18}) ({i17}) ({i16}) ({i27}) ({i28}))  
+t  
+ 
+&gt; (select0-distinct (?dt)  
+    (interval-contains-datetime !ex:i36 ?upi)  
+    (upi-to-date-string ?upi ?dt))  
+(("2008-02-04T00:00:00-08:00") ("2008-02-05T00:00:00-08:00"))  
+t </code></pre>
+<a name="functor.interval-endtime" id="functor.interval-endtime"></a>
+<a name="interval-endtime" id="interval-endtime"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-endtime</span>
+<div class="documentation-arguments">(interval-endtime &plusmn;i &plusmn;dt)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">The endpoint of interval <code>?i</code> is simultaneous with the datetime <code>?dt</code> on the timeline. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?i)  
+    (interval-endtime ?i "2008-02-03"))  
+(({i13}))  
+t  
+ 
+&gt; (select0-distinct(?dt)  
+    (interval-endtime !ex:i36 ?upi)  
+    (upi-to-date-string ?upi ?dt))  
+(("2008-02-06T00:00:00-08:00"))  
+t </code></pre>
+<a name="functor.interval-after-datetime" id="functor.interval-after-datetime"></a>
+<a name="interval-after-datetime" id="interval-after-datetime"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-after-datetime</span>
+<div class="documentation-arguments">(interval-after-datetime &plusmn;i &plusmn;dt)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">The startpoint of interval <code>?i</code> is after the datetime <code>?dt</code> on the timeline. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct (?i)  
+    (interval-after-datetime ?i "2008-02-03"))  
+(({i45}) ({i48}) ({i58}) ({i68}) ({i78}))  
+t  
+ 
+&gt; (select0-distinct (?dt)  
+    (interval-after-datetime !ex:i36 ?upi)  
+    (upi-to-date-string ?upi ?dt))  
+(("2008-02-01T00:00:00-08:00") ("2008-02-02T00:00:00-08:00"))  
+t </code></pre><a name='header3-83' id='header3-83'></a><h3>Relations between two Intervals</h3><p>Finally, there are 13 ways that two intervals can be related on the timeline. </p><p><img src="allen-relations.png" alt="a depiction of the Allen temporal relations"></img> </p>
+<a name="functor.interval-before" id="functor.interval-before"></a>
+<a name="interval-before" id="interval-before"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-before</span>
+<div class="documentation-arguments">(interval-before &plusmn;i1 &plusmn;i2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">The endpoint of interval <code>?i1</code> is before the startpoint of interval <code>?i2</code>. 
+</div>
+</div>
+  
+<pre><code>Example: select all intervals before ex:i68  
+ 
+&gt; (select0-distinct (?i)  
+    (interval-before ?i !ex:i68))  
+(({i12}) ({i13}) ({i14}) ({i45}) ({i15}))  
+t </code></pre>
+<a name="functor.interval-meets" id="functor.interval-meets"></a>
+<a name="interval-meets" id="interval-meets"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-meets</span>
+<div class="documentation-arguments">(interval-meets &plusmn;i1 &plusmn;i2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">The endpoint of interval <code>?i1</code> is simultaneous with the startpoint of interval <code>?i2</code>. 
+</div>
+</div>
+  
+<pre><code>Example: select all intervals that meet ex:i68  
+ 
+&gt; (select0-distinct (?i)  
+    (interval-meets ?i !ex:i68))  
+(({i16}) ({i36}))  
+t </code></pre>
+<a name="functor.interval-overlaps" id="functor.interval-overlaps"></a>
+<a name="interval-overlaps" id="interval-overlaps"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-overlaps</span>
+<div class="documentation-arguments">(interval-overlaps &plusmn;i1 &plusmn;i2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">The startpoint of interval <code>?i1</code> is before the startpoint of interval <code>?i2</code>, and the endpoint of <code>?i1</code> is during interval <code>?i2</code>. 
+</div>
+</div>
+  
+<pre><code>Example: select all intervals that overlap ex:i38  
+ 
+&gt; (select0-distinct (?i)  
+    (interval-overlaps ?i !ex:i38))  
+(({i15}) ({i14}) ({i17}) ({i16}) ({i27}))  
+t </code></pre>
+<a name="functor.interval-starts" id="functor.interval-starts"></a>
+<a name="interval-starts" id="interval-starts"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-starts</span>
+<div class="documentation-arguments">(interval-starts &plusmn;i1 &plusmn;i2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">The startpoint of interval <code>?i1</code> is simultaneous with the startpoint of interval <code>?i2</code>, and the endpoint of interval <code>?i1</code> is during interval <code>?i2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct (?i)  
+    (interval-starts ?i !ex:i16))  
+(({i12}) ({i15}) ({i14}) ({i13}))  
+t </code></pre>
+<a name="functor.interval-during" id="functor.interval-during"></a>
+<a name="interval-during" id="interval-during"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-during</span>
+<div class="documentation-arguments">(interval-during &plusmn;i1 &plusmn;i2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">The startpoint and endpoint of interval <code>?i1</code> are both during interval <code>?i2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct (?i)  
+    (interval-during ?i !ex:i27))  
+(({i36}) ({i45}))  
+t </code></pre>
+<a name="functor.interval-finishes" id="functor.interval-finishes"></a>
+<a name="interval-finishes" id="interval-finishes"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-finishes</span>
+<div class="documentation-arguments">(interval-finishes &plusmn;i1 &plusmn;i2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">The startpoint of interval <code>?i1</code> is during interval <code>?i2</code>, and the endpoint of <code>?i1</code> is simultaneous with the endpoint of <code>?i2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct (?i)  
+    (interval-finishes ?i !ex:i38))  
+(({i48}) ({i68}) ({i78}) ({i58}))  
+t </code></pre>
+<a name="functor.interval-cotemporal" id="functor.interval-cotemporal"></a>
+<a name="interval-cotemporal" id="interval-cotemporal"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-cotemporal</span>
+<div class="documentation-arguments">(interval-cotemporal &plusmn;i1 &plusmn;i2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">The startpoint of interval <code>?i1</code> is simultaneous with the startpoint of interval <code>?i2</code>, and the endpoint of <code>?i1</code> is simultaneous with the endpoint of <code>?i2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct (?i)  
+    (interval-cotemporal ?i !ex:i36))  
+(({i36}))  
+t </code></pre>
+<a name="functor.interval-after" id="functor.interval-after"></a>
+<a name="interval-after" id="interval-after"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-after</span>
+<div class="documentation-arguments">(interval-after &plusmn;i1 &plusmn;i2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">The startpoint of interval <code>?i1</code> is after the endpoint of interval <code>?i2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct (?i)  
+    (interval-after ?i !ex:i45))  
+(({i68}) ({i78}))  
+t </code></pre>
+<a name="functor.interval-met-by" id="functor.interval-met-by"></a>
+<a name="interval-met-by" id="interval-met-by"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-met-by</span>
+<div class="documentation-arguments">(interval-met-by &plusmn;i1 &plusmn;i2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">The startpoint of interval <code>?i1</code> is simultaneous with the endpoint of interval <code>?i2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct (?i)  
+    (interval-met-by ?i !ex:i14))  
+(({i45}) ({i48}))  
+t </code></pre>
+<a name="functor.interval-overlapped-by" id="functor.interval-overlapped-by"></a>
+<a name="interval-overlapped-by" id="interval-overlapped-by"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-overlapped-by</span>
+<div class="documentation-arguments">(interval-overlapped-by &plusmn;i1 &plusmn;i2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">The startpoint of interval <code>?i1</code> is during interval <code>?i2</code>, and the endpoint of <code>?i1</code> is after the endpoint of <code>?i2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct (?i)  
+    (interval-overlapped-by ?i !ex:i36))  
+(({i48}) ({i58}))  
+t </code></pre>
+<a name="functor.interval-started-by" id="functor.interval-started-by"></a>
+<a name="interval-started-by" id="interval-started-by"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-started-by</span>
+<div class="documentation-arguments">(interval-started-by &plusmn;i1 &plusmn;i2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">The startpoint of interval <code>?i1</code> is simultaneous with the startpoint of interval <code>?i2</code>, and the endpoint of <code>?i1</code> is after the endpoint of <code>?i2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct (?i)  
+    (interval-started-by ?i !ex:i14))  
+(({i15}) ({i18}) ({i17}) ({i16}))  
+t </code></pre>
+<a name="functor.interval-contains" id="functor.interval-contains"></a>
+<a name="interval-contains" id="interval-contains"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-contains</span>
+<div class="documentation-arguments">(interval-contains &plusmn;i1 &plusmn;i2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">The startpoint and endpoint of interval <code>?i2</code> are both during interval <code>?i1</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct (?i)  
+    (interval-contains ?i !ex:i36))  
+(({i18}) ({i17}) ({i27}) ({i28}))  
+t </code></pre>
+<a name="functor.interval-finished-by" id="functor.interval-finished-by"></a>
+<a name="interval-finished-by" id="interval-finished-by"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-finished-by</span>
+<div class="documentation-arguments">(interval-finished-by &plusmn;i1 &plusmn;i2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">The startpoint of interval <code>?i1</code> is before interval <code>?i2</code>, and the endpoint of <code>?i1</code> is simultaneous with the endpoint of <code>?i2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct (?i)  
+    (interval-finished-by ?i !ex:i48))  
+(({i18}) ({i28}) ({i38}))  
+t </code></pre><a name='header3-112' id='header3-112'></a><h3>Relations between an Interval and a Datetime Range</h3><p>The following relations can be viewed as relations between two intervals where the latter interval is specified by two datetimes. </p>
+<a name="functor.interval-before-datetimes" id="functor.interval-before-datetimes"></a>
+<a name="interval-before-datetimes" id="interval-before-datetimes"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-before-datetimes</span>
+<div class="documentation-arguments">(interval-before-datetimes &plusmn;i &plusmn;dt1 &plusmn;dt2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Interval <code>?i</code> satisfies relation <code>(interval-before ?i ?i2)</code> where <code>?i2</code> has starttime <code>?dt1</code> and endtime <code>?dt2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?i)  
+    (interval-before-datetimes ?i "2008-02-03" "2008-02-06"))  
+(({i12}))  
+t </code></pre>
+<a name="functor.interval-meets-datetimes" id="functor.interval-meets-datetimes"></a>
+<a name="interval-meets-datetimes" id="interval-meets-datetimes"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-meets-datetimes</span>
+<div class="documentation-arguments">(interval-meets-datetimes &plusmn;i &plusmn;dt1 &plusmn;dt2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Interval <code>?i</code> satisfies relation <code>(interval-meets ?i ?i2)</code> where <code>?i2</code> has starttime <code>?dt1</code> and endtime <code>?dt2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?i)  
+    (interval-meets-datetimes ?i "2008-02-03" "2008-02-06"))  
+(({i13}))  
+t </code></pre>
+<a name="functor.interval-overlaps-datetimes" id="functor.interval-overlaps-datetimes"></a>
+<a name="interval-overlaps-datetimes" id="interval-overlaps-datetimes"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-overlaps-datetimes</span>
+<div class="documentation-arguments">(interval-overlaps-datetimes &plusmn;i &plusmn;dt1 &plusmn;dt2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Interval <code>?i</code> satisfies relation <code>(interval-overlaps ?i ?i2)</code> where <code>?i2</code> has starttime <code>?dt1</code> and endtime <code>?dt2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?i)  
+    (interval-overlaps-datetimes ?i "2008-02-03" "2008-02-06"))  
+(({i15}) ({i14}))  
+t </code></pre>
+<a name="functor.interval-starts-datetimes" id="functor.interval-starts-datetimes"></a>
+<a name="interval-starts-datetimes" id="interval-starts-datetimes"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-starts-datetimes</span>
+<div class="documentation-arguments">(interval-starts-datetimes &plusmn;i &plusmn;dt1 &plusmn;dt2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Interval <code>?i</code> satisfies relation <code>(interval-starts ?i ?i2)</code> where <code>?i2</code> has starttime <code>?dt1</code> and endtime <code>?dt2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?i)  
+    (interval-starts-datetimes ?i "2008-02-01" "2008-02-06"))  
+(({i12}) ({i15}) ({i14}) ({i13}))  
+t </code></pre>
+<a name="functor.interval-during-datetimes" id="functor.interval-during-datetimes"></a>
+<a name="interval-during-datetimes" id="interval-during-datetimes"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-during-datetimes</span>
+<div class="documentation-arguments">(interval-during-datetimes &plusmn;i &plusmn;dt1 &plusmn;dt2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Interval <code>?i</code> satisfies relation <code>(interval-during ?i ?i2)</code> where <code>?i2</code> has starttime <code>?dt1</code> and endtime <code>?dt2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?i)  
+    (interval-during-datetimes ?i "2008-02-03" "2008-02-06"))  
+(({i45}))  
+t </code></pre>
+<a name="functor.interval-finishes-datetimes" id="functor.interval-finishes-datetimes"></a>
+<a name="interval-finishes-datetimes" id="interval-finishes-datetimes"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-finishes-datetimes</span>
+<div class="documentation-arguments">(interval-finishes-datetimes &plusmn;i &plusmn;dt1 &plusmn;dt2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Interval <code>?i</code> satisfies relation <code>(interval-finishes ?i ?i2)</code> where <code>?i2</code> has starttime <code>?dt1</code> and endtime <code>?dt2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?i)  
+    (interval-finishes-datetimes ?i "2008-02-03" "2008-02-08"))  
+(({i48}) ({i68}) ({i78}) ({i58}))  
+t </code></pre>
+<a name="functor.interval-cotemporal-datetimes" id="functor.interval-cotemporal-datetimes"></a>
+<a name="interval-cotemporal-datetimes" id="interval-cotemporal-datetimes"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-cotemporal-datetimes</span>
+<div class="documentation-arguments">(interval-cotemporal-datetimes &plusmn;i &plusmn;dt1 &plusmn;dt2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Interval <code>?i</code> satisfies relation <code>(interval-cotemporal ?i ?i2)</code> where <code>?i2</code> has starttime <code>?dt1</code> and endtime <code>?dt2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?i)  
+    (interval-cotemporal-datetimes ?i "2008-02-03" "2008-02-08"))  
+(({i38}))  
+t </code></pre>
+<a name="functor.interval-after-datetimes" id="functor.interval-after-datetimes"></a>
+<a name="interval-after-datetimes" id="interval-after-datetimes"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-after-datetimes</span>
+<div class="documentation-arguments">(interval-after-datetimes &plusmn;i &plusmn;dt1 &plusmn;dt2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Interval <code>?i</code> satisfies relation <code>(interval-after ?i ?i2)</code> where <code>?i2</code> has starttime <code>?dt1</code> and endtime <code>?dt2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?i)  
+    (interval-after-datetimes ?i "2008-02-03" "2008-02-06"))  
+(({i78}))  
+t </code></pre>
+<a name="functor.interval-met-by-datetimes" id="functor.interval-met-by-datetimes"></a>
+<a name="interval-met-by-datetimes" id="interval-met-by-datetimes"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-met-by-datetimes</span>
+<div class="documentation-arguments">(interval-met-by-datetimes &plusmn;i &plusmn;dt1 &plusmn;dt2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Interval <code>?i</code> satisfies relation <code>(interval-met-by ?i ?i2)</code> where <code>?i2</code> has starttime <code>?dt1</code> and endtime <code>?dt2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?i)  
+    (interval-met-by-datetimes ?i "2008-02-03" "2008-02-06"))  
+(({i68}))  
+t </code></pre>
+<a name="functor.interval-overlapped-by-datetimes" id="functor.interval-overlapped-by-datetimes"></a>
+<a name="interval-overlapped-by-datetimes" id="interval-overlapped-by-datetimes"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-overlapped-by-datetimes</span>
+<div class="documentation-arguments">(interval-overlapped-by-datetimes &plusmn;i &plusmn;dt1 &plusmn;dt2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Interval <code>?i</code> satisfies relation <code>(interval-overlapped-by ?i ?i2)</code> where <code>?i2</code> has starttime <code>?dt1</code> and endtime <code>?dt2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?i)  
+    (interval-overlapped-by-datetimes ?i "2008-02-03" "2008-02-06"))  
+(({i48}) ({i58}))  
+t </code></pre>
+<a name="functor.interval-started-by-datetimes" id="functor.interval-started-by-datetimes"></a>
+<a name="interval-started-by-datetimes" id="interval-started-by-datetimes"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-started-by-datetimes</span>
+<div class="documentation-arguments">(interval-started-by-datetimes &plusmn;i &plusmn;dt1 &plusmn;dt2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Interval <code>?i</code> satisfies relation <code>(interval-started-by ?i ?i2)</code> where <code>?i2</code> has starttime <code>?dt1</code> and endtime <code>?dt2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?i)  
+    (interval-started-by-datetimes ?i "2008-02-01" "2008-02-06"))  
+ 
+(({i18}) ({i17}))  
+t </code></pre>
+<a name="functor.interval-contains-datetimes" id="functor.interval-contains-datetimes"></a>
+<a name="interval-contains-datetimes" id="interval-contains-datetimes"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-contains-datetimes</span>
+<div class="documentation-arguments">(interval-contains-datetimes &plusmn;i &plusmn;dt1 &plusmn;dt2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Interval <code>?i</code> satisfies relation <code>(interval-contains ?i ?i2)</code> where <code>?i2</code> has starttime <code>?dt1</code> and endtime <code>?dt2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?i)  
+    (interval-contains-datetimes ?i "2008-02-03" "2008-02-06"))  
+(({i18}) ({i17}) ({i27}) ({i28}))  
+t </code></pre>
+<a name="functor.interval-finished-by-datetimes" id="functor.interval-finished-by-datetimes"></a>
+<a name="interval-finished-by-datetimes" id="interval-finished-by-datetimes"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">interval-finished-by-datetimes</span>
+<div class="documentation-arguments">(interval-finished-by-datetimes &plusmn;i &plusmn;dt1 &plusmn;dt2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">Interval <code>?i</code> satisfies relation <code>(interval-finished-by ?i ?i2)</code> where <code>?i2</code> has starttime <code>?dt1</code> and endtime <code>?dt2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?i)  
+    (interval-finished-by-datetimes ?i "2008-02-03" "2008-02-08"))  
+(({i18}) ({i28}))  
+t </code></pre><a name='header3-140' id='header3-140'></a><h3>Relations between Datetimes specified by Property and Subject</h3><p>The following relations can be used to efficiently compare two datetimes.  Datetimes are specified as the object corresponding to a property <code>?p</code> and subject <code>?s</code>, or they can specified as an explicit value. </p>
+<a name="functor.datetime-simultaneous" id="functor.datetime-simultaneous"></a>
+<a name="datetime-simultaneous" id="datetime-simultaneous"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">datetime-simultaneous</span>
+<div class="documentation-arguments">(datetime-simultaneous &plusmn;p1 &plusmn;s1 &plusmn;p2 &plusmn;s2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">This can be viewed as comparing two datetimes that are each specified by a property-subject pair.  The subjects <code>?s1</code> and <code>?s2</code> can each be a point or an interval.  The properties <code>?p1</code> and <code>?p2</code> can be !t:time (if its subject is a point), or one of !t:starttime or !t:endtime (if its subject is an interval).  This functor requires the datetime <code>?dt1</code> corresponding to triple (?s1 ?p1 ?dt1) to be simultaneous with the datetime <code>?dt2</code> corresponding to triple (?s2 ?p2 ?dt2). 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?pt)  
+    (datetime-simultaneous !t:time ?pt !t:time !ex:pt4))  
+(({pt4}))  
+t  
+ 
+&gt; (select0-distinct(?i)  
+    (datetime-simultaneous !t:endtime ?i !t:starttime !ex:i68))  
+(({i16}) ({i36}))  
+t </code></pre>
+<a name="functor.datetime-simultaneous-value" id="functor.datetime-simultaneous-value"></a>
+<a name="datetime-simultaneous-value" id="datetime-simultaneous-value"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">datetime-simultaneous-value</span>
+<div class="documentation-arguments">(datetime-simultaneous-value &plusmn;p &plusmn;s &plusmn;dt)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">This can be viewed as comparing two datetimes, the first of which is specified by a property-subject pair.  The subject <code>?s</code> can be a point or an interval.  The property <code>?p</code> can be !t:time (if its subject is a point), or one of !t:starttime or !t:endtime (if its subject is an interval).  This functor requires the datetime <code>?dtps</code> corresponding to triple (?s ?p ?dtps) to be simultaneous with the datetime <code>?dt</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?pt)  
+    (datetime-simultaneous-value !t:time ?pt "2008-02-04"))  
+(({pt4}))  
+t  
+ 
+&gt; (select0-distinct(?i)  
+    (datetime-simultaneous-value !t:starttime ?i "2008-02-04"))  
+(({i45}) ({i48}))  
+t  
+ 
+&gt; (select0-distinct(?i)  
+    (datetime-simultaneous-value !t:endtime ?i "2008-02-04"))  
+(({i14}))  
+t </code></pre>
+<a name="functor.datetime-before" id="functor.datetime-before"></a>
+<a name="datetime-before" id="datetime-before"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">datetime-before</span>
+<div class="documentation-arguments">(datetime-before &plusmn;p1 &plusmn;s1 &plusmn;p2 &plusmn;s2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">This can be viewed as comparing two datetimes that are each specified by a property-subject pair.  The subjects <code>?s1</code> and <code>?s2</code> can each be a point or an interval.  The properties <code>?p1</code> and <code>?p2</code> can be !t:time (if its subject is a point), or one of !t:starttime or !t:endtime (if its subject is an interval).  This functor requires the datetime <code>?dt1</code> corresponding to triple (?s1 ?p1 ?dt1) to be before the datetime <code>?dt2</code> corresponding to triple (?s2 ?p2 ?dt2). 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?pt)  
+    (datetime-before !t:time ?pt !t:time !ex:pt3))  
+(({pt1}) ({pt2}))  
+t  
+ 
+&gt; (select0-distinct(?i)  
+    (datetime-before !t:starttime ?i !t:starttime !ex:i36))  
+(({i12}) ({i15}) ({i14}) ({i18}) ({i17}) ({i16}) ({i13}) ({i27})  
+ ({i28}))  
+t  
+ 
+&gt; (select0-distinct (?i1)  
+    (datetime-before !t:starttime ?i !t:endtime !ex:i36))  
+nil  
+t  
+ 
+&gt; (select0-distinct (?i)  
+    (datetime-before !t:starttime ?i !t:endtime !ex:i36))  
+(({i12}) ({i15}) ({i14}) ({i18}) ({i17}) ({i16}) ({i13}) ({i27})  
+ ({i28}) ({i36}) ...)  
+t </code></pre>
+<a name="functor.datetime-before-value" id="functor.datetime-before-value"></a>
+<a name="datetime-before-value" id="datetime-before-value"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">datetime-before-value</span>
+<div class="documentation-arguments">(datetime-before-value &plusmn;p &plusmn;s &plusmn;dt)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">This can be viewed as comparing two datetimes, the first of which is specified by a property-subject pair.  The subject <code>?s</code> can be a point or an interval.  The property <code>?p</code> can be !t:time (if its subject is a point), or one of !t:starttime or !t:endtime (if its subject is an interval).  This functor requires the datetime <code>?dtps</code> corresponding to triple (?s ?p ?dtps) to be before the datetime <code>?dt</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?pt)  
+    (datetime-before-value !t:time ?pt "2008-02-06"))  
+(({pt1}) ({pt2}) ({pt3}) ({pt4}) ({pt5}))  
+t  
+ 
+&gt; (select0-distinct(?dt)  
+    (datetime-before-value !t:time !ex:pt3 ?upi)  
+    (upi-to-date-string ?upi ?dt))  
+(("2008-02-04T00:00:00-08:00") ("2008-02-05T00:00:00-08:00") ("2008-02-06T00:00:00-08:00")  
+ ("2008-02-07T00:00:00-08:00") ("2008-02-08T00:00:00-08:00"))  
+t  
+ 
+&gt; (select0-distinct(?i)  
+    (datetime-before-value !t:starttime ?i "2008-02-04"))  
+(({i12}) ({i15}) ({i14}) ({i18}) ({i17}) ({i16}) ({i13}) ({i27})  
+ ({i28}) ({i36}) ...)  
+t </code></pre>
+<a name="functor.datetime-after" id="functor.datetime-after"></a>
+<a name="datetime-after" id="datetime-after"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">datetime-after</span>
+<div class="documentation-arguments">(datetime-after &plusmn;p1 &plusmn;s1 &plusmn;p2 &plusmn;s2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">This can be viewed as comparing two datetimes that are each specified by a property-subject pair.  The subjects <code>?s1</code> and <code>?s2</code> can each be a point or an interval.  The properties <code>?p1</code> and <code>?p2</code> can be !t:time (if its subject is a point), or one of !t:starttime or !t:endtime (if its subject is an interval).  This functor requires the datetime <code>?dt1</code> corresponding to triple (?s1 ?p1 ?dt1) to be after the datetime <code>?dt2</code> corresponding to triple (?s2 ?p2 ?dt2). 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?pt)  
+    (datetime-after !t:time ?pt !t:time !ex:pt3))  
+(({pt4}) ({pt5}) ({pt6}) ({pt7}) ({pt8}))  
+t  
+ 
+&gt; (select0-distinct(?i)  
+    (datetime-after !t:starttime ?i !t:time !ex:pt3))  
+(({i45}) ({i48}) ({i58}) ({i68}) ({i78}))  
+t </code></pre>
+<a name="functor.datetime-after-value" id="functor.datetime-after-value"></a>
+<a name="datetime-after-value" id="datetime-after-value"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">datetime-after-value</span>
+<div class="documentation-arguments">(datetime-after-value &plusmn;p &plusmn;s &plusmn;dt)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">This can be viewed as comparing two datetimes, the first of which is specified by a property-subject pair.  The subject <code>?s</code> can be a point or an interval.  The property <code>?p</code> can be !t:time (if its subject is a point), or one of !t:starttime or !t:endtime (if its subject is an interval).  This functor requires the datetime <code>?dtps</code> corresponding to triple (?s ?p ?dtps) to be after the datetime <code>?dt</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?pt)  
+    (datetime-after-value !t:time ?pt "2008-02-04"))  
+(({pt5}) ({pt6}) ({pt7}) ({pt8}))  
+t  
+ 
+&gt; (select0-distinct(?i)  
+    (datetime-after-value !t:starttime ?i "2008-02-04"))  
+(({i58}) ({i68}) ({i78}))  
+t </code></pre>
+<a name="functor.datetime-increasing" id="functor.datetime-increasing"></a>
+<a name="datetime-increasing" id="datetime-increasing"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">datetime-increasing</span>
+<div class="documentation-arguments">(datetime-increasing &plusmn;p1 &plusmn;s1 &plusmn;p2 &plusmn;s2 &plusmn;p3 &plusmn;s3)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">This can be viewed as comparing three datetimes that are each specified by a property-subject pair.  The subjects <code>?s1</code>, <code>?s2</code> and <code>?s3</code> can each be a point or an interval.  The properties <code>?p1</code>, <code>?p2</code> and <code>?p3</code> can be !t:time (if its subject is a point), or one of !t:starttime or !t:endtime (if its subject is an interval).  This functor requires the three datetimes <code>?dti</code> (i=1,2,3) corresponding to triples (?si ?pi ?dti) to be in increasing order. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?pt)  
+    (datetime-increasing !t:time !ex:pt2 !t:time ?pt !t:time !ex:pt7))  
+(({pt3}) ({pt4}) ({pt5}) ({pt6}))  
+t  
+ 
+&gt; (select0-distinct(?i)  
+    (datetime-increasing !t:endtime !ex:i12 !t:starttime ?i !t:starttime !ex:i68))  
+(({i36}) ({i38}) ({i45}) ({i48}) ({i58}))  
+t </code></pre>
+<a name="functor.datetime-increasing-value" id="functor.datetime-increasing-value"></a>
+<a name="datetime-increasing-value" id="datetime-increasing-value"></a>
+<div class="documentation functor"><div class="documentation header"><div class="doc name-and-args"><span class="hidden">X</span>
+<span class="documentation-name">datetime-increasing-value</span>
+<div class="documentation-arguments">(datetime-increasing-value &plusmn;dt1 &plusmn;p &plusmn;s &plusmn;dt2)
+</div>
+</div>
+<span class="documentation-kind">functor</span>
+</div>
+<div class="documentation contents">This can be viewed as comparing three datetimes, one of which is specified by a property-subject pair.  The subjects <code>?s</code> can be a point or an interval.  The property <code>?p</code> can be !t:time (if its subject is a point), or one of !t:starttime or !t:endtime (if its subject is an interval).  This functor requires the datetime <code>?dtps</code> corresponding to triple (?s ?p ?dtps) to be between the provided datetimes <code>?dt1</code> and <code>?dt2</code>. 
+</div>
+</div>
+  
+<pre><code>&gt; (select0-distinct(?pt)  
+    (datetime-increasing-value "2008-02-02" !t:time ?pt "2008-02-07"))  
+(({pt3}) ({pt4}) ({pt5}) ({pt6}))  
+t  
+ 
+&gt; (select0-distinct(?i)  
+    (datetime-increasing-value "2008-02-02" !t:starttime ?i "2008-02-07"))  
+(({i36}) ({i38}) ({i45}) ({i48}) ({i58}) ({i68}))  
+t  
+ 
+&gt; (select0-distinct(?i)  
+    (datetime-increasing-value "2008-02-02" !t:endtime ?i "2008-02-07"))  
+(({i13}) ({i14}) ({i45}) ({i15}) ({i16}) ({i36}))  
+t  
+</code></pre></div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Encoded IDs | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="encoded-ids"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>Encoded IDs in AllegroGraph 6.4.2</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-16' title='Setup'>Setup</a></li>
+<li><a href='#header2-25' title='Encoded-ids in multi-master replication cluster instances'>Encoded-ids in multi-master replication cluster instances</a></li>
+<li><a href='#header2-33' title='Uses of Encoded IDs'>Uses of Encoded IDs</a>
+<ul>
+<li><a href='#header3-45' title='Federation'>Federation</a></li>
+<li><a href='#header3-47' title='ID generation'>ID generation</a></li></ul></li>
+<li><a href='#header2-54' title='Lisp API'>Lisp API</a></li>
+<li><a href='#header2-64' title='HTTP API'>HTTP API</a></li>
+<li><a href='#header2-72' title='Java API'>Java API</a></li>
+<li><a href='#header2-75' title='Adding triples'>Adding triples</a></li>
+<li><a href='#header2-77' title='Re-registration'>Re-registration</a></li>
+<li><a href='#header2-79' title='Upgrading from 4.2'>Upgrading from 4.2</a></li>
+<li><a href='#header2-81' title='Future features'>Future features</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>RDF data is specified in terms of strings. </p><p>AllegroGraph converts the string representation of a URI into a 12-byte universal part identifier (UPI). These 12-bytes can either be an encoded representation of the string or a hash that is used to save and retrieve the string's contents in a string dictionary. Because they do not require the lookup and I/O costs of string retrieval, encoded parts can be much more efficient. </p><p>AllegroGraph automatically encodes strings representing most numeric formats, dates, times, and date times. Geospatial information can also be encoded if the particular format is registered with AllegroGraph. AllegroGraph can now encode strings representing identifiers using the API described below. </p><p>This lets URIs like </p>
+<pre><code> http://franz.com/identifiers/person@@156-agh-4562 </code></pre><p>be saved and manipulated without requiring a trip to the string dictionary. </p><p>Note the '@@' separating the prefix and the id. This is used in place of the normal '#' to indicate that an encoded id is intended. </p><a name='header2-16' id='header2-16'></a><h2>Setup</h2><p>To use Encoded IDs, a string prefix and an associated ID format are registered with AllegroGraph (using the Java API): </p>
+<pre><code> registerEncodableNamespace(  
+     "http://franz.com/identifiers/person",  
+     "[0-9]{3}-[a-z]{3}-[0-9]{1,4}") </code></pre><p>This tells AllegroGraph to automatically convert any strings with this prefix and suffix matching the ID format into an encoded UPI rather than saving it as a string. The characters + and * are not allowed in the template string (so, e.g., the string "[0-9]+" is illegal and will fail). </p><p>Note our example has variable-width IDs (The {1,4} at the end says from one to four digits 0 to 9, so 121-abc-1 and 121-abc-11 and 121-abc-1234 are all acceptable IDs. Variable-width IDs cannot use automatic generation of IDs (so their namespace prefix is not suitable as an argument to <a href="lisp-reference.html#next-encoded-upi-for-prefix" title="description of next-encoded-upi-for-prefix">next-encoded-upi-for-prefix</a>). A fixed width id whose prefix is suitable would be, for example, </p>
+<pre><code>"[0-9]{3}-[a-z]{3}-[0-9]{2}" </code></pre><p>Once prefixes and id templates have been registered, you can define encode IDs by specifying them with a string like </p>
+<pre><code>"http://franz.com/identifiers/person@@121-abc-1" </code></pre><p>When the template is fixed-width, you can also get IDs with <a href="lisp-reference.html#next-encoded-upi-for-prefix" title="description of next-encoded-upi-for-prefix">next-encoded-upi-for-prefix</a>. </p><a name='header2-25' id='header2-25'></a><h2>Encoded-ids in multi-master replication cluster instances</h2><p>When a repository is an instance of a multi-master replication cluster (see <a href="multi-master.html">Multi-master Replication</a>), then encoded-ids templates must define 2^60 unique values. While it is possible to convert a repository with registered prefixes whose templates do not define exactly that number of possibilities, calling <a href="lisp-reference.html#next-encoded-upi-for-prefix" title="description of next-encoded-upi-for-prefix">next-encoded-upi-for-prefix</a> on such a prefix will cause an error. (Existing UPIs are not a problem.) </p><p>The special template <strong>"plain"</strong> will always work. It simply goes through 2^60 integers converted to strings. "plain" is the recommended template when the goal is to create unique URIs. </p><p>Here are templates that meet the 2^60 unique strings requirement: </p>
+<pre><code>[a-p]{15}  
+[0-7]{10}-[0-7]{10} </code></pre><p>Here is an example showing the behavior of <a href="lisp-reference.html#next-encoded-upi-for-prefix" title="description of next-encoded-upi-for-prefix">next-encoded-upi-for-prefix</a> with an unsuitable template and a suitable template before and after a repository has become a multi-master replication cluster instance: </p>
+<pre><code>triple-store-user(96): (create-triple-store "encoded-id-example"  
+                                            :port 20641)  
+#&lt;triple-db encoded-id-example:20641, 0, open @ #x10006d9d882&gt;  
+triple-store-user(97): (register-encoded-id-prefix   
+                           "http://franz.com/test-1"     
+                           ; Template is not suitable for  
+                           ; calling next-encoded-upi-for-prefix  
+                           ; in a cluster instance  
+                           "[0-9]{3}-[a-z]{3}-[0-9]{2}")  
+3  
+t  
+triple-store-user(98): (register-encoded-id-prefix   
+                           "http://franz.com/test-2"     
+                           ; Template is suitable for  
+                           ; calling next-encoded-upi-for-prefix  
+                           ; in a cluster instance  
+                           "[a-p]{15}")  
+4  
+t  
+;; We commit the triple store to make the encoded id templates  
+;; permanent  
+triple-store-user(99): (commit-triple-store)  
+;; The repository is not yet a cluster instance so both  
+;; templates work:  
+triple-store-user(100): (next-encoded-upi-for-prefix  
+                         "http://franz.com/test-1" (make-upi))  
+{test-1@@000-aaa-00}  
+triple-store-user(101): (next-encoded-upi-for-prefix  
+                        "http://franz.com/test-2" (make-upi))  
+{test-2@@aaaaaaaaaaaaaaa}  
+;;  
+;; When we try to make the repository a cluster instance with  
+;; the command:  
+;; bin/agtool repl create-cluster --if-exists use \  
+;;    http://test:xyzzy@localhost:20641/repositories/encoded-id-example  
+;;  
+;; it fails:  
+;;       Warning: there are encoded id prefixes that will not  
+;;                be able to be used  
+;;       with next-encoded-upi-with-prefix when this repository is converted  
+;;       to a replication instance.  
+;;       The prefixes are:  
+;;       http://franz.com/test-1  
+;;  
+;;       If you wish to do the conversion despite the warning  
+;;       put --force true on the command line  
+;;  
+;;       create-cluster not performed.  
+;;  
+;; We re-enter the command with '--force true':  
+;;  
+;; bin/agtool repl create-cluster --if-exists use --force true \  
+;;    http://test:xyzzy@localhost:20641/repositories/encoded-id-example  
+;;  
+;; Now the encoded id with a suitable template works but  
+;; the one with an unsuitable template signals an error  
+;; when next-encoded-upi-for-prefix is called:  
+;;  
+triple-store-user(102): (next-encoded-upi-for-prefix  
+                        "http://franz.com/test-2" (make-upi))  
+{test-2@@aaaeaaaaaaaaaab}  
+triple-store-user(103): (next-encoded-upi-for-prefix  
+                        "http://franz.com/test-1" (make-upi))  
+Error: In order to use next-encoded-upi-for-prefix the pattern must generate  
+       1,152,921,504,606,846,976 strings but the pattern for  
+       "http://franz.com/test-1" generates 1,757,600,000 strings  
+ 
+Restart actions (select using :continue):  
+ 0: Return to Top Level (an "abort" restart).  
+ 1: Abort entirely from this (lisp) process.  
+[1] triple-store-user(104): </code></pre><p>Note that in later releases of AllegroGraph, the number of strings may be changed from 2^60. </p><a name='header2-33' id='header2-33'></a><h2>Uses of Encoded IDs</h2><p>Encoded IDs are not designed to encode information. Instead, they are analogous to blank nodes, that is placekeeper nodes which themselves link to information. </p><p>Suppose, for example, you have data on employees (name, address, salary, date of hire, etc.) Then for each employee, you create an encoded id prefix </p>
+<pre><code>"http://www.mycompany.com/identifiers/employees" </code></pre><p>and an id template </p>
+<pre><code>"[0-9]{3}-[a-z]{3}-[0-9]{3}" </code></pre><p>Then, for each employee, create an encoded id, say </p>
+<pre><code>"http://www.mycompany.com/identifiers/employees@@103-ayt-928" </code></pre><p>and add triples </p>
+<pre><code>"http://www.mycompany.com/identifiers/employees@@103-ayt-928" "name" "John Smith"  
+"http://www.mycompany.com/identifiers/employees@@103-ayt-928" "salary" "50000" </code></pre><p>and so on. </p><p>Encoded IDs are preferable to blank nodes because you can refer to them without referencing another node (you can only get a handle on a blank node by finding another node which points to it). </p><a name='header3-45' id='header3-45'></a><h3>Federation</h3><p>Since the prefixes are registered with a particular store, federations of stores may have different ideas about which encoding a given prefix should use. For example, store A may think that <code>http://franz.com/identifiers/person</code> should be encoded with id 45 where store B thinks that it is id 46,012. If the stores are federated, additional bookkeeping would need to happen so that the data is correctly processed.  This bookkeeping is not supported in the current release. You should only register a prefix in a single store. </p><a name='header3-47' id='header3-47'></a><h3>ID generation</h3><p>You can generate ids automatically using <a href="lisp-reference.html#next-encoded-upi-for-prefix" title="description of next-encoded-upi-for-prefix">next-encoded-upi-for-prefix</a>, which takes the prefix string and a upi as its two required arguments (the upi is modified to be the next id in sequence).  AllegroGraph keeps track of a counter for each prefix in a manner similar to that used to generate fresh blank IDs. Multiple processes can request the next identifier for a given prefix and are guaranteed to get unique IDs back (but see note of durability below: uniqueness of uncommitted IDs after a recovery is not guaranteed). </p><p>Or you can specify a UPI using the prefix followed by @@ followed by a value which follows the definition template. </p><p>For a specific prefix, you should either always generate IDs automatically with <a href="lisp-reference.html#next-encoded-upi-for-prefix" title="description of next-encoded-upi-for-prefix">next-encoded-upi-for-prefix</a> or always specify IDs yourself. Do not do both as that may result in accidentally using the same id when two separate ids are needed. </p><h4>ID uniqueness in the event of a crash</h4><p>Internal data structures keep track of IDs used and the next available ID for generation. Whenever a commit is done (with, say, <a href="lisp-reference.html#commit-triple-store" title="description of commit-triple-store">commit-triple-store</a>), the state of that internal structure is saved. Until a commit, however, if there is a crash of some sort, the next id after recovery may be the same as one provided after the last commit but before the crash. So, for example, if you do (using the Lisp API): </p>
+<pre><code>(register-encoded-id-prefix  
+    "http://franz.com/employees"    
+    "[0-9]{3}-[a-z]{3}-[0-9]{2}")  
+(setq em-id1  
+  (next-encoded-upi-for-prefix "http://franz.com/employees" (make-upi)))  
+(commit-triple-store)  
+(setq em-id2  
+  (next-encoded-upi-for-prefix "http://franz.com/employees" (make-upi)))  
+(register-encoded-id-prefix  
+    "http://franz.com/clients"    
+    "[0-9]{2}-[a-z]{3}-[0-9]{2}")  
+(setq cli-id1  
+  (next-encoded-upi-for-prefix "http://franz.com/clients" (make-upi)))  
+&lt;server crash&gt;  
+&lt;close database&gt;  
+&lt;server restart&gt;  
+&lt;reopen database&gt;  
+(setq cli-id1  
+  (next-encoded-upi-for-prefix "http://franz.com/clients" (make-upi)))  
+  -&gt; ERROR, that prefix is unknown  
+(setq em-id3  
+  (next-encoded-upi-for-prefix "http://www.franz.com/employees" (make-upi)))  
+   ;; value may be the same as id2 value before server crash.     
+</code></pre><a name='header2-54' id='header2-54'></a><h2>Lisp API</h2><p>There are these functions defined: </p>
+<ul>
+<li><a href="lisp-reference.html#function.register-encoded-id-prefix">register-encoded-id-prefix</a></li>
+<li><a href="lisp-reference.html#function.unregister-encoded-id-prefix">unregister-encoded-id-prefix</a></li>
+<li><a href="lisp-reference.html#function.encoded-id-prefix-registered-p">encoded-id-prefix-registered-p</a></li>
+<li><a href="lisp-reference.html#function.next-encoded-upi-for-prefix">next-encoded-upi-for-prefix</a></li>
+<li><a href="lisp-reference.html#function.encoded-id-prefix-in-use-p">encoded-id-prefix-in-use-p</a></li>
+<li><a href="lisp-reference.html#function.collect-encoded-id-prefixes">collect-encoded-id-prefixes</a></li>
+<li><a href="lisp-reference.html#function.map-encoded-id-prefixes">map-encoded-id-prefixes</a></li></ul><p>See the documentation for those function for more information. </p><a name='header2-64' id='header2-64'></a><h2>HTTP API</h2>
+<ul>
+<li><a href="http-reference.html#backend-post-catalogs-repositories-encodedIds-prefixes">Register an Encoded ID</a></li>
+<li><a href="http-reference.html#backend-delete-catalogs-repositories-encodedIds-prefixes">Unregister an Encoded ID</a></li>
+<li><a href="http-reference.html#backend-post-catalogs-repositories-encodedIds">Get a batch of new Encoded ID URIs</a></li>
+<li><a href="http-reference.html#backend-get-catalogs-repositories-encodedIds-prefixes-hasAny">Find out if there are any registered Encoded IDs</a></li>
+<li><a href="http-reference.html#backend-get-catalogs-repositories-encodedIds-prefixes">Get a list of registered Encoded IDs</a></li>
+<li><a href="http-reference.html#backend-get-catalogs-repositories-encodedIds-prefixes-isRegistered">Check if an Encoded ID prefix is registered</a></li>
+<li><a href="http-reference.html#backend-get-catalogs-repositories-encodedIds-prefixes-isInUse">Find out if any triples have been added using a given Encoded ID</a></li></ul><a name='header2-72' id='header2-72'></a><h2>Java API</h2>
+<ul>
+<li>AGRepositoryConnection#registerEncodableNamespace(String)</li>
+<li>generateURI(String encodableNamespace)</li></ul><a name='header2-75' id='header2-75'></a><h2>Adding triples</h2><p>Once a prefix has been registered, triples added that use the format will be automatically converted. The current implementation will not recode existing triples to use the new prefix. </p><a name='header2-77' id='header2-77'></a><h2>Re-registration</h2><p>Once triples that use a particular prefix have been added to a store, it will not be possible to remove that prefix (without also dropping all of those triples or converting all of their IDs into strings). The first version of this feature will disallow the changing of registered prefixes after they have been committed. </p><a name='header2-79' id='header2-79'></a><h2>Upgrading from 4.2</h2><p>When Encoded IDs were introduced in version 4.2, they were identified with <strong>@#</strong> in their string representations. Starting in release 4.2.1a, the identifier is <strong>@@</strong> and @# will no longer work. If you used Encoded IDs, please change @# to @@ wherever necessary. </p><a name='header2-81' id='header2-81'></a><h2>Future features</h2><p>We welcome comments about this feature. We are considering future enhancements including </p>
+<ul>
+<li>Unicode support in id-formats</li>
+<li>check for ambiguous id-formats</li>
+<li>update triples when new prefixes are registered.</li>
+<li>update triples when registrations are dropped or changed.</li></ul></div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

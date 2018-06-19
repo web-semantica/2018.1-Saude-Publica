@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Lisp Quick Start | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="agraph-quick-start"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>      <h1>AllegroGraph 6.4.2 Lisp Quick Start</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-11' title='Client general information'>Client general information</a>
+<ul>
+<li><a href='#header3-20' title='Version of Allegro CL needed for the direct Lisp client'>Version of Allegro CL needed for the direct Lisp client</a></li>
+<li><a href='#header3-22' title='Version of Allegro CL needed for the remote Lisp client'>Version of Allegro CL needed for the remote Lisp client</a></li></ul></li>
+<li><a href='#header2-27' title='Before You Begin...'>Before You Begin...</a>
+<ul>
+<li><a href='#header3-29' title='Server Download'>Server Download</a></li>
+<li><a href='#header3-32' title='Allegro CL Download'>Allegro CL Download</a></li>
+<li><a href='#header3-35' title='Client Download'>Client Download</a></li>
+<li><a href='#header3-38' title='Installation'>Installation</a></li>
+<li><a href='#header3-45' title='Initialization'>Initialization</a></li></ul></li>
+<li><a href='#header2-47' title='Loading the Lisp Client'>Loading the Lisp Client</a></li>
+<li><a href='#header2-60' title='Direct and Remote Triple Stores'>Direct and Remote Triple Stores</a>
+<ul>
+<li><a href='#header3-66' title='Making a Direct Connection to a Triple Store'>Making a Direct Connection to a Triple Store</a></li>
+<li><a href='#header3-77' title='Connecting to a Remote Triple Store'>Connecting to a Remote Triple Store</a></li></ul></li>
+<li><a href='#header2-82' title='Namespaces and the reader macro for resources'>Namespaces and the reader macro for resources</a></li>
+<li><a href='#header2-98' title='AllegroGraph Notation'>AllegroGraph Notation</a></li>
+<li><a href='#header2-102' title='Creating a triple programmatically'>Creating a triple programmatically</a>
+<ul>
+<li><a href='#header3-111' title='Notes on add-triple'>Notes on add-triple</a></li></ul></li>
+<li><a href='#header2-117' title='Printing a triple'>Printing a triple</a>
+<ul>
+<li><a href='#header3-122' title='Printing nodes again'>Printing nodes again</a></li></ul></li>
+<li><a href='#querying-for-triples' title='Querying for triples'>Querying for triples</a>
+<ul>
+<li><a href='#header3-131' title='A cursor version'>A cursor version</a></li></ul></li>
+<li><a href='#header2-148' title='Deleting triples'>Deleting triples</a></li>
+<li><a href='#header2-155' title='Using Prolog'>Using Prolog</a>
+<ul>
+<li><a href='#header3-157' title='Using Prolog with the triple store'>Using Prolog with the triple store</a></li>
+<li><a href='#header3-172' title='Using the select macro as a wrapper around Prolog'>Using the select macro as a wrapper around Prolog</a></li></ul></li>
+<li><a href='#header2-176' title='SPARQL'>SPARQL</a></li>
+<li><a href='#header2-184' title='In conclusion'>In conclusion</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='quick-start' id='quick-start'></a> <h1>AllegroGraph Lisp Quick Start</h1><p>This document demonstrates how to use the AllegroGraph Lisp Client with the AllegroGraph server. </p><p>The Quick Start guide presents a series of hands-on experiments for the reader to perform interactively in the Allegro Common Lisp (ACL) Interactive Development Environment (IDE).  The exercises demonstrate how to use the ACL Client to create AllegroGraph repositories; how to move data into (and out of) the triple store; how to organize data into subgraphs; and how to perform various types of queries on the stored triples.<br />
+</p><a name='header2-11' id='header2-11'></a><h2>Client general information</h2><p>You can communicate with the AllegroGraph server in various ways using several interfaces.  Programs that communicate with the server are called <em>clients</em>. A typical client is AGWebView in a web browser, described in the <a href="agwebview.html">WebView</a> document. The Lisp client communicates with the server from a running Allegro CL image. </p><p>There are two types of Lisp client: the <em>direct client</em> and the <em>remote client</em>. The direct client must be run on the same machine and by the same user as the server. The remote client can run on any machine that can commuicate with the server machine. The direct client is basically a port to the internals of the server. Someone using the direct client has full control over the database, and therefore, for production system, access to the direct Lisp client should be limited to fully trusted users. </p><p>The remote Lisp client communicates with the server, as do all other clients, through the REST interface. Much functionality available to a direct Lisp client is not available to a remote Lisp client. </p><p>To use a Lisp client, you must have the appropriate compiled Lisp file, called a "fasl" (pronounced <em>faz-ull</em>) file. </p><p>On Linux 64-bit, SMP or non-SMP, (the platforms on which the server can run), a single fasl file is used for both the direct and the remote clients. If you are running on that platform, you must run the remote client if the machine is not the one running the server or if you are running as a different user than the user who started the server. If you are on the same machine as the server and are the user who started the server, you can run a direct client or a remote client (depending on arguments to functions like <a href="lisp-reference.html#open-triple-store" title="description of open-triple-store">open-triple-store</a>). </p><p>On all other platforms, the fasl file is for the remote Lisp client. All client fasl files are named <em>agraph.fasl</em>. Users have to keep the files for the various platforms separate and load the appropriate one. </p><p>Both AllegroGraph and Allegro CL are products of Franz Inc. However, each product has it own release numbers and release schedules which are not coordinated. Not all version of Allegro CL will work with all versions of AllegroGraph and vice versa. </p><p>Currently supported versions of Allegro CL are 8.2, 9.0, and 10.0. We next list what versions of Lisp work with the current version of AllegroGraph (version 6.4.2). </p><a name='header3-20' id='header3-20'></a><h3>Version of Allegro CL needed for the direct Lisp client</h3><p>AllegroGraph 6.4.2 will only work with direct Lisp clients running on Allegro CL 10.0 (either SMP or non-SMP) for Linux 64-bit. Unless noted, it will also work with later releases. You cannot run a direct Lisp client for AllegroGraph 6.4.2 with any earlier version of Allegro CL. </p><a name='header3-22' id='header3-22'></a><h3>Version of Allegro CL needed for the remote Lisp client</h3><p>Because the remote Lisp client communicates with AllegroGraph via HTTP using the REST interface, any remote Lisp client will "work" with an AllegroGraph 6.4.2 server. We put "work" in quotation marks because using a remote Lisp client based on an earlier version of AllegroGraph may: </p>
+<ul>
+<li><p>not contain functionality documented in the AllegroGraph   documentation. (For example, <a href="lisp-reference.html#copy-triples" title="description of copy-triples">copy-triples</a> does not work in   pre-6.4.2 remote Lisp clients.) </p></li>
+<li><p>contain functionality no longer supported.</p></li></ul><p>Therefore, we recommend that users use the AllegroGraph 6.4.2 remote client. That remote client only works with Allegro CL 10.0 (on any platform). Unless noted, it will also work with later releases. We assume throughout this documentation that users are using the AllegroGraph 6.4.2 remote client. </p><a name='header2-27' id='header2-27'></a><h2>Before You Begin...</h2><p>This Quick Start guide shows the AllegroGraph Lisp Client in action. The AllegroGraph 6.4.2 Server runs natively on Linux x86 64-bit. The clients run on various platforms, listed below. If you want to work along, you will need to download various software packages. </p><a name='header3-29' id='header3-29'></a><h3>Server Download</h3><p>Navigate to the <a href="http://franz.com/agraph/downloads/" target="_blank">AllegroGraph download page</a> and obtain this package: </p>
+<ul>
+<li>AllegroGraph Server 6.4.2 (or later), in the 64-bit Linux edition. You may install either agraph-6.4.2-linuxamd64.64.tar.gz or agraph-6.4.2-1.x86_64.rpm . This version of AllegroGraph server lets you load a maximum of 5 million triples, and has no expiration date.</li></ul><a name='header3-32' id='header3-32'></a><h3>Allegro CL Download</h3><p>The current version of Allegro CL that works as the Lisp client for AllegroGraph 6.4.2 is 10.0. Later versions of Allegro CL may be released before this document is updated. Unless noted, these can also be used as clients for AllegroGraph 6.4.2. Just be sure that the version of Allegro CL that you download is the same as the AllegroGraph client that you download. </p><p>If you already have Allegro CL 10.0 installed on one of the platforms which support AllegroGraph clients (listed below), you can use the version you have installed. If you are not already a customer, navigate to the <a href="http://franz.com/support/10.0/download/" target="_blank">Allegro CL 10.0 download page</a> and obtain the desired Allegro CL version (the same version(s) as you will download AllegroGraph client(s) listed below). Follow the instructions on that page for downloading.  The <strong>bunzip2</strong> utility, available on the download page, may be necessary to unpack the Allegro CL file. If <strong>bunzip2</strong> is not already installed on your system you should download it. </p><a name='header3-35' id='header3-35'></a><h3>Client Download</h3><p>The current version of Allegro CL that works as the Lisp client for AllegroGraph 6.4.2 is 10.0. Later versions of Allegro CL may be released before this document is updated. Unless noted, these can also be used as clients for AllegroGraph 6.4.2. Just be sure that the version of Allegro CL that you download is the same as the AllegroGraph client that you download. </p><p>On the <a href="http://franz.com/agraph/downloads/clients" target="_blank">AllegroGraph Client Download</a> page (accessible from the <a href="http://franz.com/agraph/downloads/" target="_blank">AllegroGraph download page</a> page), the various AllegroGraph clients are listed with download links. For Lisp, look at the Allegro CL SMP and Allegro CL (non-SMP) sections. Then download the AllegroGraph client version for the platform(s) on which you wish to run the client. AllegroGraph 6.4.2 works with Allegro CL 10.0 and Allegro CL 10.0 SMP.  You must choose the platform and the desired Allegro CL verion (SMP or non-SMP) when deciding which client files to download. </p><a name='header3-38' id='header3-38'></a><h3>Installation</h3><p>There are three installation tasks that must be completed before running the AllegroGraph Lisp Client: </p>
+<ol>
+<li><p><strong>The AllegroGraph Server</strong>: Installation of AllegroGraph 6.4.2 server on the Linux 64 platform is very straightforward. See the <a href="server-installation.html">Server Installation</a> instruction page for help installing this product. </p></li>
+<li><p><strong>Allegro CL</strong>: Installation of Allegro CL 10.0 on the desired platform platform is described on the <a href="http://franz.com/support/documentation/10.0/doc/installation.htm" title="Installation' target _blank" page.="You" will="need" a="license" file="for" this="product." Please="contact" [sales@franz.com][mailto-sales]="to" obtain="this" license.="(This" step="is" not="necessary" if="you" already="have" Allegro="CL" 10.0="installed" on="the" appropriate="platform.">Allegro CL installation</a> </p></li>
+<li><p><strong>The AllegroGraph Client</strong>: To install the AllegroGraph Lisp Client, simply unpack the downloaded gzipped client tar file into a directory of your choice. On Unix machines, you might use the tar program directly from a terminal window: </p></li>
+<pre><code>$ cd /home/fred/Downloads  
+$ tar -zxf [downloaded client file for your platform].tar.gz </code></pre></ol><p>On Windows, you use a Windows unzip program. </p><a name='header3-45' id='header3-45'></a><h3>Initialization</h3><p>The Allegro Common Lisp requires a brief initialization process in order to download and install updates from Franz.com. If this has already been done (as is typical when installing Allegro CL following the installation instructions), you may proceed to the exercises.  If not, please refer to <a href="ACLInitialization.html">Allegro Common Lisp Initialization</a> and then return to this document when you are finished. </p><a name='header2-47' id='header2-47'></a><h2>Loading the Lisp Client</h2><p>From a terminal window, logged in as a non-adminstrative user, navigate to the Allegro CL installation directory and run Lisp: </p>
+<pre><code>    # cd /usr/local/acl100/  
+    # ./mlisp </code></pre><p>Note that Allegro CL supports several types of Lisp executables, but not all of them are compatible with the AllegroGraph client.  These exercises were composed using modern, case-sensitive <em>mlisp</em>. The case-insensitive executables (such as <em>alisp</em>) are not compatible with AllegroGraph and must not be used as an AllegroGraph client. </p><p>In the Lisp window, you may open the Interactive Development Environment (IDE) by issuing these two commands: </p>
+<pre><code>    cl-user(1): (require :ide)  
+    cl-user(2): (ide:start-ide) </code></pre><p>Note that it may take a few seconds for the IDE window to open. <br />
+</p><p>To load the AllegroGraph Lisp Client into Allegro CL, enter this form in the IDE, using the directory where you unpacked agraph-6.4.2-client-lisp.tar.gz. </p>
+<pre><code>:cd /home/fred/agraph-6.4.2-\[platform\]-client-lisp </code></pre><p>(<strong>direct-client</strong> for Linux 64-bit.) Then, load <strong>agraph.fasl</strong>: </p>
+<pre><code>:ld agraph.fasl </code></pre><p>Next, set up some basic niceties for interacting with AllegroGraph: the <a href="lisp-reference.html#ref-bang-reader" title=""><em>!</em>-reader</a> for reading URIs and literals in Lisp expressions by prefixing them with a "!" character, and a package in which AllegroGraph symbols are available. </p>
+<pre><code>;; Switch to the AllegrGraph "user" package  
+(in-package :db.agraph.user)  
+ 
+;; turn on the convenience !-reader  
+(enable-!-reader)  
+ 
+;; tell AllegroGraph to print triples more readably  
+(enable-print-decoded t) </code></pre><a name='header2-60' id='header2-60'></a><h2>Direct and Remote Triple Stores</h2><p>The first thing we need to do is to create a triple store. Most of the functions described on this page will not work without an open triple store. When you are experimenting always have a triple store open. </p><p>The AllegroGraph Lisp Client can open a triple store in two different ways, depending on your needs.<br />
+</p>
+<ul>
+<li><p><em>Direct Connection:</em> If the AllegroGraph server and Allegro Common Lisp are running on the same computer, the Lisp Client can make a direct connection to the AllegroGraph server.  The direct connection bypasses AllegroGraph's security model and gives the Lisp user unrestricted access to all local repositories.</p></li>
+<li><p><em>Remote Connection:</em> The AllegroGraph Lisp Client can also access repositories on a remote server by providing a user name and password, as is done with AllegroGraph's other client packages. In this mode, the usual access-control safeguards are in place.</p></li></ul><p>The following two sections demonstrate how to open both a local and a remote triple store. </p><a name='header3-66' id='header3-66'></a><h3>Making a Direct Connection to a Triple Store</h3><p>This section demonstrates how easy it is to open a direct connection to a triple store when AllegroGraph server and Allegro Common Lisp are running on the same computer. </p><p>The function <a href="lisp-reference.html#create-triple-store" title="description of create-triple-store">create-triple-store</a> creates a new triple store and opens it. If you use the triple-store name "ag-test": </p>
+<pre><code>&gt; (create-triple-store "ag-test")  
+#&lt;db.agraph::triple-db ag-test, 0, open @ #x10039e58e2&gt; </code></pre><p>Note that create-triple-store has several optional keyword arguments that default to a direct connection to a local AllegroGraph server. This assumes that the AllegroGraph server was installed with the usual default settings, such as port number 10035. If the server uses a different port number, you will need to state it explicitly using create-triple-store's <strong>:port</strong> keyword.  You should also change the value of <strong>*default-ag-http-port*</strong>, which would subsequently provide the correct default port number to other functions:<br />
+</p>
+<pre><code>&gt; (setf *default-ag-http-port* 10035) </code></pre><p>It may take several seconds for AllegroGraph to create (or to re-open) a triple store because it is starting multiple maintenance processes and readying on-disk data structures. </p><p>We will use <code>ag-test</code> throughout this document but you can use any name you'd like. When you're done with a triple store, you can close it with <a href="lisp-reference.html#close-triple-store" title="description of close-triple-store">close-triple-store</a> </p>
+<pre><code>&gt; (close-triple-store)  
+nil </code></pre><p>and re-open it with <a href="lisp-reference.html#open-triple-store" title="description of open-triple-store">open-triple-store</a>: </p>
+<pre><code>&gt; (open-triple-store "ag-test")  
+#&lt;db.agraph::triple-db ag-test, 0, open @ #x1003cc39e2&gt; </code></pre><a name='header3-77' id='header3-77'></a><h3>Connecting to a Remote Triple Store</h3><p>To open a triple store on a remote server, we again turn to <a href="lisp-reference.html#create-triple-store" title="description of create-triple-store">create-triple-store</a>, but using a more explicit set of arguments. You need to know the server IP address or hostname. The :user and :password must already be set up (you created at least a superuser name and password when you installed the server -- here we use the standard "test" and "xyzzy" simply to show the parameter format). If you specify a catalog, it too must exist. </p>
+<pre><code>(create-triple-store "ag-test"  
+  :triple-store-class 'remote-triple-store  
+  :server "192.168.111.128"  
+  ;  :catalog "my-catalog" ;; uncomment and use an existing catalog name  
+                           ;; if desired  
+  :port 10035 :user "test" :password "xyzzy") </code></pre><p>:catalog will default to AllegroGraph's root catalog. Any named catalog (such as shown in the commented out line) must be predefined in the AllegroGraph server's <a href="daemon-config.html">agraph.cfg</a> file. The :server must identify the machine where the AllegroGraph server is running. </p><p>To close the remote store, simply use close-triple-store as shown in the previous section. </p><a name='header2-82' id='header2-82'></a><h2>Namespaces and the reader macro for resources</h2><p>When working in Lisp with AllegroGraph, you will spend a lot of time inspecting triples and trying to find triples by typing in URIs. To save typing the namespace part of a URI over and over again, we use the exclamation mark to introduce a shorthand. To see <strong>!</strong> in action, let's register a <a href="lisp-reference.html#ref-namespaces" title="">namespace</a>: </p>
+<pre><code>&gt; (register-namespace "ex" "http://franz.com/things#"  
+   :errorp nil)  
+"http://franz.com/things#" </code></pre><p>AllegroGraph already registered several common RDF(S) and OWL namespaces for you. You can see them using <a href="lisp-reference.html#display-namespaces" title="description of display-namespaces">display-namespaces</a>: </p>
+<pre><code>&gt; (display-namespaces)  
+rdf =&gt; http://www.w3.org/1999/02/22-rdf-syntax-ns#  
+xsd =&gt; http://www.w3.org/2001/XMLSchema#  
+ex =&gt; http://franz.com/things#  
+rdfs =&gt; http://www.w3.org/2000/01/rdf-schema#  
+fn =&gt; http://www.w3.org/2005/xpath-functions#  
+err =&gt; http://www.w3.org/2005/xqt-errors#  
+owl =&gt; http://www.w3.org/2002/07/owl#  
+xs =&gt; http://www.w3.org/2001/XMLSchema# </code></pre><p>Now we are ready to experiment with the <strong>!</strong>-reader macro. </p><p><strong>!</strong> expands namespace prefixes and understands both quotation marks and Unicode. For example, the following two nodes are the same: </p>
+<pre><code>&gt; !ex:Dog  
+!ex:Dog  
+ 
+&gt; !&lt;http://franz.com/things#Dog&gt;  
+!&lt;http://franz.com/things#Dog&gt;  
+ 
+&gt; (part= !ex:Dog !&lt;http://franz.com/things#Dog&gt;)  
+t  
+ 
+;; the literal string "Dog"  
+&gt; !"Dog" </code></pre><p>Evaluating these forms puts the following nodes into the string dictionary: </p>
+<pre><code>"http://franz.com/things#Dog"  
+"Dog" </code></pre><p>The function <a href="lisp-reference.html#part-:3Estring" title="description of part->string">part-&gt;string</a> reverses the mapping from node to the URI string. In this case, use the value that lisp returned earlier for !ex:Dog. </p>
+<pre><code>&gt; (part-&gt;string !ex:Dog)  
+"&lt;http://franz.com/things#Dog&gt;" </code></pre><p>When you are developing your application in the listener, you may not want to look at the entire URI. The function <a href="lisp-reference.html#part-:3Econcise" title="description of part->concise">part-&gt;concise</a> is like part-&gt;string but presents a best-guess abbreviation of the URI. </p>
+<pre><code>&gt; (part-&gt;concise !ex:Cat)  
+"ex:Cat" </code></pre><p>part-&gt;concise will return just the string when called on a UPI that refers to a literal. </p>
+<pre><code>&gt; (part-&gt;concise !"A string")  
+"A string" </code></pre><a name='header2-98' id='header2-98'></a><h2>AllegroGraph Notation</h2><p>Before we go much further, we'll describe the notation that AllegroGraph uses to represent resources and literals as strings, future-parts and Unique Part Identifiers (UPIs). </p><a name='ref-agraph-notation' id='ref-agraph-notation'></a> <p>AllegroGraph strikes a balance between displaying complete but lengthy URIs and concise but meaningless abbreviations. The output format also depends on whether it is displaying a string representation of a UPI, a <a href="lisp-reference.html#ref-future-parts" title="">future-part</a> or a bare UPI. For strings, AllegroGraph adopts the N-Triples notation for URIs and provides several different output formats for you to choose from. These are: </p>
+<ul>
+<li><p>:ntriple - ASCII escaping (i.e., non 7-bit ASCII and    control characters are printed in N-Triples format) plus    N-Triple syntax for resources, blanks and literals </p></li>
+<li><p>:long - N-Triple syntax for resources, blanks and    literals. Prints characters using Unicode. </p></li>
+<li><p>:concise - ASCII escaping, no extra literal information    (i.e., any language and type information is suppressed in    the output). If a namespace mapping is available, it will    be used. </p></li>
+<li><p>:terse - the string contents of the UPI without additional    type or language data for literals (as in :concise);    namespace information will be suppressed. </p></li></ul><p>Future-parts are displayed using namespace plus local name (if a <a href="lisp-reference.html#register-namespace" title="description of register-namespace">namespace mapping</a> is available). Finally, depended on whether or not you have used the function <a href="lisp-reference.html#enable-print-decoded" title="description of enable-print-decoded">enable-print-decoded</a>, UPIs will display themselves as length 12 octet vectors or in the terse string notation surrounded by curly brackets. </p><p>The following are thus all representative of the same RDF literal "Dürst" (note the umlaut over the <code>u</code>): </p>
+<ul>
+<li>as an undecoded UPI        : #(5 0 0 0 0 116 115 114 60 195 68 7)</li>
+<li>as a decoded UPI           : {Dürst}</li>
+<li>as a future-part           : !"Dürst"</li>
+<li>String in N-triples format : "\"D\\u00FCrst\""</li>
+<li>String in long format      : "\"Dürst\""</li>
+<li>String in concise format   : "D\\u00FCrst"</li>
+<li>String in terse format     : "Dürst"</li></ul><p>Here is another brief example: </p>
+<pre><code>&gt; (enable-print-decoded nil)  
+nil  
+ 
+&gt; (upi !rdf:type)                            ;no decoding  
+#(232 179 38 248 194 24 210 86 213 0 183 0)  
+ 
+&gt; (enable-print-decoded t)  
+t  
+ 
+&gt; (setf u (upi !rdf:type))                   ;terse format  
+{type}  
+ 
+&gt; (part-&gt;string u :format :ntriples)  
+"&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;"  
+ 
+&gt; (part-&gt;string u :format :long)             ;just like :ntriples in this case  
+"&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;"  
+ 
+&gt; (part-&gt;string u :format :concise)          ;concise includes namespace  
+"rdf:type"  
+ 
+&gt; (part-&gt;string u :format :terse)            ;terse does not  
+"type" </code></pre> <p>You'll see many examples of the different formats as you work through this tutorial. When in doubt, experiment! </p><a name='header2-102' id='header2-102'></a><h2>Creating a triple programmatically</h2><p>Now that we know how to enter nodes we will add some triples programmatically. (Note: The triple id numbers returned below are session dependent, and you may get different numbers in your experiment. Make sure to use a number returned by one of the expressions as you continue this tutorial.) </p>
+<pre><code>&gt; (add-triple !ex:Mammal !rdf:type !owl:Class)  
+1  
+&gt; (add-triple !ex:Dog !rdfs:subClassOf !ex:Mammal)  
+2  
+&gt; (add-triple !ex:Fido !rdf:type !ex:Dog)  
+3  
+&gt; (add-triple !ex:Fido !ex:has-owner !ex:John)  
+4  
+&gt; (add-triple !ex:Company !rdf:type !owl:Class)  
+5  
+&gt; (add-triple !ex:CommercialCompany !rdfs:subClassOf !ex:Company)  
+6  
+&gt; (add-triple !ex:Franz !rdf:type !owl:CommercialCompany)  
+7  
+&gt; (add-triple !ex:John !ex:works-at !ex:Franz)  
+8  
+&gt; (add-triple !ex:Franz !ex:has-product !ex:AllegroGraph)  
+9 </code></pre><p>The numbers that are returned by <a href="lisp-reference.html#add-triple" title="description of add-triple">add-triple</a> are the unique <a href="lisp-reference.html#function.triple-id" title="description of function triple-id">triple-id</a>s of the just added triple. We can use these numbers to look at a triple. Let's look at triple ID 4. </p>
+<pre><code>&gt; (setf tr (get-triple-by-id 4))  
+&lt;Fido has-owner John&gt; </code></pre><p>A triple data structure is returned.
+<a name="fnr0-2018-06-08" id="fnr0-2018-06-08"></a>
+<sup><a href="#fn0-2018-06-08">1</a></sup>  This is a vector of 56 octets representing the four (!) parts of the triple and its triple ID. The parts are the subject, predicate, object and graph. You can use accessor functions <a href="lisp-reference.html#function.subject" title="description of function subject">subject</a>, <a href="lisp-reference.html#function.predicate" title="description of function predicate">predicate</a>, <a href="lisp-reference.html#function.object" title="description of function object">object</a>, <a href="lisp-reference.html#function.graph" title="description of function graph">graph</a> and <a href="lisp-reference.html#function.triple-id" title="description of function triple-id">triple-id</a> to get at a triple's sub-structure. </p>
+<pre><code>&gt; (triple-id tr)  
+4  
+&gt; (subject tr)  
+{Fido} </code></pre><p>The four nodes of a triple are represented as Unique Part Identifiers (or UPIs). These are either 12-byte hashed representations of URIs and literals or directly encoded values. See the <a href="agraph-introduction.html" id="agraph-introduction-tab">AllegroGraph Introduction</a> and the <a href="lisp-reference.html">reference</a> for more information. To see the triple in its native representation, we can turn off <a href="lisp-reference.html#enable-print-decoded" title="description of enable-print-decoded">enable-print-decoded</a>: </p>
+<pre><code>&gt; (enable-print-decoded nil)  
+nil  
+&gt; tr  
+#(78 134 60 220 246 40 208 148 75 219 198 0 119 141 131 175 192 18 161  
+  94 17 1 23 0 202 224 162 157 147 62 130 139 128 204 27 0 0 0 0 0 167  
+  99 152 67 0 0 0 31 4 0 0 0 18 40 2 16)  
+ 
+;; let's turn it back on for now  
+&gt; (enable-print-decoded t)  
+t </code></pre><a name='header3-111' id='header3-111'></a><h3>Notes on add-triple</h3><p>The function <a href="lisp-reference.html#add-triple" title="description of add-triple">add-triple</a> takes either strings, UPIs, or <a href="lisp-reference.html#ref-future-parts" title="">future-parts</a>. If the argument is a UPI AllegroGraph assumes that it is a valid
+<a name="fnr1-2018-06-08" id="fnr1-2018-06-08"></a>
+<sup><a href="#fn1-2018-06-08">2</a></sup> . It is slightly more complicated to understand what happens when you use strings as arguments. AllegroGraph cannot always see from a string whether you want it to be a resource or a literal. Therefore we have chosen the convention that the strings should follow the N-Triples syntax. The reader macro will do this for you automatically </p>
+<pre><code>&gt; !ex:John  
+!ex:John  
+ 
+&gt; !"john"  
+!"john" </code></pre><p>so <code>(add-triple !ex:John !rdf:comment !"john")</code> will do the right thing. </p><p>Suppose, however, you need to create resource and literal strings programmatically. For that we have created the convenience functions <a href="lisp-reference.html#resource" title="description of resource">resource</a> and <a href="lisp-reference.html#literal" title="description of literal">literal</a>: </p>
+<pre><code>&gt; (resource "http://franz.com/simple#Peter")  
+!&lt;http://franz.com/simple#Peter&gt;  
+ 
+&gt; (literal "Peter")  
+!"Peter"  
+ 
+&gt; (let ((str1 "http://franz.com/simple#Peter")  
+        (str2 "Peter"))  
+    (setf triple-id  
+     (add-triple (resource str1) !rdf:comment (literal str2))))  
+10  
+ 
+&gt; (print-triple (get-triple-by-id triple-id) :format :concise)  
+&lt;10: http://franz.com/simple#Peter rdf:comment Peter&gt;  
+#(200 74 120 93 224 212 32 42 151 60 ...)  
+</code></pre><a name='header2-117' id='header2-117'></a><h2>Printing a triple</h2><p>To print out a triple, use the <a href="lisp-reference.html#print-triple" title="description of print-triple">print-triple</a> function (see also <a href="#querying-for-triples">"Querying for triples"</a> below). <code>print-triple</code> can print the triple in concise, long or N-Triples format. </p>
+<pre><code>&gt; (print-triple tr :format :concise)  
+&lt;4: ex:Fido ex:has-owner ex:John&gt;       ;printed  
+&lt;Fido has-owner John&gt;                   ;returned  
+ 
+&gt; (dolist (e (get-triples-list))  
+   (print-triple e :format :concise))  
+&lt;1: ex:Mammal rdf:type owl:Class&gt;  
+&lt;2: ex:Dog rdfs:subClassOf ex:Mammal&gt;  
+&lt;3: ex:Fido rdf:type ex:Dog&gt;  
+&lt;4: ex:Fido ex:has-owner ex:John&gt;  
+&lt;5: ex:Company rdf:type owl:Class&gt;  
+&lt;6: ex:CommercialCompany rdfs:subClassOf ex:Company&gt;  
+&lt;7: ex:Franz rdf:type owl:CommercialCompany&gt;  
+&lt;8: ex:John ex:works-at ex:Franz&gt;  
+&lt;9: ex:Franz ex:has-product ex:Agraph&gt; </code></pre><p>Note that the order of the triples returned from <a href="lisp-reference.html#get-triples-list" title="description of get-triples-list">get-triples-list</a> is unspecified so you may see a different result order. Developers desiring to see the entire triple URI can set the keyword <strong>:format</strong> to <strong>:long</strong> or <strong>:ntriples</strong>. </p>
+<pre><code>&gt; (print-triple tr :format :long)  
+&lt;http://franz.com/things#Fido&gt; &lt;http://franz.com/things#has-owner&gt; &lt;http://franz.com/things#John&gt; .  
+&lt;Fido has-owner John&gt;  
+&gt; (print-triple tr :format :ntriple)  
+&lt;http://franz.com/things#Fido&gt; &lt;http://franz.com/things#has-owner&gt; &lt;http://franz.com/things#John&gt; .  
+&lt;Fido has-owner John&gt; </code></pre><a name='header3-122' id='header3-122'></a><h3>Printing nodes again</h3><p>When developing, it is sometimes useful to print everything related to a particular node, for n levels deep. <a href="lisp-reference.html#pprint-subject" title="description of pprint-subject">pprint-subject</a> and <a href="lisp-reference.html#pprint-object" title="description of pprint-object">pprint-object</a> will do that for you. </p>
+<pre><code>&gt; (pprint-subject !ex:Fido :format :concise)  
+ex:Fido rdf:type ex:Dog  
+ex:Fido ex:has-owner ex:John  
+ 
+&gt; (pprint-subject !ex:Fido :maximum-depth 3 :format :concise)  
+ex:Fido rdf:type ex:Dog  
+   ex:Dog rdfs:subClassOf ex:Mammal  
+      ex:Mammal rdf:type owl:Class  
+ex:Fido ex:has-owner ex:John  
+   ex:John ex:works-at ex:Franz  
+      ex:Franz ex:has-product ex:Agraph  
+      ex:Franz rdf:type owl:CommercialCompany  
+ 
+&gt; (pprint-object !ex:Mammal :maximum-depth 2 :format :concise)  
+ex:Dog rdfs:subClassOf ex:Mammal  
+   ex:Fido rdf:type ex:Dog  
+</code></pre><a name='querying-for-triples' id='querying-for-triples'></a> <h2>Querying for triples</h2><p>Getting the triples back is easy. The function <a href="lisp-reference.html#get-triples-list" title="description of get-triples-list">get-triples-list</a> can return all the triples in the triple store; so don't issue it casually with a large triple store. Variations of <code>get-triples-list</code>, described later, allow you to select a specific portion of the triples in the triple store. The following generates a list with all the triples in the triple store. </p>
+<pre><code>&gt; (enable-print-decoded nil)  
+nil  
+&gt; (get-triples-list :limit nil)  
+(#(58 199 69 20 59 219 255 76 6 52 ...)  
+ #(95 10 54 142 106 57 232 84 206 188 ...)  
+ #(78 134 60 220 246 40 208 148 75 219 ...)  
+ #(78 134 60 220 246 40 208 148 75 219 ...)  
+ #(224 55 238 14 54 24 123 47 0 107 ...)  
+ #(119 170 85 50 93 233 51 22 180 89 ...)  
+ #(140 251 141 206 154 143 61 27 140 58 ...)  
+ #(202 224 162 157 147 62 130 139 128 204 ...)  
+ #(140 251 141 206 154 143 61 27 140 58 ...)) </code></pre><p><a href="lisp-reference.html#get-triples-list" title="description of get-triples-list">get-triples-list</a> will take any combination of s, p, o, and g (nil is used as a wildcard and means to return all possible values for the target). The function <a href="lisp-reference.html#print-triples" title="description of print-triples">print-triples</a> lets you print out a list of triples more easily. Like <a href="lisp-reference.html#print-triple" title="description of print-triple">print-triple</a>, it takes a format keyword argument that controls whether the output is in :concise, :long or :ntriple format. </p>
+<pre><code>&gt; (print-triples (get-triples-list :o !ex:John) :format :concise)  
+&lt;4: ex:Fido ex:has-owner ex:John&gt;  
+ 
+&gt; (print-triples (get-triples-list :s !ex:Franz :p !rdf:type) :format :concise)  
+&lt;7: ex:Franz rdf:type owl:CommercialCompany&gt;  
+ 
+&gt; (print-triples (get-triples-list :s !ex:John) :format :concise)  
+&lt;8: ex:John ex:works-at ex:Franz&gt; </code></pre><a name='header3-131' id='header3-131'></a><h3>A cursor version</h3><p><a href="lisp-reference.html#get-triples-list" title="description of get-triples-list">get-triples-list</a> is built on the cursor based query function <a href="lisp-reference.html#get-triples" title="description of get-triples">get-triples</a>. When you call <code>get-triples</code>, the first return value will be a cursor that you can use to iterate over the results. The second return value is a query plan which can be safely ignored for now. </p>
+<pre><code>&gt; (get-triples :s !ex:Franz)  
+#&lt;db.agraph::storage-layer-cursor &lt;{Franz}---------&gt; @ #x10042410d2&gt; </code></pre><p>Here is how we might implement a variant of <code>get-triples-list</code> that uses optional arguments instead of keyword ones: </p>
+<pre><code>(defun my-get-triples-list (&amp;optional s p o g)  
+  (loop with cursor = (get-triples :s s :p p :o o :g g)  
+     while (cursor-next cursor) collect  
+     (copy-triple (cursor-next-row cursor)))) </code></pre><p>Note the use of <a href="lisp-reference.html#copy-triple" title="description of copy-triple">copy-triple</a>. The cursor reuses the same vector over and over again; if you don't make a copy, you'll probably be surprised at the results! </p><h3>Loading triples from a file</h3><p>We support many formats for reading and serializing data. These include N-Triples, Turtle, TriX, and RDF/XML. Here, we load the wine ontology in N-Triples format (In the following example, you will need to provide an appropriate path to the N-Ttriples file you want to load.) </p>
+<pre><code>&gt; (load-ntriples "/home/fred/Download/wilburwine.ntriples")  
+2012  
+{G} </code></pre><p>This reads the file, creates triples, and then returns the total number of triples created. The second return value is the graph into which the triples were loaded. Since we didn't specify, AllegroGraph has put the triples into the <code>default graph</code> which it represents using ` `. Note, instead of <a href="lisp-reference.html#load-ntriples" title="description of load-ntriples">load-ntriples</a> you also could have used <a href="lisp-reference.html#load-rdf:2Fxml" title="description of load-rdf/xml">load-rdf/xml</a> on the file <em>wilburwine.rdf</em>. You can see the total number of triples in the store using the <a href="lisp-reference.html#triple-count" title="description of triple-count">triple-count</a> function. </p>
+<pre><code>&gt; (triple-count)  
+2012     
+ 
+&gt; (get-triples-list :limit 50)  
+(&lt;wine type Ontology&gt; &lt;wine comment An example OWL ontology&gt;  
+ &lt;wine type Ontology&gt; &lt;wine priorVersion wine&gt; &lt;wine imports food&gt;  
+ &lt;wine comment Derived from the DAML Wine ontology at        http://ontolingua.stanford.edu/doc/chimaera/ontologies/wines.daml       Substantially changed, in particular the Region based relations.     &gt;  
+ &lt;wine label Wine Ontology&gt; &lt;Wine type Class&gt;  
+ &lt;Wine subClassOf PotableLiquid&gt; &lt;_anon:1 type Restriction&gt;  
+ &lt;_anon:1 onProperty hasMaker&gt; &lt;_anon:1 cardinality 1&gt;  
+ &lt;Wine subClassOf _anon:1&gt; &lt;_anon:2 type Restriction&gt;  
+ &lt;_anon:2 onProperty hasMaker&gt; &lt;_anon:2 allValuesFrom Winery&gt;  
+ &lt;Wine subClassOf _anon:2&gt; &lt;_anon:3 type Restriction&gt;  
+ &lt;_anon:3 onProperty madeFromGrape&gt; &lt;_anon:3 minCardinality 1&gt;  
+ &lt;Wine subClassOf _anon:3&gt; &lt;_anon:4 type Restriction&gt;  
+ &lt;_anon:4 onProperty hasSugar&gt; &lt;_anon:4 cardinality 1&gt;  
+ &lt;Wine subClassOf _anon:4&gt; &lt;_anon:5 type Restriction&gt;  
+ &lt;_anon:5 onProperty hasFlavor&gt; &lt;_anon:5 cardinality 1&gt;  
+ &lt;Wine subClassOf _anon:5&gt; &lt;_anon:6 type Restriction&gt;  
+ &lt;_anon:6 onProperty hasBody&gt; &lt;_anon:6 cardinality 1&gt;  
+ &lt;Wine subClassOf _anon:6&gt; &lt;_anon:7 type Restriction&gt;  
+ &lt;_anon:7 onProperty hasColor&gt; &lt;_anon:7 cardinality 1&gt;  
+ &lt;Wine subClassOf _anon:7&gt; &lt;_anon:8 type Restriction&gt;  
+ &lt;_anon:8 onProperty locatedIn&gt; &lt;_anon:8 someValuesFrom Region&gt;  
+ &lt;Wine subClassOf _anon:8&gt; &lt;Wine label wine&gt; &lt;Wine label vin&gt;  
+ &lt;Vintage type Class&gt; &lt;_anon:9 type Restriction&gt;  
+ &lt;_anon:9 onProperty hasVintageYear&gt; &lt;_anon:9 cardinality 1&gt;  
+ &lt;Vintage subClassOf _anon:9&gt; &lt;WineGrape type Class&gt;  
+ &lt;WineGrape subClassOf Grape&gt;)  
+#&lt;db.agraph::storage-layer-cursor &lt;------------&gt; @ #x10043b60e2&gt;  
+&gt; (length *)  
+50 </code></pre><p>Only 50 triples appear in the result list because that is the limit we specified in the call to <a href="lisp-reference.html#get-triples-list" title="description of get-triples-list">get-triples-list</a>. </p><p>Before we make any other changes, we'll commit what we've done so far with <a href="lisp-reference.html#commit-triple-store" title="description of commit-triple-store">commit-triple-store</a>: </p>
+<pre><code>&gt; (commit-triple-store)  
+t </code></pre> <p>Now lets find information on one node. We first register a namespace to save us some typing </p>
+<pre><code>&gt; (register-namespace  
+   "guide" "http://www.w3.org/TR/2003/CR-owl-guide-20030818/wine#")  
+ 
+&gt; (part-&gt;string !guide:Wine)  
+"&lt;http://www.w3.org/TR/2003/CR-owl-guide-20030818/wine#Wine&gt;"  
+ 
+&gt; (get-triples-list :s !guide:Wine)  
+(&lt;8: guide:Wine rdf:type owl:Class&gt;  
+ &lt;9: guide:Wine rdfs:subClassOf PotableLiquid&gt;  
+ &lt;13: guide:Wine rdfs:subClassOf _anon:1&gt;  
+ ...) </code></pre><p>How many did we find? </p>
+<pre><code>&gt; (length *)  
+43 </code></pre><p>Now let us register another namespace, </p>
+<pre><code>&gt; (register-namespace "ex" "http://franz.com/things#"  
+   :errorp nil)  
+"http://franz.com/things#" </code></pre><p>and make the highly subjective statement that "Wine better-than beer". </p>
+<pre><code>&gt; (add-triple !guide:Wine !ex:better-than !ex:beer)  
+2013 </code></pre><p>and now there are more triples with the subject "Wine" (case matters!): </p>
+<pre><code>&gt; (count-cursor (get-triples :s !guide:Wine))  
+44 </code></pre><a name='header2-148' id='header2-148'></a><h2>Deleting triples</h2><p>AllegroGraph also supports deleting triples. The function <a href="lisp-reference.html#delete-triples" title="description of delete-triples">delete-triples</a> takes an <em>spog</em> pattern and will delete every triple that matches the pattern. So the following will delete every triple that starts with !guide:Wine and ends with !ex:beer. (by the way, the function takes either strings, UPIs or <a href="lisp-reference.html#ref-future-parts" title="">future-parts</a>). First, commit: </p>
+<pre><code>&gt; (commit-triple-store)  
+t </code></pre><p>and then delete: </p>
+<pre><code>&gt; (delete-triples :s !guide:Wine :o !ex:beer)  
+1 </code></pre><p>It returns the number of triples deleted. We can use <a href="lisp-reference.html#rollback-triple-store" title="description of rollback-triple-store">rollback-triple-store</a> to get the deleted-triple-back: </p>
+<pre><code>&gt; (triple-count)  
+2012                  
+ 
+&gt; (rollback-triple-store)  
+t  
+ 
+&gt; (triple-count)  
+2013 </code></pre><a name='header2-155' id='header2-155'></a><h2>Using Prolog</h2><p>Prolog is a very convenient interface to the triple store. If you are not familiar with it, please take a look at the <a href="prolog-tutorial.html">Prolog tutorial</a> included in the AllegroGraph distribution and at Franz's <a href="/support/documentation/current/doc/prolog.html" target="_blank">technical reference</a> to Prolog in Allegro Common Lisp. </p><a name='header3-157' id='header3-157'></a><h3>Using Prolog with the triple store</h3><p>The tutorial linked above provides a minimal introduction to Prolog. Now we will tie Prolog to AllegroGraph. Below are some basic operations. If your triple store is still open, please close it first: </p>
+<pre><code>&gt; (close-triple-store)  
+nil </code></pre><p>Now do the following again: </p>
+<pre><code>&gt; (create-triple-store "ag-test")  
+#&lt;db.agraph::triple-db ag-test, 0, open @ #x1003c16792&gt;  
+ 
+&gt; (load-ntriples "sys:agraph;tutorial-files;wilburwine.ntriples")  
+2012  
+{default-graph}  
+ 
+&gt; (get-triples-list :p !rdfs:subClassOf)  
+(&lt;Wine subClassOf PotableLiquid&gt;  
+ &lt;Wine subClassOf _:anon1&gt; &lt;Wine subClassOf _:anon2&gt;  
+ &lt;Wine subClassOf _:anon3&gt; &lt;Wine subClassOf _:anon4&gt;  
+ &lt;Wine subClassOf _:anon5&gt; ...)  
+ 
+ 
+&gt; (register-namespace "ex" "http://franz.com/things#"  
+   :errorp nil)  
+"http://franz.com/things#"  
+ 
+&gt; (register-namespace "guide"  
+       "http://www.w3.org/TR/2003/WD-owl-guide-20030331/"  
+       :errorp nil)  
+"http://www.w3.org/TR/2003/WD-owl-guide-20030331/" </code></pre><p>(Notice that we used the <code>:errorp</code> parameter to <code>register-namespace</code> to make certain that it would not complain if we were changing a namespace mapping.) </p>
+<pre><code>&gt; (add-triple !guide:wine !ex:better-than !ex:beer)  
+2013  
+ 
+&gt; (let ((bn (new-blank-node)))  
+   (add-triple  
+     bn !rdf:statementAbout  
+     (value-&gt;upi (add-triple !guide:wine !ex:better-than !ex:beer)  
+                 :triple-id))  
+   (add-triple bn !rdf:source !ex:Jans)  
+   (add-triple bn !rdf:content !ex:Nonsense))  
+2017 </code></pre><p>The main interface to prolog is the function <a href="lisp-reference.html#q-" title="description of q-">q-</a>. Let's try it out by asking for every possible binding for subject, predicate and object: </p>
+<pre><code>&gt; (?- (q- ?x ?y ?z))  
+?x = {wine}  
+?y = {rdf:type}  
+?z = {owl:Ontology}  
+ 
+?x = {wine}  
+?y = {rdfs:comment}  
+?z = {"An example OWL ontology"}.  
+ 
+;; type #\. (period) to tell Prolog to stop  
+No.  
+... </code></pre><p>This will get boring pretty quickly, you can stop it by typing a period ('<strong> . </strong>'). Let's try again with one argument to <code>q-</code> that is bound. This will find all the direct <code>subClassOf</code> relations in the triple store.
+<a name="fnr2-2018-06-08" id="fnr2-2018-06-08"></a>
+<sup><a href="#fn2-2018-06-08">3</a></sup>  </p>
+<pre><code>&gt; (?- (q- ?x !rdfs:subClassOf ?y))  
+?x = {guide:Wine}  
+?y = {PotableLiquid}  
+ 
+?x = {guide:Wine}  
+?y = {_anon:1}.  
+ 
+No. </code></pre><p>Again, stop it by typing a period ('<strong> . </strong>'). </p><p>So what did Jans think is nonsense (at the pause press Enter)? </p>
+<pre><code>&gt; (?- (q- ?st !rdf:statementAbout ?id)  
+      (q- ?st !rdf:source !ex:Jans)  
+      (q- ?st !rdf:content !ex:Nonsense)  
+      (lisp (print-triple  
+             (get-triple-by-id  
+              (upi-&gt;number ?id))  
+             :format :concise)))  
+ 
+&lt;2018: guide:wine ex:better-than ex:beer&gt;  
+?st = {_:anon460}  
+?id = {2018}.  
+ 
+No. </code></pre><p>When you get this tutorial you also get the file "kennedy-family.cl". When you complete the current tutorial, you can evaluate the forms in "kennedy-family.cl" to learn more about how Prolog interfaces to the triple store. Do not load and compile this file all at once but execute it from top to bottom one form at a time so that you can view the output from each form interactively. </p><a name='header3-172' id='header3-172'></a><h3>Using the select macro as a wrapper around Prolog</h3><p>When you make a Prolog query you often are not interested in 12-byte numeric UPI vectors but you instead want to see actual string values. Because it is tedious to write <code>(lisp (print (part-&gt;string ?x)))</code> repeatedly, there is a simple convenience wrapper around Prolog called <a href="lisp-reference.html#select" title="description of select">select</a>. </p><p>Here is how you use it (make sure that you have the wine triple store open before evaluating the next form).
+<a name="fnr3-2018-06-08" id="fnr3-2018-06-08"></a>
+<sup><a href="#fn3-2018-06-08">4</a></sup>  </p>
+<pre><code>&gt; (select (?x ?y ?z)  
+    (q- ?x !rdfs:subClassOf ?y)  
+    (q- ?y !rdfs:subClassOf ?z))  
+(("&lt;http://www.w3.org/TR/2003/CR-owl-guide-20030818/wine#DessertWine&gt;"  
+  "&lt;http://www.w3.org/TR/2003/CR-owl-guide-20030818/wine#Wine&gt;"  
+  "&lt;http://www.w3.org/TR/2003/CR-owl-guide-20030818/food#PotableLiquid&gt;")  
+ ("&lt;http://www.w3.org/TR/2003/CR-owl-guide-20030818/wine#DessertWine&gt;"  
+  "&lt;http://www.w3.org/TR/2003/CR-owl-guide-20030818/wine#Wine&gt;" "_:blank33")  
+ ("&lt;http://www.w3.org/TR/2003/CR-owl-guide-20030818/wine#DessertWine&gt;"  
+  "&lt;http://www.w3.org/TR/2003/CR-owl-guide-20030818/wine#Wine&gt;" "_:blank44")  
+ ("&lt;http://www.w3.org/TR/2003/CR-owl-guide-20030818/wine#DessertWine&gt;"  
+  "&lt;http://www.w3.org/TR/2003/CR-owl-guide-20030818/wine#Wine&gt;" "_:blank51")  
+ ("&lt;http://www.w3.org/TR/2003/CR-owl-guide-20030818/wine#DessertWine&gt;"  
+  "&lt;http://www.w3.org/TR/2003/CR-owl-guide-20030818/wine#Wine&gt;" "_:blank58")  
+ ...) </code></pre><a name='header2-176' id='header2-176'></a><h2>SPARQL</h2><p>Running a SPARQL query is as simple as calling the function <a href="sparql-reference.html#run-sparql" title="description of run-sparql">sparql:run-sparql</a>. We'll start by emptying our triple store so our query will return no results. We use the <code>:table</code> results-format to get a human-readable display of the output. You’ll see that Lisp strings (the query) can span multiple lines. Use the single-quote character for strings inside SPARQL queries to avoid the need for escaping. </p>
+<pre><code>&gt; (delete-triples)  
+2013  
+ 
+&gt; (sparql:run-sparql "  
+  SELECT DISTINCT ?s {  
+    ?s ?p ?o  
+  }  
+  LIMIT 10"  
+  :results-format :table)  
+---------------------------------------------------------------------------  
+| s                                                                       |  
+===========================================================================  
+---------------------------------------------------------------------------  
+t  
+:select  
+(?s)  
+</code></pre><p>For the purposes of this example, let’s load some triples from the web and try another query. This time, we'll get the results back in <a href="http://en.wikipedia.org/wiki/JSON" class="external" target="_blank">JSON</a> format. </p>
+<pre><code>&gt; (load-ntriples  
+  "http://www.w3.org/2000/10/rdf-tests/rdfcore/ntriples/test.nt")  
+30  
+{G}  
+ 
+&gt; (sparql:run-sparql "  
+  SELECT DISTINCT ?o {  
+    ?s &lt;http://example.org/property&gt; ?o .  
+    FILTER (isIRI(?o))  
+  }"  
+  :results-format :sparql-json)  
+{  
+  "head" : {  
+    "vars" : ["o"]  
+  },  
+  "results" : {  
+    "bindings" : [  
+      {  
+         "o":{"type":"uri","value":"http://example.org/resource2"}  
+      }  
+    ]  
+  }  
+}  
+t  
+:select  
+(?o) </code></pre><p>You can see four values printed there. The results of the query are printed to the REPL in JavaScript Object Notation (JSON). Additionally, three values are returned: t (true, because the results have been printed), :select (the SPARQL verb used in this query), and (?o), the list of variables selected by the query. If you need to programmatically process the output of a query, these values will be useful. </p><p>Ordinarily, you’ll use a printed representation to see the results of your query (e.g., :sparql-json, :sparql-xml, :table), and a programmatic format (such as :arrays) to use the results in your own Lisp code. </p><p>You should now have a pretty good idea how to open a store and run a query against it from Lisp.   </p><a name='header2-184' id='header2-184'></a><h2>In conclusion</h2><p>This tutorial has introduced the simplest AllegroGraph operations: </p>
+<ul>
+<li>creating triple stores</li>
+<li>the <strong>!</strong>-reader</li>
+<li>adding triples one at a time using <a href="lisp-reference.html#add-triple" title="description of add-triple">add-triple</a> or   in bulk with <a href="lisp-reference.html#load-ntriples" title="description of load-ntriples">load-ntriples</a> </li>
+<li>querying with <a href="lisp-reference.html#get-triples" title="description of get-triples">get-triples</a> and <a href="lisp-reference.html#get-triples-list" title="description of get-triples-list">get-triples-list</a></li>
+<li>printing triples with <a href="lisp-reference.html#print-triple" title="description of print-triple">print-triple</a>, <a href="lisp-reference.html#print-triples" title="description of print-triples">print-triples</a>,   <a href="lisp-reference.html#pprint-subject" title="description of pprint-subject">pprint-subject</a> and <a href="lisp-reference.html#pprint-object" title="description of pprint-object">pprint-object</a>. </li>
+<li>triple deletion</li>
+<li>Prolog and <a href="lisp-reference.html#select" title="description of select">select</a></li>
+<li>SPARQL</li></ul><p>To continue, see the other tutorials (linked in the navigation bar at the top of this page) and the <a href="http://agraph.franz.com/support/learning/" target="_blank">AllegroGraph Learning Center</a>. </p><hr/><div id="footnotes"> <h2>Footnotes</h2>
+<div class="footnotes">
+<ol>
+<li>
+<a name="fn0-2018-06-08" id="fn0-2018-06-08"></a>
+It is printed readably because <a href="lisp-reference.html#enable-print-decoded" title="description of enable-print-decoded">enable-print-decoded</a> has been set to true; a little further along in the tutorial, we will show you what happens if <code>enable-print-decoded</code> is nil <a href="#fnr0-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 1 in the text">&#8617;</a></li>
+<li>
+<a name="fn1-2018-06-08" id="fn1-2018-06-08"></a>
+I.e., that the string it represents is already <em>interned</em> in the triple store's string dictionary. <a href="#fnr1-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 2 in the text">&#8617;</a></li>
+<li>
+<a name="fn2-2018-06-08" id="fn2-2018-06-08"></a>
+The <a href="lisp-reference.html#q-" title="description of q-">q-</a> functor queries the triple store's inner-triple-store and therefore will not, in general, perform reasoning. If the triple store is a <a href="lisp-reference.html#reasoning-triple-store" title="description of reasoning-triple-store">reasoning-triple-store</a>, then the <a href="lisp-reference.html#q" title="description of q">q</a> functor can be used to also gather inferred triples. <a href="#fnr2-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 3 in the text">&#8617;</a></li>
+<li>
+<a name="fn3-2018-06-08" id="fn3-2018-06-08"></a>
+Remember that <code>select</code> is a macro and that using it in the REPL will produce interpreted code. This means that selects run in the REPL will be significantly slower than those that you write inside compiled functions. Both the HTTP and the Java interfaces to AllegroGraph ensure that any select calls get compiled before they run. Whether compiled queries execute significantly faster depends on whether the generated code performs a lot of backtracking or other repeated computation. <a href="#fnr3-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 4 in the text">&#8617;</a></li>
+</ol>
+</div>  </div>  </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

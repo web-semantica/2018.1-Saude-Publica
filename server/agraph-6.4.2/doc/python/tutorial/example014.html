@@ -1,0 +1,293 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Example 14: Parametric queries &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example 15: Range queries" href="example015.html" />
+    <link rel="prev" title="Example 13: SPARQL query forms" href="example013.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+        &laquo;<a href="example013.html" title="previous chapter">Example 13: SPARQL query forms</a>
+      <a href="example015.html" title="next chapter">Example 15: Range queries</a> 
+      &raquo;
+    </div>
+  
+    
+  <div class="section" id="example-14-parametric-queries">
+<span id="example14"></span><h1>Example 14: Parametric queries<a class="headerlink" href="#example-14-parametric-queries" title="Permalink to this headline">¶</a></h1>
+<p>In previous examples our SPARQL queries were always fixed strings. In
+practice it is often necessary to include some variable elements
+(e.g. user input, results from another query, …) in the query
+strings.</p>
+<p>To illustrate, let us create a connection</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">franz.openrdf.connect</span> <span class="kn">import</span> <span class="n">ag_connect</span>
+
+<span class="n">conn</span> <span class="o">=</span> <span class="n">ag_connect</span><span class="p">(</span><span class="s1">&#39;python-tutorial&#39;</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and populate the repository with sample data:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="s2">r&quot;&quot;&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="k">@prefix</span><span class="w"> </span><span class="nn">:</span><span class="w"> </span><span class="nv">&lt;ex://&gt;</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+
+<span class="w">  </span><span class="nn">:</span><span class="nt">cipher42</span><span class="w"> </span><span class="nn">:</span><span class="nt">label</span><span class="w"> </span><span class="s">&quot;RSA&quot;</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="nn">:</span><span class="nt">code</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">  </span><span class="nn">:</span><span class="nt">hedge1</span><span class="w"> </span><span class="nn">:</span><span class="nt">label</span><span class="w"> </span><span class="s">&quot;\\/\\/\\/\\/\\/\\/\\&quot;</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="nn">:</span><span class="nt">code</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="w">  </span><span class="nn">:</span><span class="nt">hedge2</span><span class="w"> </span><span class="nn">:</span><span class="nt">label</span><span class="w"> </span><span class="s">&quot;/\\/\\/\\/\\/\\/\\//&quot;</span><span class="w"> </span><span class="p">.</span><span class="w">  </span><span class="c"># No code</span><span class="w"></span>
+<span class="w">  </span><span class="nn">:</span><span class="nt">has_no_label</span><span class="w"> </span><span class="nn">:</span><span class="nt">secret</span><span class="w"> </span><span class="s">&quot;squeamish ossifrage&quot;</span><span class="w"> </span><span class="p">.</span><span class="w"></span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Suppose that we need a function that will take a search text and find
+all subjects that have a label containing a given search pattern. To
+make the query a little more interesting we’ll also print the value of
+the <cite>:code</cite> predicate for all subjects found.</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">setNamespace</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;ex://&#39;</span><span class="p">)</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">prepareTupleQuery</span><span class="p">(</span><span class="na">query</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+    <span class="k">SELECT</span> <span class="nv">?s</span> <span class="nv">?code</span> <span class="k">WHERE</span> <span class="p">{</span>
+       <span class="nv">?s</span> <span class="p">:</span><span class="nt">label</span> <span class="nv">?o</span> <span class="p">.</span>
+       <span class="k">FILTER</span> <span class="nf">contains</span><span class="p">(</span><span class="nv">?o</span><span class="p">,</span> <span class="nv">?search</span><span class="p">)</span>
+       <span class="k">OPTIONAL</span> <span class="p">{</span> <span class="nv">?s</span> <span class="nl">&lt;ex://code&gt;</span> <span class="nv">?code</span> <span class="p">}</span> <span class="p">.</span>
+    <span class="p">}</span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">print_labelled_subjects</span><span class="p">(</span><span class="n">search_text</span><span class="p">):</span>
+   <span class="n">query</span><span class="o">.</span><span class="n">setBinding</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">,</span> <span class="n">search_text</span><span class="p">)</span>
+   <span class="n">query</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We have created a query object with a variable (<code class="docutils literal"><span class="pre">?search</span></code>) in place of the search pattern. To use it we have to provide a value for the variable. We do that using the <a class="reference internal" href="../_gen/franz.openrdf.query.html#franz.openrdf.query.query.Query.setBinding" title="franz.openrdf.query.query.Query.setBinding"><code class="xref py py-meth docutils literal"><span class="pre">setBinding()</span></code></a> method.</p>
+<p>Let’s check if our function works as expected:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">print_labelled_subjects</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\/\/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will return the ‘hedge’ subjects:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>------------------
+| s       | code |
+==================
+| :hedge1 | 2    |
+| :hedge2 | ---  |
+------------------
+</pre></div>
+</div>
+<div class="section" id="string-formatting">
+<h2>String formatting<a class="headerlink" href="#string-formatting" title="Permalink to this headline">¶</a></h2>
+<p>Another way to achieve our goal would be to use formatting or string
+concatenation, like this:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">conn</span><span class="o">.</span><span class="n">setNamespace</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;ex://&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">print_labelled_subjects</span><span class="p">(</span><span class="n">search_text</span><span class="p">):</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">prepareTupleQuery</span><span class="p">(</span><span class="na">query</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="k">SELECT</span> <span class="nv">?s</span> <span class="nv">?code</span> <span class="k">WHERE</span> <span class="p">{</span>
+            <span class="nv">?s</span> <span class="p">:</span><span class="nt">label</span> <span class="nv">?o</span> <span class="p">.</span>
+            <span class="k">FILTER</span> <span class="nf">contains</span><span class="p">(</span><span class="nv">?o</span><span class="p">,</span> <span class="s">&quot;%s&quot;</span><span class="p">)</span>
+            <span class="k">OPTIONAL</span> <span class="p">{</span> <span class="nv">?s</span> <span class="nl">&lt;ex://code&gt;</span> <span class="nv">?code</span> <span class="p">}</span> <span class="p">.</span>
+        <span class="p">}</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">search_text</span><span class="p">)</span>
+    <span class="n">query</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">print_labelled_subjects</span><span class="p">(</span><span class="s1">&#39;RS&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This seems to work</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>--------------------
+| s         | code |
+====================
+| :cipher42 | 1    |
+--------------------
+</pre></div>
+</div>
+<p>But attempting to use a trickier input reveals a problem:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">print_labelled_subjects</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\/\/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The query is now invalid</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Traceback (most recent call last):
+  ...
+RequestError: Server returned 400: ...
+</pre></div>
+</div>
+<p>A <a class="reference external" href="https://xkcd.com/327/">devious user</a> could take advantage of this
+bug to access data that is not supposed to be available</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="n">print_labelled_subjects</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s1">&#39;S&quot;) optional { ?x &lt;ex://secret&gt; ?code } # &#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It should not be possible to reveal this literal by searching labels,
+and yet:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>-----------------------------------
+| s         | code                |
+===================================
+| :cipher42 | squeamish ossifrage |
+-----------------------------------
+</pre></div>
+</div>
+<p>We can work around this by ensuring proper escaping:</p>
+<div class="highlight-python_rdf"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_labelled_subjects</span><span class="p">(</span><span class="n">search_text</span><span class="p">):</span>
+    <span class="n">search_lit</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createLiteral</span><span class="p">(</span><span class="n">search_text</span><span class="p">)</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">prepareTupleQuery</span><span class="p">(</span><span class="na">query</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="k">SELECT</span> <span class="nv">?s</span> <span class="nv">?code</span> <span class="k">WHERE</span> <span class="p">{</span>
+            <span class="nv">?s</span> <span class="p">:</span><span class="nt">label</span> <span class="nv">?o</span> <span class="p">.</span>
+            <span class="k">FILTER</span> <span class="nf">contains</span><span class="p">(</span><span class="nv">?o</span><span class="p">,</span> <span class="err">%s</span><span class="p">)</span>
+            <span class="k">OPTIONAL</span> <span class="p">{</span> <span class="nv">?s</span> <span class="nl">&lt;ex://code&gt;</span> <span class="nv">?code</span> <span class="p">}</span> <span class="p">.</span>
+        <span class="p">}</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">search_lit</span><span class="o">.</span><span class="n">toNTriples</span><span class="p">())</span>
+    <span class="n">query</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">print_labelled_subjects</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\/\/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The function now works as expected:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>------------------
+| s       | code |
+==================
+| :hedge1 | 2    |
+| :hedge2 | ---  |
+------------------
+</pre></div>
+</div>
+</div>
+</div>
+
+
+  
+    <div class="nav-links nav-links-footer">
+        &laquo;<a href="example013.html" title="previous chapter">Example 13: SPARQL query forms</a>
+      <a href="example015.html" title="next chapter">Example 15: Range queries</a> 
+      &raquo;
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#setting-the-environment-for-the-tutorial">Setting the environment for the tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#terminology">Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#creating-users-with-webview">Creating Users with WebView</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example001.html">Example 1: Creating a repository and triple indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example002.html">Example 2: Asserting and retracting triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example003.html">Example 3: A SPARQL query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example004.html">Example 4: Statement matching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example005.html">Example 5: Literal values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example006.html">Example 6: Importing triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example007.html">Example 7: Querying multiple contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example008.html">Example 8: Exporting triples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example009.html">Example 9: Exporting query results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example010.html">Example 10: Graphs in SPARQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example011.html">Example 11: Namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example012.html">Example 12: Free Text indexing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example013.html">Example 13: SPARQL query forms</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Example 14: Parametric queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example015.html">Example 15: Range queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example016.html">Example 16: Federated repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example017.html">Example 17: Triple attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example018.html">Example 18: Pandas support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fedex.html">Running AG on AWS EC2</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../tutorial.html">Tutorial</a><ul>
+      <li>Previous: <a href="example013.html" title="previous chapter">Example 13: SPARQL query forms</a></li>
+      <li>Next: <a href="example015.html" title="next chapter">Example 15: Range queries</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/tutorial/example014.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

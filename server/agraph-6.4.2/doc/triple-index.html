@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Triple Indices</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="tripleindices"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>AllegroGraph 6.4.2 Triple Indices</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='AllegroGraph Triple Indices'>AllegroGraph Triple Indices</a>
+<ul>
+<li><a href='#header3-16' title='SPOGI Index'>SPOGI Index</a></li>
+<li><a href='#header3-20' title='POSGI Index'>POSGI Index</a></li>
+<li><a href='#header3-22' title='OSPGI Index'>OSPGI Index</a></li>
+<li><a href='#header3-24' title='Graph Indices'>Graph Indices</a></li>
+<li><a href='#header3-26' title='I Index'>I Index</a></li></ul></li>
+<li><a href='#styles' title='Index styles'>Index styles</a></li>
+<li><a href='#header2-40' title='Customizing Indices'>Customizing Indices</a></li>
+<li><a href='#header2-44' title='Index Substitution'>Index Substitution</a></li>
+<li><a href='#replacement' title='Index Replacement'>Index Replacement</a></li>
+<li><a href='#optimize' title='Optimizing indices'>Optimizing indices</a>
+<ul>
+<li><a href='#header3-64' title='Forced index optimization'>Forced index optimization</a></li></ul></li>
+<li><a href='#header2-69' title='Managing Indices'>Managing Indices</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>AllegroGraph Triple Indices</h2><p>AllegroGraph uses a set of sorted indices to quickly identify a contiguous block of triples that are likely to match a specific query pattern. </p><p>These indices are identified by names that describe their organization.  The default set of indices are called <strong>spogi, posgi, ospgi, gspoi, gposi, gospi</strong>, and <strong>i</strong>, where: </p>
+<ul>
+<li>S stands for the subject URI.</li>
+<li>P stands for the predicate URI.</li>
+<li>O stands for the object URI or literal.</li>
+<li>G stands for the graph URI.</li>
+<li>I stands for the triple identifier (its unique id number within the triple store).</li></ul><a name='header3-16' id='header3-16'></a><h3>SPOGI Index</h3><p>The order of the letters denotes how the index has been organized.  For instance, the <strong>spogi</strong> index contains all of the triples in the store, sorted first by subject, then by predicate, then by object, and finally by graph. The triple id number is present as a fifth column in the index.<br />
+</p><p>When a SPARQL or Prolog triple pattern begins with a known value for the subject, the <strong>spogi</strong> index lets us find all of the triples that have that subject value as a block of entries in the index.  This block is further sorted by predicate, so if the predicate value is known we can immediately narrow the potential matches to a small range of triples.  In fact, it is often just one triple.<br />
+</p><p>The <strong>spogi</strong> index provides extremely rapid lookup for any pattern where <strong>s</strong> is known; or <strong>s</strong> and <strong>p</strong> are known; or <strong>s</strong>, <strong>p</strong> and <strong>o</strong> are known; or <strong>s</strong>, <strong>p</strong>, <strong>o</strong> and <strong>g</strong> are known.<br />
+</p><a name='header3-20' id='header3-20'></a><h3>POSGI Index</h3><p>To find unknown subjects that have a specific predicate and object value, AllegroGraph uses the <strong>posgi</strong> index.  All triples that have the same predicate are located together in that index, and are then sorted by object value. This makes it very easy to locate the correct predicate/object triples, or even <em>ranges</em> of such triples.<br />
+</p><a name='header3-22' id='header3-22'></a><h3>OSPGI Index</h3><p>If only the object value is known, we can use the <strong>ospgi</strong> index.  It is organized by object, and from it we can rapidly retrieve the corresponding subject and predicate. </p><a name='header3-24' id='header3-24'></a><h3>Graph Indices</h3><p>The graph indices, <strong>gspoi, gposi,</strong> and <strong>gospi</strong>, are used when the triple store is divided into subgraphs. If we know the subgraph, we can immediately isolate all of its triples and then index by subject, predicate or object as needed.<br />
+</p><a name='header3-26' id='header3-26'></a><h3>I Index</h3><p>The <strong>i</strong> index is special.  It is simply a list of all triples organized by id number.  This is useful in triple stores that use reification, but its primary mission is to make triple deletion fast when triples are deleted by id.  The id alone is sufficient to identify the subject, predicate, object and graph values that let AllegroGraph delete the same triple from the other indices. Without the <strong>i</strong> index, AllegroGraph has to scan the other indices line-by-line to find the matching id numbers.  This is very slow. </p><p>Triples can also be deleted by pattern-matching instead of id.  That type of deletion is not influenced by the <strong>i</strong> index. </p><a name='styles' id='styles'></a> <h2>Index styles</h2><p>Indices can be created in two different styles. The styles affect the internal organization of the index. The styles are called style 1 and style 2. (Style 2 is new in release 6.0. All indices in earlier releases were style 1 indices, although the style was not named.) </p><p>From the point of view of the user, here are the differences: </p>
+<ul>
+<li><p><em>Style 1 indices</em> are faster to construct and optimize. They are better for queries which end up scanning many triples and which typically produce results with many triples. </p></li>
+<li><p><em>Style 2 indices</em> take longer to construct and optimize. They are better for point queries where all of s/p/o or s/p/o/g are fixed and where the result is typically a single triple. </p></li></ul><p>You can specify which indices should be style 2 with the <code>Style2Indices</code> catalog configuration directive, described <a href="daemon-config.html#style2indices">here</a> in the <a href="daemon-config.html">Server Configuration and Control</a> document. That directive says which indices should be style 2. All other indices will be style 1. </p><p>However, you can also specify the style when creating an index in the Lisp API using <a href="lisp-reference.html#add-index" title="description of add-index">add-index</a> or using the REST interface with the <code>PUT /catalogs/[NAME]/repositories/[name]/indices/[type]</code> request, such as: </p>
+<pre><code>PUT /catalogs/MYCAT/repositories/MYREPO/indices/spogi?style=1 </code></pre><p>In both cases, the style can be specified as 0 (meaning style 2 if the <code>Style2Indices</code> catalog configuration directive says the index being created should be of style 2 and style 1 otherwise -- in other words, use the default for that type of index); or specified as 1 or 2, meaning make the index use that style regardless of the configuration option. </p><p>You must commit the triple store for the new index to be created. </p><a name='header2-40' id='header2-40'></a><h2>Customizing Indices</h2><p>The standard seven indices are enabled when you create a triple store.  You can customize this set, however, both by eliminating indices that your application will not use, and by requesting custom indices that match your more unusual triple patterns.<br />
+</p>
+<ul>
+<li><p>For instance, if your application does not use subgraphs, the indices beginning with "g" will never be used.  You can speed up indexing dramatically by eliminating these indices from the system.</p></li>
+<li><p>As a second example, if you have a pattern that asks what graphs contain resources that are blue, you might request a <strong>pogsi</strong> index which the system does not normally provide. If you know that the predicate is "color" and the object is "blue," then the <strong>g</strong> column of the <strong>pogsi</strong> index will contain a block of graph URIs that can be returned in one operation to match this triple pattern.</p></li></ul><a name='header2-44' id='header2-44'></a><h2>Index Substitution</h2><p>What if you delete a triple index, thinking it unnecessary, and then AllegroGraph encounters a query that would optimally use that index? In this case, AllegroGraph automatically uses the next-best index. AllegroGraph can use any index to find the required matches. Note, however, that doing so may require full scans of the triple-store and this can be painfully slow. </p><p>Note that you can delete any combination of indices from the triple store, but AllegroGraph will not let you delete <em>all</em> of the indices. There must always be at least one index. </p><a name='replacement' id='replacement'></a> <h2>Index Replacement</h2><p>You may wish to replace an index of one style (say style 1) with a similar index of the other style (say style 2). There is no other reason to replace an index. Index styles are discussed in the <a href="#styles">index styles</a> section. </p><p>You can replace an index by calling for its creation with a different style.<br />
+</p><p>Using the Lisp API (see <a href="lisp-reference.html">Lisp Reference</a>) you would evaluate the following forms: </p>
+<pre><code>(add-index :posgi :style [desired value])  
+(commit-triple-store) </code></pre><p>The functions called are <a href="lisp-reference.html#add-index" title="description of add-index">add-index</a> and <a href="lisp-reference.html#commit-triple-store" title="description of commit-triple-store">commit-triple-store</a>. </p><p>Using the REST API (see <a href="http-reference.html">HTTP reference</a>), if the current spogi index is a Style 2 index, the following would change it to Style 1 (we assume the catalog is MYCAT and the repository is MYREPO): </p>
+<pre><code>PUT /catalogs/MYCAT/repositories/MYREPO/indices/spogi?style=1  
+PUT /catalogs/MYCAT/repositories/MYREPO/commit </code></pre><p>The system will remove the current index of the particular type and style and replace it with a rebuilt index of the same type and the new style. </p><a name='optimize' id='optimize'></a> <h2>Optimizing indices</h2><p>As triples are committed to an AllegroGraph database, they are indexed for fast retrieval. As the indices grow, they become less efficient. Left unchecked, this degradation in efficiency would quickly result in unsatisfactory query performance. </p><p>To overcome this, AllegroGraph Server automatically initiates background index optimization operations when index efficiency drops below internal thresholds. An index optimization involves rewriting a portion of an index. Background index optimization operations are repeatedly performed until index efficiency rises above the internal threshold. </p><p>You can force index optimization. To do this using Java, see the <a href="javadoc/com/franz/agraph/repository/AGRepositoryConnection.html#optimizeIndices-java.lang.Boolean-int-">optimizeIndices</a> method in the <a href="javadoc/com/franz/agraph/repository/AGRepositoryConnection.html">AGRepositoryConnection</a> class. To force optimization in Lisp, see <a href="lisp-reference.html#optimize-indices" title="description of optimize-indices">optimize-indices</a>. There are several choices for forced optimizations, with 0 being the fastest but having the least effect and 2 and 3 having the greatest effect but taking the longest. (2 and 3 differ in the handling of index chunks.) </p><p>Removing duplicate triples also allows improved index performance. Duplicate triples are removed when you call <a href="lisp-reference.html#delete-duplicate-triples" title="description of delete-duplicate-triples">delete-duplicate-triples</a> followed by a commit. Duplicate triples removal is <strong>not</strong> done automatically or in the background. </p><p>An index can be used for queries even while it is being optimized. </p><a name='header3-64' id='header3-64'></a><h3>Forced index optimization</h3><p>In order to balance query performance with the cost of doing the operations, background index optimization does not necessarily bring indices to maximum efficiency.  However, through the various client APIs, a user may request more aggressive index optimization.<br />
+</p><p>For example, this is done in the Lisp Client API with the function <a href="lisp-reference.html#optimize-indices" title="description of optimize-indices">optimize-indices</a>: </p>
+<pre><code>(optimize-indices &amp;key level wait-p (db *db*)) </code></pre><p>See the function documentation for details, but in short, if <em>wait-p</em> is true, then the function will not return until the requested operation has completed; <em>level</em> specifies how aggressive the optimization will be (more aggression, more optimization, but takes more time). The value must be a positive integer or nil (nil means the same as not specifying a value -- use the default). </p><a name='header2-69' id='header2-69'></a><h2>Managing Indices</h2><p>You can use AGWebView to add or remove triple indices in a repository (also see <a href="lisp-reference.html#add-index" title="description of add-index">add-index</a> and <a href="lisp-reference.html#drop-index" title="description of drop-index">drop-index</a> is the <a href="lisp-reference.html">Lisp Client</a> API). There is nothing difficult about adding or removing indices, so feel free to experiment. (If the repository contains a large amount of data there may be a delay while AllegroGraph builds the new index.) </p><p>You can also ask for a specific set of indices when you create a repository through agload or any of the client APIs. </p></div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

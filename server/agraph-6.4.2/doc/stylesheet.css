@@ -1,0 +1,635 @@
+/* @group toc */
+
+.table-of-contents {
+  position: fixed;
+  top: 130px;
+  bottom: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  left: 30px;
+  right: 0;
+  width: 260px;
+  z-index: 1;
+  font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+.table-of-contents ul {
+  display: block;
+  margin: 0; padding: 0;
+  margin-bottom: 32px;
+}
+
+.table-of-contents li {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.table-of-contents li ul {
+  font-size: 80%;
+  margin-bottom: 0;
+  padding-top: 10px;
+  padding-left: 25px;
+  display: none;
+}
+
+.table-of-contents li.active ul {
+  display: block;
+}
+
+.table-of-contents ul a {
+  color: black;
+  padding: 0 0 1px 0;
+}
+
+.table-of-contents ul a.active, .table-of-contents ul a:hover {
+  border-bottom: 1px solid #76b6cb;
+  margin-bottom: -1px;
+  color: #032eed;
+}
+
+/*
+
+.table-of-contents {
+	margin-left: 1em;
+	margin-bottom: 1em;
+	margin-top: 1em;
+	padding-bottom: 1em;
+	float: left;
+	overflow: hidden;
+	width: 60%;
+	min-width: 300px;
+}
+
+.table-of-contents h1 {
+   font-size: 90%;
+	margin-top: 0;
+	margin-bottom: 1em;
+}
+
+.table-of-contents h2:first-line,
+.table-of-contents h3:first-line, 
+.table-of-contents h4:first-line, 
+.table-of-contents h5:first-line {
+}
+
+.table-of-contents h2, h3, h4, h5 {
+	padding-top: 0;
+	padding-bottom: 0;
+	margin-top: 0;
+        margin-bottom: 0.2em;
+        font-size: 80%;
+}
+
+.table-of-contents h2 {
+	margin-left: 2em;
+}
+
+.table-of-contents h3 {
+	margin-left: 4em;
+}
+
+.table-of-contents h4 {
+	margin-left: 6em;
+}
+
+.table-of-contents h5 {
+	margin-left: 8em;
+}
+
+*/
+
+/* @end */
+
+/* @group anchors */
+
+a.none { 
+	text-decoration: none;
+	color:black }
+	
+a.none:visited { text-decoration: none; color:black }
+
+a.none:active { text-decoration: none; color:black }
+
+a.none:hover { text-decoration: none; color:black }
+
+a { 
+	text-decoration: none; 
+	}
+	
+a:visited { 
+	text-decoration: none; 
+}
+
+a:active { 
+	text-decoration: underline; 
+}
+
+a:hover { 
+	text-decoration: underline; 
+}
+
+/* @end */
+
+/* @group Reference */
+
+.reference {
+	padding-bottom: 1em;
+}
+
+.reference h3 {
+	margin-top: 2em;
+	font-size: 110%;
+	border-bottom: 1px solid silver;
+	border-top: 4px solid gray;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+
+
+/* @end */
+
+/* @group navigation */
+
+/*
+.navigation li {
+	display: inline;
+	border-right-style: dotted;
+	border-right-width: 1px;
+	border-left-style: dotted;
+	border-left-width: 1px;
+	border-collapse: collapse;
+	padding-right: 0.25em;
+	padding-left: 0.25em;
+	margin-right: 1em;
+}
+*/
+
+.navigation {
+	float: right;
+	width: 15%;
+	min-width: 200px;
+	font-size: 70%;
+	padding-left: 1em;
+	margin-left: 1.5em;
+	border-left-style: ridge;
+	border-left-width: 2px;
+	border-bottom-style: ridge;
+	border-bottom-width: 2px;
+}
+
+.navigation h1 {
+	font-size: small;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.navigation li {
+	list-style-type: none;
+	margin-left: -3em;
+	font-weight: bold;
+	padding-bottom: 0.25em;
+	margin-bottom: 1em;
+	margin-top: 1em;
+}
+
+.navigation li ul li {
+	margin-left: -1em;
+	list-style-type: disc;
+	font-weight: normal;
+	font-style: normal;
+	padding-bottom: 0;
+	margin-top: 0;
+	margin-bottom: 0.5em;
+}
+
+.navigation ul li ul {
+	margin-top: 0.5em;
+	margin-bottom: -0.5em;
+}
+
+/* @end */
+
+/* @group documentation */
+
+.hidden {
+	visibility: hidden;
+}
+
+.documentation .header {
+	display: block;
+	position: relative;
+	border-top-style: solid;
+	border-top-width: 1pt;
+	padding-top: 4px;
+	margin-top: 1.2em;
+}
+
+.documentation .name-and-args {
+	width: 80%;
+	float: left;	
+}
+
+.documentation {
+	margin-right: 1em;
+	margin-left: 1em;
+	clear: both;
+}
+
+.function {
+}
+
+.documentation .contents {
+	top: 10px;
+	position: relative;
+	clear: both;
+	margin-bottom: 1.8em;
+}
+
+.documentation-name {
+	font-weight: bold;
+	float: left;
+	padding-right: 0.1em;
+}
+
+.documentation-kind {
+	float: right;
+	font-style: italic;
+	color: gray;
+	padding-left: 10px;
+}
+
+.documentation-arguments {
+	float: left;
+	font-style: italic;
+	margin-left: 2em;
+	clear: both;
+	white-space: normal;
+}
+
+.documentation-arguments .argument {
+	white-space: nowrap;	
+}
+
+.documentation p {
+	clear: both;
+	margin-right: 1em;
+	margin-left: 1em;
+}
+
+.documentation .marker {
+	color: gray;
+	font-size: 90%;
+}
+
+.docs-group .name-and-args span {
+	float: left;
+	margin-right: 1em;
+	clear: right;
+}
+
+.docs-group .documentation-name  {
+	margin-right: 0;
+	margin-left: -1.9em;
+	clear: right;
+}
+
+.functor .documentation-arguments {
+	white-space: pre;
+}
+
+/* @end */
+
+/* @group header */
+
+
+#header {
+  position: fixed;
+  z-index: 3;
+  background-color: #FFF;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100px; 
+  margin: 0 0 0 20px;
+}
+
+#header #hdLogo { 
+  z-index: 1;
+  position: absolute;
+  right: 30px;
+  top: 10px;
+  height: 73px;
+  width: 73px;
+  background: url('logo.png') no-repeat;
+}
+
+#header #timestamp {
+  position: absolute;
+  right: 112px;
+  top: 38px;
+  font-size: 10px;
+  text-align: right;
+}
+
+#header #copyright {
+  position: absolute;
+  right: 112px;
+  top: 13px;
+  font-size: 12px;
+  text-align: right;
+}
+
+#header h1 {
+  position: absolute;
+  top: 50px;
+  height: 25px;
+  background: #85c5d7;
+  left: 0;
+  right: 20px;
+  margin: 0;
+  padding: 12px 0 15px 10px;
+  font: bold x-large "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+#search-form {
+  position: absolute;
+  top: 30px;
+  height: 60px;
+  margin-left: 0;
+  margin-bottom: 0.5em;
+  margin-top: -1.0em;
+}
+
+#agmenu {
+  display: none;
+  position: fixed;
+  top: 63px;
+  right: 112px;
+  height: 24px;
+  z-index: 4;
+  overflow: visible;
+  line-height: 1.0;
+  font-size: 1em;
+  font-style: italic;
+}
+
+#agmenu li {
+}
+
+#agmenu p {
+	padding: 0;
+	margin: 0;
+}
+
+#agmenu .ui-menu-item {
+  padding: 0;
+  font: small "Lucida Grande", Lucida, Verdana, sans-serif;
+  width: 15em;
+  line-height: 1.9;
+}
+
+#agmenu a { text-decoration: none; color:black; }
+#agmenu a:visited { text-decoration: none; }
+#agmenu a:active { text-decoration: none; }
+#agmenu a:hover { text-decoration: none; }
+
+
+
+/* @end */
+
+/* @group footer */
+
+div#footer img {
+	float: right;
+}
+
+#footer {
+	margin-top: 2em;
+	margin-bottom: 2em;
+	padding-top: 0.25em;
+	border-top-style: inset;
+	border-top-width: 3px;
+	clear: both;
+	width: 100%;
+	font-size: 90%;
+	color: #333;
+	text-indent: 1em;
+}
+
+#timestamp {
+	margin-top: -1em; /*??*/
+	padding: 0;
+	font-size: 80%;
+	text-align: right;
+	float: left;
+}
+
+
+/* @end */
+
+/* @group cl-markdown */
+
+.markdown-warning {
+	color: maroon;
+	font-style: italic;
+	display: inline;
+}
+
+
+
+/* @end */
+
+/* @group ag */
+
+div#freetext-stop-words {
+	margin-right: 1.5in;
+	margin-left: 1.5in;
+}
+
+span.freetext-stop-word {
+	font-style: italic;
+	padding-right: 0.25cm;
+}
+
+table#freetext-examples {
+	margin-left: .5in;
+	margin-right: .5in;
+}
+
+table#freetext-examples tr {
+	line-height: 130%;
+}
+
+table#freetext-examples td {
+	border-bottom: 1px dotted #666;
+}
+
+/* @end */
+
+body {
+  font-family: Georgia, "Times New Roman", Times, serif;
+	margin-bottom: 0.25px;
+}
+
+/* Makes anchors appear below the fixed #header part when clicked. */
+#main-content > a[id], a[name] {
+  display: block;
+  position: relative;
+  top: -110px;
+  visibility: hidden;
+}
+
+#contents {
+  position: relative;
+  top: 90px;
+  margin-left: 2em;
+  margin-right: 2em;
+  overflow: visible;
+}
+
+#main-content {
+  line-height: 1.4;
+  border-left: 2px solid #85c5d7;
+  background: white;
+  z-index: 0;
+  position: relative;
+  min-height: 100%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  margin-left: 260px;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 30px;
+}
+
+#main-content ul {
+	line-height: 1.2;
+}
+
+#main-content h1, 
+#main-content h2, 
+#main-content h3, 
+#main-content h4 {
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+#main-content h2 {
+	font-size: 120%;
+}
+
+#main-content h3 {
+	font-size: 110%;
+}
+
+#main-content h4 {
+	font-size: 90%;
+}
+
+#main-content h5 {
+	font-size: 80%;
+}
+
+h3, h5 {
+	font-style: italic;
+}
+
+pre {
+  background-color: rgba(205,202,255,0.2489955);
+  overflow: auto;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  margin-right: 1cm;
+  margin-left: 1cm;
+  font-family: "Courier New", Courier, mono, monospace;
+  line-height: 1.0;
+  border: 1px dotted #ccc;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+dl {
+	margin-left: 2em;
+	line-height: 1.2;
+}
+
+dt {
+	font-weight: bold;
+}
+
+dd {
+	margin-bottom: 0.5em;
+	margin-top: 0.25em;
+}
+
+.note {
+	border: 2px inset gray;
+	padding: 0.5em;
+	margin-right: 2em;
+	margin-left: 2em;
+}
+
+li {
+	line-height: 1.1;
+	margin-bottom: 0.4em;
+}
+
+.index li {
+	line-height: 1.1;
+	margin-bottom: 0.2em;
+}
+
+.example {
+	float: right;
+	position: relative;
+	overflow: auto;
+	width: 75%;
+	clear: none;
+	border-style: solid;
+	border-width: 1px;
+	padding-left: 1em;
+	margin-left: 1em;
+	margin-bottom: 1em;
+}
+
+.example h4 {
+	text-align: center;
+}
+
+.sidenote {
+  float: right;
+  clear: none;
+  width: 75%;
+  border-style: solid;
+  border-width: 1px;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+#federation-example-1 {
+	float: right;
+	width: 300px;
+	clear: both;
+}
+
+#federation-example-2 {
+	float: left;
+	width: 200px;
+	clear: both;
+}
+
+/* spread out the lists on the main index a bit */
+#documentation-index li li {
+	line-height: 115%;
+}
+
+#documentation-index li {
+	line-height: 115.0%;
+}
+
+#tocLink {
+  font-style: italic;
+}

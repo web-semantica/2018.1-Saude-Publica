@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>Triple Attributes | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="triple-attributes"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>AllegroGraph 6.4.2 Triple Attributes</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-13' title='Attribute characteristics'>Attribute characteristics</a>
+<ul>
+<li><a href='#header3-23' title='Associating attributes with triples: NQX files'>Associating attributes with triples: NQX files</a></li></ul></li>
+<li><a href='#header2-39' title='Defining attributes'>Defining attributes</a>
+<ul>
+<li><a href='#header3-41' title='Defining attributes with Java, the REST interface, and AGWebView'>Defining attributes with Java, the REST interface, and AGWebView</a></li>
+<li><a href='#header3-43' title='Defining attributes with agtool'>Defining attributes with agtool</a></li>
+<li><a href='#header3-53' title='Defining attributes in Lisp'>Defining attributes in Lisp</a></li></ul></li>
+<li><a href='#header2-64' title='Static filters'>Static filters</a>
+<ul>
+<li><a href='#header3-69' title='Static filter definitions'>Static filter definitions</a></li>
+<li><a href='#header3-75' title='Static filter expressions'>Static filter expressions</a>
+<ul>
+<li><a href='#header4-76' title='Definitions'>Definitions</a></li>
+<li><a href='#header4-79' title='Grammar'>Grammar</a></li>
+<li><a href='#header4-82' title='Operators'>Operators</a></li>
+<li><a href='#header4-105' title='Example filter expressions'>Example filter expressions</a></li></ul></li></ul></li>
+<li><a href='#header2-108' title='Getting and Setting Metadata'>Getting and Setting Metadata</a></li>
+<li><a href='#header2-116' title='Attributes example'>Attributes example</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>Attributes are name/value pairs that can be associated with triples or users.  Names and values must be strings. Attributes can only be associated with a triple at the time the triple is added to the triple store (with functions such as <a href="lisp-reference.html#add-triple" title="description of add-triple">add-triple</a> or tools such as <a href="agload.html">agload</a>). Once a triple has been added to the store, its attributes cannot be modified. </p><p>There are many potential uses of triples attributes, including access control. Attributes can specify which users can access which triples. Users can also be given attributes, which can be compared to the triple attributes. Suppose for example there is an attribute name "security-level" with values "high", "medium" and "low". Then a user with "security-level" attribute "medium" can be prevented from viewing triples with "security-level" attribute "high". </p><p>Because triples can have as many attributes as desired and attributes can have as many values as desired (there are configurable limits but the defaults are much larger than any conceivable application), access control can be as finely tuned as desired. </p><p>Attributes can be associated with triples when adding them one statement at a time, or via file import. Once a triple has been added to a repository, its associated attributes cannot be changed or removed. </p><a name='header2-13' id='header2-13'></a><h2>Attribute characteristics</h2><p>An attribute is a name/value pair where both the name and the value are strings. Attributes are assoicated with specific triples. While the theoretical maximum size of an attribute value is approximately one terabyte, the pratical maximum size will be limited by the amount of available virtual memory and address space. </p><p>There are restrictions on the characters allowable in an attribute name. An attribute name may be composed of characters of the following types: </p>
+<ul>
+<li>a letter</li>
+<li>a digit</li>
+<li>a dash (-)</li>
+<li>an underscore (_)</li>
+<li>having a codepoint &gt;= 128</li></ul><p>That is, standard 7-bit ASCII characters are restricted to letters and digits and two additional characters (- and _) but anything outside the standard 7-bit ASCII range is allowed. </p><p><a name="nqx-file"></a> </p><a name='header3-23' id='header3-23'></a><h3>Associating attributes with triples: NQX files</h3><p>A new format has been designed, called Extended N-Quad format (NQX, for short) which extends the <a href="http://www.w3.org/TR/n-quads/" class="external" target="_blank">N-Quads</a> format to allow the specification of attributes for each triple in the file. </p><p>Each line of an NQX file has the following format: </p>
+<pre><code>[An N-Quad line without the ending .] [attributes] . </code></pre><p>N-Quad lines are defined <a href="http://www.w3.org/TR/n-quads/" class="external" target="_blank">here</a>. The <code>attributes</code> can be absent. If present, it must be in JSON format: </p>
+<pre><code>{ "pet": "dog", "key2": [ "red", "blue" ] } </code></pre><p>Here we specify three attribute name/value pairs: </p>
+<pre><code>"pet"/"dog"  
+"key2"/"red"  
+"key2"/"blue" </code></pre><p>Here are some sample lines from an NQX file: </p>
+<pre><code>_:b0EF918FCx100 &lt;http://example.org/ontology/infractions&gt; &lt;http://example.org/ontology/Infraction#ExcessiveTardiness&gt; {"securityLevel": "high", "department": "hr", "accessToken": ["E", "D"]} .  
+_:b0EF918FCx100 &lt;http://example.org/ontology/salary&gt; "100000"^^&lt;http://www.w3.org/2001/XMLSchema#int&gt; {"securityLevel": "medium", "department": ["accounting", "hr"], "accessToken": "A"} .  
+_:b0EF918FCx100 &lt;http://example.org/ontology/department&gt; &lt;http://example.org/ontology/ops&gt; {"securityLevel": "low", "department": ["sales", "accounting", "hr", "devel"], "accessToken": "A"} .  
+_:b0EF918FCx100 &lt;http://example.org/ontology/name&gt; "Joe Smith" {"securityLevel": "low", "department": ["sales", "accounting", "hr", "devel"], "accessToken": "A"} . </code></pre><p>N-Quad format supports optionally specifying a graph. Those example lines do not includes graphs. Here is a line with a graph (<code>&lt;http://ex#trans@@1142684573200001&gt;</code>): </p>
+<pre><code>&lt;http://dbpedia.org/resource/Arif_Babayev&gt; &lt;http://dbpedia.org/property/placeOfDeath&gt; &lt;http://dbpedia.org/resource/Baku&gt; &lt;http://ex#trans@@1142684573200001&gt; {"color": "red"} . </code></pre><p>The system distinguishes between a graph and an attribute specification because attributes are specified in JSON format and graphs are not. </p><p>Attributes must be defined before a file using them can be loaded. Attributes cannot be defined in a NQX file or in any triple format file. See <a href="#defining-attributes">the Defining Attributes section</a> for information on defining attributes. </p><p>For all other supported triple file formats (N-Quad, N-Triple, Turtle, etc.), a set of default attributes can be specified at import time. These default attributes will be attached to each triple imported from the source. When NQX files are loaded, they too can have default attributes specified and those will be associated with any triple in the file that does not have individual attributes specified. See the <a href="agload.html">Data Loading</a> document. </p><p><a name="defining-attributes"></a> </p><a name='header2-39' id='header2-39'></a><h2>Defining attributes</h2><p>Attributes must be defined before they can be used. Defining an attribute establishes the name of an attribute and any constraints that should be placed on its use. </p><a name='header3-41' id='header3-41'></a><h3>Defining attributes with Java, the REST interface, and AGWebView</h3><p>Attributes can be defined in various ways.  The Java interface uses methods in the <strong>AGRepositoryConnection.AttributeDefinition</strong> class (see the <a href="javadoc/index.html">Javadoc index</a>). There is a complete example in <em>java-tutorial/AttributesExample.java</em>. The REST/HTTP interface can also be used to define attributes. See the <a href="http-protocol.html#attributes">Attributes section</a> in the <a href="http-protocol.html">REST/HTTP interface</a> document. AGWebView has a <a href="agwebview.html#define-attributes">Define attributes definitions</a> choice on the Repository page. </p><a name='header3-43' id='header3-43'></a><h3>Defining attributes with agtool</h3><p>The <a href="agtool.html">agtool</a> program is the general program for AllegroGraph command-line operations. Among the operations supported are </p>
+<ul>
+<li>define-attribute</li>
+<li>delete-attribute-definition</li></ul><p>The latter deletes an attribute definition. </p><p>The expressions </p>
+<pre><code>agtool define-attribute --help </code></pre><p>and </p>
+<pre><code>agtool delete-attribute-definition --help </code></pre><p>will show the arguments and calling sequence of the commands. </p><a name='header3-53' id='header3-53'></a><h3>Defining attributes in Lisp</h3><p>The Lisp function <a href="lisp-reference.html#define-attribute" title="description of define-attribute">define-attribute</a> (the definition appears in the <a href="lisp-reference.html">Lisp Reference</a> document) also can be used to define attributes. </p><p>The arguments to <a href="lisp-reference.html#define-attribute" title="description of define-attribute">define-attribute</a> are </p>
+<pre><code>name  &amp;key  db  allowed-values  ordered  minimum-number  maximum-number </code></pre><p><em>db</em> is the triple store. <em>name</em> is the attribute name. <em>name</em> must be a string made up of letters, digits, the characters #\- and #_, or characters with code point 128 or greater (that is, letters, digits, hyphen, and underscore among 7-bit ASCII characters and any character that cannot be represented in 7-bit ASCII). </p><p><em>allowed-values</em>, if specified, must be a list. It restricts attribute values to members of the list. The values must be strings. If attributes are <em>ordered</em>, then they can be compared with predicates like <strong>attribute>=</strong>. </p><p>For example, if there is a "securityLevel" attribute, it can be <em>ordered</em>. Suppose the <em>allowed-values</em> are ("low" "medium" "high"). The ordering comes from the position in the list (and not from alphabetical or other orderings, so "low" is less than "high" and so on). Each triple with attribute "securityLevel" will have a value from that list. Users can also have a "securityLevel" attribute. A filter can be set up that allows only users with a security level equal to or higher than the triple security level to access the triple. </p><p>Attribute definitions are transactional. They do not persist unless committed. Attempting to commit a definition for a name which is already committed (presumably by another authorized user) will result in a conflict, which is detected at commit time. The second committer must then roll back. </p><p>The Lisp function <a href="lisp-reference.html#define-attribute" title="description of define-attribute">define-attribute</a> can be used to define attributes.  The functon <a href="lisp-reference.html#add-triple" title="description of add-triple">add-triple</a> has an <code>:attributes</code> keyword argument where the attributes of the new triple can be specified (attributes can be associated with a triple only when it is added or loaded). The various triple loading functions like <a href="lisp-reference.html#load-nquads" title="description of load-nquads">load-nquads</a> have an <code>:default-attributes</code> keyword argument which specifies the attributes to be added to all triples being loaded. The function <a href="lisp-reference.html#load-nqx" title="description of load-nqx">load-nqx</a> and <a href="lisp-reference.html#load-nqx-from-string" title="description of load-nqx-from-string">load-nqx-from-string</a> will load NQX files which allow attributes to be specified for individual triples. (Only NQX files can have attributes for individual triples specified.) The <code>:default-attributes</code> argument to <a href="lisp-reference.html#load-nqx" title="description of load-nqx">load-nqx</a> and <a href="lisp-reference.html#load-nqx-from-string" title="description of load-nqx-from-string">load-nqx-from-string</a> specify attributes for those triples which have no attributes specified in the file or string. </p> <p><a name="static-filters"></a> </p><a name='header2-64' id='header2-64'></a><h2>Static filters</h2><p>A static filter using an S-expression-based query can be established on a given triple store.  This filter will be applied to all queries. Only triples which match the filter will be returned by any query against the store. </p><p><a name="x-user-attributes"></a> Both triples and users can have attributes. Therefore, the attributes of a user performing a query can be compared to the triple attributes and if the user's attributes are not appropriate, the triple will be invisible to the user. User attributes can be supplied in HTTP requests using the <code>x-user-attributes</code> header. When supplied, the header must contain a JSON object representing attributes, for example: </p>
+<pre><code>{ "color": "red" }  
+{ "color": ["red"] }  
+{ "color": ["red", "blue"] } </code></pre><p>Static filter definitions are transactional. They do not persist unless committed. Attempting to commit a definition when a static filter is already committed (presumably by another authorized user) will result in a conflict, which is detected at commit time. The second committer must then roll back. </p><a name='header3-69' id='header3-69'></a><h3>Static filter definitions</h3><p>Static filters can be defined and deleted with the following tools: </p>
+<ul>
+<li>AGWebView -- see the <a href="agwebview.html#static-filter">Set static attribute filter</a> choice on the Repository page).</li>
+<li>The Java interface -- see the <a href="javadoc/index.html">Javadoc index</a>; there is a complete example in <em>java-tutorial/AttributesExample.java</em>).</li>
+<li>The REST/HTTP interface - see the <a href="http-protocol.html#attributes">Attributes section</a> in the <a href="http-protocol.html">REST/HTTP interface</a> document).</li>
+<li><a href="agtool.html">agtool</a> -- using the <strong>set-static-attribute-filter</strong> and <strong>delete-static-attribute-filter</strong> commands.</li></ul><a name='header3-75' id='header3-75'></a><h3>Static filter expressions</h3><a name='header4-76' id='header4-76'></a><h4>Definitions</h4>
+<ul>
+<li><p>An <em>attribute container</em> is a collection of attribute sets.  Both   triples and users are attribute containers since they can have   attributes associated with them. </p></li>
+<li><p>An <em>attribute set</em> is the set of all values for a given named   attribute within an attribute container.  Attribute sets can also be   specified using literal strings (or lists thereof). </p></li></ul><a name='header4-79' id='header4-79'></a><h4>Grammar</h4><p>The syntax of a static filter expression is as follows: </p>
+<pre><code>EXPR := (OPERATOR SET*)  
+EXPR := (and EXPR*)               # True if all of the subexpressions are true.  
+EXPR := (or EXPR*)                # True if at least one subexpression is true.  
+EXPR := (not EXPR)                # True if EXPR is false.  
+ 
+SET  := CONTAINER.ATTRIBUTE-NAME  # An attribute set specification.  
+SET  := "string"                  # Literal string representing an attribute  
+                                  # set with a single value.  
+SET  := ("string1" ... "stringN") # An attribute set consisting of the  
+                                  # supplied string values.  
+ 
+CONTAINER := user                 # The attributes of the current user, e.g., from  
+                                  # the x-user-attributes HTTP header.  
+CONTAINER := triple               # The attributes of the triple being considered  
+                                  # for filtering.  
+ 
+ATTRIBUTE-NAME := IDENTIFIER      # The name of a defined attribute.  
+ 
+# These operators are described in the next section  
+OPERATOR := empty | overlap | attributes-overlap  
+            | attribute-contains-one-of | subset | superset |  
+            attribute-contains-all-of | equal |  
+            attribute-set&lt;= | attribute-set&lt; | attribute-set= |  
+            attribute-set&gt; | attribute-set&gt;= </code></pre><a name='header4-82' id='header4-82'></a><h4>Operators</h4><p><strong>empty</strong> </p>
+<pre><code>(empty SET) </code></pre><p>True if the specified attribute set is empty. </p><p><strong>overlap</strong>, <strong>attributes-overlap</strong>, <strong>attribute-contains-one-of</strong> </p>
+<pre><code>(overlap SET1 SET2)  
+(attributes-overlap SET1 SET2)  
+(attribute-contains-one-of SET1 SET2) </code></pre><p>True if there is at least one matching value between the two attribute sets.  False if either SET1 or SET2 is empty. </p><p><strong>subset</strong> </p>
+<pre><code>(subset SET1 SET2) </code></pre><p>True if SET1 is a subset of SET2.  In other words, true if every element of SET1 can be found in SET2. </p><p>Note that (subset SET1 SET2) is equivalent to (superset SET2 SET1). </p><p><strong>superset</strong>, <strong>attribute-contains-all-of</strong> </p>
+<pre><code>(superset SET1 SET2)  
+(attribute-contains-all-of SET1 SET2) </code></pre><p>True if SET1 is a superset of SET2.  In other words, true if SET1 contains at least every element from SET2. </p><p>Note that (superset SET1 SET2) is equivalent to (subset SET2 SET1). </p><p><strong>equal</strong> </p>
+<pre><code>(equal SET1 SET2) </code></pre><p>True if SET1 and SET2 have exactly the same contents. </p><p><strong>attribute-set<=</strong>, <strong>attribute-set<</strong>, <strong>attribute-set=</strong>, <strong>attribute-set></strong>, <strong>attribute-set>=</strong> </p>
+<pre><code>(attribute-set&lt;= ORDERED-SET1 ORDERED-SET2)  
+(attribute-set&lt;  ORDERED-SET1 ORDERED-SET2)  
+(attribute-set=  ORDERED-SET1 ORDERED-SET2)  
+(attribute-set&gt;  ORDERED-SET1 ORDERED-SET2)  
+(attribute-set&gt;= ORDERED-SET1 ORDERED-SET2) </code></pre><p>In these cases, ORDERED-SETn can contain zero or one element(s). If either ORDERED-SET is empty, the operator returns false. Otherwise, if the single element in ORDERED-SET1 is <=, <, =, >, or &gt;= (depending on the operator) the single element of ORDERED-SET2, the operator returns true. Comparisons are case-sensitive. </p><p>The ordering of values is determined by the attribute definition. The ordering is not based on the lexicographical order of the value strings. </p><p>At least one of ORDERED-SET1 or ORDERED-SET2 must be an attribute set specification in CONTAINER.ATTRIBUTE-NAME form and ATTRIBUTE-NAME must name an attribute that was previously defined to be <em>ordered</em>. </p><a name='header4-105' id='header4-105'></a><h4>Example filter expressions</h4>
+<pre><code>;; The accessing user must have an access level greater than or  
+;; equal to that of the triple.  
+(attribute-set&gt;= user.access-level triple.access-level)  
+ 
+;; The accessing user must be a member of all of the departments  
+;; indicated by the triple.  
+(attribute-contains-all-of user.department triple.department)  
+ 
+;; The accessing user must be a member of at least one of the  
+;; departments indicated by the triple.  
+(overlap user.department triple.department)  
+ 
+;; The accessing user must have a sufficient access level and be a  
+;; member of at least one of the triple's departments:  
+(and  
+ (attribute-set&gt;= user.access-level triple.access-level)  
+ (overlap user.department triple.department))  
+ 
+;; Only return triples that are below SuperSecret level.  
+(attribute-set&lt; triple.access-level "SuperSecret") </code></pre><p><a name="get-set"></a> </p><a name='header2-108' id='header2-108'></a><h2>Getting and Setting Metadata</h2><p>The attribute and static filter definitions in a store (collectively known as <em>metadata</em>) can be retrieved and then used to specify or add to the metadata of another store. There are many tools available to do this: </p>
+<ul>
+<li><p><strong>agtool export</strong> (see the <code>--save-metadata</code> option in the <a href="agexport.html">Data   Export</a> document) and <strong>agtool load</strong> (see the   <code>--metadata</code> option in the <a href="agload.html">Data Loading</a> document. </p></li>
+<li><p><strong>agtool get-metadata</strong> (see <a href="agtool.html">agtool</a>.</p></li>
+<li><p>Using the <code>GET /repositories/[name]/metadata</code> and   <code>POST /repositories/[name]/metadata</code> services in the HTTP/REST   interface (see the <a href="http-protocol.html#attributes">Attributes</a>   section of the <a href="http-protocol.html">REST/HTTP interface</a> document. </p></li>
+<li><p>Using the Lisp functions <a href="lisp-reference.html#get-metadata" title="description of get-metadata">get-metadata</a>, <a href="lisp-reference.html#set-metadata" title="description of set-metadata">set-metadata</a>,   <a href="lisp-reference.html#load-metadata" title="description of load-metadata">load-metadata</a>, and <a href="lisp-reference.html#save-metadata" title="description of save-metadata">save-metadata</a>. </p></li></ul><p>When you load/set metadata, it is an error to modify an existing attribute definition (you can only add more definitions). You must commit after loading/setting for the changes to be permanent. </p><p><a name="attributes-example"></a> </p><a name='header2-116' id='header2-116'></a><h2>Attributes example</h2><p>There is a complete example of using attributes and a static filter in <em>[AllegroGraph directory]/doc/java-tutorial/AttributesExample.java</em>. Please look at the Java code for precise details. Here we will discuss the example in general. </p><p>The example defines three attributes: "securityLevel", "department" and "accessToken". The Java code defines these. Here are the details of their definitions: </p>
+<pre><code>Name: "securityLevel"  
+Minimum number: 1  
+Maximum number: 1  
+Values: "low","medium","high"  
+Ordered: Yes  
+ 
+Name: "department"  
+Values: "hr","devel","sales","accounting"  
+Ordered: No  
+ 
+Name: "acessToken"  
+Values: "A","B","C","D","E""  
+Ordered: No  
+</code></pre><p>Because <code>securityLevel</code> has min and max 1, there must be exactly one of these attributes for every added triple. </p><p>We add a static filter. Again, see the Java code. Here is the filter expression: </p>
+<pre><code>(and (attribute-set&gt;= user.securityLevel triple.securityLevel)  
+     (attribute-contains-one-of user.department triple.department)  
+     (attribute-contains-all-of user.accessToken triple.accessToken)) </code></pre><p>The filter requires that the user.securityLevel be greater than or equal to the triple security level, the user.department is in the list of triple departments, and the list of <em>user.accessToken</em>s contains all the triple <em>accessToken</em>s. Unless these conditions are met, the triple will be invisible to the user. </p><p>In the current implementation, individual users cannot be assigned attributes. A static filter can be defined for a repository but in order to use attributes to control which triples are visible, you must write a program which does its own authentication of the user and preparation of user attributes. The program then calls out to AllegroGraph, passing in the user's attributes, to get the visible triples. </p><p>In the future, we intend to allow attributes to be assigned to AllegroGraph users and roles. Then the AllegroGraph user can access the database directly, with the static filter comparing the user's attributes with the triple attributes and returning or not returning triples according to the filter. </p></div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>HTTP Protocol | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="http-protocol"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>      <h1>AllegroGraph 6.4.2 HTTP Protocol</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Overview'>Overview</a></li>
+<li><a href='#header2-13' title='Conventions'>Conventions</a></li>
+<li><a href='#header2-64' title='CORS support'>CORS support</a></li>
+<li><a href='#header2-67' title='Example session'>Example session</a></li>
+<li><a href='#header2-90' title='URL summary'>URL summary</a></li>
+<li><a href='#header2-191' title='Global URLs'>Global URLs</a></li>
+<li><a href='#header2-228' title='Scripting the server'>Scripting the server</a></li>
+<li><a href='#put-materialize-entailed' title='OWL 2 RL Materialization'>OWL 2 RL Materialization</a></li>
+<li><a href='#header2-302' title='User management'>User management</a></li>
+<li><a href='#header2-479' title='Catalog interface'>Catalog interface</a></li>
+<li><a href='#header2-501' title='Repository interface'>Repository interface</a></li>
+<li><a href='#header2-791' title='Namespaces'>Namespaces</a></li>
+<li><a href='#header2-811' title='Type mappings'>Type mappings</a></li>
+<li><a href='#header2-866' title='Indexing'>Indexing</a></li>
+<li><a href='#header2-889' title='Geo-spatial queries'>Geo-spatial queries</a></li>
+<li><a href='#header2-947' title='Attributes'>Attributes</a></li>
+<li><a href='#header2-974' title='Social network analysis'>Social network analysis</a></li>
+<li><a href='#header2-997' title='Sessions'>Sessions</a></li>
+<li><a href='#header2-1085' title='Process management'>Process management</a></li>
+<li><a href='#header2-1100' title='Warm Standby'>Warm Standby</a></li>
+<li><a href='#header2-1117' title='Multi-master replication'>Multi-master replication</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <p>Communication between an <a href="http://agraph.franz.com/allegrograph/">AllegroGraph</a> server and other processes happens through <a href="http://www.w3.org/Protocols/rfc2616/rfc2616.html">HTTP</a>. This document describes the HTTP entry points the server provides, and how to use them. Most people will prefer to use a client library written in their language of choice to communicate with the server, but when no such library exists, or there is a reason not to use one, working directly with HTTP is an option. </p><p>The protocol described here is compatible (is a superset of) with the <a href="http://archive.rdf4j.org/system/ch08.html">Sesame 2.0 HTTP protocol</a> and the W3C <a href="http://www.w3.org/TR/sparql11-protocol/">SPARQL protocol</a> (<em>SPARQL endpoint</em>). </p><p><a name="overview"></a> </p><a name='header2-8' id='header2-8'></a><h2>Overview</h2><p>An AllegroGraph server exposes one or more catalogs, each containing any number of repositories (triple stores). The catalog layout of a server, as well as the port on which it listens for HTTP connections, is defined through its <a href="daemon-config.html">configuration file</a>. </p><p>When the server is running, for example on the default port 10035, a catalog named <code>public</code> would be available under <code>http://localhost:10035/catalogs/public</code>, whereas the root catalog lives at <code>http://localhost:10035/</code>. Opening such URLs in a browser will present you with WebView, a web-interface to the catalogs. To manipulate or inspect the repositories directly, more specific <a href="#urls">URLs</a> have to be constructed. For example, requesting this URL tells you how many statements (triples) there are in the repository <code>people</code> in the root catalog: </p>
+<pre><code>http://localhost:10035/repositories/people/size </code></pre><p><a name="conventions"></a> </p><a name='header2-13' id='header2-13'></a><h2>Conventions</h2><p>The AllegroGraph server tries to make effective use of HTTP features such as content-negotiation, status codes, and request methods. As such, a good understanding of the ideas behind HTTP will help when working with this protocol. </p><p><a name="input"></a> </p><h3>Input conventions</h3><p>Unless noted otherwise, the services that take parameters expect these to be appended to the URL as a <a href="http://en.wikipedia.org/wiki/Query_string">query string</a> — as in <code>?name=John%20Doe</code>. For <code>POST</code> requests that send along a <code>Content-Type</code> header of <code>application/x-www-form-urlencoded</code>, the query string can also be put in the request body. Any 'dynamic' part of a URL (for example the repository name) should also be URL-encoded — specifically, slashes should be encoded as <code>%2F</code>. </p><p>When making a <code>PUT</code> or <code>POST</code> request that includes a body, it is usually required to specify a meaningful <code>Content-Type</code> for this body. </p><p>When RDF terms have to be passed as parameters, or included in JSON-encoded data, these are written in a format resembling <a href="http://www.w3.org/TR/n-triples/" class="external" target="_blank">N-triples</a>, with the caveat that non-ASCII characters are allowed. Examples of valid terms are <code>&lt;http://example.com/foo&gt;</code>, <code>"literal value"</code>, <code>"55"^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt;</code>. </p><p>Any boolean values passed as parameters should be represented by the strings <code>true</code> or <code>false</code>. </p><p>All non-ASCII input to the server should be encoded using <a href="http://en.wikipedia.org/wiki/UTF-8">UTF-8</a>. When such characters end up a URL, the individual bytes of their UTF-8 representation should be taken and escaped as normal (<code>%HH</code>). </p><p>If there is the need to send data to the server in compressed form, a <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.11">Content-Encoding</a> header can be provided along with an encoded request body. The server understands <code>deflate</code> and <code>gzip</code> encoding on all platforms, and <code>bzip2</code> on platforms that provide the <code>bzcat</code> utility (most Unixes). </p><p>When making a request without an <code>Authorization</code> header, the request is treated as coming from <a href="#users">user</a> <code>anonymous</code> (if such a user exists). Either <a href="http://en.wikipedia.org/wiki/Basic_access_authentication">Basic HTTP authentication</a> or a certificate signed by a CA that the server accepts must be used to identify oneself as another user. </p><p><a name="output"></a> </p><h3>Output conventions</h3><p>The server always looks at the <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> header of a request, and tries to generate a response in the format that the client asks for. If this fails, a <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.7">406</a> response is returned. When no <code>Accept</code>, or an <code>Accept</code> of <code>*/*</code> is specified, the server prefers <code>text/plain</code>, in order to make it easy to explore the interface from a web browser. </p><p>Almost every service is capable of returning <code>text/plain</code> (just text) and <code>application/json</code> (<a href="http://json.org/" class="external" target="_blank">JSON</a>-encoded) responses. Services returning sets of triples can return the following: </p>
+<ul>
+<li><code>application/rdf+xml</code> (<a href="http://www.w3.org/TR/rdf-syntax-grammar/" class="external" target="_blank">RDF/XML</a>)</li>
+<li><code>text/plain</code> (<a href="http://www.w3.org/TR/n-triples/" class="external" target="_blank">N-triples</a>)</li>
+<li><code>text/x-nquads</code> (<a href="http://www.w3.org/TR/n-quads/" class="external" target="_blank">N-quads</a>)</li>
+<li><code>application/trix</code> (<a href="http://www.w3.org/2004/03/trix/" class="external" target="_blank">TriX</a>)</li>
+<li><code>text/rdf+n3</code> (<a href="http://www.w3.org/DesignIssues/Notation3">N3</a>)</li>
+<li><code>text/integer</code> (return only a result count)</li>
+<li><code>application/json</code>, <code>application/x-quints+json</code> (see below)</li></ul><p>When encoding RDF triple sets as <a href="http://json.org/" class="external" target="_blank">JSON</a>, arrays of strings are used. The strings contain terms in a format that is basically <a href="http://www.w3.org/TR/n-triples/" class="external" target="_blank">N-triples</a> with non-ASCII characters allowed (the server always uses UTF-8 encoding). Arrays of three elements are triples (subject, predicate, object) in the default graph. Arrays of four elements also contain a graph name (context) as the fourth element. The <code>application/x-quints+json</code> format works like the JSON triple format, but adds an extra field, the triple ID, to the front of every triple. </p><p>Services returning lists or sets of results (SPARQL <code>select</code> queries, for example) support the <code>application/sparql-results+xml</code> (<a href="http://www.w3.org/TR/rdf-sparql-XMLres/">see here</a>) and <code>application/sparql-results+json</code> (<a href="http://www.w3.org/2001/sw/DataAccess/json-sparql/">see here</a>) format. When encoded as regular JSON (<code>application/json</code>), such results take the form of an object with two properties. <code>names</code> contains an array of column labels, and <code>values</code> an array of arrays of values — the result rows. Again, <code>text/integer</code> will cause only the number of results to be returned. </p><p>When asked to (using the <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3">Accept-Encoding</a> header), the server will compress the response body using 'gzip' or 'deflate'. For typical RDF data, this will make the response <em>a lot</em> smaller. </p><p><a name="error"></a> </p><h3>Error responses</h3><p>Error responses will choose the appropriate <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">HTTP status code</a> as much as possible. Since there are a lot of circumstances that result in <code>400 Bad Request</code>, those are (usually) tagged with an additional error code. This code will be a capitalized string at the start of the body, followed by a colon, a space, and then a more detailed description of the problem. </p><p>The above paragraph says 'usually', since in the case of <em>really</em> malformed requests, the HTTP server implementation underlying the AllegroGraph server can also return a <code>400</code> response, which won't include such an error code. Thus, clients shouldn't recklessly assume the code is present, but could, for example, match against the regular expression <code>/^([A-Z ]+): (.*)$/</code> to separate the code from the message. </p><p>Error codes will be one of the following: </p>
+<dl><dt><code>INVALID PARAMETERS</code> </dt>
+<dd>The set of parameters passed to the request, or the value of one of   them, is not valid for this service. </dd><dt><code>MALFORMED QUERY</code> </dt>
+<dd>An unsyntactic query was given.</dd><dt><code>MALFORMED DATA</code> </dt>
+<dd>The request contains unsyntactic data.</dd><dt><code>MALFORMED PROGRAM</code> </dt>
+<dd>A Lisp program included in the request could not be executed.</dd><dt><code>UNSUPPORTED QUERY LANGUAGE</code> </dt>
+<dd>A query language was specified that is not understood by this   server. </dd><dt><code>UNSUPPORTED FILE FORMAT</code> </dt>
+<dd>Data was provided in a format that the server does not understand.</dd><dt><code>INAPPROPRIATE REQUEST</code> </dt>
+<dd>The request expresses something wrong-headed, like writing to a   federated store. </dd><dt><code>PRECONDITION FAILED</code> </dt>
+<dd>A necessary precondition for executing the request does not hold.</dd><dt><code>NOT IMPLEMENTED</code> </dt>
+<dd>The request tries to use functionality that is not implemented.</dd><dt><code>COMMIT FAILED</code> </dt>
+<dd>A transaction-conflict between the request and other, concurrent   transactions arose. This can only happen when changing a   repository's meta-data (things like <a href="#mapping">type mappings</a>). </dd></dl><p><a name="cors"></a> </p><a name='header2-64' id='header2-64'></a><h2>CORS support</h2><p>CORS (Cross-Origin Resource Sharing), if enabled, allows scripts run on a web page on some other web server than AllegroGraph's web server. CORS is not enabled by default because if not done properly, it can introduce security holes. A general tutorial on CORS is available at <a href="http://www.html5rocks.com/en/tutorials/cors/">http://www.html5rocks.com/en/tutorials/cors/</a>. CORS is enabled with top-level configuration directives, which go in the AllegroGraph configuration file. AllegroGraph must be restarted for changes to that file to take effect. The CORS directives are described <a href="daemon-config.html#cors">here</a> in the <a href="daemon-config.html">Server Configuration and Control</a> document. </p><p><a name="example"></a> </p><a name='header2-67' id='header2-67'></a><h2>Example session</h2><p>What follows is an example session. For clarity, all headers related to authorization, caching, connection keep-alive, and content chunking have been left out. </p><p>First, to create a repository named <code>test</code>, we'd issue the following request: </p>
+<pre><code>PUT /repositories/test HTTP/1.1  
+Accept: */* </code></pre><p>To which the server responds: </p>
+<pre><code>HTTP/1.1 204 No Content </code></pre><p>We can now list the repositories in the root catalog, asking for JSON content: </p>
+<pre><code>GET /repositories HTTP/1.1  
+Accept: application/json  
+ 
+HTTP/1.1 200 OK  
+Content-Type: application/json; charset=UTF-8  
+ 
+[{"uri": "&lt;http://localhost:10035/repositories/test&gt;",  
+  "id": "\"test\"",  
+  "title": "\"test\"",  
+  "readable": true  
+  "writeable": true}] </code></pre><p>Next, let's add a few statements to this store... </p>
+<pre><code>POST /repositories/test/statements HTTP/1.1  
+Accept: */*  
+Content-Type: application/json  
+ 
+[["&lt;http://example.org#alice&gt;", "&lt;http://example.org#name&gt;", "\"Alice\""],  
+ ["&lt;http://example.org#bob&gt;", "&lt;http://example.org#name&gt;", "\"Bob\""]]  
+ 
+HTTP/1.1 204 No Content </code></pre><p>Or, doing the same using N-triples instead of JSON: </p>
+<pre><code>POST /repositories/test/statements HTTP/1.1  
+Accept: */*  
+Content-Type: text/plain  
+ 
+&lt;http://example.org#alice&gt; &lt;http://example.org#age&gt; "26" .  
+&lt;http://example.org#bob&gt; &lt;http://example.org#age&gt; "33" . </code></pre><p>To find out Alice's name and age, we could issue the following SPARQL query: </p>
+<pre><code>select ?n ?age {  
+  &lt;http://example.org#alice&gt; &lt;http://example.org#name&gt; ?n ;  
+                             &lt;http://example.org#age ?age  
+} </code></pre><p>In the following request, <code>[QUERY]</code> is the URL-encoded equivalent of this query: </p>
+<pre><code>GET /repositories/test?query=[QUERY] HTTP/1.1  
+Accept: application/json  
+ 
+HTTP/1.1 200 OK  
+Content-Type: application/json; charset=UTF-8  
+ 
+{"names":["n", "age"], "values":[["\"alice\"", "\"26\""]]} </code></pre><p>Or, asking for SPARQL XML results: </p>
+<pre><code>GET /repositories/test?query=[QUERY] HTTP/1.1  
+Accept: application/sparql-results+xml  
+ 
+HTTP/1.1 200 OK  
+Content-Type: application/sparql-results+xml; charset=UTF-8  
+ 
+&lt;?xml version="1.0"?&gt;  
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#"&gt;  
+  &lt;head&gt;&lt;variable name="n"/&gt;&lt;variable name="age"/&gt;&lt;/head&gt;  
+  &lt;results&gt;  
+    &lt;result&gt;  
+      &lt;binding name="n"&gt;&lt;literal&gt;alice&lt;/literal&gt;&lt;/binding&gt;  
+      &lt;binding name="age"&gt;&lt;literal&gt;26&lt;/literal&gt;&lt;/binding&gt;  
+    &lt;/result&gt;  
+  &lt;/results&gt;  
+&lt;/sparql&gt; </code></pre><p>To fetch all statements in a repository, issue a request like this: </p>
+<pre><code>GET /repositories/test/statements  
+Accept: text/plain  
+ 
+HTTP/1.1 200 OK  
+Content-Type text/plain  
+ 
+&lt;http://example.org#alice&gt; &lt;http://example.org#name&gt; "Alice" .  
+&lt;http://example.org#bob&gt; &lt;http://example.org#name&gt; "Bob" .  
+&lt;http://example.org#alice&gt; &lt;http://example.org#age&gt; "26" .  
+&lt;http://example.org#bob&gt; &lt;http://example.org#age&gt; "33" . </code></pre><p>And finally, if we submit a nonsense query, we get: </p>
+<pre><code>GET /repositories/test?query=hello&amp;queryLn=english HTTP/1.1  
+Accept: */*  
+ 
+HTTP/1.1 400 Bad Request  
+Content-Type: text/plain; charset=UTF-8  
+ 
+UNSUPPORTED QUERY LANGUAGE: Unsupported query language: 'english' </code></pre><p><a name="urls"></a> </p><a name='header2-90' id='header2-90'></a><h2>URL summary</h2><p><style type="text/css">   .url-list {font-size: .8em}   .url-list ul {list-style: none; margin-left: 1.5em; padding-left: 0}   .url-list code {font-weight: bold; font-size: 120%} </style> </p><p>The following overview gives a summary of a subset of the URLs exposed by the server, and the methods allowed on them. Each method links to a description of the functionality exposed. See <a href="http-reference.html">HTTP reference</a> for a complete list of supported services. </p><div class="url-list"> 
+<ul>
+<li><code>/auditLog</code> <a href="#get-audit-log">GET</a>
+<ul>
+<li><code>/eventTypes</code> <a href="#get-audit-event-types">GET</a></li></ul></li>
+<li><code>/catalogs</code> <a href="#get-catalogs">GET</a>
+<ul>
+<li><code>/[name]</code> <a href="#put-catalog">PUT</a> <a href="#delete-catalog">DELETE</a></li></ul></li>
+<li><code>/version</code> <a href="#get-version">GET</a>
+<ul>
+<li><code>/date</code> <a href="#get-version-date">GET</a></li></ul></li>
+<li><code>/reconfigure</code> <a href="#post-reconfigure">POST</a></li>
+<li><code>/reopenLog</code> <a href="#post-reopenlog">POST</a></li>
+<li><code>/initfile</code> <a href="#get-initfile">GET</a> <a href="#put-initfile">PUT</a> <a href="#delete-initfile">DELETE</a></li>
+<li><code>/scripts</code> <a href="#get-sitescripts">GET</a>
+<ul>
+<li><code>/[name]</code> <a href="#get-sitescript">GET</a> <a href="#put-sitescripts">PUT</a> <a href="#delete-sitescripts">DELETE</a></li></ul></li>
+<li><code>/users</code> <a href="#get-users">GET</a>
+<ul>
+<li><code>/[name]</code> <a href="#put-user">PUT</a> <a href="#delete-user">DELETE</a>
+<ul>
+<li><code>/password</code> <a href="#post-password">POST</a></li>
+<li><code>/password/expired</code> <a href="#get-password-expired">GET</a></li>
+<li><code>/password/expired</code> <a href="#post-password-expired">POST</a></li>
+<li><code>/roles</code> <a href="#get-user-roles">GET</a>
+<ul>
+<li><code>/[role]</code> <a href="#put-user-role">PUT</a> <a href="#delete-user-role">DELETE</a></li></ul></li>
+<li><code>/permissions</code> <a href="#get-user-permissions">GET</a>
+<ul>
+<li><code>/[type]</code> <a href="#put-user-permission">PUT</a> <a href="#delete-user-permission">DELETE</a></li></ul></li>
+<li><code>/effectivePermissions</code> <a href="#get-user-effective-permissions">GET</a></li>
+<li><code>/access</code> <a href="#get-user-access">GET</a> <a href="#put-user-access">PUT</a> <a href="#delete-user-access">DELETE</a></li>
+<li><code>/effectiveAccess</code> <a href="#get-user-effective-access">GET</a></li>
+<li><code>/data</code> <a href="#get-user-data">GET</a>
+<ul>
+<li><code>/[key]</code> <a href="#get-user-data-key">GET</a> <a href="#put-user-data-key">PUT</a> <a href="#delete-user-data-key">DELETE</a></li></ul></li>
+<li><code>/security-filters</code> <a href="#get-user-security-filters">GET</a> <a href="#post-user-security-filters">POST</a> <a href="#delete-user-security-filters">DELETE</a></li>
+<li><code>/suspended</code> <a href="#get-user-suspended">GET</a> <a href="#post-user-suspended">POST</a> <a href="#delete-user-suspended">DELETE</a></li>
+<li><code>/enabled</code> <a href="#get-user-enabled">GET</a> <a href="#post-user-enabled">POST</a> <a href="#delete-user-enabled">DELETE</a></li></ul></li></ul></li>
+<li><code>/roles</code> <a href="#get-roles">GET</a>
+<ul>
+<li><code>/[role]</code> <a href="#put-role">PUT</a> <a href="#delete-role">DELETE</a>
+<ul>
+<li><code>/permissions</code> <a href="#get-role-permissions">GET</a></li>
+<li><code>/[type]</code> <a href="#put-role-permission">PUT</a> <a href="#delete-role-permission">DELETE</a></li>
+<li><code>/access</code> <a href="#get-role-access">GET</a> <a href="#put-role-access">PUT</a> <a href="#delete-role-access">DELETE</a></li>
+<li><code>/security-filters</code> <a href="#get-role-security-filters">GET</a> <a href="#post-role-security-filters">POST</a> <a href="#delete-role-security-filters">DELETE</a></li></ul></li></ul></li>
+<li><code>/processes</code> <a href="#get-processes">GET</a>
+<ul>
+<li><code>/[id]</code> <a href="#get-process">GET</a> <a href="#delete-process">DELETE</a>
+<ul>
+<li><code>/telnet</code> <a href="#post-telnet">POST</a></li></ul></li></ul></li>
+<li><code>/session</code> <a href="#post-session">POST</a></li>
+<li><code>/jobs</code> <a href="#get-jobs">GET</a></li>
+<li><code>/jobs</code> <a href="#delete-jobs">DELETE</a></li></ul></div> <p>Under a catalog prefix (<code>/</code> for the root catalog, <code>/catalogs/[name]/</code> for named catalogs), the following services are available: </p><div class="url-list"> 
+<ul>
+<li><code>/protocol</code> <a href="#get-protocol">GET</a></li>
+<li><code>/repositories</code> <a href="#get-repositories">GET</a>
+<ul>
+<li><code>/[name]</code> <a href="#get-post-repo">GET</a> <a href="#get-post-repo">POST</a> <a href="#put-repo">PUT</a> <a href="#delete-repo">DELETE</a>
+<ul>
+<li><code>/ensureNotLingering</code> <a href="#ensure-not-lingering">POST</a></li>
+<li><code>/size</code> <a href="#get-size">GET</a></li>
+<li><code>/statements</code> <a href="#get-statements">GET</a> <a href="#put-post-statements">POST</a> <a href="#put-post-statements">PUT</a>   <a href="#delete-statements">DELETE</a> 
+<ul>
+<li><code>/query</code> <a href="#get-post-statements-query">GET</a> <a href="#get-post-statements-query">POST</a></li>
+<li><code>/delete</code> <a href="#post-statements-delete">POST</a></li>
+<li><code>/id</code> <a href="#get-statements-id">GET</a></li>
+<li><code>/duplicates</code> <a href="#get-statements-duplicates">GET</a> <a href="#delete-statements-duplicates">DELETE</a></li></ul></li>
+<li><code>/unique/[column]</code> <a href="#get-post-unique">GET</a> <a href="#get-post-unique">POST</a></li>
+<li><code>/suppressDuplicates</code> <a href="#get-suppress-duplicates">GET</a> <a href="#put-suppress-duplicates">PUT</a> <a href="#delete-suppress-duplicates">DELETE</a></li>
+<li><code>/queries/[id]</code> <a href="#get-post-prepared">GET</a> <a href="#get-post-prepared">POST</a> <a href="#put-prepared">PUT</a>   <a href="#delete-prepared">DELETE</a> </li>
+<li><code>/contexts</code> <a href="#get-contexts">GET</a></li>
+<li><code>/functor</code> <a href="#post-functor">POST</a></li>
+<li><code>/begin</code> <a href="#post-begin">POST</a></li>
+<li><code>/commit</code> <a href="#post-commit">POST</a></li>
+<li><code>/rollback</code> <a href="#post-rollback">POST</a></li>
+<li><code>/eval</code> <a href="#post-eval">POST</a></li>
+<li><code>/freetext</code> <a href="#get-post-freetext">GET</a> <a href="#get-post-freetext">POST</a>
+<ul>
+<li><code>/indices</code> <a href="#get-freetext-indices">GET</a>
+<ul>
+<li><code>/[index]</code> <a href="#get-freetext-index">GET</a> <a href="#delete-freetext-index">DELETE</a> <a href="#put-freetext-index">PUT</a>   <a href="#post-freetext-index">POST</a> 
+<ul>
+<li><code>/[param]</code> <a href="#get-freetext-param">GET</a></li></ul></li></ul></li></ul></li>
+<li><code>/mapping</code> <a href="#get-mapping">GET</a> <a href="#delete-mapping">DELETE</a>
+<ul>
+<li><code>/type</code> <a href="#get-typemapping">GET</a> <a href="#post-put-typemapping">POST</a> <a href="#post-put-typemapping">PUT</a>   <a href="#delete-typemapping">DELETE</a> </li>
+<li><code>/predicate</code> <a href="#get-predmapping">GET</a> <a href="#post-put-predmapping">POST</a> <a href="#post-put-predmapping">PUT</a>   <a href="#delete-predmapping">DELETE</a> </li></ul></li>
+<li><code>/indices</code> <a href="#get-indices">GET</a>
+<ul>
+<li><code>/[type]</code> <a href="#put-index">PUT</a> <a href="#delete-index">DELETE</a></li>
+<li><code>/optimize</code> <a href="#post-indices-optimize">POST</a></li></ul></li>
+<li><code>/blankNodes</code> <a href="#post-blanknodes">POST</a></li>
+<li><code>/tripleCache</code> <a href="#get-triplecache">GET</a> <a href="#put-triplecache">PUT</a> <a href="#delete-triplecache">DELETE</a></li>
+<li><code>/namespaces</code> <a href="#get-namespaces">GET</a> <a href="#delete-namespaces">DELETE</a>
+<ul>
+<li><code>/[prefix]</code> <a href="#get-namespace">GET</a> <a href="#put-post-namespace">PUT</a> <a href="#put-post-namespace">POST</a>   <a href="#delete-namespace">DELETE</a> </li></ul></li>
+<li><code>/geo</code>
+<ul>
+<li><code>/types</code> <a href="#get-geotypes">GET</a>
+<ul>
+<li><code>/cartesian</code> <a href="#put-geotype-cartesian">POST</a></li>
+<li><code>/spherical</code> <a href="#put-geotype-spherical">POST</a></li></ul></li>
+<li><code>/box</code> <a href="#get-geo-box">GET</a></li>
+<li><code>/circle</code> <a href="#get-geo-circle">GET</a></li>
+<li><code>/haversine</code> <a href="#get-geo-haversine">GET</a></li>
+<li><code>/polygon</code> <a href="#get-geo-polygon">GET</a> <a href="#put-geo-polygon">PUT</a></li></ul></li>
+<li><code>/attributes/[name]</code> <a href="#get-attributes">GET</a> <a href="#post-attributes">POST</a> <a href="#delete-attributes">DELETE</a>
+<ul>
+<li><code>/attributes/staticFilter</code> <a href="#get-staticfilter">GET</a> <a href="#post-staticfilter">POST</a> <a href="#delete-staticfilter">DELETE</a></li></ul></li>
+<li><code>/snaGenerators/[name]</code> <a href="#put-generator">PUT</a></li>
+<li><code>/neighborMatrices/[name]</code> <a href="#put-matrix">PUT</a></li>
+<li><code>/noCommit</code> <a href="#get-no-commit">GET</a> <a href="#put-delete-no-commit">PUT</a> <a href="#put-delete-no-commit">DELETE</a></li>
+<li><code>/bulkMode</code> <a href="#get-bulkmode">GET</a> <a href="#put-delete-bulkmode">PUT</a> <a href="#put-delete-bulkmode">DELETE</a></li>
+<li><code>/warmstandby</code> <a href="#get-warmstandby">GET</a>  <a href="#put-warmstandby">PUT</a> <a href="#delete-warmstandby">DELETE</a>
+<ul>
+<li><code>/switchRole</code> <a href="#post-warmstandby-switchrole">POST</a></li></ul></li>
+<li><code>/session</code> <a href="#post-store-session">POST</a></li>
+<li><code>/mongoParameters</code> <a href="#get-mongoParameters">GET</a> <a href="#post-mongoParameters">POST</a></li>
+<li><code>/materializeEntailed</code> <a href="#put-materialize">PUT</a> <a href="#delete-materialize">DELETE</a></li>
+<li><code>/custom/[name]</code> <a href="#custom">(see here)</a></li></ul></li></ul></li></ul></div> <a name='header2-191' id='header2-191'></a><h2>Global URLs</h2> <h3>GET /auditLog <a name="get-audit-log"></a></h3><p>Returns entries from the audit log which match the given parameters. </p><p>This service takes the following parameters: </p>
+<dl><dt><code>startDate</code> </dt>
+<dd>An untyped literal in <code>xsd:dateTime</code> format. For example, <code>"2014-02-23T00:00:00Z"</code>. This can be used to select only events which occurred on or after this date and time. See <a href="datatypes.html#date-time">the date-time section of Datatypes</a> for information on the date-time format. </dd><dt><code>endDate</code> </dt>
+<dd>An untyped literal in <code>xsd:dateTime</code> format. For example, <code>"2014-02-23T00:00:00Z"</code>. This can be used to select only events which occurred on or before this date and time. See <a href="datatypes.html#date-time">the date-time section of Datatypes</a> for information on the date-time format. </dd><dt><code>users</code> </dt>
+<dd>A comma-separated list of user ids or the special value   <code>UNKNOWN</code>. Only events triggered by the specified users are   included in the results.   <code>UNKNOWN</code> matches entries for which the acting user is not   recorded which includes some automatic system actions and failed   logins. </dd><dt><code>events</code> </dt>
+<dd>A comma-separated list of event type classes as returned by <a href="#get-audit-event-types">auditLog/eventTypes</a>. Only events whose type is among the members of the list are included in the results. </dd><dt><code>limit</code> </dt>
+<dd>An integer. This can be used to limit the amount of results returned by   the query. </dd><dt><code>offset</code> </dt>
+<dd>An integer. This can be used to skip the first <code>offset</code> results in result   set. </dd></dl><p>If a parameter is not specified then no restriction is imposed on the corresponding component of the audit log entires. </p><p>The columns of results are: </p>
+<dl><dt><code>eventName</code> </dt>
+<dd>The name of event. This is one of the labels returned by   <a href="#get-audit-event-types">eventTypes</a>. </dd><dt><code>eventTime</code> </dt>
+<dd>The date and time of the event. Must be an untyped literal in xsd:dateTime format, for example, <code>"2014-02-23T00:00:01Z"</code> ( equals February 23, 2014, one second after midnight, Greenwich Mean Time). See <a href="datatypes.html#date-time">the date-time section of Datatypes</a> for information on the date-time format. </dd><dt><code>user</code> </dt>
+<dd>The user who triggered the event. This   is unbound if the user is not known, and so no information about   the user will be returned. </dd><dt><code>remote</code> </dt>
+<dd>The IP address and the port from where the request which triggered   the event was sent. For example, <code>192.168.1.1:43420</code>. </dd><dt><code>databaseName</code> </dt>
+<dd>If the event is associated with a store then this value identifies   it in the format of <code>&lt;catalog-name&gt;/&lt;repository-name&gt;</code>. For stores   in the root catalog, the <code>&lt;catalog-name&gt;</code> is <code>root</code>. </dd><dt><code>target</code> </dt>
+<dd>For <code>addIndex</code> and <code>dropIndex</code> events, this is the name of the   <a href="triple-index.html">index</a>. For <code>addUser</code>, <code>changePassword</code>, <code>deleteUser</code>   and <code>failedLogin</code> events, this is the user id of the affected user. </dd></dl><p>The results are sorted by <code>eventTime</code>. The format of the results can be controlled with the <a href="http-protocol.html#output">Accept</a> header. </p> <p>Auditing is described in <a href="audit.html">Auditing</a>. The information above is repeated in that document. </p> <h3>GET /auditLog/eventTypes <a name="get-audit-event-types"></a></h3><p>Returns the event classes and their labels. Classes can be passed in the <code>events</code> parameter of <a href="#get-audit-log">auditLog</a> to restrict the types of events in the results. </p><p>The format of the results can be controlled with the <a href="http-protocol.html#output">Accept</a> header. </p> <p>Auditing is described in <a href="audit.html">Auditing</a>. The information above is repeated in that document. </p> <h3>HTTP audit interface example <a name="http-audit-example"></a></h3><p>Here is an example where we use <strong>curl</strong> to get audit information. </p>
+<pre><code>curl -u test:xyzzy -X GET http://localhost:10035/auditLog  
+</code></pre><p>The information returned uses the <code>application/sparql-results+xml</code> format which is the default for SPARQL results (audit requests are implemented internally as SPARQL queries). Note that some events have no user information as the user is not known for them. </p>
+<pre><code>$ curl -u test:xyzzy -X GET http://localhost:10035/auditLog  
+&lt;?xml version="1.0"?&gt;  
+&lt;!-- Generated by AllegroGraph 4.14 --&gt;  
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#"&gt;  
+  &lt;head&gt;  
+    &lt;variable name="eventName"/&gt;  
+    &lt;variable name="eventTime"/&gt;  
+    &lt;variable name="user"/&gt;  
+    &lt;variable name="remote"/&gt;  
+    &lt;variable name="databaseName"/&gt;  
+    &lt;variable name="target"/&gt;  
+  &lt;/head&gt;  
+  &lt;results&gt;  
+    &lt;result&gt;  
+      &lt;binding name="eventName"&gt;  
+        &lt;literal&gt;add user&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="eventTime"&gt;  
+        &lt;literal datatype="http://www.w3.org/2001/XMLSchema#dateTime"&gt;2014-03-24T08:05:44Z&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="target"&gt;  
+        &lt;literal&gt;test&lt;/literal&gt;  
+      &lt;/binding&gt;  
+    &lt;/result&gt;  
+    &lt;result&gt;  
+      &lt;binding name="eventName"&gt;  
+        &lt;literal&gt;create triple-store&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="eventTime"&gt;  
+        &lt;literal datatype="http://www.w3.org/2001/XMLSchema#dateTime"&gt;2014-03-24T08:05:45Z&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="databaseName"&gt;  
+        &lt;literal&gt;system/system&lt;/literal&gt;  
+      &lt;/binding&gt;  
+    &lt;/result&gt;  
+    &lt;result&gt;  
+      &lt;binding name="eventName"&gt;  
+        &lt;literal&gt;create triple-store&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="eventTime"&gt;  
+        &lt;literal datatype="http://www.w3.org/2001/XMLSchema#dateTime"&gt;2014-03-24T08:05:52Z&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="user"&gt;  
+        &lt;literal&gt;test&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="databaseName"&gt;  
+        &lt;literal&gt;root/xxx&lt;/literal&gt;  
+      &lt;/binding&gt;  
+    &lt;/result&gt;  
+    &lt;result&gt;  
+      &lt;binding name="eventName"&gt;  
+        &lt;literal&gt;add index&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="eventTime"&gt;  
+        &lt;literal datatype="http://www.w3.org/2001/XMLSchema#dateTime"&gt;2014-03-24T08:06:36Z&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="user"&gt;  
+        &lt;literal&gt;test&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="databaseName"&gt;  
+        &lt;literal&gt;root/xxx&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="target"&gt;  
+        &lt;uri&gt;http://franz.com/allegrograph/4.11/audit-log#i&lt;/uri&gt;  
+      &lt;/binding&gt;  
+    &lt;/result&gt;  
+    &lt;result&gt;  
+      &lt;binding name="eventName"&gt;  
+        &lt;literal&gt;create freetext index&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="eventTime"&gt;  
+        &lt;literal datatype="http://www.w3.org/2001/XMLSchema#dateTime"&gt;2014-03-24T08:06:36Z&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="user"&gt;  
+        &lt;literal&gt;test&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="databaseName"&gt;  
+        &lt;literal&gt;root/xxx&lt;/literal&gt;  
+      &lt;/binding&gt;  
+      &lt;binding name="target"&gt;  
+        &lt;literal&gt;fff&lt;/literal&gt;  
+      &lt;/binding&gt;  
+    &lt;/result&gt;  
+  &lt;/results&gt;  
+&lt;/sparql&gt; </code></pre> <p><a name="get-catalogs"></a> </p><h3>GET /catalogs</h3><p>Returns a set of catalogs that are available on this server. For each catalog, <code>id</code> and <code>uri</code> properties are returned, giving respectively the name of the catalog and the URL under which it is found. Properties name <code>readable</code> and <code>writable</code> indicate, for each catalog, whether the user has read or write access to it. </p><p><a name="put-catalog"></a> </p><h3>PUT /catalogs/[name]</h3><p>If dynamic catalogs are enabled for the server (see the <a href="daemon-config.html#DynamicCatalog"><code>DynamicCatalogs</code></a> directive), this can be used to create a new catalog. Takes an <code>expectedStoreSize</code> (integer) parameter, which sets the default <a href="daemon-config.html">expected size</a> parameter for this catalog. </p><p><a name="delete-catalog"></a> </p><h3>DELETE /catalogs/[name]</h3><p>Deletes a catalog. Only dynamic catalogs (those created through HTTP) can be deleted in this way. </p><p><a name="get-version"></a> </p><h3>GET /version</h3><p>Returns the version of the AllegroGraph server, as a string. For example <code>4.0</code>. </p><p><a name="get-version-date"></a> </p><h3>GET /version/date</h3><p>Return the date on which the server was built. </p><p><a name="get-version-revision"></a> </p><h3>GET /version/revision</h3><p>Return the <a href="http://git-scm.com/">git</a> hash of the revision that the server was built from. </p><p><a name="post-reconfigure"></a> </p><h3>POST /reconfigure</h3><p>Posting to this URL will cause the server to re-read its configuration file, and update itself to reflect the new configuration. </p><p><a name="post-reopenlog"></a> </p><h3>POST /reopenLog</h3><p>Causes the server to re-open its log file. This is useful for log rotation. </p><p><a name="get-jobs"></a> </p><h3>GET /jobs</h3><p>Returns lists of strings of the form ("uuid" "age" "description" [unused]), where "uuid" is the job UUID; "age" is the time since the job was created, in seconds; and "description" is the query string. Only query jobs are returned. The fourth element of the list will also be a string but is not currently used and so is not meaningful. Specifying a content-type of <code>application/json</code> will return the lists in JSON format. </p><p><a name="delete-jobs"></a> </p><h3>DELETE /jobs</h3><p>Requires a single parameter, job UUID, which specifies the id of the job to cancel. Cancels the specified job. </p><p><a name="scripting"></a> </p><a name='header2-228' id='header2-228'></a><h2>Scripting the server</h2><p>AllegroGraph supports server-side scripting in both Common Lisp and <a href="javascript.html">JavaScript</a>. Typical uses of such scripts include defining <a href="#post-functor">Prolog functors</a>, creating <a href="#custom">custom services</a>, and defining <a href="stored-procedures.html">stored procedures</a>. </p><p>Before scripts can be used by AllegroGraph, they must first be uploaded to the server. Scripts that are intended for site-wide use are referred to as <em>Sitescripts</em>. Scripts that are intended for use with a specific repository only are referred to as <em>Reposcripts</em>. </p><p>Scripts that have a '.js' extension will be interpreted as Javascript source. Any other filename will be assumed to contain Common Lisp source, with the exception of files having a '.fasl' extension. Common Lisp source files will be compiled before being loaded and executed. Files with a .fasl extension are assumed to contain compiled Common Lisp code, and they will only be loaded. You are responsible for ensuring that fasl files are compatible with the server. (Note that fasl files from one version of Allegro CL cannot, in general, be loaded into a different version.)  The default package for Common Lisp source is the <code>db.agraph.user</code> package. Once loaded, a script will not be reloaded unless the source file on the server has a modification date later than the time at which the last load of said script occurred. </p><p>Scripting is a powerful feature. As such, superuser permission is required in order to upload Sitescripts, while write access to a repository is necessary to upload Reposcripts. </p><p>Once scripts have been uploaded to the server, they may be loaded and used to interact with data stored in AllegroGraph. There are two ways to load scripts: specifying them in a 'script' query parameter when starting a <a href="#sessions">dedicated session</a>, or including an 'x-scripts' header along with your HTTP request (x-scripts headers will cause scripts to be loaded for any request that operates on a valid repository). The value of the header is a comma-separated list of script names. Both Sitescripts and Reposcripts can be specified. In the event that both a Sitescript and a Reposcript have the same name, in most cases, the Reposcript will be loaded. Federated triple-stores will only load Sitescripts, since they, by definition, operate on multiple repositories. </p><p>While scripts may be loaded into shared back-ends, it is <em>highly</em> recommended that scripts only be used with dedicated sessions. Please read the section on <a href="#sessions">Sessions</a> for further details. </p><h3>Sitescript API</h3><p><a name="get-sitescripts"></a> </p><h3>GET /scripts</h3><p>Return the list of Sitescripts currently on the server. When a user creates a session, they can choose to load one or more of these scripts into the session. </p><p><a name="get-sitescript"></a> </p><h3>GET /scripts/[path]</h3><p>Return the contents of the Sitescript with the given name. </p><p><a name="put-sitescripts"></a> </p><h3>PUT /scripts/[path]</h3><p>Add or replace the named Sitescript. The body of the request should contain the new script. Scripts that have a '.js' extension will be interpreted as Javascript source. Scripts whose name ends in .fasl are assumed to be compiled Lisp code (you are responsible for ensuring that it is compatible with the server), anything else is assumed to be Common Lisp source, which the server will compile. </p><p><a name="delete-sitescripts"></a> </p><h3>DELETE /scripts/[path]</h3><p>Delete the Sitescript with the given name. </p><h3>Reposcript API</h3><p><a name="get-reposcripts"></a> </p><h3>GET /repositories/[name]/scripts</h3><p>Return the list of Reposcripts currently on the server for the named repository. When a user creates a session, they can choose to load one or more of these scripts into the session. </p><p><a name="get-reposcript"></a> </p><h3>GET /repositories/[name]/scripts/[path]</h3><p>Return the contents of the Reposcript with the given name. </p><p><a name="put-reposcript"></a> </p><h3>PUT /repositories/[name]/scripts/[path]</h3><p>Add or replace the named Reposcript. The body of the request should contain the new script. Scripts that have a '.js' extension will be interpreted as containing Javascript source. Scripts whose name ends in .fasl are assumed to be compiled Lisp code (you are responsible for ensuring that it is compatible with the server), anything else is assumed to be Common Lisp source, which the server will compile. </p><p><a name="delete-reposcript"></a> </p><h3>DELETE /repositories/[name]/scripts/[path]</h3><p>Delete the Reposcript with the given name. </p><p><a name="get-initfile"></a> </p><h3>GET /initfile</h3><p>An initialization-file can be specified for a server, which is a collection of Common Lisp code that is executed in every shared back-end (see <a href="#sessions">below</a>) as it is created. This retrieves that file. </p><p><a name="put-initfile"></a> </p><h3>PUT /initfile</h3><p>Replace the current initialization file with the body of the request. Takes one boolean parameter, <code>restart</code>, which defaults to true, and specifies whether any running shared back-ends should be shut down, so that subsequent requests will be handled by back-ends that include the new code. </p><p><a name="delete-initfile"></a> </p><h3>DELETE /initfile</h3><p>Remove the server's initialization file. </p><p><a name="custom"></a> </p><h3>Defining Custom Services</h3><p>To be able to provide an HTTP interface to scripted programs, AllegroGraph provides a special macro that allows one to easily define HTTP services. Services created this way will be available under the <code>/custom/[name]</code> suffix of a store. They will run with <code>db.agraph:*db*</code> bound to the store. For example: </p>
+<pre><code>(in-package #:db.agraph.user)  
+ 
+(custom-service  
+    :get "r" "talk-about-me" :triple-cursor ()  
+  (let ((me (upi !&lt;http://example.com/me&gt;)))  
+    (db.agraph.cursor:make-transform-cursor (get-triples)  
+      (lambda (triple) (setf (subject triple) me) triple)))) </code></pre><p>This, when put into the initfile, will cause <code>/repositories/x/custom/talk-about-me</code> to return all triples in that store, with their subjects replaced by <code>&lt;http://example.com/me&gt;</code>. </p><p>The macro arguments look like this: </p>
+<pre><code>(methods permissions name result-type arguments &amp;body body) </code></pre>
+<dl><dt><code>methods</code> </dt>
+<dd>Should be either one of `(:get :post :put :delete), or a list of   them. Indicates the HTTP methods on which this service is reacheable. </dd><dt><code>permissions</code> </dt>
+<dd>Should be a string containing zero or more of the characters   <code>rwWes</code>, indicating the permissions needed by a user to access this   service. <code>r</code> stands for read, <code>w</code> for write, <code>e</code> for eval, and <code>s</code>   for superuser. A capital <code>W</code> indicates that this service will mutate   the store. </dd><dt><code>name</code> </dt>
+<dd>The name of the service. Can be any string.</dd><dt><code>result-type</code> </dt>
+<dd>The type of the value the service returns. This has to be known in   order for the server to be able to do content-negotiation, and to be   able to write the value out in all suitable formats. Allowed types   are <code>:string</code>, <code>:integer</code>, <code>:float</code>, <code>:boolean</code>, <code>:list</code> (list of   strings or triple-parts), <code>:json</code> (anything serializeable as JSON,   using <a href="http://marijn.haverbeke.nl/st-json/">ST-JSON</a>), or <code>:triple-cursor</code> (an AllegroGraph-style   cursor). You can specify <code>:dynamic</code> here if you want the server to   look at the returned value and dynamically determine a suitable   output format. </dd><dt><code>arguments</code> </dt>
+<dd>A list of argument specifications, each in the form <code>(name type)</code>   for a required argument (for example <code>(username :string)</code>), or   <code>(name type :default DEFAULT-VALUE)</code> for an optional argument   (for example <code>(size :integer :default 100)</code>).  Since all arguments   must have a value when a request is processed, optional arguments   must have a default value specified.   The arguments will be extracted from the HTTP   request, and bound to the given variable names. As type, one can   specify <code>:string</code>, <code>:integer</code>, <code>:float</code>, <code>:boolean</code> (<code>true</code> or   <code>false</code>), <code>:list</code> (for arguments that can be specified multiple   times), <code>:body</code> (the request body), <code>:method</code> (the request method),   or <code>:content-type</code> (the content-type specified for the request   body). Arguments are checked, so requests that leave off arguments   for which no default is specified, or pass something that can't be   interpreted as the correct type, will return an error response   before the service body is even run. </dd><dt><code>body</code> </dt>
+<dd>This is the code that gets run to produce the service's response   value. It will run with the argument names bound to their values. </dd></dl><a name='put-materialize-entailed' id='put-materialize-entailed'></a> <h2>OWL 2 RL Materialization</h2><p><a name="put-materialize"></a> </p><h3>PUT /repositories/[name]/materializeEntailed</h3><p>Adds or replaces materialized triples in the store that are generated by entailment. This allows reasoning queries over the store without turning reasoning on at query time. By default the materializer only entails triples according to RDFS++ rules. Additional rules can be specified. Returns an integer count of the number of entailed triples added. See <a href="materializer.html">Materializer</a> for more information. </p>
+<ul>
+<li><p><strong>with</strong> - This parameter can be specified multiple times to select   additional rules for the materializer. See <a href="materializer.html#materialize-entailed-triples">materialize-entailed-triples</a> in <a href="materializer.html">Materializer</a> for possible rulesets. </p></li>
+<li><p><strong>without</strong> - This parameter can be specified multiple times to deselect   rules for the materializer. If without appears sans the "with"   parameter, then it is assumed all rules except those specified by   without will be used. Again see <a href="materializer.html#materialize-entailed-triples">materialize-entailed-triples</a> in <a href="materializer.html">Materializer</a>. </p></li>
+<li><p><strong>useTypeSubproperty</strong> - A boolean which defaults to false. When true   and possible, the materializer prefers using types which are   rdfs:subPropertyOf rdf:type in entailed triples rather than using   rdf:type directly. </p></li>
+<li><p><strong>commit</strong> - A positive integer. Will cause a commit to happen after every N added statements. Can be used to work around the fact that committing a huge amount of statements in a single transaction will require excessive amounts of memory.</p></li></ul><p><a name="delete-materialize"></a> </p><h3>DELETE /repositories/[name]/materializedEntailed</h3><p>Deletes any previously materialized triples. Return an integer count of the number of materialized triples removed. </p><p><a name="users"></a> </p><a name='header2-302' id='header2-302'></a><h2>User management</h2><p>The AllegroGraph server uses a simple access-control scheme. Requests made with a valid <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.8"><code>Authorization</code></a> header get assigned to the authorized user. Each user has a set of permissions, which are used to determine whether the request can be made. </p><p><a name="anonymous"></a>The user named <code>anonymous</code> plays a special role. When such a user exists, any request made without authentication information is assigned to that user. By default, no anonymous user is defined, which disallows anonymous access. </p><p>The following permissions flags are defined: </p>
+<dl><dt><code>super</code> </dt>
+<dd>This flag makes one a superuser, which means one can manage user   accounts. Having the <code>super</code> permission automatically grants all   other permissions. </dd><dt><code>eval</code> </dt>
+<dd>This controls whether a user is allowed to use the   '<a href="#post-eval">eval-in-server</a>' entry point, and use arbitrary Lisp   code in their Prolog queries. This makes it possible to write more   powerful queries, and move work to the server to improve efficiency.   Note, however, that this also allows all manner of privilege   escalation, and should only be granted to trusted users. </dd><dt><code>session</code> </dt>
+<dd>Controls whether a user can open their own <a href="#sessions">sessions</a>.</dd></dl><p>On top of that, <code>read</code> and <code>write</code> access can be specified per catalog and per store (as well as globally). <code>read</code> access allows one to query a repository, with <code>write</code> access one can also modify it. At the catalog level, <code>write</code> access permits the deleting and creating of repositories. </p><p>Each user can be assigned to a set of <a href="#get-roles">roles</a>, each of which can also be granted permissions. The effective set of permissions that a user has is the union of their own permissions and those of their roles. </p><p>Most of the user-management services are only available to super-users. A normal user is allowed to inspect its own permissions, the status of its account, manage its user-data, and delete its own account. </p><p><a name="get-users"></a> </p><h3>GET /users</h3><p>Returns a list of names of all the users that have been defined. For example: </p>
+<pre><code>GET /users HTTP/1.1  
+Accept: application/json  
+ 
+HTTP/1.1 200 OK  
+Content-Type: application/json; charset=UTF-8  
+ 
+["anonymous", "marijnh", "testuser"] </code></pre><p><a name="put-user"></a> </p><h3>PUT /users/[name]</h3><p>Create a new user. Expects a <code>password</code> parameter, which specifies the user's password (can be left off when creating the <a href="#anonymous">anonymous</a> user). </p><p><a name="delete-user"></a> </p><h3>DELETE /users/[name]</h3><p>Delete a user. </p><p><a name="post-password"></a> </p><h3>POST /users/[name]/password</h3><p>Change the password for the given user. The new password should be in the body of the request. </p><p><a name="get-password-expired"></a> </p><h3>GET /users/[name]/password/expired</h3><p>Return a boolean indicating whether the user's password is expired. </p><p><a name="post-password-expired"></a> </p><h3>POST /users/[name]/password/expired</h3><p>Expire the user's password. If the password is expired, then any attempt to log in will result in HTTP error 401 with the message "Password expired.". However, an exception is made for changing one's own password: it can be done with an expired password. Changing the password cancels the expired status. </p><p><a name="get-user-roles"></a> </p><h3>GET /users/[name]/roles</h3><p>Retrieves a list of names, indicating the roles this user has. </p><p><a name="put-user-role"></a> </p><h3>PUT /users/[name]/roles/[role]</h3><p>Add a role to a user. </p><p><a name="delete-user-role"></a> </p><h3>DELETE /users/[name]/roles/[role]</h3><p>Remove a role from a user. For example: </p>
+<pre><code>DELETE /users/anonymous/roles/project_a HTTP/1.1 </code></pre><p><a name="get-user-permissions"></a> </p><h3>GET /users/[name]/permissions</h3><p>List the permission flags that have been assigned to a user (any of <code>super</code>, <code>eval</code>, <code>session</code>). This is what a request fetching permission flags as plain text looks like: </p>
+<pre><code>GET /users/marijnh/permissions  
+Accept: text/plain  
+ 
+HTTP/1.1 200 OK  
+Content-Type: text/plain; charset=UTF-8  
+ 
+eval  
+session </code></pre><p><a name="get-user-effective-permissions"></a> </p><h3>GET /users/[name]/effectivePermissions</h3><p>Retrieve the permission flags assigned to the user, or any of its roles. </p><p><a name="put-user-permission"></a> </p><h3>PUT /user/[name]/permissions/[type]</h3><p>Assigns the given permission to this user. <code>type</code> should be <code>super</code>, <code>eval</code>, or <code>session</code>. </p><p><a name="delete-user-permission"></a> </p><h3>DELETE /user/[name]/permissions/[type]</h3><p>Revokes the given permission for this user. </p><p><a name="get-user-access"></a> </p><h3>GET /users/[name]/access</h3><p>Retrieve the <code>read</code>/<code>write</code> access for a user. This returns a result set, each element of which has a <code>read</code>, <code>write</code>, <code>catalog</code>, and <code>repository</code> component. The first two are booleans, the latter two strings. For permissions granted globally, <code>catalog</code> and <code>repository</code> will have a value of <code>"*"</code>, for those granted per-catalog, only <code>repository</code> will be <code>"*"</code>. <code>catalog</code> normally contains the catalog name, but for the root catalog <code>"/"</code> is used. </p><p>For example, read access to all repositories in the <code>public</code> catalog is specified (in JSON format) by: </p>
+<pre><code>{read: true, write: false, catalog: "public, repository: "*"} </code></pre><p>Whereas read/write access to repository <code>scratch</code> in the root catalog would be: </p>
+<pre><code>{read: true, write: true, catalog: "/", repository: "scratch"} </code></pre><p><a name="get-user-effective-access"></a> </p><h3>GET /users/[name]/effectiveAccess</h3><p>As <a href="#get-user-access">above</a>, but also includes the access granted to roles that this user has. </p><p><a name="put-user-access"></a> </p><h3>PUT /users/[name]/access</h3><p>This is used to grant <code>read</code>/<code>write</code> access to a user. It takes four parameters: </p>
+<dl><dt><code>read</code> </dt>
+<dd>Whether to grant <code>read</code> access. A boolean, defaults to false.</dd><dt><code>write</code> </dt>
+<dd>Whether to grant <code>write</code> access. Boolean, defaults to false.</dd><dt><code>catalog</code> </dt>
+<dd>Which catalog to grant the access on. Leave off or pass <code>*</code> to grant   access on all catalogs. Again, use <code>/</code> for the root catalog. </dd><dt><code>repository</code> </dt>
+<dd>Specifies the repository that access is granted on. Passing <code>*</code>, or   leaving the parameter off, means all repositories in the given   catalog. </dd></dl><p>This request grants the user <code>testuser</code> read access to all repositories in the root catalog: </p>
+<pre><code>PUT /users/testuser/access?read=true&amp;catalog=%2f HTTP/1.1 </code></pre><p><a name="delete-user-access"></a> </p><h3>DELETE /users/[name]/access</h3><p>Takes the same parameters as <a href="#put-user-access"><code>PUT</code></a> on this URL, but revokes the access instead of granting it. </p><p><a name="get-user-data"></a> </p><h3>GET /users/[name]/data</h3><p>Each user has a simple key-value store associated with it. This is mostly used by WebView to save some settings, but can be useful in other applications. </p><p>This service returns a result set containing <code>id</code> and <code>uri</code> fields, listing the keys stored for this user, and the URL under which their data can be found (see <a href="#get-user-data-key">below</a>). </p><p><a name="get-user-data-key"></a> </p><h3>GET /users/[name]/data/[key]</h3><p>Fetches the user-data under <code>key</code>. Returns a string. </p><p><a name="put-user-data-key"></a> </p><h3>PUT /users/[name]/data/[key]</h3><p>Stores data in a user's key-value store. The request body should contain the data to store. </p><p><a name="delete-user-data-key"></a> </p><h3>DELETE /users/[name]/data/[key]</h3><p>Deletes data from a user's key-value store. </p><p><a name="get-user-security-filters"></a> </p><h3>GET /users/[name]/security-filters/[type]</h3><p>Get list of security filters for a user. </p>
+<dl><dt><code>type</code> </dt>
+<dd><code>allow</code> or <code>disallow</code></dd></dl><p>Items returned have keys <code>s</code>, <code>p</code>, <code>o</code>, and <code>s</code> per the parameters for <a href="#post-user-security-filters">POST security-filters</a>. </p><p><a name="post-user-security-filters"></a> </p><h3>POST /users/[name]/security-filters/[type]</h3><p>Create filter for the user. </p>
+<dl><dt><code>type</code> </dt>
+<dd><code>allow</code> or <code>disallow</code></dd></dl><p>Parameters are all optional: </p>
+<dl><dt><code>s</code> </dt>
+<dd>Subject</dd><dt><code>o</code> </dt>
+<dd>Object</dd><dt><code>p</code> </dt>
+<dd>Predicate</dd><dt><code>g</code> </dt>
+<dd>Graph</dd></dl><p>See also <a href="#post-role-security-filters">roles/security-filters</a>. and <a href="security.html#filters">Security filters Documentation</a>. </p><p><a name="delete-user-security-filters"></a> </p><h3>DELETE /users/[name]/security-filters/[type]</h3><p>Delete filter for the user. </p><p>The <code>type</code> and parameters (<code>s</code>, <code>p</code>, <code>o</code>, and <code>s</code>) are the same as for <a href="#post-user-security-filters">POST security-filters</a>. </p><p><a name="get-user-suspended"></a> </p><h3>GET /users/[name]/suspended</h3><p>Returns a boolean indicating whether the user's account is suspended. All accounts start as unsuspended. They can be suspended explicitly by a superuser, in which case the account is suspended until explicitly unsuspended by a superuser. Accounts may also be suspended because of too many consecutive failed logins if the configuration option <a href="daemon-config.html#MaxFailedLogins"><code>MaxFailedLogins</code></a> is set appropriately. Accounts suspended for that reason can be unsuspended by a superuser but also may be unsuspended automatically after a period of time if the configuration option <a href="daemon-config.html#AccountUnsuspendTimeout"><code>AccountUnsuspendTimeout</code></a> is set appropriately. Suspended users cannot log in. </p><p><a name="post-user-suspended"></a> </p><h3>POST /users/[name]/suspended</h3><p>Suspends the user's account. </p><p><a name="delete-user-suspended"></a> </p><h3>DELETE /users/[name]/suspended</h3><p>Unsuspends the user's account. </p><p><a name="get-user-enabled"></a> </p><h3>GET /users/[name]/enabled</h3><p>Returns a boolean indicating whether the user's account is enabled. All accounts start as enabled and they stay enabled until disabled explicitly by superuser. </p><p><a name="post-user-enabled"></a> </p><h3>POST /users/[name]/enabled</h3><p>Enables the user's account. </p><p><a name="delete-user-enabled"></a> </p><h3>DELETE /users/[name]/enabled</h3><p>Disables the user's account. </p><p><a name="get-roles"></a> </p><h3>GET /roles</h3><p>Returns the names of all roles that have been defined. </p><p><a name="put-role"></a> </p><h3>PUT /roles/[role]</h3><p>Creates a new role. </p><p><a name="delete-role"></a> </p><h3>DELETE /roles/[role]</h3><p>Deletes a role. Any users that have been assigned this role will lose it. </p><p><a name="get-role-permissions"></a> </p><h3>GET /roles/[role]/permissions</h3><p>Lists the permission flags granted to a role. </p><p><a name="put-role-permission"></a> </p><h3>PUT /roles/[role]/permissions/[type]</h3><p>Grant a role a certain permission. <code>type</code> should be <code>super</code>, <code>eval</code>, or <code>session</code>. </p><p><a name="delete-role-permission"></a> </p><h3>DELETE /roles/[role]/permissions/[type]</h3><p>Revoke a permission for a role. </p><p><a name="get-role-access"></a> </p><h3>GET /roles/[role]/access</h3><p>Query the access granted to a role. Returns a result in the same format as the <a href="#get-user-access">equivalent</a> service for users. </p><p><a name="put-role-access"></a> </p><h3>PUT /roles/[role]/access</h3><p>Grant <code>read</code>/<code>write</code> access to a role. See <a href="#put-user-access">here</a> for the parameters that are expected. </p><p><a name="delete-role-access"></a> </p><h3>DELETE /roles/[role]/access</h3><p>Revoke <code>read</code>/<code>write</code> access for a role. Accepts the same parameters as above. </p><p><a name="get-role-security-filters"></a> </p><h3>GET /roles/[role]/security-filters/[type]</h3><p>Get list of security filters for a role. </p><p>Same parameters as <a href="#get-user-security-filters">user/security-filters</a>. </p><p><a name="post-role-security-filters"></a> </p><h3>POST /roles/[role]/security-filters/[type]</h3><p>Create filter for the role. </p><p>Same parameters as <a href="#post-user-security-filters">user/security-filters</a>. </p><p><a name="delete-role-security-filters"></a> </p><h3>DELETE /roles/[role]/security-filters/[type]</h3><p>Delete filter for the role. </p><p>Same parameters as <a href="#delete-user-security-filters">user/security-filters</a> and <a href="#post-role-security-filters">POST role/security-filters</a>. </p><p><a name="catalog"></a> </p><a name='header2-479' id='header2-479'></a><h2>Catalog interface</h2><p><a name="get-protocol"></a> </p><h3>GET /protocol</h3><p>Returns the protocol version of the <a href="http://archive.rdf4j.org/system/ch08.html">Sesame</a> interface, as an integer. The protocol described in this document is <code>4</code>. </p><p><a name="get-repositories"></a> </p><h3>GET /repositories</h3><p>Lists the repositories in this catalog. The result is a set of tuples containing <code>id</code> (the name of the repository) and <code>uri</code> (a link to the repository) fields. The fields <code>readable</code> and <code>writable</code> indicate whether your user has read and write access to the repository. Finally, there is the <code>title</code> field, which exists for Sesame compatibility, and contains the same value as the <code>id</code> field. </p>
+<pre><code>GET /repositories HTTP/1.1  
+Accept: application/json  
+ 
+HTTP/1.1 200 OK  
+Content-Type: application/json; charset=UTF-8  
+ 
+[{"uri":"http://localhost:10035/repositories/store1",  
+  "id":"store1",  
+  "title":"store1",  
+  "readable":true,  
+  "writable":true},  
+ ... other stores ...] </code></pre><p>Or, when fetching the list of repositories in a non-root catalog: </p>
+<pre><code>GET /catalogs/people/repositories HTTP/1.1 </code></pre><p><a name="put-repo"></a> </p><h3>PUT /repositories/[name]</h3><p>Creates a new, empty repository. Supports several optional configuration arguments: </p>
+<dl><dt><code>expectedSize</code> </dt>
+<dd>An integer, used to configure the expected size of the repository.</dd><dt><code>index</code> </dt>
+<dd>Can be specified any number of times. Should hold <a href="#indexing">index   IDs</a>, and is used to configure the set of indices created   for the store. </dd></dl><p>When a repository with the given name already exists, it is overwritten, unless a parameter <code>override</code> with value <code>false</code> is passed. </p><p><a name="delete-repo"></a> </p><h3>DELETE /repositories/[name]</h3><p>Delete a repository. Might fail if someone else is accessing the repository. </p><p><a name="repository"></a> </p><a name='header2-501' id='header2-501'></a><h2>Repository interface</h2><p><a name="get-post-repo"></a> </p><h3>GET/POST /repositories/[name]</h3><p>(Note that if no <code>query</code> parameter is given, this will return the WebView HTML page instead of the service described here.) </p><p>This URL is used to run queries against a repository. It conforms to both the <a href="http://archive.rdf4j.org/system/ch08.html">Sesame</a> and <a href="http://www.w3.org/TR/sparql11-protocol/">SPARQL protocol</a> interfaces — this is why some of the parameter names may look inconsistent. </p><p><a href="http://www.w3.org/Submission/SPARQL-Update/">SPARQL/Update</a> queries are allowed, but only when the request is made using <code>POST</code> instead of <code>GET</code> (and the user has write access to the repository). </p><p>This service takes the following parameters: </p>
+<dl><dt><code>query</code> </dt>
+<dd>The query to be executed. The query may use the   <a href="#namespaces">namespace</a> prefixes defined for the user. </dd><dt><code>queryLn</code> </dt>
+<dd>The language of the query. Can be <a href="http://www.w3.org/TR/rdf-sparql-query/"><code>sparql</code></a> or   <a href="agraph-introduction.html#prolog"><code>prolog</code></a>. Defaults to <code>sparql</code>. </dd><dt><code>infer</code> </dt>
+<dd>A string that determines what kind of   <a href="agraph-introduction.html#reasoning-intro">reasoning</a> is used when executing   the query. Default is <code>false</code>, no reasoning. Other options are   <code>rdfs++</code> (same as <code>true</code>), and <code>restriction</code> for hasValue as well as   rdf++ reasoning. </dd><dt><code>context</code> </dt>
+<dd>Can be passed zero or more times. Sets the graph name, or list of   graph names, that will be used by this query (as in <code>FROM</code>). When no   context is given, all graphs are used. The string <code>null</code> can be used   to refer to the default graph of the store. </dd><dt><code>namedContext</code> </dt>
+<dd>Also can be given multiple times. Behaves like <code>context</code>, except   that the named graphs retain their names (as in <code>FROM NAMED</code>). </dd><dt><code>default-graph-uri</code> </dt>
+<dd>Can be passed any number of times. Works like <code>context</code> except that   plain-URI values should be given, without wrapping <code>&lt;</code> and <code>&gt;</code>   characters. </dd><dt><code>named-graph-uri</code> </dt>
+<dd>Works like <code>default-graph-uri</code>, except that this specifies the named   graphs to be used. </dd><dt><code>limit</code> </dt>
+<dd>An integer. Can be used to limit the amount of results returned by   the query. </dd><dt><code>offset</code> </dt>
+<dd>An integer. Can be used to skip the first <code>offset</code> results in result   set. </dd><dt><code>$[varname]</code> </dt>
+<dd>Parameters starting with a <code>$</code> character can be used to bind query   variables to fixed value (an N-Triples term) when executing a SPARQL   query. </dd><dt><code>checkVariables</code> </dt>
+<dd>A boolean that defaults to false, indicating whether an error should   be raised when a SPARQL query selects variables that are not   mentioned in the query body. </dd><dt><code>defaultGraphName</code> </dt>
+<dd>Can be used to provide a resource (URL) name for the default graph.   Any references to that resource will reference the default graph,   and in the output the resource will be substituted for any   references to the default graph. Can be given multiple times to have   multiple names refer to this graph, but only the first one will   appear in the output. </dd><dt><code>planner</code> </dt>
+<dd>Can be used to control the way the query is planned  .</dd><dt><code>save</code> </dt>
+<dd>When given, will cause the server to (as well as executing the query   normally) save the query as a prepared query under the name passed   as the value for this parameter. See <a href="#preparing-queries">preparing   queries</a> below. </dd><dt><code>timeout</code> </dt>
+<dd>When given, it must be a positive integer which specifies the maximum query execution time (units are seconds). If unspecified, there is no limit on how long the query will run. </dd></dl><p>The result formats supported depends on the query. <a href="agraph-introduction.html#prolog">Prolog</a> queries return tabular data, as do <a href="http://www.w3.org/TR/rdf-sparql-query/">SPARQL</a> <code>select</code> queries. <code>describe</code> or <code>construct</code> queries return triples, and <code>ask</code> queries return a boolean value. </p><p>Prolog queries are allowed to return nested lists of results, in which case the result can only be returned as <code>application/json</code>, and the nested structure (both in the list of column names and in the results themselves) will be represented as nested JSON arrays. </p><p><a name="ensure-not-lingering"></a> </p><h3>POST /repositories/[name]/ensureNotLingering</h3><p>To conserve resources, makes the database instance and its child processes exit if the instance is unused. Takes no arguments, returns nothing. </p><p>Normally unused database instances linger for InstanceTimeout seconds to speed up subsequent open operations. </p><p><a name="get-size"></a> </p><h3>GET /repositories/[name]/size</h3><p>Returns the amount of statements in the repository, as an integer. Takes a single optional argument, <code>context</code>, which can be used to restrict the count to a single named graph. </p><p><a name="get-statements"></a> </p><h3>GET /repositories/[name]/statements</h3><p>Retrieves statements (triples) by matching against their components. All parameters are optional — when none are given, every statement in the store is returned. </p>
+<dl><dt><code>subj</code> </dt>
+<dd>Match a specific subject. When given, should be a term in N-triples   format. Can be given multiple times to mean 'the subject must be   one of these resources'. </dd><dt><code>subjEnd</code> </dt>
+<dd>Can only be given if exactly one <code>subj</code> parameter is given. Matches   a <a href="agraph-introduction.html#range-queries">range</a> of subjects. </dd><dt><code>pred</code> </dt>
+<dd>Match a specific predicate. Can be passed multiple times, like <code>subj</code>,   to match a set. </dd><dt><code>predEnd</code> </dt>
+<dd>Perform a range query on the predicate.</dd><dt><code>obj</code> </dt>
+<dd>Match a specific object. Pass multiple values to match a set.</dd><dt><code>objEnd</code> </dt>
+<dd>Range query on objects.</dd><dt><code>context</code> </dt>
+<dd>Can be given multiple times. Restricts the query to the given list of   named graphs. When not specified, all graphs in the store are used. </dd><dt><code>contextEnd</code> </dt>
+<dd>Range query on contexts / graph names.</dd><dt><code>limit</code> </dt>
+<dd>An integer indicating the maximum amount of results to return.</dd><dt><code>offset</code> </dt>
+<dd>An integer. Tell the server to skip a number of results before it   starts returning. </dd><dt><code>infer</code> </dt>
+<dd>Used to turn on reasoning for this query. Valid values are <code>false</code>,   <code>rdfs++</code>, and <code>hasvalue</code>. Default is <code>false</code> — no reasoning. </dd></dl><p><a name="get-post-statements-query"></a> </p><h3>GET/POST /repositories/[name]/statements/query</h3><p>Exposes the exact same interface as <a href="#get-statements"><code>GET /statements</code></a>. Useful when you need to make a POST request because of URL-length limitations. </p><p><a name="delete-statements"></a> </p><h3>DELETE /repositories/[name]/statements</h3><p>Deletes statements matching the given parameters. When no parameters are given, every triple in the store is deleted. Returns the number of triples deleted. </p>
+<dl><dt><code>subj</code> </dt>
+<dd>Match a specific subject. When given, should be a term in N-triples   format. </dd><dt><code>pred</code> </dt>
+<dd>Match a specific predicate.</dd><dt><code>obj</code> </dt>
+<dd>Match a specific object.</dd><dt><code>context</code> </dt>
+<dd>Match a specific graph name.</dd></dl><p>This deletes all statements in the graph named <code>"A"</code> (of which there are 25). </p>
+<pre><code>DELETE /repositories/repo1/statements?context=%22A%22 HTTP/1.1  
+Accept: application/json  
+ 
+HTTP/1.1 200 OK  
+Content-Type: application/json; charset=UTF-8  
+ 
+25 </code></pre><p><a name="put-post-statements"></a> </p><h3>PUT/POST /repositories/[name]/statements</h3><p>Add statements to a store. When the <code>PUT</code> method is used, the store is emptied first, whereas the <code>POST</code> method just adds triples. The value returned is an integer indicating the number of triples loaded. </p><p>The <code>Content-Type</code> header determines the way the given data is interpreted. See the <a href="http-reference.html#backend-post/put-catalogs-repositories-statements">HTTP reference</a> for details on the supported formats. </p><p>Normally, the body of the request is used as input data. Alternatively, one can pass a <code>file</code> parameter to indicate a (server-side) file-name to be loaded, or a <code>url</code> parameter to load a file directly off the web. Other supported parameters include: </p>
+<dl><dt><code>baseURI</code> </dt>
+<dd>When loading RDF/XML data, the value of this parameter is used as   the base URI of the document. </dd><dt><code>context</code> </dt>
+<dd>Used to set the named graph into which the new data is stored.</dd><dt><code>commit</code> </dt>
+<dd>A positive integer. Will cause a commit to happen after every <code>N</code>   added statements. Can be used to work around the fact that importing   a huge amount of statements in a single transaction will require   excessive amounts of memory. </dd><dt><code>continueOnError</code> </dt>
+<dd>A boolean (default is false) that indicates whether the load should   continue when malformed data is encountered. Currently only works   for N-Triples and N-Quads data. </dd><dt><code>externalReferences</code> </dt>
+<dd>A boolean (default is false) that indicates whether external references in RDF/XML source files will be followed. When true, the caller must have eval permissions. </dd><dt><code>relaxSyntax</code> </dt>
+<dd>A boolean (default is false). If true, then less validation is done for the N-Triples and N-Quads formats. </dd></dl><p>See the <a href="http-reference.html#backend-post/put-catalogs-repositories-statements">HTTP reference</a> for a complete list of query parameters. </p><p>This request, where <code>[URL]</code> is the encoded form of some URL that contains an N-triples file, loads the triples from that URL into the <code>scratch</code> store under context <code>&lt;http://example.org#test&gt;</code>. </p>
+<pre><code>POST /repositories/scratch/statements?url=[URL]&amp;context=%3Chttp%3A%2F%2Fexample.org%23test%3E HTTP/1.1  
+Accept: application/json  
+ 
+HTTP/1.1 200 OK  
+Content-Type: application/json; charset=UTF-8  
+ 
+2530 </code></pre><p><a name="preparing-queries"></a> </p><h3>Preparing Queries</h3><p>It is possible to cache the parsing and parameterization of SPARQL queries. This is currently only recommended for very big queries that get repeated a lot, since the savings are not very large. </p><p>Preparing queries is only supported in a dedicated <a href="#sessions">session</a>, and the prepared queries will only be available in that session. </p><p><a name="get-post-prepared"></a> </p><h4>GET/POST /repositories/[name]/queries/[id]</h4><p>Executes a prepared query. Supports the <code>limit</code>, <code>offset</code>, and bound-variable (<code>$[varname]</code>) parameters in the same way as the <a href="#get-post-repo">regular query interface</a>, and takes all the other parameters from the prepared query stored under the name <code>id</code> (either through the <code>save</code> argument to a regular query, or a <code>PUT</code> <a href="#put-prepared">request</a> to this URL. </p><p><a name="put-prepared"></a> </p><h4>PUT /repositories/[name]/queries/[id]</h4><p>Prepares a query. Accepts the <code>query</code>, <code>infer</code>, <code>context</code>, <code>namedContext</code>, <code>default-graph-uri</code>, <code>named-graph-uri</code>, <code>checkVariables</code>, <code>defaultGraphName</code>, and <code>planner</code> arguments in the same way that the <a href="#get-post-repo">regular query interface</a> accepts them, but instead of executing the query, it prepares it and saves it under <code>id</code>. </p><p><a name="delete-prepared"></a> </p><h4>DELETE /repositories/[name]/queries/[id]</h4><p>Deletes the prepared query stored under <code>id</code>. </p><p><a name="rdftransaction"></a> </p><h3>RDF-Transaction data format</h3><p>The <code>application/x-rdftransaction</code> mime type, as accepted by the <a href="#put-post-statements">/statements</a> service, is not standardized or even widely documented, so we quickly describe it here. The format originates from the Sesame HTTP protocol. </p><p>Documents of this type are XML documents containing a number of triple additions and removals. They are executed as a transaction - either completely, or not at all. (Though note that this does not mean an implicit commit is executed on <a href="#sessions">dedicated session</a>.) </p><p>An RDF transaction document looks roughly like this: </p>
+<pre><code>&lt;transaction&gt;  
+  &lt;add&gt;  
+    &lt;bnode&gt;person4&lt;/bnode&gt;  
+    &lt;uri&gt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&lt;/uri&gt;  
+    &lt;uri&gt;http://franz.com/simple#person&lt;/uri&gt;  
+  &lt;/add&gt;  
+  &lt;add&gt;  
+    &lt;bnode&gt;person4&lt;/bnode&gt;  
+    &lt;uri&gt;http://franz.com/simple#birth&lt;/uri&gt;  
+    &lt;literal datatype="http://www.w3.org/2001/XMLSchema#date"&gt;1917-05-29&lt;/literal&gt;  
+  &lt;/add&gt;  
+  &lt;remove&gt;  
+    &lt;null/&gt;  
+    &lt;uri&gt;http://franz.com/simple#first-name&lt;/uri&gt;  
+    &lt;null/&gt;  
+  &lt;/remove&gt;  
+  &lt;clear&gt;  
+    &lt;uri&gt;http://franz.com/simple#context1&lt;/uri&gt;  
+  &lt;/clear&gt;  
+&lt;/transaction&gt; </code></pre><p>A transaction's root tag is always <code>transaction</code>. Inside of this, any amount of actions are specified, which are executed in the order in which they are given. </p><p>The <code>add</code> action adds a triple. It should contain at least three nodes, which specify the subject, predicate, and object of the triple. After that, any number of nodes may follow, which specify contexts that the triple should be added to. A <code>null</code> tag can be used to specify the default context. If no contexts are given, the triple is inserted into only the default context. </p><p>These child nodes can be either an <code>uri</code> tag containing a resource's URI, a <code>bnode</code> tag containing an ID that is used to be able to refer to the same blank node multiple times in the document, or a <code>literal</code> tag, that contains a string. <code>literal</code> tags may have <code>datatype</code> or <code>xml:lang</code> attributes to assign them a type or a language. </p><p>In a <code>remove</code> tag, the first three child nodes optionally specify the subject, predicate, and object of the triples to remove. Any of these can be given as a <code>null</code> tag (or left out altogether) to count as a wild-card. After these, any number of nodes can follow, which specify the contexts to remove nodes from. If none are given, nodes are removed from all contexts. A <code>null</code> tag is used to specify the default context here. <code>removeFromNamedContext</code> works the same, but requires a single context to be specified. </p><p><code>clear</code> also removes triples, but without the option to specify subject, predicate, or object. All child nodes are interpreted as contexts. Again, not specifying any contexts causes nodes to be removed from all contexts. </p><p><a name="post-statements-delete"></a> </p><h3>POST /repositories/[name]/statements/delete</h3><p>Used to delete a set of statements. Expects a JSON-encoded array of triples as the posted data, and deletes all statements listed in there. <code>Content-Type</code> should be <code>application/json</code>. </p><p>When an <code>ids</code> parameter with the value <code>true</code> is passed, the request body should contain a JSON-encoded list of triple-ids, instead of actual triples. </p><p><a name="get-statements-id"></a> </p><h3>GET /repositories/[name]/statements/id</h3><p>Fetches a set of statements by ID. Takes any number of <code>id</code> parameters, and returns a set of triples. </p><p><a name="get-post-unique"></a> </p><h3>GET/POST /repositories/[name]/unique/[column]</h3><p>Find the set of unique terms in a column. <code>column</code> can be one of <code>obj</code>, <code>pred</code>, <code>subj</code>, or <code>context</code>. Without arguments, it simply finds the set of all terms that occur in that column in the database. The query can be further refined by passing optional <code>obj</code>, <code>pred</code>, <code>subj</code>, or <code>context</code> parameters, which, when given a term, restrict the result to only triples that contain that term in that position. For example, to get all outgoing predicates from term <code>&lt;http://example.com&gt;</code>, query <code>/unique/pred</code> with the parameter <code>subj</code> set to <code>&lt;http://example.com&gt;</code>. </p><p>Returns a set of terms. </p><p><a name="get-statements-duplicates"></a> </p><h3>GET /repositories/[name]/statements/duplicates</h3><p>Gets all duplicate statements that are currently present in the store. The <code>mode</code> parameter can be either <code>spog</code> (the default) or <code>spo</code> to indicate which components of each triple must be equivalent to count as duplicates of each other. See <a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a>. </p><p><a name="delete-statements-duplicates"></a> </p><h3>DELETE /repositories/[name]/statements/duplicates</h3><p>Deletes all duplicate statements that are currently present in the store. The <code>mode</code> parameter can be either <code>spog</code> (the default) or <code>spo</code> to indicate which components of each triple must be equivalent to count as duplicates of each other. See <a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a> </p><p><a name="get-suppress-duplicates"></a> </p><h3>GET /repositories/[name]/suppressDuplicates</h3><p>Returns the duplicate suppression strategy currently active in the store. This returns either <code>false</code> if no duplicate suppression is active, or <code>spog</code> if it is active. See <a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a>. </p><p><a name="put-suppress-duplicates"></a> </p><h3>PUT /repositories/[name]/suppressDuplicates</h3><p>Sets the duplicate suppression strategy for the store. The <code>type</code> argument can be either <code>false</code> (disable duplicate suppression), <code>spo</code> (enable it, eliminate all spo duplicates on commit) or <code>spog</code> (enable it, eliminate all spog duplicates on commit). See <a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a>. </p><p><a name="delete-suppress-duplicates"></a> </p><h3>DELETE /repositories/[name]/suppressDuplicates</h3><p>Disable duplicate suppression for the store. This is the equivalent of using <a href="#put-suppress-duplicates">PUT /repositories/(name)/suppressDuplicates</a> with <code>false</code> as the <code>type</code> argument. See <a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a>. </p><p><a name="get-contexts"></a> </p><h3>GET /repositories/[name]/contexts</h3><p>Fetches a list of named graphs in the store. Returns a set of tuples, each of which only has a <code>contextID</code> field, which is an N-triples string that names the graph. </p>
+<pre><code>GET /catalogs/people/repositories/repo1/contexts HTTP/1.1  
+Accept: application/sparql-results+xml  
+ 
+HTTP/1.1 200 OK  
+Content-Type: application/sparql-results+xml; charset=UTF-8  
+ 
+&lt;?xml version="1.0"?&gt;  
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#"&gt;  
+  &lt;head&gt;&lt;variable name="contextID"/&gt;&lt;/head&gt;  
+  &lt;results&gt;  
+    &lt;result&gt;  
+      &lt;binding name="contextID"&gt;  
+        &lt;literal&gt;A&lt;/literal&gt;  
+      &lt;/binding&gt;  
+    &lt;/result&gt;  
+  &lt;/results&gt;  
+&lt;/sparql&gt;  </code></pre><p><a name="post-functor"></a> </p><h3>POST /repositories/[name]/functor</h3><p>Define Prolog functors, which can be used in Prolog queries. This is only allowed when accessing a <a href="#sessions">dedicated session</a>. </p><p>The body of the request should hold the definition for one or more Prolog functors, in <a href="agraph-introduction.html#prolog">Lisp syntax</a>, using the <code>&lt;--</code> or <code>&lt;-</code> operators. </p><p><a name="post-commit"></a> </p><h3>POST /repositories/[name]/commit</h3><p><a name="post-begin"></a> </p><h3>POST /repositories/[name]/begin</h3><p>Begin a new transaction. It is an error if there is already an active transaction (<em>400 Bad Request</em> is returned with message <em>NESTED TRANSACTION Cannot begin a new transaction while there is one already active</em>). This request is only meaningful in <a href="#sessions">dedicated sessions</a> and with Sesame 2.7 transaction handling semantics. In shared back-ends or with Sesame 2.6 semantics, it does nothing. </p><h3>POST /repositories/[name]/commit <a name="post-commit"></a></h3><p>Commit the current transaction. Only meaningful in <a href="#sessions">dedicated sessions</a>. </p><p><a name="post-rollback"></a> </p><h3>POST /repositories/[name]/rollback</h3><p>Roll back the current transaction (discard all changes made since the beginning of the transaction). Only meaningful in <a href="#sessions">dedicated sessions</a>. </p><p><a name="post-eval"></a> </p><h3>POST /repositories/[name]/eval</h3><p>Evaluates the request body in the server. By default, it is evaluated as Common Lisp code, with <code>*package*</code> set to the <code>db.agraph.user</code> package. If you specify a <code>Content-Type</code> of <code>text/javascript</code>, however, the code will be interpreted as JavaScript. </p><p>Makes an attempt to return the result in a sensible format, falling back to printing it (as per <a href="http://franz.com/support/documentation/6.2/ansicl/dictentr/writepri.htm">prin1</a>) and returning it as a string. </p><p><a name="get-post-freetext"></a> </p><h3>GET/POST /repositories/[name]/freetext</h3><p>Perform a query on the free-text indices of the store, if any. A list of matching triples is returned. </p>
+<dl><dt><code>pattern</code> </dt>
+<dd>The text to search for. Either this or <code>expression</code> should be   passed. Putting multiple words in this argument means 'match only   triples with all these words'. Double-quoting a part of the string   means 'only triples where this exact string occurs'. Non-quoted   words may contain wildcards - <code>*</code> (matches any string) and <code>?</code>   (matches any single character). Or they can end in <code>~</code> to do a fuzzy   search, optionally followed by a decimal number indicating the   maximum <a href="http://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance</a> to match. A vertical bar (<code>|</code>)   can be used between patterns to mean 'documents matching one of   these patterns', and parentheses can be used to group sub-patterns.   For example: <code>"common lisp" (programming | develop*)</code>. </dd><dt><code>expression</code> </dt>
+<dd>An S-expression combining search strings using <code>and</code>, <code>or</code>,   <code>phrase</code>, <code>match</code>, and <code>fuzzy</code>. For example <code>(and (phrase "common   lisp") (or "programming" (match "develop*")))</code>. </dd><dt><code>index</code> </dt>
+<dd>An optional parameter that restricts the search to a specific   free-text index. If not given, all available indices are used. </dd><dt><code>sorted</code> </dt>
+<dd>A boolean indicating whether the results should be sorted by   relevance. Default is false. </dd><dt><code>limit</code> </dt>
+<dd>An integer limiting the amount of results that can be returned.</dd><dt><code>offset</code> </dt>
+<dd>An integer telling the server to skip the first few results.<p>GET /repositories/repo1/freetext?pattern=RDF HTTP/1.1 Accept: text/plain </p></dd><p>HTTP/1.1 200 OK Content-Type: text/plain; charset=UTF-8 </p><p><a href="http://example.com/node1">http://example.com/node1</a> <a href="http://example.com/name">http://example.com/name</a> "AGraph RDF store". .... others .... </p></dl><p><a name="get-freetext-indices"></a> </p><h3>GET /repositories/[name]/freetext/indices</h3><p>Returns a list of names of free-text indices defined in this repository. </p><p><a name="get-freetext-index"></a> </p><h3>GET /repositories/[name]/freetext/indices/[index]</h3><p>Only returns <code>application/json</code> responses. Returns the configuration parameters of the named free-text index. This will be an object with the following fields: </p>
+<dl><dt><code>predicates</code> </dt>
+<dd>An array of strings. Empty if the index indexes all predicates,   containing only the predicates that are indices otherwise. </dd><dt><code>indexLiterals</code> </dt>
+<dd>Can be <code>true</code> (index all literals), <code>false</code> (no literals), or an array of   literal types to index. </dd><dt><code>indexResources</code> </dt>
+<dd>Can be <code>true</code> (index resources fully), <code>false</code> (don't index   resources), or the string <code>"short"</code> to index only the part after the   last <code>#</code> or <code>/</code> in the resource. </dd><dt><code>indexFields</code> </dt>
+<dd>An array containing any of the strings <code>"subject"</code>, <code>"predicate"</code>,   <code>"object"</code>, and <code>"graph"</code>. This indicates which fields of a triple   are indexed. </dd><dt><code>minimumWordSize</code> </dt>
+<dd>An integer, indicating the minimum size a word must have to be   indexed. </dd><dt><code>stopWords</code> </dt>
+<dd>A list of words, indicating the words that count as stop-words, and   should not be indexed. </dd><dt><code>wordFilters</code> </dt>
+<dd>A list of word filters configured for this index (see   <a href="#put-freetext-index">below</a>). </dd><dt><code>innerChars</code> </dt>
+<dd>A list of character specifiers configured for this index (see <a href="#put-freetext-index">below</a>).</dd><dt><code>borderChars</code> </dt>
+<dd>A list of character specifiers configured for this index.</dd><dt><code>tokenizer</code> </dt>
+<dd>The name of the tokenizer being used (currently either <code>default</code> or   <code>japanese</code>). </dd></dl><p><a name="get-freetext-param"></a> </p><h3>GET /repositories/[name]/freetext/indices/[index]/[param]</h3><p>If <code>[param]</code> is one of the slot values mentioned <a href="#get-freetext-index">above</a>, the corresponding configuration parameter of the index is returned. </p><p><a name="put-freetext-index"></a> </p><h3>PUT /repositories/[name]/freetext/indices/[index]</h3><p>Create a new free-text index. Takes the following parameters: </p>
+<dl><dt><code>predicate</code> </dt>
+<dd>Can be specified multiple times. Indicates the predicates that   should be indexed. When not given, all predicates are indexed. </dd><dt><code>indexLiterals</code> </dt>
+<dd>A boolean (defaults to true) that determines whether literal are   indexed. </dd><dt><code>indexLiteralType</code> </dt>
+<dd>When <code>indexLiterals</code> is true, this parameter can be given any number   of times to restrict the types of literals that are indexed. When   not given, all literals (also untyped ones) are indexed. </dd><dt><code>indexResources</code> </dt>
+<dd>Can be given the values <code>true</code>, <code>false</code>, or <code>short</code>. Default is   <code>false</code>. <code>short</code> means to index only the part of the resource after   the last <code>#</code> or <code>/</code> character. </dd><dt><code>indexField</code> </dt>
+<dd>May be specified multiple times, must be one of <code>subject</code>, <code>object</code>,   <code>predicate</code>, or <code>graph</code>. Determines which fields of a triple to   index. Defaults to just <code>object</code>. </dd><dt><code>minimumWordSize</code> </dt>
+<dd>An integer. Determines the minimum size a word must have to be   indexed. </dd><dt><code>stopWord</code> </dt>
+<dd>Can be passed multiple times. Determines the set of stop-words,   words that are not indexed. Defaults to a small set of common   English words. To override this default and specify that no   stop-words should be used, pass this parameter once, with an empty   value. </dd><dt><code>wordFilter</code> </dt>
+<dd>Specify a word filter, which is an operation applied to words before   they are indexed and before they are searched for. Used to   'normalize' words. Can be passed multiple times to specify multiple   filters. Currently the only valid values are <code>stem.english</code> (a   simple English-language stemmer), <code>drop-accents</code> (will turn 'é'   into 'e', etc.), and <code>soundex</code>, for the <a href="http://en.wikipedia.org/wiki/Soundex">Soundex</a> algorithm. </dd><dt><code>innerChars</code> </dt>
+<dd>Can be passed multiple times. The character set to be used as the   constituent characters of a word. Each parameter is part of a character set,   and can be one of the following: 
+<ul>
+<li>The word <code>alpha</code> - all (unicode) alphabetic characters</li>
+<li><code>digit</code> - all base-10 digits</li>
+<li><code>alphanumeric</code> - all digits and alphabetic characters</li>
+<li>a single character</li>
+<li>a range of characters: a single character, followed by a dash (<code>-</code>)   character, followed by another single character. </li></ul></dd><dt><code>borderChars</code> </dt>
+<dd>Can be passed multiple times. The character set to be used as the   border characters of indexed words. Uses the same syntax as <code>innerChars</code>. </dd><dt><code>tokenizer</code> </dt>
+<dd>An optional string. Can be either <code>default</code> or <code>japanese</code>. When   <code>japanese</code> is passed, the tokenizer is based on morphological   analysis, and the <code>innerChars</code> and <code>borderChars</code> parameters are   ignored. For <code>japanese</code>, it is also recommended to set   <code>minimumWordSize</code> to either 1 or 2. </dd></dl><p><a name="post-freetext-index"></a> </p><h3>POST /repositories/[name]/freetext/indices/[index]</h3><p>This can be use to reconfigure a free-text index. It takes the all the parameters that the <a href="#put-freetext-index">PUT</a> service takes. Parameters not specified are left at their old values. To indicate that the <code>predicate</code>, <code>indexLiteralType</code>, <code>indexField</code>, <code>stopWord</code>, or <code>wordFilter</code> parameters should be set to the empty set instead of left at their default, pass these parameters once, with the empty string as value. </p><p>The parameter <code>reIndex</code>, a boolean which defaults to true, the client can control whether a full re-indexing of the modified index should take place, or whether the new settings should be used when indexing triples added after the redefinition. </p><p><a name="delete-freetext-index"></a> </p><h3>DELETE /repositories/[name]/freetext/indices/[index]</h3><p>Delete the named index from the repository. </p><p><a name="post-blanknodes"></a> </p><h3>POST /repositories/[name]/blankNodes</h3><p>Ask the server to allocate and return a set of blank nodes. Takes one argument, <code>amount</code>, which should be an integer. </p><p>These nodes can, in principle, be used to refer to nodes when using other services. Note, however, that a lot of the standards related to RDF give blank nodes a document-wide scope, which means that referring to blank nodes by name from, for example, a SPARQL query or N-Triples document is not possible. The nodes are interpreted as local to the document, and assigned to a <em>new</em> blank node. </p>
+<pre><code>POST /repositories/repo1/blankNodes?amount=2 HTTP/1.1  
+Accept: text/plain  
+ 
+HTTP/1.1 200 OK  
+Content-Type: text/plain; charset=UTF-8  
+ 
+_:s1x49c10bbc  
+_:s2x49c10bbc </code></pre><p><a name="get-triplecache"></a> </p><h3>GET /repositories/[name]/tripleCache</h3><p>Find out whether the 'SPOGI cache'   is enabled, and what size it has. Returns an integer — 0 when the cache is disabled, the size of the cache otherwise. </p><p><a name="put-triplecache"></a> </p><h3>PUT /repositories/[name]/tripleCache</h3><p>Enable the <code>spogi</code> cache in this repository. Takes an optional <code>size</code> argument to set the size of the cache. </p><p><a name="delete-triplecache"></a> </p><h3>DELETE /repositories/[name]/tripleCache</h3><p>Disable the <code>spogi</code> cache for this repository. </p><p><a name="get-no-commit"></a> </p><h3>GET /repositories/[name]/noCommit</h3><p>Returns a boolean that tells you whether this repository is currently in no-commit mode. When this mode is active, all commits from any clients will return an error, effectively preventing writing to the store. This is mostly useful for <a href="#warmstandby">warm standby</a> clients, but can also be used to enforce read-only stores in other situations. </p><p><a name="put-delete-no-commit"></a> </p><h3>PUT/DELETE /repositories/[name]/noCommit</h3><p>Turns no-commit mode on (PUT) or off (DELETE). </p><p><a name="get-bulkmode"></a> </p><h3>GET /repositories/[name]/bulkMode</h3><p>Returns a boolean indicating whether bulk-load mode is enabled for the repository. </p><p><a name="put-delete-bulkmode"></a> </p><h3>PUT/DELETE /repositories/[name]/bulkMode</h3><p>Turn bulk-load mode on (PUT) or off (DELETE). </p><p><a name="namespaces"></a> </p><a name='header2-791' id='header2-791'></a><h2>Namespaces</h2><p>In order to make queries shorter and more readable, a user can define namespaces, which will be used for queries issued by this user. </p><p><a name="get-namespaces"></a> </p><h3>GET /repositories/[name]/namespaces</h3><p>List the currently active namespaces for your user, as tuples with <code>prefix</code> and <code>namespace</code> (the URI) fields. For example: </p>
+<pre><code>GET /catalogs/scratch/repositories/repo2/namespaces HTTP/1.1  
+Accept: application/json  
+ 
+HTTP/1.1 200 OK  
+Content-Type: application/json; charset=UTF-8  
+ 
+[{"prefix":"rdf","namespace":"http://www.w3.org/1999/02/22-rdf-syntax-ns#"},  
+ {"prefix":"owl","namespace":"http://www.w3.org/2002/07/owl#"},  
+ ... etc ...] </code></pre><p><a name="delete-namespaces"></a> </p><h3>DELETE /repositories/[name]/namespaces</h3><p>Deletes all namespaces in this repository for the current user. If a <code>reset</code> argument of <code>true</code> is passed, the user's namespaces are reset to the default set of namespaces. </p><p><a name="get-namespace"></a> </p><h3>GET /repositories/[name]/namespaces/[prefix]</h3><p>Returns the namespace URI defined for the given prefix. </p><p><a name="put-post-namespace"></a> </p><h3>PUT/POST /repositories/[name]/namespaces/[prefix]</h3><p>Create a new namespace. The body of the request should contain the URI for the namespace, as plain text, as in: </p>
+<pre><code>POST /catalogs/scratch/repositories/repo2/namespaces/ex HTTP/1.1  
+Content-Type: text/plain; charset=UTF-8  
+ 
+http://www.example.com/ </code></pre><p><a name="delete-namespace"></a> </p><h3>DELETE /repositories/[name]/namespaces/[prefix]</h3><p>Delete a namespace. </p><p><a name="mapping"></a> </p><a name='header2-811' id='header2-811'></a><h2>Type mappings</h2><p>AllegroGraph supports storing some types of literals in encoded, binary form. This typically makes them smaller (less disk usage), and makes it possible to run range queries against them.  For more details, see <a href="datatypes.html">Datatypes</a> and the Lisp reference for <a href="lisp-reference.html#ref-type-mapping">Data-type and Predicate Mapping</a>. </p><p>Specifying which literals should be encoded can be done in two ways. There is 'datatype mapping', where a literal type is marked, and all literals of that type are encoded, and there is 'predicate mapping', where the objects in a statement with a given predicate are encoded. </p><p>When specifying a mapping, one has to choose an encoding to apply. To identify these encodings, we use XSD datatypes: </p>
+<ul>
+<li>Integers
+<ul>
+<li>8-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#byte&gt;</code></li>
+<li>16-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#short&gt;</code></li>
+<li>32-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#int&gt;</code></li>
+<li>64-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#long&gt;</code></li></ul></li>
+<li>Unsigned Integers
+<ul>
+<li>8-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#unsignedByte&gt;</code></li>
+<li>16-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#unsignedShort&gt;</code></li>
+<li>32-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#unsignedInt&gt;</code></li>
+<li>64-bit: <code>&lt;http://www.w3.org/2001/XMLSchema#unsignedLong&gt;</code></li></ul></li>
+<li>Floating point
+<ul>
+<li>single-precision: <code>&lt;http://www.w3.org/2001/XMLSchema#float&gt;</code></li>
+<li>double-precision: <code>&lt;http://www.w3.org/2001/XMLSchema#double&gt;</code></li></ul></li>
+<li>Times and Dates
+<ul>
+<li>times: <code>&lt;http://www.w3.org/2001/XMLSchema#time&gt;</code></li>
+<li>dates: <code>&lt;http://www.w3.org/2001/XMLSchema#date&gt;</code></li>
+<li>date-times: <code>&lt;http://www.w3.org/2001/XMLSchema#dateTime&gt;</code></li></ul></li>
+<li>Geospatial<p>Geospatial types (including cartesian, spherical and n-Dimensional) can be defined in this way. In each case, the datatype must be specified using its URL. E.g., the 10x10 cartesian mapping with resolution 1 would use the URL: </p>
+<pre><code>&lt;http://franz.com/ns/allegrograph/3.0/geospatial/cartesian/0.0/10.0/0.0/10.0/1.0&gt; </code></pre></li></ul><p>Typed literals of these types will be encoded by default. For other types, you have to specify your mapping before you import your data to have the encoding take place. </p><p><a name="get-mapping"></a> </p><h3>GET /repositories/[name]/mapping</h3><p>Fetches a result set of currently specified mappings. Each row has a <code>kind</code> (<code>datatype</code> or <code>predicate</code>), <code>part</code> (the resource associated with the mapping), and <code>encoding</code> fields. </p><p><a name="delete-mapping"></a> </p><h3>DELETE /repositories/[name]/mapping</h3><p>Clear all non-automatic type mappings for this repository. </p><p><a name="delete-all-mapping"></a> </p><h3>DELETE /repositories/[name]/mapping/all</h3><p>Clear all type mappings for this repository <em>including</em> the automatic ones. </p><p><a name="get-typemapping"></a> </p><h3>GET /repositories/[name]/mapping/type</h3><p>Yields a list of literal types for which datatype mappings have been defined in this store. </p>
+<pre><code>GET /repositories/test/mapping/type HTTP/1.1  
+ 
+HTTP/1.1 200 OK  
+Content-Type: text/plain; charset=UTF-8  
+ 
+&lt;http://www.example.com/myInteger&gt;  
+&lt;http://www.w3.org/2001/XMLSchema#unsignedShort&gt;  
+&lt;http://www.w3.org/2001/XMLSchema#dateTime&gt;  
+... etc ... </code></pre><p><a name="post-put-typemapping"></a> </p><h3>PUT/POST /repositories/[name]/mapping/type</h3><p>Takes two arguments, <code>type</code> (the RDF literal type) and <code>encoding</code>, and defines a datatype mapping from the first to the second. For example, if <code>[TYPE]</code> is the URL-encoded form of <code>&lt;http://www.example.com/myInteger&gt;</code>, and <code>[ENC]</code> of <code>&lt;http://www.w3.org/2001/XMLSchema#int&gt;</code>, this request will cause <code>myInteger</code> literals to be encoded as integers: </p>
+<pre><code>PUT /repositories/test/mapping/type?type=[TYPE]&amp;encoding=[ENC] HTTP/1.1 </code></pre><p><a name="delete-typemapping"></a> </p><h3>DELETE /repositories/[name]/mapping/type</h3><p>Deletes a datatype mapping. Takes one parameter, <code>type</code>, which should be an RDF resource. </p><p><a name="get-predmapping"></a> </p><h3>GET /repositories/[name]/mapping/predicate</h3><p>Yields a list of literal types for which predicate mappings have been defined in this store. </p><p><a name="post-put-predmapping"></a> </p><h3>PUT/POST /repositories/[name]/mapping/predicate</h3><p>Takes two arguments, <code>predicate</code> and <code>encoding</code>, and defines a predicate mapping on them. </p><p><a name="delete-predmapping"></a> </p><h3>DELETE /repositories/[name]/mapping/predicate</h3><p>Deletes a predicate mapping. Takes one parameter, <code>predicate</code>. </p><p><a name="indexing"></a> </p><a name='header2-866' id='header2-866'></a><h2>Indexing</h2><p>Triple stores can be equipped with a variety of indices, which will affect query performance. By default, a store gets a sensible set of indices, but it is possible to tweak this set. </p><p>Indices are identified by cryptic IDs, such as <code>spogi</code>, which stands for "subject, predicate, object, graph, id", the order in which the fields of triples are used when sorting for that index. </p><p><a name="get-indices"></a> </p><h3>GET /repositories/[name]/indices</h3><p>Returns a list of index IDs that are enabled for this store. When a <code>listValid=true</code> parameter is passed, a list of all supported index types is returned. </p><p><a name="put-index"></a> </p><h3>PUT /repositories/[name]/indices/[type]</h3><p>Ensures that the index indicated by <code>type</code> is present in this store. Takes effect at commit time (which is, of course, immediately when using a shared back-end or an auto-commit session). </p><p><a name="delete-index"></a> </p><h3>DELETE /repositories/[name]/indices/[type]</h3><p>Removes the index indicated by <code>type</code> from the store. Also takes effect at commit time. </p><p><a name="post-indices-optimize"></a> </p><h3>POST /repositories/[name]/indices/optimize</h3><p>Tells the server to try to optimize the indices for this store. The arguments are <code>wait</code>, <code>level</code>, and <code>index</code>. All are optional. Here is a sample call: </p>
+<pre><code>POST /repositories/myrepo/indices/optimize?wait=false&amp;level=1&amp;index&amp;spogi&amp;index=gposi </code></pre>
+<ul>
+<li>POST /repositories/[name]/indices/optimize?wait=[true or false]<p><code>wait</code> defaults to false. The value true indicates the HTTP request should wait for the operation to complete rather than returning right away, which is what happens when wait is false. </p></li>
+<li>POST /repositories/[name]/indices/optimize?level=[0 or 1 or 2]<p><code>level</code> specifies how much optimization work should be done, with 0 being the least and 2 (which is the default) being the most (see the <a href="triple-index.html">index documentation</a> for more on the meaning of the different levels). </p></li>
+<li>POST /repositories/[name]/indices/optimize?index=[index1 name]&amp;index=[index2 name]...<p><code>index</code> specifies an index to be optimized. Index names are combinations of <code>s</code>, <code>p</code>, <code>o</code>, <code>g</code>, and <code>i</code> (see <a href="triple-index.html">index documentation</a>). This command will not create new indices, so only existing indices should be specified. Specifying no <code>index</code> means optimize all indices. <code>index</code> may appear as many times as desired. </p></li></ul><p><a name="geospatial"></a> </p><a name='header2-889' id='header2-889'></a><h2>Geo-spatial queries</h2><p>When literals are encoded as geo-spatial values, it is possible to efficiently perform geometric queries on them. </p><p>In order to do this, one defines a geo-spatial datatype, and then adds literals of that type to the store. AllegroGraph supports two kinds of geo-spatial datatypes, cartesian and spherical. A cartesian literal looks like this: </p>
+<pre><code>"+10.0-17.5"^^&lt;[cartesian type]&gt; </code></pre><p>Where the numbers are the <code>X</code> and <code>Y</code> coordinates of the point. A spherical literal uses <a href="http://en.wikipedia.org/wiki/ISO_6709">ISO 6709</a> notation, for example: </p>
+<pre><code>"+37.73+122.22"^^&lt;[spherical type]&gt; </code></pre><p><a name="get-geotypes"></a> </p><h3>GET /repositories/[name]/geo/types</h3><p>Retrieve a list of geospatial types defined in the store. </p><p><a name="put-geotype-cartesian"></a> </p><h3>POST /repositories/[name]/geo/types/cartesian</h3><p>Define a new Cartesian geospatial type. Returns the type resource, which can be used as the <code>type</code> argument in the services below. </p>
+<dl><dt><code>stripWidth</code> </dt>
+<dd>A floating-point number that determines the granularity   of the type.</dd><dt><code>xmin</code>, <code>xmax</code>, <code>ymin</code>, <code>ymax</code> </dt>
+<dd>Floating-point numbers that determine the size of the Cartesian   plane that is modelled by this type. </dd></dl><p><a name="put-geotype-spherical"></a> </p><h3>POST /repositories/[name]/geo/types/spherical</h3><p>Add a spherical geospatial type. Returns the type resource. </p>
+<dl><dt><code>stripWidth</code> </dt>
+<dd>A floating-point number that determines the granularity of   the type. </dd><dt><code>unit</code> </dt>
+<dd>Can be <code>degree</code>, <code>radian</code>, <code>km</code>, or <code>mile</code>. Determines the unit in   which the <code>stripWidth</code> argument is given. Defaults to <code>degree</code>. </dd><dt><code>latmin</code>, <code>longmin</code>, <code>latmax</code>, <code>longmax</code> </dt>
+<dd>Optional. Can be used to limit the size of the region modelled by   this type. Default is to span the whole sphere. </dd></dl><p>For example, this defines a type with a granularity of 2 degrees: </p>
+<pre><code>POST /repositories/repo1/geo/types/spherical?stripWidth=2 HTTP/1.1  
+Accept: text/plain  
+ 
+HTTP/1.1 200 OK  
+Content-Type: text/plain; charset=UTF-8  
+ 
+&lt;http://franz.com/ns/allegrograph/3.0/geospatial/spherical/degrees/  
+   -180.0/180.0/-90.0/90.0/2.0&gt; </code></pre><p>(The newline in the URI wouldn't be there in the actual response.) </p><p><a name="get-geo-box"></a> </p><h3>GET /repositories/[name]/geo/box</h3><p>Fetch all triples with a given predicate whose object is a geospatial value inside the given box. </p>
+<dl><dt><code>type</code> </dt>
+<dd>The geospatial type of the object field.</dd><dt><code>predicate</code> </dt>
+<dd>The predicate to look for.</dd><dt><code>xmin, ymin, xmax, ymax</code> </dt>
+<dd>The bounding box.</dd><dt><code>limit</code> </dt>
+<dd>Optional. Used to limit the amount of returned triples.</dd><dt><code>offset</code> </dt>
+<dd>Optional. Used to skip a number of returned triples.</dd><dt><code>infer</code> </dt>
+<dd>Optional argument to control whether triples inferred through   reasoning should be included. Default is <code>false</code> (no reasoning),   other accepted values are <code>rdfs++</code> and <code>hasvalue</code>. </dd><dt><code>useContext</code> </dt>
+<dd>A boolean parameter that defaults to <code>false</code>. When <code>true</code>, the   context (graph) field of triples is used as the geospatial value to   match, rather than the object. </dd></dl><p><a name="get-geo-circle"></a> </p><h3>GET /repositories/[name]/geo/circle</h3><p>Retrieve triples within a circle. <code>type</code>, <code>predicate</code>, <code>infer</code>, <code>limit</code>, <code>offset</code>, and <code>useContext</code> argument as with <a href="#get-geo-box">/geo/box</a>. Takes <code>x</code>, <code>y</code>, and <code>radius</code> arguments, all floating-point numbers, to specify the circle. </p><p><a name="get-geo-haversine"></a> </p><h3>GET /repositories/[name]/geo/haversine</h3><p>Retrieve triples whose object lies within a circle in a spherical system. Takes <code>type</code>, <code>predicate</code>, <code>infer</code>, <code>limit</code>, <code>offset</code>, and <code>useContext</code> arguments like <a href="#get-geo-box">/geo/box</a>, <code>lat</code> and <code>long</code> arguments to specify the centre of the circle, and a <code>radius</code> argument. The unit used for <code>radius</code> defaults to kilometre, but can be set to mile by passing a <code>unit</code> parameter with the value <code>mile</code>. </p><p><a name="put-geo-polygon"></a> </p><h3>PUT /repositories/[name]/geo/polygon</h3><p>Create a polygon in the store. Takes a parameter <code>resource</code>, which sets the name under which the polygon should be stored, and three or more <code>point</code> arguments, which must be geospatial literals that represent the points of the polygon. </p><p><a name="get-geo-polygon"></a> </p><h3>GET /repositories/[name]/geo/polygon</h3><p>Retrieve triples whose object lies inside a polygon. <code>type</code>, <code>predicate</code>, <code>infer</code>, <code>limit</code>, <code>offset</code>, and <code>useContext</code> work as with <a href="#get-geo-box">/geo/box</a>. The <code>polygon</code> parameter must hold the name of a polygon created with the <a href="#put-geo-polygon">above</a> service. </p><p><a name="attributes"></a> </p><a name='header2-947' id='header2-947'></a><h2>Attributes</h2><p>Attributes are are name/value pairs that can be associated with triples.  See <a href="triple-attributes.html">Triple Attributes</a> for more information on attributes.  The HTTP interface can be used to define attributes. An attribute must be defined before triples can be added with that attribute and an attribute can be associated with a triple only when it is added. </p><p>A static filter can be used to control access to triples. They can be used to require that a user have specific attributes before that user can see a triple. This access control is one of the important use cases of specifying triple attributes. </p><p>The HTTP interface to attributes </p><p><a name="get-attributes"></a> </p><h3>GET /repositories/[name]/attributes/definitions</h3><p>See <a href="http-reference.html#backend-get-catalogs-repositories-attributes-definitions">GET catalogs / [CATNAME] / repositories / [REPONAME] / attributes / definitions</a> in <a href="http-reference.html">HTTP-Reference</a>. </p><p><a name="post-attributes"></a> </p><h3>POST /repositories/[name]/attributes/definitions</h3><p>See <a href="http-reference.html#backend-post-catalogs-repositories-attributes-definitions">POST catalogs / [CATNAME] / repositories / [REPONAME] / attributes / definitions</a> in <a href="http-reference.html">HTTP-Reference</a>. </p><p><a name="delete-attributes"></a> </p><h3>DELETE /repositories/[name]/attributes/definitions</h3><p>See <a href="http-reference.html#backend-delete-catalogs-repositories-attributes-definitions">DELETE catalogs / [CATNAME] / repositories / [REPONAME] / attributes / definitions</a> in <a href="http-reference.html">HTTP-Reference</a>. </p><p><a name="get-staticfilter"></a> </p><h3>GET /repositories/[name]/attributes/staticFilter</h3><p>See <a href="http-reference.html#backend-get-catalogs-repositories-attributes-staticFilter">GET catalogs / [CATNAME] / repositories / [REPONAME] / attributes / staticFilter</a> in <a href="http-reference.html">HTTP-Reference</a>. </p><p><a name="post-staticfilter"></a> </p><h3>POST /repositories/[name]/attributes/staticFilter</h3><p>See <a href="http-reference.html#backend-post-catalogs-repositories-attributes-staticFilter">POST catalogs / [CATNAME] / repositories / [REPONAME] / attributes / staticFilter</a> in <a href="http-reference.html">HTTP-Reference</a>. </p><p><a name="delete-staticfilter"></a> </p><h3>DELETE /repositories/[name]/attributes/staticFilter</h3><p>See <a href="http-reference.html#backend-delete-catalogs-repositories-attributes-staticFilter">DELETE catalogs / [CATNAME] / repositories / [REPONAME] / attributes / staticFilter</a> in <a href="http-reference.html">HTTP-Reference</a>. </p><h3>GET /repositories/[name]/metadata</h3><p>Returns the metadata for a repository. Metadata comprises attribute and static filter definitions. </p><h3>POST /repositories/[name]/metadata</h3><p>Merges the given metadata into the current metadata.  Changing an attribute definition is not permitted.  A commit must be done to make these changes persistent. The <code>metadata</code> argument must be a string holding the metadata value. This value should have come from a previous GET of the metadata. Metadata comprises attribute and static filter definitions. </p><p><a name="sna"></a> </p><a name='header2-974' id='header2-974'></a><h2>Social network analysis</h2><p>Some queries and operations are best expressed using graph-traversing generators  . The following services make it possible to define such generators. </p><p><a name="put-generator"></a> </p><h3>PUT /repositories/[name]/snaGenerators/[generator]</h3><p>Creates a new generator under the given name. Accepts the following parameters: </p>
+<dl><dt><code>objectOf</code> </dt>
+<dd>A predicate. Accepted multiple times. Causes the new generator to   follow edges with the given predicate. </dd><dt><code>subjectOf</code> </dt>
+<dd>Like <code>objectOf</code>, but follow edges from object to subject.</dd><dt><code>undirected</code> </dt>
+<dd>Like the above, but follow edges in both directions.</dd><dt><code>query</code> </dt>
+<dd>A Prolog query, in which the variable <code>?node</code> can be used to refer   to the 'start' node, and whose results will be used as 'resulting'   nodes. User <a href="#namespaces">namespaces</a> may be used in this query. </dd></dl><p><a name="put-matrix"></a> </p><h3>PUT /repositories/[name]/neighborMatrices/[matrix]</h3><p>Create a neighbor-matrix, which is a pre-computed generator. </p>
+<dl><dt><code>group</code> </dt>
+<dd>A set of N-Triples terms (can be passed multiple times) which serve   as start nodes for building up the matrix. </dd><dt><code>generator</code> </dt>
+<dd>The generator to use, by name.</dd><dt><code>depth</code> </dt>
+<dd>An integer specifying the maximum depth to which to compute the   matrix. Defaults to <code>1</code>. </dd></dl><p><a name="sessions"></a> </p><a name='header2-997' id='header2-997'></a><h2>Sessions</h2><p>Normal requests will be handled by one of a set of shared back-end processes. (See <a href="daemon-config.html">Server Configuration and Control</a>.) The fact that they are shared between all incoming requests means there are certain limitations on the way they can be used--a shared back-end does not support transactions spanning multiple requests, and does not allow one to define new Prolog functors. Further, though it is possible to load scripts into shared back-ends, it is highy recommended that you not do so. Function definitions, global variables, and custom-services, once loaded, remain active in a shared back-end until that backend is killed. Javascript scripts are sandboxed for the most part and only leak custom-service definitions into the back-end. Unless you are extremely careful about what scripts are available to be loaded, it is possible that code you expect to run as part of a server-side script has been overwritten by other requests, and unexpected errors may result. A session, on the other hand, can only be accessed by the user who requested it, and so the scripts loaded can be carefully managed. </p><p>When transactions, functors, or other persistent state is needed, it is necessary to <a href="#post-session">create</a> a session. This spawns a process that you will have exclusive access to. Sessions are effectively single threaded: only one request at a time will be processed. </p><p>Requests to a session URL, unless the <code>autoCommit</code> parameter is given when starting the session, are handled inside a transaction. That means modifications to the store are not visible in other sessions or in shared back-ends until a <a href="#post-commit">commit</a> request is made. A <a href="#post-rollback">rollback</a> request can be used to discard any changes made since the beginning of the current transaction. </p><p>When making extra requests to commit and rollback is too expensive, one can use the <code>x-commit</code> and <code>x-rollback</code> HTTP headers (with any value) to have the rollback or commit command piggyback on another request. <code>x-rollback</code> will cause the store to be rolled back <em>before</em> evaluating the request, <code>x-commit</code> will cause a commit <em>after</em> evaluating the request. </p><p>Sessions time out after a certain period of idleness (can be set on <a href="#post-session">creation</a>), so an application that depends on a session being kept alive should periodically <a href="#get-ping">ping</a> its session. </p><p>Sessions belonging to superusers allow their owners to use the <code>x-masquerade-as-user</code> header in HTTP requests to activate another user's security filters. See <a href="#post-user-security-filters">user and role security-filters</a> and <a href="security.html#filters">Security filters documentation</a>. </p><p><a name="transaction-handling-semantics"></a> </p><h3>Transaction handling semantics</h3><p>A session can execute all kinds of requests (even those that mutate the store) within or without transactions. </p><p>When within a transaction, database modifications are not visible in other sessions or in shared back-ends until a <a href="#post-commit">commit</a> request is made. A <a href="#post-rollback">rollback</a> request can be used to discard any changes made since transaction started. </p><p>When there is no active transaction, each individual request is executed as if in a separate transaction. </p><p>It's generally true that having an active transaction is equivalent to <a href="#get-autocommit">auto-commit</a> mode being off, but the details of how the two modes are entered and exited differ depending on whether the server is <a href="daemon-config.html#TransactionSemantics">configured</a> to operate under Sesame 2.6 or Sesame 2.7 semantics. </p><p>With Sesame 2.6 transaction handling, if the active transaction is rolled back or committed, a new one is started immediately. Auto-commit mode is only ever changed by explicit request. </p><p>With Sesame 2.7 transaction handling, transactions must be started explicitly with <a href="#post-begin">begin</a>. <a href="#post-commit">commit</a> and <a href="#post-rollback">rollback</a> do not start a new transaction. Instead they turn auto-commit mode on. Changing the auto-commit flag is deprecated in favor of begin and commit. However, to maintain some backwards compatibility, turning auto-commit off starts a new transaction, and turning it off commits the transaction. </p><h3>Extra HTTP headers</h3><p>When making explicit requests to rollback, begin, or commit is too expensive, one can use the <code>x-rollback</code>, <code>x-begin</code> and <code>x-commit</code> HTTP headers (with any value) to have the rollback, begin or commit command piggyback on another request. A request may have any combination of these extra headers. The execution semantics are as follows: before the request is performed, if <code>x-rollback</code> is present, then the store is rolled back. Next, if <code>x-begin</code> is present, a new transaction is started. Then the actual request is performed and the store is committed if <code>x-commit</code> is supplied. </p><p><a name="post-session"></a> </p><h3>POST /session</h3><p>Creates a new session. Takes the following parameters: </p>
+<dl><dt><code>autoCommit</code> </dt>
+<dd>A boolean, which determines whether the session starts in autocommit   mode. With Sesame 2.6 transaction handling semantics, the default is   <code>false</code>, meaning that the session starts as if a transaction had   been started. With Sesame 2.7 transaction handling semantics, the   default is <code>true</code> and an explicit <a href="#post-begin">begin</a> is required. </dd><dt><code>lifetime</code> </dt>
+<dd>An integer specifying the number of seconds a session can be idle   before being terminated. Both the default and the maximum allowable   value are determined by configuration directives, the default by   <a href="daemon-config.html#DefaultSessionTimeout">DefaultSessionTimeout</a>   and the maximum by   <a href="daemon-config.html#MaximumSessionTimeout">MaximumSessionTimeout</a>.   Neither of these values can be determing programmatically. Users   should ask the database administrator for the values if needed. </dd><dt><code>loadInitFile</code> </dt>
+<dd>A boolean, defaulting to <code>false</code>, which determines whether the   <a href="#put-initfile">initfile</a> is loaded into this session. </dd><dt><code>script</code> </dt>
+<dd>May be specified any number of time, to load <a href="#get-sitescripts">server   scripts</a> into the new session. </dd><dt><code>store</code> </dt>
+<dd>A string indicating the kind of store that has to be opened, see   below. </dd></dl><p>The minilanguage used by the <code>store</code> parameter works as follows: </p>
+<dl><dt><code>&lt;store1&gt;</code> </dt>
+<dd>Indicates the triple store named "store1" in the root catalog.</dd><dt><code>&lt;catalog1:store2&gt;</code> </dt>
+<dd>The triple store "store2" in the "catalog1" catalog.</dd><dt><code>&lt;http://somehost:10035/repositories/store3&gt;</code> </dt>
+<dd>A remote store, by URL. If the URL points to the server itself, the   store will be opened locally. </dd><dt><code>&lt;a&gt; + &lt;b&gt;</code> </dt>
+<dd>The federation of stores "a" and "b".</dd><dt><code>&lt;a&gt;[rdfs++]</code> </dt>
+<dd>The store "a", with <code>rdfs++</code> reasoning applied (<code>restriction</code> is   also supported as a reasoner type). You can specify the context that   inferred triples get using this syntax: <code>&lt;a&gt;[rdfs++#&lt;http://test.org/mycontext&gt;]</code> </dd><dt><code>&lt;a&gt;{null &lt;http://example.com/graph1&gt;}</code> </dt>
+<dd>Store "a", filtered to only contain the triples in the default   graph (<code>null</code>) and the graph named <code>http://example.com/graph1</code>.   Any number of graphs can be given between the braces. </dd></dl><p>This syntax can be composed to created federations of filtered and reasoning stores, for example <code>&lt;http://somehost:10035/repositories/&lt;a&gt;{null} + &lt;b&gt;[rdfs++]</code>. </p><p>The service returns the URL of the new session. Any sub-URLs that were valid under a repository's URL will also work under this session URL. For example, if <code>http://localhost:55555/sessions/7e8df8cd-26b8-26e4-4e83-0015588336ea</code> is returned, you can use <code>http://localhost:55555/sessions/7e8df8cd-26b8-26e4-4e83-0015588336ea/statements</code> to retrieve the statements in the session. </p><p><a name="post-store-session"></a> </p><h3>POST /repositories/[name]/session</h3><p>This is a shortcut for creating a session in a local triple store. It takes <code>autoCommit</code>, <code>loadInitfile</code>, <code>script</code>, and <code>lifetime</code> arguments as described above, and creates a session for the store that the URL refers to. </p><p><a name="post-close-session"></a> </p><h3>POST [session-url]/session/close</h3><p>Explicitly closes a session. </p><p><a name="get-ping"></a> </p><h3>GET [session-url]/session/ping</h3><p>Let the session know you still want to keep it alive. (Any other request to the session will have the same effect.) </p><h3>GET [session-url]/session/isActive <a name="get-isactive"></a></h3><p>Returns a boolean indicating whether there is a currently active transaction for this session. This is the logical complement of <a href="#get-autocommit">autoCommit</a>. </p><p><a name="get-autocommit"></a> </p><h3>GET [session-url]/session/autoCommit</h3><p>Returns a boolean indicating whether auto-commit is currently active for this session. This is the logical complement of <a href="#get-isactive">isActive</a>. </p><p><a name="post-autocommit"></a> </p><h3>POST [session-url]/session/autoCommit</h3><p>Used to change the auto-commit flag for the session. Takes a single boolean argument called <code>on</code>. If it is set to true in a transaction, then the transaction is automatically committed. If it is set to false outside a transaction, then a new transaction is started. Note that with Sesame 2.7 semantics, <a href="#post-commit">commit</a> and <a href="#post-rollback">rollback</a> set this flag to true. </p><p><a name="post-commit"></a> </p><h3>POST [session-url]/commit</h3><p>Commit the current transaction.  With Sesame 2.6 semantics, a new transcation is started. With Sesame 2.7 semantics, auto-commit mode is entered. </p><p><a name="post-rollback"></a> </p><h3>POST [session-url]/rollback</h3><p>Roll back the current transaction. With Sesame 2.6 semantics, a new transcation is started. With Sesame 2.7 semantics, auto-commit mode is entered. </p><p><a name="get-mongoParameters"></a> </p><h3>GET /repositories/[name]/mongoParameters</h3><p>Returns a JSON object with keys: </p>
+<ul>
+<li><code>server</code> - server name where MongoDB is running</li>
+<li><code>port</code> - port to use to communicate with MongoDB</li>
+<li><code>database</code> - name of the database to use when querying MongoDB</li>
+<li><code>collection</code> - name of the collection to use when querying MongoDB</li>
+<li><code>user</code> - used to authenticate to the Mongo DB server</li></ul><p>Note, the password set with <a href="#post-mongoParameters">POST</a> is not returned. </p><p><a name="post-mongoParameters"></a> </p><h3>POST /repositories/[name]/mongoParameters</h3><p>Accepts the following parameters: </p>
+<ul>
+<li><code>server</code> - server name where MongoDB is running</li>
+<li><code>port</code> - port to use to communicate with MongoDB</li>
+<li><code>database</code> - name of the database to use when querying MongoDB</li>
+<li><code>collection</code> - name of the collection to use when querying MongoDB, required to be non-empty </li>
+<li><code>user</code> - used to authenticate to the Mongo DB server</li>
+<li><code>password</code> - used to authenticate to the Mongo DB server</li></ul><p>See also: <a href="mongo-interface.html">MongoDB interface</a>. </p><p><a name="process"></a> </p><a name='header2-1085' id='header2-1085'></a><h2>Process management</h2><p>An AllegroGraph server consists of a group of different operating-system processes. The following services provide a minimal process-debugging API over HTTP. All of them are only accessible to superusers. </p><p><a name="get-processes"></a> </p><h3>GET /processes</h3><p>Returns a list of tuples showing the processes the server currently has running. Each row has <code>pid</code> (the OS process ID) and a <code>name</code> (the process name) properties. </p><p><a name="get-process"></a> </p><h3>GET /processes/[id]</h3><p>Returns stack traces for the threads in the given process. </p><p><a name="delete-process"></a> </p><h3>DELETE /processes/[id]</h3><p>Kills the specified process. Obviously, you yourself are responsible for any adverse effects this has on the functioning of the server. </p><p><a name="post-telnet"></a> </p><h3>POST /processes/[id]/telnet</h3><p>Starts a telnet server in the specified process. A random port will be chosen for the server, which will be returned as the response. Note that the telnet server will allow anyone to connect, creating a something of a security concern if the server is on an open network. </p><p><a name="warmstandby"></a> </p><a name='header2-1100' id='header2-1100'></a><h2>Warm Standby</h2><p>Warm standby allows a second AllegroGraph server to keep an up-to-date copy of a repository on another server. In case the first server fails, this copy can be made to take over its responsibilities. </p><p>Documentation on this feature is not complete yet. </p><p><a name="get-warmstandby"></a> </p><h3>GET /repositories/[name]/warmstandby</h3><p>Only supports an <code>application/json</code> accept type. Returns a representation of the current standby status for repository. </p><p><a name="put-warmstandby"></a> </p><h3>PUT /repositories/[name]/warmstandby</h3><p>Requires <code>jobname</code>, <code>primary</code>, <code>primaryPort</code>, <code>user</code>, and <code>password</code> parameters. Makes this repository start replicating the source store on the server <code>primary</code>:<code>primaryPort</code>, using the given credentials to gain access. </p><p><a name="delete-warmstandby"></a> </p><h3>DELETE /repositories/[name]/warmstandby</h3><p>Stops a replication job. This command is sent to the client. </p><p><a name="post-warmstandby-switchrole"></a> </p><h3>POST /repositories/[name]/warmstandby/switchRole</h3><p>Sent to a repository that is currently functioning as a replication server. Causes a client (identified by the <code>jobname</code> parameter) to take over, making this repository a client of that new server. Takes <code>primary</code>, <code>primaryPort</code>, <code>user</code>, and <code>password</code> parameters, which specify the server on which the client repository lives, and the user account to use to access this server. </p><p>The <code>becomeClient</code> boolean parameter, which defaults to true, determines whether the server will start replicating its old client. The <code>enableCommit</code> parameter, also defaulting to true, controls whether no-commit mode will be turned off in the client. </p><p><a name="multi-master"></a> </p><a name='header2-1117' id='header2-1117'></a><h2>Multi-master replication</h2><p>The multi-master replication facility is described in <a href="multi-master.html">Multi-master Replication</a>. </p><h3>createCluster</h3>
+<pre><code>PUT catalogs / [CATNAME] / repositories / [REPOSITORY] / repl / createCluster </code></pre><p>Here is a CURL command which converts the repository <code>foo</code> in the root catalog (since no catalog is specified). We specify a group (<code>group=first</code>). The port is 10700. </p><p>% curl -X PUT  -u user:mypassword "http://gemini.franz.com:10700/repositories/foo/repl/createCluster?instanceName=fooinst&amp;host=gemini&amp;group=firstg&amp;ifExists=supersede&amp;user=user&amp;password=mypassword&amp;port=10700" </p><h3>growCluster</h3><p>Here is a CURL command which grows the cluster just created making a copy on host <code>crow.franz.com</code>. </p><p>% curl -X PUT  -u user:mypassword "http://gemini.franz.com:10700/repositories/foo/repl/growCluster?instanceName=foobinst1&amp;host=crow.franz.com&amp;name=foo&amp;group=firstg&amp;user=user1&amp;password=crowpw&amp;port=20700" </p><h3>Other commands</h3>
+<ul>
+<li>controllingInstance</li>
+<li>priority</li>
+<li>quiesce</li>
+<li>remove</li>
+<li>settings</li>
+<li>start</li>
+<li>stop</li>
+<li>retain</li>
+<li>status</li></ul><p>All are described in the <a href="http-reference.html">HTTP reference</a> document. </p></div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

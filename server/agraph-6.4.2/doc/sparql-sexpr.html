@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>SPARQL S-Expression Syntax | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<link rel='stylesheet' href='sparql.css' />
+<body id="sparql-sexpr"><div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>         <h1>SPARQL S-Expression Syntax</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a>
+<ul>
+<li><a href='#header3-11' title='Example'>Example</a></li>
+<li><a href='#header3-28' title='Filters and Expressions'>Filters and Expressions</a></li>
+<li><a href='#header3-32' title='Packages'>Packages</a></li>
+<li><a href='#header3-34' title='ASK, CONSTRUCT, DESCRIBE and SELECT'>ASK, CONSTRUCT, DESCRIBE and SELECT</a>
+<ul>
+<li><a href='#header4-52' title='distinct, from, limit, offset, order'>distinct, from, limit, offset, order</a></li>
+<li><a href='#header4-67' title='aggregates, group, having'>aggregates, group, having</a></li>
+<li><a href='#header4-83' title='construct-pattern, targets'>construct-pattern, targets</a></li>
+<li><a href='#header4-93' title='in-line-data'>in-line-data</a></li>
+<li><a href='#header4-98' title='query-options'>query-options</a></li>
+<li><a href='#header4-100' title='vars'>vars</a></li>
+<li><a href='#header4-102' title='default-base'>default-base</a></li>
+<li><a href='#header4-104' title='where'>where</a></li></ul></li>
+<li><a href='#header3-166' title='Update'>Update</a>
+<ul>
+<li><a href='#header4-172' title='Graph manipulation'>Graph manipulation</a></li>
+<li><a href='#header4-199' title='Data manipulation'>Data manipulation</a></li>
+<li><a href='#header4-214' title='Loading from external sources'>Loading from external sources</a></li></ul></li>
+<li><a href='#header3-218' title='Filter Summary'>Filter Summary</a></li></ul></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>The Lisp client's <a href="sparql-reference.html#run-sparql" title="description of run-sparql">run-sparql</a> function can accept a pre-built query plan, a string in the SPARQL query syntax, or a Lisp s-expression that encodes the query. The s-expression can be created via a call to <a href="sparql-reference.html#parse-sparql" title="description of parse-sparql">parse-sparql</a> or by hand. This document describes the s-expression format. </p><p>Note that the s-expression syntax is stable but is still subject to change as the query engine it supports improves and the SPARQL language continues to mature. Franz intends to provide backward compatibility for all existing features. </p><a name='header3-11' id='header3-11'></a><h3>Example</h3><p>As an example, the s-expression for query 8 from from the <a href="http://dbis.informatik.uni-freiburg.de/index.php?project=SP2B" class="external" target="_blank">SP2 benchmark</a>: </p>
+<pre><code>SELECT DISTINCT ?name  
+WHERE {  
+  ?erdoes rdf:type foaf:Person .  
+  ?erdoes foaf:name 'Paul Erdoes'^^xsd:string .  
+  {  
+    ?document dc:creator ?erdoes .  
+    ?document dc:creator ?author .  
+    ?document2 dc:creator ?author .  
+    ?document2 dc:creator ?author2 .  
+    ?author2 foaf:name ?name  
+    FILTER (?author!=?erdoes &amp;&amp;  
+            ?document2!=?document &amp;&amp;  
+            ?author2!=?erdoes &amp;&amp;  
+            ?author2!=?author)  
+  } UNION {  
+    ?document dc:creator ?erdoes.  
+    ?document dc:creator ?author.  
+    ?author foaf:name ?name  
+    FILTER (?author!=?erdoes)  
+  }  
+} </code></pre><p>is </p>
+<pre><code>(sparql.parser:sparql :select :vars (?name) :where  
+   (:join  
+    (:join nil  
+	   (:bgp #(?erdoes !rdf:type !foaf:Person)  
+		 #(?erdoes !foaf:name !"Paul Erdoes"^^&lt;http://www.w3.org/2001/XMLSchema#string&gt;)))  
+    (:union  
+     (:filter  
+      (:join nil  
+	     (:bgp  
+	      #(?document !dc:creator ?erdoes)  
+	      #(?document !dc:creator ?author)  
+	      #(?document2 !dc:creator ?author)  
+	      #(?document2 !dc:creator ?author2)  
+	      #(?author2 !foaf:name ?name)))  
+      (and (sparql.sop:!= ?author ?erdoes)  
+	   (and (sparql.sop:!= ?document2 ?document)  
+		(and (sparql.sop:!= ?author2 ?erdoes)  
+		     (sparql.sop:!= ?author2 ?author)))))  
+     (:filter  
+      (:join nil  
+	     (:bgp  
+	      #(?document !dc:creator ?erdoes)  
+	      #(?document !dc:creator ?author)  
+	      #(?author !foaf:name ?name)))  
+      (sparql.sop:!= ?author ?erdoes))))  
+   :distinct :distinct) </code></pre><p>This is the raw output of AllegroGraph's <a href="sparql-reference.html#parse-sparql" title="description of parse-sparql">parse-sparql</a> function
+<a name="fnr0-2018-06-08" id="fnr0-2018-06-08"></a>
+<sup><a href="#fn0-2018-06-08">1</a></sup> . There are many possible s-expressions for a given query. Before execution, the query engine does additional analysis and simplification. This means that you can be flexible in the way you generate queries and let the query engine convert them into its preferred form. </p><p>Every SPARQL s-expression starts with a description of the query type and verb: </p>
+<pre><code>(query-type query-verb &amp;key) </code></pre><p>where <code>query-type</code> can be either <code>sparql.parser:sparql-update</code> or <code>sparql.parser:sparql</code> and <code>query-verb</code> must be one of: </p>
+<ul>
+<li>:ask</li>
+<li>:construct</li>
+<li>:describe</li>
+<li>:select</li>
+<li>:update</li></ul><p>The rest of the s-expression is a keyword list whose permitted values vary depending on the verb. In the example above, the <code>:vars</code> argument specifies which variables to project and the <code>:where</code> argument describes the query plan to be executed. It shows that the first step of the query is a <code>:join</code> between another <code>:join</code> and a <code>:union</code>. </p><p>Note that <code>query-verb</code> and <code>query-type</code> are redundant but both are kept for historical reasons. </p><p><a name="filter-expressions"></a> </p><a name='header3-28' id='header3-28'></a><h3>Filters and Expressions</h3><p>Many query clauses involve expressions that calculate values or that are used to filter the result set. These are also s-expressions that use a restricted set of functions and constants. For example, the SPARQL string filter "?a + ?b &lt; 34" becomes the filter expression: </p>
+<pre><code>(&lt; (+ ?a ?b) !"34"^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt;) </code></pre><p>The complete list of expressions is outlined <a href="#filter-summary">below</a>. </p><a name='header3-32' id='header3-32'></a><h3>Packages</h3><p>Note that the SPARQL parser places all query variables into the <code>query.variables</code> package for consistency during parsing. Your s-expressions do <em>not</em> need to do this and you are free to use any package that you would like. </p><a name='header3-34' id='header3-34'></a><h3>ASK, CONSTRUCT, DESCRIBE and SELECT</h3><p>These four SPARQL verbs share the same basic query algebra (though some verbs have their own unique parameters). </p><p>The following keyword parameters and arguments are allowed in these verbs' s-expressions (these will be described in more detail below):
+<a name="fnr1-2018-06-08" id="fnr1-2018-06-08"></a>
+<sup><a href="#fn1-2018-06-08">2</a></sup>  </p>
+<ul>
+<li>aggregates <em>aggregate-assignment-list</em></li>
+<li>construct-pattern <em>triple-template</em></li>
+<li>default-base nil | URI</li>
+<li>distinct nil | <code>:distinct</code> | <code>:reduced</code></li>
+<li>from <em>dataset-list</em></li>
+<li>group <em>expression-list</em></li>
+<li>having <em>filter-expression</em></li>
+<li>in-line-data <em>in-line-data</em></li>
+<li>limit number</li>
+<li>offset number</li>
+<li>order <em>expression-list</em></li>
+<li>query-options <em>option-list</em></li>
+<li>targets <em>URI-list</em></li>
+<li>vars nil | <em>variable-list</em></li>
+<li>where <em>query-algebra</em></li></ul><a name='header4-52' id='header4-52'></a><h4>distinct, from, limit, offset, order</h4><p>These forms control the number and order of the solutions as well as the SPARQL dataset used for the query and whether or not the solutions should be distinct (or reduced). For example a query like: </p>
+<pre><code>select distinct * { ?A ?b ?c } order by ?c desc(?a) limit 10 offset 20 </code></pre><p>would be represented by the s-expression: </p>
+<pre><code>(sparql.parser:sparql :select :vars (?A ?b ?c) :where (:bgp #(?A ?b ?c))  
+ :distinct :distinct  
+ :order ((:asc ?c) (:desc ?a))  
+ :limit 10  
+ :offset 20) </code></pre>
+<dl><dt>:distinct </dt>
+<dd>This can be <code>nil</code> or one of the keywords <code>:reduced</code> or <code>:distinct</code> and controls whether the query returns all results, is allowed to omit duplicate results or must omit duplicates. </dd><dt>:from <em>dataset-list</em> </dt>
+<dd><em>from</em> describes the <a href="http://www.w3.org/TR/sparql11-query/#rdfDataset" class="external" target="_blank">SPARQL dataset</a> to use in the query. It is in the form of a <em>dataset-list</em> which is a list of pairs where each pair has the <code>car</code> <code>:from</code> or <code>:from-named</code> and the <code>cdr</code> is the name of the graph to include in the dataset (either a UPI or a future-part). </dd><dt>:limit number </dt>
+<dd><em>limit</em> indicates the maximum number of solutions to emit.</dd><dt>:offset number </dt>
+<dd><em>offset</em> indicates how many solutions to skip before beginning to return them.</dd><dt>:order <em>expression-list</em> </dt>
+<dd><em>order</em> controls the order of the results returned from the query. It is list of lists. Each sub-list must have the first element of either <code>:asc</code> or <code>:desc</code> (for ascending or descending). The second element of the sublist is a SPARQL expression. </dd></dl><a name='header4-67' id='header4-67'></a><h4>aggregates, group, having</h4><p>These forms control aggregation. As an example, this SPARQL query: </p>
+<pre><code>select ?account (count(?order) as ?count) (sum(?total) as ?grand) {  
+  ?account :hasOrder ?order .  
+  ?order :hasTotal ?total .  
+} group by ?account  
+having (?grand &gt; 10000) </code></pre><p>could be expressed as: </p>
+<pre><code>(sparql.parser:sparql :select :vars (?account ?count ?grand)  
+  :where  
+  (:bgp  
+   #(?account !&lt;eh://hasOrder&gt; ?order)  
+   #(?order !&lt;eh://hasTotal&gt; ?total))  
+  :aggregates  
+  ((?count (:count ?order))  
+   (?grand (:sum ?total))  
+   (?account (:identity ?account)))  
+  :group (?account)  
+  :having ((&gt; ?grand !"10000"^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt;))) </code></pre>
+<dl><dt>:aggregates <em>aggregate-expression-list</em> </dt>
+<dd>Aggregation is described by an ordered list of instructions. Each instruction consists of a list in the form <code>(variable-name (instruction expression &amp;key distinct))</code>. The instruction can be one of <code>:_assign</code>, <code>:avg</code>, <code>:count</code>, <code>:group_concat</code>, <code>:identity</code>, <code>:max</code>, <code>:min</code>, <code>:sample</code>, or <code>:sum</code>. Most of these correspond to the obvious SPARQL aggregation operator. <code>:identity</code> is used for variables from the group by expression and means that the value will come from the group. <code>:_assign</code> is used to handle temporary aggregation variables introduced by the parser. <p>Consider a modified version of the query above where we now use an aggregate expression in the <code>having</code> clause: </p>
+<pre><code>select (sum(?total) as ?grand) {  
+  ?account :hasOrder ?order .  
+  ?order :hasTotal ?total .  
+} group by ?account  
+having (sum(?total) &gt; 10000) </code></pre></dd><p>This will parse as: </p>
+<pre><code>(sparql.parser:sparql :select :vars (?grand) :where  
+  (:bgp  
+   #(?account !&lt;eh://hasOrder&gt; ?order)  
+   #(?order !&lt;eh://hasTotal&gt; ?total))  
+  :aggregates  
+  ((?@aggregate-1 (:sum ?total))  
+   (?account (:identity ?account))  
+   (?grand (:_assign ?@aggregate-1)))  
+  :group (?account)  
+  :having ((&gt; ?@aggregate-1 !"10000"^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt;)) </code></pre><p>Where the expression in the <code>having</code> clause has been replaced by a newly introduced variable and <code>:_assign</code> is used to bind that variable to the query variable <code>?grand</code>. </p><dt>:group <em>expression-list</em> </dt>
+<dd>This is simply a list of expressions that will be evaluated to determine the grouping. </dd><dt>:having <em>filter-expression</em> </dt>
+<dd>This is a filter expression (which can include aggregation operators) used to filter out solutions. </dd></dl><a name='header4-83' id='header4-83'></a><h4>construct-pattern, targets</h4>
+<dl><dt>:construct-pattern <em>triple-pattern</em> </dt>
+<dd><em>construct-pattern</em> is used only by SPARQL CONSTRUCT queries and is a list of triple-pattern arrays (as in a BGP). For example, this construct query: 
+<pre><code>construct {  
+  ?s rdf:type &lt;eh://fruit&gt; .  
+  ?s ?p ?o }  
+where {  
+  ?s a &lt;eh://fruityThing&gt; .  
+  ?s ?p ?o .  
+} </code></pre></dd><p>would be equivalent to the following s-expression: </p>
+<pre><code>(sparql.parser:sparql :construct :vars  
+ (?o ?p ?s)  
+ :where  
+ (:bgp #(?s !rdf:type !&lt;eh://fruityThing&gt;) #(?s ?p ?o))  
+ :construct-pattern  
+ (#(?s !rdf:type !&lt;eh://fruit&gt;)  
+  #(?s ?p ?o))) </code></pre><dt>:targets list </dt>
+<dd><em>targets</em> is used only by SPARQL DESCRIBE. It must be a list of IRIs (strings, UPIs or future-parts). This s-expression, for example, would be used to DESCRIBE two URIs: 
+<pre><code>(sparql.parser:sparql :describe :vars nil :where (:bgp)  
+  :targets (!&lt;http://www.example.com#one&gt; !&lt;http://www.example.com#two&gt;)  
+</code></pre></dd></dl><p><a name="inline-data-query"></a> </p><a name='header4-93' id='header4-93'></a><h4>in-line-data</h4><p>The <code>in-line-data</code> parameter provides the data from the outermost <a href="http://www.w3.org/TR/2013/REC-sparql11-query-20130321/#inline-data"><code>VALUES</code></a> expression. It consists of two lists. The first list is an ordered list of the variables involved and the second is a list of lists of the values for these variables. <code>nil</code> is used for an undefined value. For example, the values clause: </p>
+<pre><code>values (?account ?order) { (undef 2) (3 4) } </code></pre><p>would be represented by the s-expression: </p>
+<pre><code>:in-line-data  
+ ((?account ?order)  
+  ((nil  
+    !"2"^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt;)  
+   (!"3"^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt;  
+    !"4"^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt;)))  
+</code></pre><a name='header4-98' id='header4-98'></a><h4>query-options</h4><p><code>query-options</code> is a association-list of values that control various switches during query execution. These include the query engine, whether or not to use Chunk-at-a-Time processing and more. The reference guide includes more information on the available <a href="sparql-reference.html#sparql-queryoptions">query options</a>. </p><a name='header4-100' id='header4-100'></a><h4>vars</h4><p>A list of the variables projected by the query. If omitted, then all variables will be returned in an unspecified order
+<a name="fnr2-2018-06-08" id="fnr2-2018-06-08"></a>
+<sup><a href="#fn2-2018-06-08">3</a></sup> . </p><a name='header4-102' id='header4-102'></a><h4>default-base</h4><p>Used as the default-base by the SPARQL <a href="http://www.w3.org/TR/2013/REC-sparql11-query-20130321/#func-iri"><code>uri</code></a> function when constructing URIs. </p><a name='header4-104' id='header4-104'></a><h4>where</h4><p>The <code>where</code> clause describes the body of the query and is the most complex parameter.  It is a tree of commands where each command is named by the head of its list and obtains its parameters from the tail. The commands are: </p>
+<ul>
+<li>:bgp          <em>triple-pattern</em></li>
+<li>:bind         <em>assignments</em> <em>query</em></li>
+<li>:exists       <em>left-query</em> <em>right-query</em></li>
+<li>:filter       <em>filter</em> <em>query</em></li>
+<li>:graph        <em>graph</em> <em>query</em></li>
+<li>:in-line-data <em>in-line-data</em> <em>query</em></li>
+<li>:join         <em>left-query</em> <em>right-query</em> <em>filter</em></li>
+<li>:left-join    <em>left-query</em> <em>right-query</em> <em>filter</em></li>
+<li>:minus        <em>left-query</em> <em>right-query</em></li>
+<li>:not-exists   <em>left-query</em> <em>right-query</em></li>
+<li>:select       &amp;key vars distinct where order limit offset from group having bind aggregates</li>
+<li>:service      &amp;key <em>host</em> <em>query-string</em> <em>silent</em></li>
+<li>:union        <em>left-query</em> <em>right-query</em></li></ul><p>SPARQL queries work by obtaining bindings for variables and then combining these bindings in different ways. The <code>:bgp</code>, <code>:bind</code>, and <code>:in-line-data</code> clauses generate bindings and all the rest combine them or remove them from consideration. </p>
+<dl><dt>:bgp <em>triple-pattern</em> </dt>
+<dd>The BGP (or basic graph pattern) form has a single argument which must be a list of arrays where each array has three elements corresponding to a subject, predicate, object pattern. Each element in the array can be a symbol denoting a variable, a gensym denoting a blank node or a UPI or future-part denoting a constant. For example: 
+<pre><code>(:bgp  
+  #(?inproc !rdf:type !bench:Inproceedings)  
+  #(?inproc !dc:creator #:?bnode_0)  
+  #(?inproc !bench:booktitle ?booktitle)  
+  #(#:?bnode_0 !foaf:name ?name)) </code></pre></dd><dt>:bind <em>assignments</em> <em>query</em> </dt>
+<dd>The <code>:bind</code> form has two arguments: a list of assignments and the rest of the query. Each assignment in the <code>assignments</code> list is a list of two elements whose first element is the variable being assigned and whose second element is the expression to evaluate in order to make the assignment. For example: 
+<pre><code>(:bind  
+  ((?b !"2"^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt;)  
+   (?a !"1"^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt;))  
+ (:bgp #(?d ?e ?f)))) </code></pre></dd><p><em>query</em> is evaluated before the assignments are made so the above would first evaluate the BGP and <em>then</em> bind <code>?b</code> to 2, <code>?a</code> to 1. </p><dt>:in-line-data <em>data</em> <em>query</em> </dt>
+<dd>This is the in-query counterpart to the <a href="#inline-data-query"><code>:in-line-data</code></a> described above. The syntax is the same: it consists of two lists. The first is an ordered list of the variables involved and the second is a list of lists of the values for these variables. <code>nil</code> is used for an undefined value. For example, a query like 
+<pre><code>select ((?total * 1.056) as ?markup) {  
+  values (?account ?order) { (undef 2) (3 4) }  
+  ?account :hasOrder ?order .  
+  ?order :hasTotal ?total .  
+} </code></pre></dd><p>would produce an <code>:in-line-data</code> clause like this: </p>
+<pre><code>(sparql.parser:sparql :select :vars (?markup) :where  
+ (:bind  
+  ((?markup  
+    (* ?total !"1.056"^^&lt;http://www.w3.org/2001/XMLSchema#decimal&gt;)))  
+  (:join  
+   (:join nil  
+    (:in-line-data :data  
+     ((?account ?order)  
+      ((nil !"2"^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt;)  
+       (!"3"^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt;  
+        !"4"^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt;)))  
+     :rhs (:bgp)))  
+   (:bgp  
+    #(?account !&lt;eh://hasOrder&gt; ?order)  
+    #(?order !&lt;eh://hasTotal&gt; ?total))))) </code></pre><p>In this case, the <em>query</em> portion of the <code>:in-line-data</code> clause is the empty <code>:bgp</code>. Note that the positioning of the <code>:in-line-data</code> clause is significant as it alters how the join is processed. </p></dl><h5>joining groups of bindings</h5><p>You can combine two sets of bindings (created from other query terms) using <code>:join</code>, <code>:left-join</code> and <code>:union</code>. You can remove a set bindings based on the contents of another set using <code>:exists</code>, <code>:minus</code>, and <code>:not-exists</code>. In the descriptions below, <em>left-query</em> and <em>right-query</em> are sub-trees with the same structure as the main <code>:where</code> clause and <em>filter</em> is a <a href="#filter-expressions">filter expression</a>. </p>
+<dl><dt>:exists <em>left-query</em> <em>right-query</em> </dt>
+<dd>Evaluates <em>left-query</em> and <em>right-query</em> and keeps bindings in <em>left-query</em> if and only if there is a corresponding binding in <em>right-query</em>. </dd><dt>:join <em>left-query</em> <em>right-query</em> &amp;optional <em>filter</em> </dt>
+<dd><em>join</em> evaluates <em>left-query</em> and <em>right-query</em> and then joins the two results using the variables that the two sides have in common. If there are no common variables, then <em>join</em> becomes a cross-product (which is usually a bad thing)
+<a name="fnr3-2018-06-08" id="fnr3-2018-06-08"></a>
+<sup><a href="#fn3-2018-06-08">4</a></sup> . The optional <em>filter</em> is evaluated for each row produced by the join and can be used as short-hand for 
+<pre><code>(:filter (:join A B) filter) </code></pre></dd><dt>:left-join <em>left-query</em> <em>right-query</em> &amp;optional <em>filter</em> </dt>
+<dd><em>left-join</em> evaluates <em>left-query</em> and <em>right-query</em> and performs a left join using the optional <em>filter</em> to further remove results. </dd><dt>:minus <em>left-query</em> <em>right-query</em> </dt>
+<dd>Evaluates <em>left-query</em> and <em>right-query</em> and removes any bindings in <em>left-query</em> if and only if there is a corresponding binding in <em>right-query</em>. </dd><dt>:not-exists <em>left-query</em> <em>right-query</em> </dt>
+<dd>Evaluates <em>left-query</em> and <em>right-query</em> and keeps bindings in <em>left-query</em> if and only if there is <em>not</em> a corresponding binding in <em>right-query</em>. </dd><dt>:union <em>left-query</em> <em>right-query</em> </dt>
+<dd><em>union</em> evaluates each <em>query</em> piece and joins then with the current set of bindings in turn. </dd></dl><h5>Miscelaneous operations</h5>
+<dl><dt>:filter <em>query</em> <em>filter</em> </dt>
+<dd>The <code>:filter</code> clause removes bindings based on an expression. It first evaluates <em>query</em> and then iterates over the bindings applying the filter to each one. </dd><dt>:graph <em>graph</em> <em>query</em> </dt>
+<dd>The <em>graph</em> clause changes the current graph used during query evaluation and then evaluates <em>query</em>. <em>graph</em> can be a variable, an IRI (string, UPI or future-part), or one of the keywords: <code>:from</code>, <code>:from-named</code>, or <code>:default</code>. These last three mean: 
+<ul>
+<li><p><code>:from</code> - iterate over the graphs in the default-graph portion   of the dataset. I.e., the ones that come from the <code>FROM</code> clauses   in the SPARQL query. </p></li>
+<li><p><code>:from-named</code> - iterate over the named graphs in the   dataset. I.e., the ones that come from the <code>FROM NAMED</code> clauses   in the SPARQL query.<br />
+</p></li>
+<li><p><code>:default</code> - use the current graph.</p></li></ul></dd> <dt>:select <em>query</em> </dt>
+<dd><code>:select</code> is used for SPARQL 1.1 sub-query. The <code>:select</code> clause takes all of the arguments that the main SELECT query supports except for <code>:from</code> (sub-queries cannot change the dataset). For example, the (rather contrived) query: 
+<pre><code>select * { { select * { ?a ?b ?c } order by ?c limit 1000 }} </code></pre></dd><p>is equivalent to the s-expression </p>
+<pre><code>(sparql.parser:sparql :select  
+  :vars (?a ?b ?c)  
+  :where (:join nil  
+           (:select :vars (?a ?b ?c)  
+              :where (:bgp #(?a ?b ?c))  
+              :order ((:asc ?c))  
+              :limit 1000))) </code></pre><p>(In passing, note that the inner ORDER BY will be used to order the results of the sub-query before applying the limit but there is no guarantee that the final result set will retain the ordering). </p><dt>:service &amp;key <em>host</em> <em>query-string</em> <em>silent</em> </dt>
+<dd>The <em>service</em> clause sends the <em>query-string</em> to <em>host</em> and merges the result into the rest of the query. If there is an error and <em>silent</em> is false, then the entire query will fail.
+<a name="fnr4-2018-06-08" id="fnr4-2018-06-08"></a>
+<sup><a href="#fn4-2018-06-08">5</a></sup>  </dd></dl> <a name='header3-166' id='header3-166'></a><h3>Update</h3><p>A SPARQL update s-expression has the following keywords: <code>steps</code>, <code>default-base</code> and <code>query-options</code>
+<a name="fnr5-2018-06-08" id="fnr5-2018-06-08"></a>
+<sup><a href="#fn5-2018-06-08">6</a></sup>. </p><p>As in the other SPARQL query forms, <code>default-base</code> is used by the SPARQL <a href="http://www.w3.org/TR/2013/REC-sparql11-query-20130321/#func-iri"><code>uri</code></a> function when constructing URIs and <code>query-options</code> is a association-list of values that control various switches during query execution. These include the query engine, whether or not to use Chunk-at-a-time processing and more. They are <a href="sparql-reference.html#sparql-queryoptions">described</a> in more detail in the reference guide. </p><p><code>steps</code> is a list of actions to take. Each action is a list whose head names the action and whose tail specifies any parameters. The actions are broken down into <a href="#graph-manipulation">graph manipulation</a>, <a href="#data-manipulation">data manipulation</a> and <a href="#data-loading">loading</a> from external data sources. </p><p>All of the non data-manipulation <em>update</em> steps use keyword arguments in their specification. They all have a <em>silent</em> argument which controls whether or not errors are signaled back to the caller. </p><p><a name="graph-manipulation"></a> </p><a name='header4-172' id='header4-172'></a><h4>Graph manipulation</h4><p>The graph manipulation commands allow you to alter sets of triples contained in particular named graphs. </p>
+<dl><dt>:add &amp;key <em>first</em> <em>second</em> <em>silent</em> </dt>
+<dd>This is the <a href="http://www.w3.org/TR/sparql11-update/#add"><em>add</em></a> command.
+<pre><code>ADD ( SILENT )? ( ( GRAPH )? IRIref_from | DEFAULT) TO ( ( GRAPH )? IRIref_to | DEFAULT) </code></pre></dd><p><em>first</em> and <em>second</em> correspond to <code>from</code> and <code>to</code> and can be an IRI or the keyword <code>:default</code>. Unless <em>silent</em> is true, <code>:add</code> will fail if the <em>first</em> graph is not present in the triple-store. </p><dt>:clear &amp;key <em>graph</em> <em>silent</em> </dt>
+<dd>This is the <a href="http://www.w3.org/TR/sparql11-update/#clear"><em>clear</em></a> command.
+<pre><code>CLEAR ( SILENT )? (GRAPH IRIref | DEFAULT | NAMED | ALL ) </code></pre></dd><p><em>graph</em> can be an IRI (UPI or future-part) or one of keywords: <code>:default</code>, <code>:named</code> or <code>:all</code>. Obviously, care should be taken before executing this command! The <code>:clear</code> command cannot fail (i.e., it is not an error to clear a graph that does not exist) so the <em>silent</em> parameter is ignored. </p><dt>:copy &amp;key <em>first</em> <em>second</em> <em>silent</em> </dt>
+<dd>This is the <a href="http://www.w3.org/TR/sparql11-update/#copy"><em>copy</em></a> command.
+<pre><code>COPY ( SILENT )? ( ( GRAPH )? IRIref_from | DEFAULT) TO ( ( GRAPH )? IRIref_to | DEFAULT ) </code></pre></dd><p><em>first</em> and <em>second</em> correspond to <code>from</code> and <code>to</code> and can be an IRI or the keyword <code>:default</code>. If the source graph does not exist, then the <code>:copy</code> command will fail unless <em>silent</em> is true. </p><dt>:create &amp;key <em>graph</em> <em>silent</em> </dt>
+<dd>This is the <a href="http://www.w3.org/TR/sparql11-update/#create"><em>create</em></a> command.
+<pre><code>CREATE ( SILENT )? GRAPH IRIref </code></pre></dd><p> Where <em>graph</em> must be an IRI (string, future-part or UPI). AllegroGraph does not record the existence of empty graphs so the create operation will never change the contents of a triple-store. If the graph already exists in the store, however, then it will fail (unless <em>silent</em> is specified). </p><dt>:drop &amp;key <em>graph</em> <em>silent</em> </dt>
+<dd>This is the <a href="http://www.w3.org/TR/sparql11-update/#drop"><em>drop</em></a> command.
+<pre><code>DROP  ( SILENT )? (GRAPH IRIref | DEFAULT | NAMED | ALL ) </code></pre></dd><p><em>graph</em> can be an IRI (string, future-part or UPI) or one of the keywords <code>:default</code>, <code>:named</code>, or <code>:all</code>. Because AllegroGraph does not keep track of empty graphs, the <code>:drop</code> command is equivalent to the <code>:clear</code> command. </p><dt>:move <em>first</em> <em>second</em> <em>silent</em> </dt>
+<dd>This is the <a href="http://www.w3.org/TR/sparql11-update/#move"><em>move</em></a> command.
+<pre><code>MOVE (SILENT)? ( ( GRAPH )? IRIref_from | DEFAULT) TO ( ( GRAPH )? IRIref_to | DEFAULT) </code></pre></dd><p><em>first</em> and <em>second</em> correspond to <code>from</code> and <code>to</code> and can be an IRI or the keyword <code>:default</code>. As in <code>:copy</code>, if the source graph does not exist, then the command will fail unless <em>silent</em> is true. </p></dl><p><a name="data-manipulation"></a> </p><a name='header4-199' id='header4-199'></a><h4>Data manipulation</h4><p>The data manipulation commands let you add and remove triples from the triple-store. Each uses <em>quad-templates</em> to specify what to add and remove. A <em>quad-template</em> is like a <code>bgp</code> (i.e., a list of arrays) extended with additional syntax to allow you to specify the graph(s) that should be altered. I.e., it looks like: </p>
+<pre><code>(#(s1 p1 o1)  
+ #(s2 p2 o2)  
+ (:graph g1 (#(s3 p3 o3)))  
+ #(s4 p4 o4)) </code></pre><p>Note that the logic for determining the graph(s) to alter is complex and depends on graphs specified in the templates, the graphs specified in the USING or WITH clauses and various parameters passed to the <a href="sparql-reference.html#run-sparql" title="description of run-sparql">run-sparql</a> function. Please contact <a href="mailto:allegrograph-support@franz.com">support</a> if you need additional information. </p>
+<dl><dt>:delete <em>quad-template</em> </dt>
+<dd>This corresponds to the <a href="http://www.w3.org/TR/sparql11-update/#deleteData">DELETE DATA</a> command. Note that <em>quad-template</em> needs to be in an additional list. The template used is not allowed to contain either variables nor blank nodes
+<a name="fnr6-2018-06-08" id="fnr6-2018-06-08"></a>
+<sup><a href="#fn6-2018-06-08">7</a></sup> .  </dd><dt>:insert <em>quad-template</em> </dt>
+<dd>This corresponds to the <a href="http://www.w3.org/TR/sparql11-update/#insertData">INSERT DATA</a> command. Note that <em>quad-template</em> needs to be in an additional list. Note that this template is not allowed to include variables
+<a name="fnr7-2018-06-08" id="fnr7-2018-06-08"></a>
+<sup><a href="#fn7-2018-06-08">8</a></sup> .  </dd><dt>:modify &amp;key <em>graph</em> <em>delete</em> <em>insert</em> <em>where</em> <em>using</em> </dt>
+<dd>This corresponds to the <a href="http://www.w3.org/TR/sparql11-update/#deleteInsert">DELETE/INSERT</a> command. The <em>delete</em> and <em>insert</em> parameters must be <em>quad-templates</em> (or <code>nil</code>). The <em>where</em> clause uses the same grammar as it does in the query language above. <p><em>using</em> is like <em>from</em> (above). I.e., it is a <em>dataset-list</em> and it should be a list of pairs where each pair has the <code>car</code> <code>:from</code> or <code>:from-named</code> and the <code>cdr</code> is the name of the graph to include in the dataset (either a UPI or a future-part). </p></dd><p>The <em>graph</em> parameter represents the graph specified in the <code>WITH</code> clause of the SPARQL grammar. </p></dl><p><a name="data-loading"></a> </p><a name='header4-214' id='header4-214'></a><h4>Loading from external sources</h4>
+<dl><dt>:load &amp;key <em>from</em> <em>graph</em> <em>silent</em> </dt>
+<dd>The <code>:load</code> command tries to read data from the URI <em>from</em> (which can be a <code>file://</code>, <code>http://</code>, or <code>https://</code> URI) and load it into the graph <em>graph</em>. <em>graph</em> can be <code>nil</code> or a URI. If it is nil, the data is loaded into the default-graph of the destination triple-store. The format of the data at the other end of the <em>from</em> URI is determined via its extension (treating it as if it names a file). If the type cannot be guessed, then RDf/XML is assumed. If there is a problem during loading, then an error will be signaled unless <em>silent</em> is true. </dd></dl><p><a name="filter-summary"></a> </p><a name='header3-218' id='header3-218'></a><h3>Filter Summary</h3><p>Filter expressions can be combined with the boolean operators <code>and</code> and <code>or</code> and negated with <code>not</code>. We support all of the functions in the <a href="http://www.w3.org/TR/sparql11-query/#expressions">SPARQL standard</a>. We will augment this document with a complete listing in a future version. In the meantime, please contact <a href="mailto:allegrograph-support@franz.com">support</a> if you need additional information. </p><hr/><div id="footnotes"> <h2>Footnotes</h2>
+<div class="footnotes">
+<ol>
+<li>
+<a name="fn0-2018-06-08" id="fn0-2018-06-08"></a>
+The query can be further simplified which occurs during the query planning process. <a href="#fnr0-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 1 in the text">&#8617;</a></li>
+<li>
+<a name="fn1-2018-06-08" id="fn1-2018-06-08"></a>
+Note that the previously deprecated <code>:geo</code> clause has been removed. All SPARQL Geospatial queries must now be done using the <a href="magic-properties-2d-geo.html">2D</a> and <a href="magic-properties.html#magic-prop-list">nD</a> <a href="magic-properties.html">magic properties</a>. <a href="#fnr1-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 2 in the text">&#8617;</a></li>
+<li>
+<a name="fn2-2018-06-08" id="fn2-2018-06-08"></a>
+You can use the third return value of <a href="sparql-reference.html#run-sparql" title="description of run-sparql">run-sparql</a> to obtain a list of the variables in the order they occur in the result set. <a href="#fnr2-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 3 in the text">&#8617;</a></li>
+<li>
+<a name="fn3-2018-06-08" id="fn3-2018-06-08"></a>
+Cross products almost always indicate that a query is asking two different and unrelated things. Because there is no join, the answer will contain a row for every pair of elements on the right-hand side and the left-hand. <a href="#fnr3-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 4 in the text">&#8617;</a></li>
+<li>
+<a name="fn4-2018-06-08" id="fn4-2018-06-08"></a>
+Note that the service keyword requires the query to be specified as a string. At some point, AllegroGraph may allow s-expressions to be used here too. <a href="#fnr4-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 5 in the text">&#8617;</a></li>
+<li>
+<a name="fn5-2018-06-08" id="fn5-2018-06-08"></a>
+Note that this document describes the s-expression syntax for the SPARQL 1.1 engine; the SPARQL 1.0 engine supports an older version of the UPDATE language and is not compatible with the newer syntax. <a href="#fnr5-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 6 in the text">&#8617;</a></li>
+<li>
+<a name="fn6-2018-06-08" id="fn6-2018-06-08"></a>
+At this time the check for variables and blank nodes happens in the parser and the behavior is unspecified if templates using them are passed in as parameters to the delete data command. <a href="#fnr6-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 7 in the text">&#8617;</a></li>
+<li>
+<a name="fn7-2018-06-08" id="fn7-2018-06-08"></a>
+At this time the check for this happens in the parser and the behavior is unspecified if templates with variables are used <a href="#fnr7-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 8 in the text">&#8617;</a></li>
+</ol>
+</div>  </div>  </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

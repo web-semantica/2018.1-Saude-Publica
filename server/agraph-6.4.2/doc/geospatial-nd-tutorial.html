@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>N-dimensional Geospatial Usage Guide | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="nd-geospatial-tutorial"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>N-dimensional Geospatial Usage Guide</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-9' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-13' title='The WebView Geospatial Datatype Designer'>The WebView Geospatial Datatype Designer</a>
+<ul>
+<li><a href='#header3-33' title='Why actual resolution differs from requested'>Why actual resolution differs from requested</a></li></ul></li>
+<li><a href='#header2-37' title='nD Geospatial Automation'>nD Geospatial Automation</a></li>
+<li><a href='#header2-45' title='SPARQL magic properties for nD Geospatial'>SPARQL magic properties for nD Geospatial</a></li>
+<li><a href='#header2-48' title='Example and tutorial: A call location example'>Example and tutorial: A call location example</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <p><a name="geo-intro"></a> </p><a name='header2-9' id='header2-9'></a><h2>Introduction</h2><p>This document is a practical tutorial and contains a complete example using the N-dimensional geospatial (abbreviated to nD geospatial or simply nD) facility. This document starts with a discussion of some of the tools which help with using the facility: the <a href="#webview-geo">WebView Geospatial Datatype Designer</a>, <a href="#geo-automation">nD Geospatial Automation</a>, and the relevant <a href="#sparql-magic">SPARQL magic properties</a>. </p><p>The document <a href="geospatial-nd.html">N-dimensional Geospatial Overview</a> gives an overview of the facility and the ideas behind it. Readers are encouraged to read that document before this one. </p><p><a name="webview-geo"></a> </p><a name='header2-13' id='header2-13'></a><h2>The WebView Geospatial Datatype Designer</h2><p>The Webview Geospatial Datatype Designer is an interactive design tool integrated into <a href="agwebview.html">WebView</a>.  Visit WebView in a browser (e.g, http://localhost:10035 if the browser is running on the same machine as AllegroGraph and it is using the default port setting), click the <strong>Utilities</strong> menu, and select <strong>Geospatial Datatype Designer</strong>. To explore the designer, click the <strong>try it</strong> button for <em>Spherical Earth Coordinates</em>. </p><p><a name="figure-T-01"></a> </p><p><img src="image-InitialDesigner.png" alt="image"></img> </p><p><em>Figure T-01: The designer in WebView</em> </p><p>This will populate the ordinate fields and create and display a useful nD type for latitude-longitude-time encoding. The generated geospatial type string will appear in the upper box. </p><p><a name="figure-T-02"></a> <img src="image-EarthSurface.png" alt="image"></img> </p><p><em>Figure T-02: Latitude-Longitude-Time</em> </p><p>While this tool interacts with the AllegroGraph server, it never affects the state of the server or any repository on it.  The sole purpose of the tool is to derive the type specifier URI for an nD encoding. Once obtained, that type string can be copied and pasted where needed to create geospatial data. </p><p>The <em>resolution</em> fields display the requested resolution (entered by the user) and the actual resolution. The actual resolution will differ from the requested because the data must be encoded into 80 bits, which may not be sufficient to encode the requested resolution or may allow encoding a better-than-requested (i.e. finer) resolution. </p><p>Each line defines an ordinate. The ordinates can be reordered using the arrow keys. The strip width must be defined for each ordinate except the last. </p><p><strong>Important caution</strong>: Even though the type specification can be deciphered, it is <em>not</em> possible for a user to create an nD type URI from scratch. The nD system reconstructs the specifications of the several ordinates from the string, and complains if that parse creates an encoding that does not produce the exact same type string, The round trip between nD definition and the type string must be stable otherwise nD encoding/decoding round trip will be incorrect. </p><p>Every geospatial encoding is uniquely identified by its nD type URI which also serves as its (pseudo) XSD type.  The encoding can be reconstructed when needed from that resource string. That means that externalized geospatial typed-literal data with that type can be loaded into a different store without advance preparation by the DBA. Here is an example resource for a four-dimensional encoding that encodes latitude and longitude over the entire earth's surface, altitude up to 70,000 feet, and time within the 2014 calendar year (it should be all on one line but we have broken it into four lines so it will display in some browsers): </p>
+<pre><code>&lt;http://franz.com/ns/allegrograph/5.0/geo/nd#  
+_longitude_lo_-1.8+2_+1.8+2_+1.-4_+1.-1  
+_latitude_la_-9.+1_+9.+1_+1.-4_+1.-1_time_ti_+3.5976+9  
+_+3.6291+9_+1.+0_+3.6+3_altitude_d_+0.+0_+7.+4_+2.+2&gt;  
+</code></pre><p>Unlike <code>xsd:float</code>, which denotes just one encoding, the set of possible nD geospatial subtypes is essentially unbounded. The number of ordinates, their names, their minima and maxima, their desired resolution, and their strip size, must all be specified by the DBA during repository setup.  It is possible to do this programmatically, but this is usually an awkward way to achieve the desired datatype implementation.  Since a geospatial encoding has only 80 binary bits to contain the ordinate values of a UPI datum, allocating that resolution to the several ordinates is usually interactive process. The DBA requests an nD datatype with certain desired resolutions on each ordinate.  AllegroGraph internally constructs this type and determines how the 80 bits can be allocated to achieve the desired ranges and resolution. AllegroGraph nD ordinates use fractional bits (see <a href="#resolution">below</a> for an explation of fractional bits).  If more or less resolution is available, AllegroGraph distributes the excess or deficit over the several ordinates, and can report the result to the DBA in the Webview Geospatial Designer. The DBA may then modify the original request to better fit the specific needs. </p><p>The Webview Geospatial Datatype Designer facilitates exploring and designing geospatial encoding. This tool is the recommended way to obtain the necessary RDF type resource to be used in a triple store. </p><p>The controls on the Designer allow specifying the ordinate type, maximum value, minimum value, and resolution. The <strong>Actual</strong> box displays the actual resolution when the type is constructed (which may be finer or coarser than the requested resolution). The strip width can be specified for each ordinate but the last. (Recall that strips divide the nD space into prisms with one fewer dimension than the number of ordinates so the least significant ordinate spans its entire range without strips.) Every time a cell is changed, the nD encoding will be recomputed by the server and the generated type string will be replaced unless the ordinate matrix is inconsistent or incorrect, in which case an error will be reported. </p><p>It is also possible to copy an nD type string from elsewhere and paste it into the type string box.  This will parse the type string and populate the matrix of ordinate specifications.  This allows the user to examine an existing encoding, and more importantly, to start with an existing encoding and then modify it interactively.  Some useful modifications would be making a different ordinate the last (and so the free variable of strips), changing a strip width, or altering a requested resolution. </p><p>The strip width, specified for all ordinates but the last, is in the same units as the minimum, maximum, and requested resolution for an ordinate.  The nD system doesn't care about units -- they are implicit in the data -- except for spherical coordinates (degrees) and time (seconds).  If an ordinate represents temperature, the nD system needs to know the minimum, maximum, resolution, and strip width, but it doesn't need to know whether temperature is in C, F, or K units.  Similarly for Cartesian ordinates -- the units are implicit.  Spherical coordinates have specific units because it is necessary to do haversine computations (trigonometry) on them, and the nD system tries to present and ingest spherical and time ordinates in human-readable syntax when it can. </p><p><a name="resolution"></a> </p><a name='header3-33' id='header3-33'></a><h3>Why actual resolution differs from requested</h3><p>The columns for requested and actual resolution in the nD geo designer need explanation.  Defining an ordinate with a given minimum, maximum, and requested resolution means requesting that ordinate to have <em>(max - min)/resolution</em> discrete values.  An nD part has 80 bits available for data.  Multiplying together the number of discrete values of each of the ordinates produces the number of distinct n-tuple values that the nD type needs to represent.  That number might require more or less than 80 bits.  If less than 80 bits are required, the type distributes the extra available resolution proportionally across all the ordinates.  If more than 80 bits are required, the deficit is similarly distributed.  The requested and actual resolution columns show this adjustment.  (For reasons of computation efficiency, a datatype generally uses a fraction of a bit less than 80 bits.) </p><p>Here is what we mean by fractional bits: suppose ordinate1 has values from 1 to 10 with resolution 1, and ordinate2 has values from 1 to 12 also with resolution 1. So ordinate1 can have 10 possible values, and ordinate2 12. That makes 120 possible pairs. Both 10 and 12 require 4 bits to encode but 120 requires only 7, not 8. The nD system takes advantage of this, and so effectively allocates <code>(ceiling (log2 120)) = 7</code> bits to the combination because it encodes the pairs, not the individual ordinates. </p><p><a name="geo-automation"></a> </p><a name='header2-37' id='header2-37'></a><h2>nD Geospatial Automation</h2><p>This document has explained why it is necessary to perform some design and setup in order to use the AllegroGraph geospatial facilities.  A geospatial datatype must be created before data can be encoded using it.  There is no way to avoid this step. </p><p>However, if you are ingesting geospatial data externalized from some other AllegroGraph repository then AllegroGraph's geospatial automation will reconstruct the geospatial datatype and set up the requisite type mappings for you. </p><p>When automation is enabled and a triple with a typed-literal object is ingested (e.g. via a N-triples file or a SPARQL INSERT or an add triple call from one of the clients), the loader will check whether the leading portion of the type URI matches an AllegroGraph geospatial type.  (Both the older 2D and newer nD types are checked.)  If so, and if the type has not yet been encountered in this store, the datatype is reconstructed from the type string and automatic predicate and datatype mappings are added to the store. This lets the triple's object be encoded for fast geospatial search and ensures that all subsequent triples are likewise encoded (for the given predicate). In addition, nD geospatial proximity queries such as the SPARQL magic predicate <code>nd:inCircle</code> use the predicate mapping to determine the specific nD datatype involved in the query. </p><p>Note that automation requires and assumes that the application will obey certain conventions concerning automatic mappings. In particular, any geospatial objects for a given predicate must all share the same datatype.
+<a name="fnr0-2018-06-08" id="fnr0-2018-06-08"></a>
+<sup><a href="#fn0-2018-06-08">1</a></sup>  If they do not, then AllegroGraph will raise an error. For example, if you first added a triple with predicate <code>&lt;http://example.org#location&gt;</code> and an nD datatype that encoded <code>X</code>, <code>Y</code>, and <code>Z</code> coordinates and then tried to add a second triple with the same predicate but only <code>X</code> and <code>Y</code> coordinates, AllegroGraph will signal this error: </p>
+<pre><code>Importing failed:  
+MALFORMED DATA: Attempt to replace a geospatial predicate mapping for &lt;http://example.org#location&gt;  
+using the automatic geospatial mapping facility.  
+ 
+The existing subtype was  
+   &lt;http://franz.com/ns/allegrograph/5.0/geo/nd#_X_ca_+0.+0_+1.+2_+1.-4_+1.-1_Y_ca_+0.+0_+1.+2_+1.-4_+1.-1_Z_ca_+0.+0_+1.+2_+1.-4&gt;  
+ and the new one would have been  
+    &lt;http://franz.com/ns/allegrograph/5.0/geo/nd#_X_ca_+0.+0_+1.+2_+1.-4_+1.-1_Y_ca_+0.+0_+1.+2_+1.-4&gt;  
+</code></pre><p>If you have an existing application that violates this requirement, you can disable automation. This can be done in AGWebView on the Overview page for the repository (by checking the <a href="agwebview.html#geo-data">Recognize geospatial datatypes automatically</a> box in the <strong>Store Control</strong> section of the <a href="agwebview.html#RepositoryOverviewPage">Repository Overview Page</a>). It may also be enabled using the Lisp API (see <a href="lisp-reference.html#automate-nd-datatype-mappings" title="description of automate-nd-datatype-mappings">automate-nd-datatype-mappings</a>) or with HTTP (see <a href="http-reference.html#backend-put-catalogs-repositories-nd-geospatialDatatypeAutomation">geospatialDatatypeAutomation</a>). Automation is on by default for new repositories. </p><p><a name="sparql-magic"></a> </p><a name='header2-45' id='header2-45'></a><h2>SPARQL magic properties for nD Geospatial</h2><p>The SPARQL magic properties for nD geospatial are listed <a href="magic-properties.html#magic-prop-list">here</a> in <a href="magic-properties.html">SPARQL Magic Properties</a>, under the heading N-dimensional Geospatial. There is a brief note about the nD geospatial magic properties <a href="magic-properties.html#sparql-magic-geo-nd">earlier in that document</a>. Note there are also 2-d geospatial magic properties. These do not apply to nD geospatial. </p><p><a name="example-run-through"></a> </p><a name='header2-48' id='header2-48'></a><h2>Example and tutorial: A call location example</h2><p>This section will create a small repository containing nD geospatial data and show how to make queries. These examples will use WebView, with SPARQL as the query language. </p><p>We have a file of cell phone data, <em>PhoneCalls.ttl.gz</em>, available in the <em>tutorial/</em> subdirectory of the AllegroGraph server installation (see <a href="agraph-quick-start.html#tutorial-dir">the tutorial directory section</a> in <a href="agraph-quick-start.html">AllegroGraph Quick Start</a>). It contains 20,000 records. The records are about cell phone events, and include: </p>
+<ul>
+<li>The call originator number</li>
+<li>The call target (receiver) number</li>
+<li>The orginator location (including time of call)</li>
+<li>The target location (including time of call)</li></ul><p>(The time, encoded in both the originator location and the target location, is the same or very close to the same in each. Time appears twice because the data from each phone includes it.) </p><p>Here are some triples from the file associated with a single call: </p>
+<pre><code>_:b9DDDC57Bx74 &lt;http://phonecalls.com/phone-calls#phoneCallTargetLocation&gt; "+37.76943583298422-122.45554363915655^2014-08-18T22:13:00,99935913Z"^^&lt;http://franz.com/ns/allegrograph/4.0/geo/nd#_longitude_lo_-1.23+2_-1.22+2_+1.-5_+1.-3_latitude_la_+3.7+1_+3.8+1_+1.-5_+1.-3_time_ti_+3.5975+9_+3.6291+9_+1.+0&gt;  
+_:b9DDDC57Bx74 &lt;http://phonecalls.com/phone-calls#phoneCallOriginLocation&gt; "+37.788757296466976-122.39161695293953^2014-08-18T22:13:00,99935913Z"^^&lt;http://franz.com/ns/allegrograph/4.0/geo/nd#_longitude_lo_-1.23+2_-1.22+2_+1.-5_+1.-3_latitude_la_+3.7+1_+3.8+1_+1.-5_+1.-3_time_ti_+3.5975+9_+3.6291+9_+1.+0&gt;  
+_:b9DDDC57Bx74 &lt;http://phonecalls.com/phone-calls#phoneCallReceiver&gt; "(555)828-5954"  
+_:b9DDDC57Bx74 &lt;http://phonecalls.com/phone-calls#phoneCallOriginator&gt; "(555)219-9578"  
+ 
+</code></pre><p><code>_:b9DDDC57Bx74</code> is the label of the call event. It is the subject of each triple associated with the event. The object for the predicates <code>phoneCallReceiver</code> and <code>phoneCallOriginator</code> are strings naming phone numbers (like "(555)219-9578"). </p><p>The object of the location triples, with predicates <code>&lt;http://phonecalls.com/phone-calls#phoneCallOriginLocation&gt;</code> and `<a href="http://phonecalls.com/phone-calls#phoneCallTargetLocation">http://phonecalls.com/phone-calls#phoneCallTargetLocation</a>, looks like: </p>
+<pre><code>"+37.788757296466976-122.39161695293953^2014-08-18T22:13:00,99935913Z"^^&lt;http://franz.com/ns/allegrograph/4.0/geo/nd#_longitude_lo_-1.23+2_-1.22+2_+1.-5_+1.-3_latitude_la_+3.7+1_+3.8+1_+1.-5_+1.-3_time_ti_+3.5975+9_+3.6291+9_+1.+0&gt; </code></pre><p>This is the datatype: </p>
+<pre><code>&lt;http://franz.com/ns/allegrograph/4.0/geo/nd#_longitude_lo_-1.23+2_-1.22+2_+1.-5_+1.-3_latitude_la_+3.7+1_+3.8+1_+1.-5_+1.-3_time_ti_+3.5975+9_+3.6291+9_+1.+0&gt; </code></pre><p>It defines how the location and time information is encoded. We will discuss below how to set up this type, but for now consider it a given. When the <em>recognizing geospatial datatypes automatically</em> feature is enabled, the type (if not already known about) will be constructed automatically (see <a href="#geo-automation">above</a>). </p><p>Visit WebView in a browser as was done previously to try out the Geospatial Datatype Designer tool.  Under Repositories, create a new repository named "PhoneCalls". </p><p><a name="figure-t-03"></a> </p><p><img src="image-OpenDB.png" alt="image"></img> </p><p><em>Figure T-03: WebView page for the PhoneCalls repositories</em> </p><p>Once the newly created store is available, click on its name, and that repository's control page will open.  Click on the <strong>Recognize geospatial datatypes automatically</strong> checkbox to enable <a href="#geo-automation">geospatial automation</a>. </p><p><img src="image-pc-recog-gs-data.jpg" alt="Recognize geospatial datatypes automatically checkbox"></img> </p><p>The next step is to load the phone location geospatial data.  Load it from either client or server machine. (See <a href="agwebview.html#load-delete-data">Load and delete data</a> in the <a href="agwebview.html">WebView</a> document. Or see <a href="agload.html">agload</a>.) In the figure, we have clicked on <strong>Import RDF/from an uploaded file</strong> (indicated by the arrow) chosen the file <em>PhoneCalles.ttl.gz</em>, as shown on the <strong>File:</strong> line near the top. </p><p><a name="figure-t-04"></a> </p><p><img src="image-LoadNtriples.png" alt="image"></img> </p><p><em>Figure T-04: Loading n-triples</em> </p><p>At this point the data can be queried.  We will use SPARQL to perform a query to find all phone calls within a fifteen-minute interval that originated or terminated within a 500 meter radius in San Francisco. Click on the Query menu and select New.  Then paste this query text in the query box and click Execute. </p>
+<pre><code>PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;  
+PREFIX phone: &lt;http://phonecalls.com/phone-calls#&gt;  
+PREFIX nd: &lt;http://franz.com/ns/allegrograph/5.0/geo/nd#&gt;  
+PREFIX : &lt;http://franz.com/ns/keyword#&gt;  
+ 
+ 
+SELECT ?from ?direction ?to {  
+ { ?phonecall nd:inCircle (phone:targetLocation  
+                             :latitude +37.756 :longitude -122.415  
+                             :units :km :radius 0.5  
+                             :time-min '2014-08-18T15:20:00Z'^^xsd:dateTime  
+                             :time-max '2014-08-18T15:35:00Z'^^xsd:dateTime) .  
+    BIND('to' as ?direction)  
+  } UNION {  
+    ?phonecall nd:inCircle (phone:originLocation  
+                             :latitude +37.756 :longitude -122.415  
+                             :units :km :radius 0.5  
+                             :time-min '2014-08-18T15:20:00Z'^^xsd:dateTime  
+                             :time-max '2014-08-18T15:35:00Z'^^xsd:dateTime)  
+      BIND('from' as ?direction)  
+  }  
+  ?phonecall phone:Originator ?from .  
+  ?phonecall phone:Receiver   ?to .  
+    } </code></pre><p>If you get the following error message, it means you forgot to toggle the <strong>Recognize geospatial datatypes automatically</strong> checkbox: </p><p><img src="image-bad-geo.jpg" alt="image"></img> </p><p>Delete the repository, recreate it, toggle the switch to on, and load again. If all works, the result looks like: </p><p><a name="figure-t-05"></a> </p><p><img src="image-inRadiusQueryResult.png" alt="image"></img> </p><p><em>Figure T-05: inRadius query result</em> </p><p>Here is a similar query for calls received within a bounding box: </p>
+<pre><code>PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;  
+PREFIX phone: &lt;http://phonecalls.com/phone-calls#&gt;  
+PREFIX nd: &lt;http://franz.com/ns/allegrograph/5.0/geo/nd#&gt;  
+PREFIX : &lt;http://franz.com/ns/keyword#&gt;  
+ 
+ 
+SELECT ?from ?to {  
+ { ?phonecall nd:inBoundingBox (phone:targetLocation  
+                          :latitude-min +37.745 :latitude-max +37.765  
+                          :longitude-min -122.435 :longitude-max -122.405  
+                          :time-min '2014-08-18T15:20:00Z'^^xsd:dateTime  
+                          :time-max '2014-08-18T15:35:00Z'^^xsd:dateTime) .  
+ }  
+  ?phonecall phone:Originator ?from .  
+  ?phonecall phone:Receiver   ?to .  
+ }     
+</code></pre><p><a name="figure-t-06"></a> </p><p><img src="image-inBoundingBoxQueryResult.png" alt="image"></img> </p><p><em>Figure T-06: inBoundingBox query result</em> </p><p>The following shows how to extract an individual ordinate value from an nD-encoded triple object. </p>
+<pre><code>PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;  
+PREFIX phone: &lt;http://phonecalls.com/phone-calls#&gt;  
+PREFIX nd: &lt;http://franz.com/ns/allegrograph/5.0/geo/nd#&gt;  
+PREFIX ndfn: &lt;http://franz.com/ns/allegrograph/5.0/geo/nd/fn#&gt;  
+PREFIX : &lt;http://franz.com/ns/keyword#&gt;  
+ 
+ 
+SELECT ?from ?to ?time {  
+  { ?phonecall nd:inBoundingBox (phone:targetLocation  
+                          :latitude-min +37.745 :latitude-max +37.765  
+                          :longitude-min -122.435 :longitude-max -122.405  
+                          :time-min '2014-08-18T15:20:00Z'^^xsd:dateTime  
+                          :time-max '2014-08-18T15:35:00Z'^^xsd:dateTime) }  
+  ?phonecall phone:Originator ?from ;  
+             phone:Receiver   ?to ;  
+             phone:targetLocation ?o .  
+  bind(ndfn:ordinateValue(?o, :time) as ?time)  
+} </code></pre><p><a name="figure-t-07"></a> </p><p><img src="image-ordinateValue.png" alt="image"></img> </p><p><em>Figure T-07: Ordinate Value</em> </p><hr/><div id="footnotes"> <h2>Footnotes</h2>
+<div class="footnotes">
+<ol>
+<li>
+<a name="fn0-2018-06-08" id="fn0-2018-06-08"></a>
+A predicate may have objects with varying non-geospatial datatypes as these are ignored during geospatial queries <a href="#fnr0-2018-06-08" class="footnoteBacklink" title="Jump back to footnote 1 in the text">&#8617;</a></li>
+</ol>
+</div>  </div>  </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

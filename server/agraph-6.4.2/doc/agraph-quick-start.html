@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>AllegroGraph Quick Start | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="server-installation"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>AllegroGraph 6.4.2 Quick Start</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#aqs-intro' title='Introduction'>Introduction</a></li>
+<li><a href='#aqs-download' title='Software Download'>Software Download</a></li>
+<li><a href='#aqs-installation' title='Server Installation'>Server Installation</a>
+<ul>
+<li><a href='#tarinstall' title='Installation from the tar.gz File'>Installation from the tar.gz File</a></li>
+<li><a href='#header3-25' title='Running the Configuration Script'>Running the Configuration Script</a></li>
+<li><a href='#licensekey' title='Installing the License Key'>Installing the License Key</a></li></ul></li>
+<li><a href='#serverstart' title='Starting the Server'>Starting the Server</a>
+<ul>
+<li><a href='#header3-58' title='The &#39;AllegroGraph is already running&#39; failure'>The 'AllegroGraph is already running' failure</a></li></ul></li>
+<li><a href='#aqs-connecting' title='Connecting to the Server'>Connecting to the Server</a></li>
+<li><a href='#aqs-webview-start' title='Using AGWebView'>Using AGWebView</a>
+<ul>
+<li><a href='#header3-79' title='Logging in'>Logging in</a></li>
+<li><a href='#tutorial-dir' title='The tutorial directory'>The tutorial directory</a></li>
+<li><a href='#header3-89' title='Creating a Database'>Creating a Database</a></li>
+<li><a href='#header3-106' title='Other operations on the repository'>Other operations on the repository</a></li></ul></li>
+<li><a href='#aqs-queries' title='Queries'>Queries</a></li>
+<li><a href='#aqs-other-doc' title='Other documentation'>Other documentation</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='aqs-intro' id='aqs-intro'></a> <h2>Introduction</h2><p>This document guides you through getting started with AllegroGraph. AllegroGraph is a complex and powerful product, and so has many options. These options are described in detail in specialized documents dealing with specific aspects of AllegroGraph. In this Quick Start guide, we will suggest standard (often default) options and link to the more specialized documents. That should allow you to be up and running quickly. </p><a name='aqs-download' id='aqs-download'></a> <h2>Software Download</h2><p>Download the AllegroGraph Server from the <a href="http://franz.com/agraph/downloads/" target="_blank">AllegroGraph Download</a> page. There are various options for AllegroGraph clients. In this Quick Start document, we will assume you will use the AGWebView client (using a web browser as the interface). AGWebView is built into the AllegroGraph server. The server runs natively on Linux x86-64 bit machines. You can run it on a Mac or a Windows machine using a Linux virtual machine, as described on the <a href="http://franz.com/agraph/downloads/" target="_blank">AllegroGraph Download</a> page. </p><p>We assume in the rest of this document that the server installation file has been downloaded. </p><a name='aqs-installation' id='aqs-installation'></a> <h2>Server Installation</h2><p>Server installation is described in detail in <a href="server-installation.html">Server Installation</a>. There are two installation methods: using an RPM file or using a gzip'ed tar file. We will describe the installation from a tar.gz file here. </p><a name='tarinstall' id='tarinstall'></a> <h3>Installation from the tar.gz File</h3><p>The commands in this section do not require "root" access. </p><p>Place the downloaded tar.gz file it in a directory of your choosing. Then extract the installation files with the following command: </p>
+<pre><code>$ tar zxf agraph-6.4.2-linuxamd64.64.tar.gz </code></pre><p>This creates the "agraph-6.4.2" subdirectory within the current working directory, where the installation script resides.  The installation script is "install-agraph".  You must provide the path to a writable directory (which will be created if necessary) where you want to install AllegroGraph. </p>
+<pre><code>$ agraph-6.4.2/install-agraph /home/joe/tmp/ag6.4.2  
+ 
+Installation complete.  
+Now running configure-agraph. </code></pre><a name='header3-25' id='header3-25'></a><h3>Running the Configuration Script</h3><p>The AllegroGraph installation script creates an AllegroGraph configuration file (<em>agraph.cfg</em>) with settings appropriate to your environment. The script creates the minimal configuration file to get you started. The configuration file may be edited later. </p><a name='config-back' id='config-back'></a> <p>The configuration script runs automatically when installing from the tar.gz file. It asks several questions. The default answers are usually adequate, and can be reconfigured later if necessary. </p>
+<pre><code>Welcome to the AllegroGraph configuration program.  This script will  
+help you establish a baseline AllegroGraph configuration.  
+ 
+You will be prompted for a few settings.  In most cases, you can hit return  
+to accept the default value.  
+ 
+Location of configuration file to create:  
+[/home/joe/tmp/ag6.4.2/lib/agraph.cfg]:  
+Directory to store data and settings:  
+[/home/joe/tmp/ag6.4.2/data]:  
+Directory to store log files:  
+[/home/joe/tmp/ag6.4.2/log]:  
+Location of file to write server process id:  
+[/home/joe/tmp/ag6.4.2/data/agraph.pid]:  
+ 
+</code></pre><p>If you are installing as <strong>root</strong> (which is not necessary), you will be asked for a non-root user account for AllegroGraph to run under. (It would be a security risk to let AllegroGraph run as root.) This account defaults to "agraph" and is designated in agraph.cfg as "RunAs agraph". The "agraph" account has no password and is used only by AllegroGraph server. The system will determine you are logged in as root, and ask the following questions. You can usually take the default value: </p>
+<pre><code>User to run as:  
+[agraph]:  
+ 
+User 'agraph' doesn't exist on this system.  
+Create agraph user:  
+[y]: </code></pre><p>The configuration script will then ask for a user name and password to be your AllegroGraph superuser.  This account is specific to AllegroGraph, and is not your operating system login account. The example below shows the user "test" with password "xyzzy". This is the account expected by the tutorial examples, so it is convenient to create that account now. User account management is easy to perform through the <a href="http://franz.com/agraph/agwebview/index.lhtml" target="_blank">AllegroGraph WebView</a> interface, so this initial user/password combination is easily changed later. </p>
+<pre><code>Now you must set up an initial user account for AllegroGraph.  This  
+account will have "super user" privileges within AllegroGraph.  
+ 
+SuperUser account name:  
+[super]: test  
+SuperUser account password:  
+xyzzy </code></pre><p>Finally, you are asked for the instance timeout seconds. This is the length of time (in seconds) a database will stay open without being accessed. The default is 604800, which is 60 x 60 x 24 x 7, that is one week in seconds. In contrast, an hour is 3600. </p>
+<pre><code>Instance timeout seconds:  
+[604800]: </code></pre><p>The value will be written into the <em>agraph.cfg</em> file like <code>InstanceTimeout 604800</code>. If you remove that line from the file, the timeout interval will be one hour (3600 seconds). </p><p>The script writes out the agraph.cfg file in the &lt;yourInstallDirectory&gt;/lib directory (the standard location for the TAR.GZ installation). Make a note of where your agraph.cfg file resides. </p>
+<pre><code>/home/joe/tmp/ag6.4.2/lib/agraph.cfg has been created.   
+ 
+If desired, you may modify the configuration.  </code></pre><p>The script concludes with a display of start and stop commands customized to your installation. Make a note of the start and stop commands for your installation. </p>
+<pre><code>You can start AllegroGraph by running:  
+/home/joe/tmp/ag6.4.2/bin/agraph-control --config /home/joe/tmp/ag6.4.2/lib/agraph.cfg start  
+ 
+You can stop AllegroGraph by running:  
+/home/joe/tmp/ag6.4.2/bin/agraph-control --config /home/joe/tmp/ag6.4.2/lib/agraph.cfg stop  
+</code></pre><p>Unless you are using the free version (which allows up to 5 million triples), you must add a license key to the configuration file. See <a href="#licensekey">below</a> for more information. If you are using the free version, go to <a href="#serverstart">Starting the Server below</a>. </p><a name='licensekey' id='licensekey'></a> <h3>Installing the License Key</h3><p>When you download the free version of AllegroGraph, no License Key is provided or required. The free version lets you load a maximum of 5,000,000 triples, and has no expiration date. </p><p>Franz issues a special License Key to users of the paid version of AllegroGraph. The License Key defines a maximum number of triples and possibly an expiration date for the license, and is issued to an individual or client company. Your License Key will be issued by the Franz sales department, and will arrive in your email.  A typical license key looks like this (non-working) example: </p>
+<pre><code>Licensee Customer Name  
+LicenseLimit 1000000  
+LicenseExpires 2010-06-16  
+&lt;LicenseCode&gt;  
+829P93952R9E8P7X4E8W565Z7A2A4Z592E4W5E49693P9K325X296S3R945A789D4  
+S843K9455787K3R3A2K6Z6N8K8V6V658A3V3D293H8X5S7X3V9A4R6533979V246V  
+6J8Y3T928MA69B928R7E4D8C7C4T6X9F28626Z448E986R6E9B6F4S9J9U6H8A7Q8  
+S324C67783Y89495Q8W867B7S349Q6C6T5W42A59P8Q5M967R5B554C2K3Q424T  
+&lt;/LicenseCode&gt; </code></pre><p>The "License Key" consists of all four fields: the Licensee, LicenseLimit, LicenseExpires and LicenseCode. They must all be present in order for the Key to work. The first three values reflect the terms of your contract with Franz. The LicenseCode verifies the other values. </p><p>To install your License Key, copy the entire block of text (Licensee, LicenseLimit, LicenseExpires, and LicenseCode) and paste it into your agraph.cfg file. (In the tar.gz installation example above, the agraph.cfg file was located at /home/joe/tmp/ag6.4.2/lib/agraph.cfg.) The License Key can go into any part of the file as long as it is outside of a catalog definition. Save the file. The license will be effective when you start or restart the AllegroGraph server. </p><p>If there is any problem with your License Key, AllegroGraph will revert to the behavior of the free version.  It will return an error when you first exceed 5 million triples and every time thereafter. Contact <em>sales@franz.com</em> if you have problems with your license key. </p><a name='serverstart' id='serverstart'></a> <h2>Starting the Server</h2><p>The server is installed in the directory specified to the <strong>install</strong> command (see <a href="#tarinstall">above</a>). In the example above it was /home/joe/tmp/ag6.4.2/ but you likely chose a different directory. We will call that directory <strong>[ag-dir]</strong> in the examples below. </p><p>As noted above, when you complete the installation, a message is printed giving the commands to start and stop the AllegroGraph server. The command is <strong>agraph-control</strong> in the <em>bin/</em> subdirectory of the <strong>[ag-dir]</strong> directory. Start the server with: </p>
+<pre><code>[ag-dir]/bin/agraph-control --config [ag-dir]/lib/agraph.cfg start </code></pre><p>A message similar to </p>
+<pre><code>AllegroGraph Server  
+Copyright (c) Franz Inc.  All Rights Reserved.  
+AllegroGraph contains patented technology.  
+ 
+current-time: [date and time]  
+ 
+Daemonizing...  
+Server started normally: Running with free license of 5,000,000 triples; no-expiration.  
+Access AGWebView at http://127.0.0.1:10035 </code></pre><p>will be printed (if you installed a license key, the license message will be different). The AllegroGraph server is now running. </p><a name='header3-58' id='header3-58'></a><h3>The 'AllegroGraph is already running' failure</h3><p>You can run multiple servers on a single machine, but they must use different ports and they must not use the same directory specified by the <code>SettingsDirectory</code> configuration parameter. See <a href="daemon-config.html">Server Configuration and Control</a> for information on specifying parameters. If that directory is in use by another server process, when you try the start a server that will use that same directory, starting the server will fail with a message similar to: </p>
+<pre><code>There appears to already be an AllegroGraph server running (pid PID). </code></pre><p>You can terminate that server (after ensuring that it is what you want to do and that you are not inconveniencing another user) with </p>
+<pre><code>agraph-control --config [path to agraph.cfg file of the running server] stop </code></pre><p>If you cannot determine where the appropriate agraph.cfg file is or if that command fails for some reason, you can (again, having ensured you are not interfering with other users) do </p>
+<pre><code>kill PID </code></pre><p>If the desired port is in use (presumably by a non-AllegroGraph process but perhaps by another AllegroGraph server not using the directory mentioned above), the server will not start and a message like the following will be printed: </p>
+<pre><code>Local socket address already in use" (errno 98) occurred while  
+creating a passive socket on any interface port PORT. </code></pre><p>To use the desired socket you must find and terminate the process using it. You can also modify the agraph.cfg file to specify another, unused port. See the <code>Port</code> parameter in <a href="daemon-config.html">Server Configuration and Control</a>. </p><a name='aqs-connecting' id='aqs-connecting'></a> <h2>Connecting to the Server</h2><p>There are a number of potential clients that can connect to the AllegroGraph server, either from the same machine as that running the server or from a different machine. The various clients and how they are downloaded (when necessary) and how they are installed and started are described in <a href="server-installation.html">Server Installation</a>, which has links to other documents about clients. </p><p>In this document, we describe connecting to the AllegroGraph server with the <a href="http://franz.com/agraph/agwebview/index.lhtml" target="_blank">AGWebView</a> client. This client uses a web browser and requires no (further) download or installation. The only information you need is the name of the machine running the server (which can be the same machine as the one running your browser) and the port number that the server is listening on. The default port number is 10035, and if you installed as described above, that will be the port number. If you have any difficulty with that port number (such as, for example, it is being used by another program), edit the config file ([path]/ag6.4.2/lib/agraph.cfg) modifying the line </p>
+<pre><code>Port 10035 </code></pre><p>to specify a different, available port. If you do change that line, replace 10035 with the new number in the examples below in this document. </p><a name='aqs-webview-start' id='aqs-webview-start'></a> <h2>Using AGWebView</h2><p>AGWebView is a part of AllegroGraph server.  When the server is running, AGWebView may be opened by typing the server's network hostname or IP address and port number into the address field of a web browser, like the following: </p>
+<pre><code>http://localhost:10035 </code></pre><p><em>localhost</em> refers to the machine which is running the browser (so both the server and the browser are running on the same machine). </p><a name='header3-79' id='header3-79'></a><h3>Logging in</h3><p>If there is an AllegroGraph server listening on that port, AGWebView will respond immediately with a login form (in this example, the server is running on host <em>foray</em>): </p><p><img src="agqs-login.jpg" alt="Login Form"></img> </p><p>For this simple tutorial, log in using the name and password of the AllegroGraph superuser you created during server installation. If you accepted the defaults when you installed AllegroGraph above, the user is "test" with password "xyzzy" (as shown in the illustration though the password is hidden). </p><p>Once logged in you can create additional user accounts with different types of access and privileges. See <a href="agwebview.html#ManagingUsers">Managing Users</a> for details. </p><a name='tutorial-dir' id='tutorial-dir'></a> <h3>The tutorial directory</h3><p>At the top level of the AllegroGraph installation (along with directories like <em>bin/</em> and <em>lib/</em>), there is a <em>tutorial/</em> directory. This directory contains various example files used in some of the examples found in the documention, including the <em>kennedy.ntriples</em> file (used below in this document) and the <em>PhoneCalls.ttl.gz</em> file used in the n-dimensional geospatial example in <a href="geospatial-nd-tutorial.html">N-dimensional Geospatial Usage Guide and Example</a>. When, on an AGWebView repository page, you choose <strong>Load and Delete Data | Import RDF | from an uploaded file</strong> (indicated by the red arrow in the illustration, which shows the PhoneCalls geospatial example), the <strong>Choose Files</strong> dialog that is displayed starts in the last directory it displayed. But the first time it is invoked, it displays the <em>tutorial/</em> directory in the server distribution directory (assuming that directory is in the expected place -- if there is a problem, the dialog will display the server distribution root directory). </p><p><img src="image-from-uploaded-file-pc.jpg" alt="Choose an uploaded file"></img> </p><p>It is possible you do not have access to that directory for some reason. If that is the case, ask the system administrator to provide you with or otherwise make available a copy of the directory. </p><a name='header3-89' id='header3-89'></a><h3>Creating a Database</h3><p>After you have successfully logged in, the browser will look like: </p><p><img src="image-agqs-initial.jpg" alt="Initial Display"></img> </p><p>There are no repositories as we have just opened AllegroGraph for the first time (if data had been stored, we would see the one or more repositories holding the data). </p><p>Data are organized into repositories which are organized into catalogs. There is one initial catalog: the <em>root</em> catalog. We are going to create a respository named <em>kennedy</em> and populate it with data available in an example file included with the distribution. In the <strong>Create new repository</strong> field under <strong>Repositories</strong>, enter <em>kennedy</em> and click the <strong>Create</strong> button. The <em>kennedy</em> repository will be created and the browser will show the <em>kennedy</em> repository page: </p><p><img src="image-agqs-kennedy-2.jpg" alt="Kennedy repository"></img> </p><p>Displayed is information about the repository (such as there is no data -- <em>0 statements</em> -- as yet) and various commands for managing the data. We want to load data from the <em>kennedy.ntriples</em> file, found in the <em>tutorial/</em> directory of the server installation -- see <a href="#tutorial-dir">the tutorial directory section above</a>). AllegroGraph supports various file formats for data (see <a href="agload.html">agload</a>). The ntriples format has one triple (subject, predicate, object) per line, with each line ending in a period. Here are the first few lines: </p>
+<pre><code>&lt;http://www.franz.com/simple#person1&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://www.franz.com/simple#person&gt; .  
+&lt;http://www.franz.com/simple#person1&gt; &lt;http://www.franz.com/simple#first-name&gt; "Joseph" .  
+&lt;http://www.franz.com/simple#person1&gt; &lt;http://www.franz.com/simple#middle-initial&gt; "Patrick" .  
+&lt;http://www.franz.com/simple#person1&gt; &lt;http://www.franz.com/simple#last-name&gt; "Kennedy" .  
+&lt;http://www.franz.com/simple#person1&gt; &lt;http://www.franz.com/simple#suffix&gt; "none" .  
+&lt;http://www.franz.com/simple#person1&gt; &lt;http://www.franz.com/simple#alma-mater&gt; &lt;http://www.franz.com/simple#Harvard&gt; . </code></pre><p>We load this data by clicking on <strong>Load and Delete Data | Import RDF: | from an uploaded file</strong> (indicated by the red arrow in the illustration). A dialog pane appears near the top of the WebView page allowing you to specify the file or files to be loaded. </p><p><img src="image-agqs-kennedy-load.jpg" alt="Loading Kennedy data"></img> </p><p>This dialog has lots of options. See the <a href="agwebview.html#loading-a-file">description</a> for details. Here we will just specify a file to load, leaving all options at their default values. </p><p>Click on the <strong>Choose Files</strong> button. It will display the last directory it displayed but the first time it is invoked, it displays the <em>tutorial/</em> directory in the server installation directory (assuming that directory is in the expected place -- if there is a problem, the dialog will display the server distribution root directory). </p><p>Specify the file in the <em>tutorial/</em> directory named <em>kennedy.ntriples</em>. Then click the <strong>Ok</strong> button on the lower right of the dialog pane. (If the system cannot access the <em>tutorial/</em> directory for any reason, you will, of course, have to make the file accessible in some other fashion.) </p><p>Once the triples in the file are loaded, we see <strong>Repository kennedy</strong> now has 1,214 statements (triples). </p><p><img src="image-agw-kennedy-repository-page.jpg" alt="Kennedy data loaded"></img> </p><p>Now we have created a repository and loaded data. We should now back it up.  Choose <strong>Back-up this repository</strong> from the <strong>Repository Control</strong> options (circled in red in the illustration). The dialog pane shown at the top of the screen appears. Enter the path and filename (an absolute directory pathname leaves no ambiguity about where the file will be put; the file will be saved to the server machine) in the text box and click <strong>Ok</strong>. </p><p><img src="image-agqs-backup.jpg" alt="Backing-up a database"></img> </p><a name='header3-106' id='header3-106'></a><h3>Other operations on the repository</h3><p>As the illustration shows, there are many commands you can invoke to manipulate the database and the data it contains. These are described in the <a href="agwebview.html#RepositoryOverviewPage">Respository Overview Page</a> section of <a href="http://franz.com/agraph/agwebview/index.lhtml" target="_blank">AGWebView</a>. </p><a name='aqs-queries' id='aqs-queries'></a> <h2>Queries</h2><p>Once data is loaded, you want to query the database. The <em>kennedy</em> database contains public data on relationships among and characteristics of individuals in the family of Joseph Kennedy, father of US President John F. Kennedy. Queries might include the following: </p>
+<ul>
+<li>Who among Joseph and his descendents are males and went to Harvard University and what are their professions? </li>
+<li>Who is the oldest living descendent (at least when the database was created)?</li></ul><p>Queries can be formulated using SPARQL, a query language adapted to RDF databases. Let us take a very simple query: the people described in the kennedy database are labeled <code>&lt;http://www.franz.com/simple#personN&gt;</code> and <code>&lt;http://www.franz.com/simple#person1&gt;</code> is Joseph Patrick Kennedy, the patriarch of the family. You can see this by examining the first lines of the data file. </p><p>So, what are the predicates and objects of all triples whose subject is <code>&lt;http://www.franz.com/simple#person1&gt;</code>? The SPARQL query </p>
+<pre><code>select ?p ?o WHERE {&lt;http://www.franz.com/simple#person1&gt; ?p ?o} </code></pre><p>will tell, as shown in the following illustration (we selected <strong>New</strong> from the <strong>Queries</strong> menu on the menu bar, and typed the query into the <strong>Edit Query</strong> box and clicked the <strong>Execute</strong> button). </p><p><img src="image-agqs-sparql-2.jpg" alt="Simple SPARQL query"></img> </p><p>Who are the males among Joseph Kennedy and his descendents that went to Harvard University and what are their respective professions? Here is the SPARQL query: </p>
+<pre><code>PREFIX o: &lt;http://www.franz.com/simple#&gt;  
+  SELECT ?x ?p {  
+  ?x o:sex o:male ;  
+     o:alma-mater o:Harvard ;  
+     o:profession ?p .  
+  }  
+  ORDER BY ?p  
+</code></pre><p>And the answer is 13, as shown by the displayed query (we also display their professions): </p><p><img src="image-agqs-sparql-harvard.jpg" alt="Attended Harvard"></img> </p><p>Who is the oldest living person among Joseph Kennedy and his descendents (at the time the databse was created, several years ago)? Here is the SPARQL query. Note the use of an OPTIONAL clause. That produces result bindings for persons with a birth-year whether or not they also have a death-year. The FILTER clause then filters out any results which do have a death-year. </p>
+<pre><code>PREFIX o: &lt;http://www.franz.com/simple#&gt;  
+  SELECT ?person ?birthYear {  
+    ?person o:birth-year ?birthYear  
+    OPTIONAL {  
+      ?person o:death-year ?deathYear  
+    }  
+    FILTER( !bound( ?deathYear ) )  
+  } order by ?birthYear  
+  LIMIT 1  
+</code></pre><p>Since we are only interested in the oldest, we add a <code>LIMIT 1</code> clause to the SPARQL query. We run the query and find the result is person10: </p><p><img src="image-agqs-sparql-oldest.jpg" alt="Oldest survivor"></img> </p><p>And who is person10? We could use the same query as we did above for person1: </p>
+<pre><code>select ?p ?o WHERE {&lt;http://www.franz.com/simple#person10&gt; ?p ?o} </code></pre><p>and get all the triples where person10 is the subject but we are only interested in the names (first, middle and last), so we restrict the query to that (the middle name is shown in the misnamed <code>middle-initial</code> field): </p>
+<pre><code>PREFIX o: &lt;http://www.franz.com/simple#&gt;  
+  SELECT ?fn ?mn ?ln  
+     WHERE {o:person10 o:first-name ?fn ;  
+                       o:middle-initial ?mn ;  
+                       o:last-name ?ln .  
+       } </code></pre><p><img src="image-agqs-person10.jpg" alt="person10"></img> </p><p>person10 is Robert Sargent Shriver, commonly known as Sargent Shriver, first director of the Peace Corps. (Mr. Shriver actually died in 2011, but that was after the database was constructed.) </p><p>Note there is a <strong>Warnings</strong> tab instead of an <strong>Information</strong> tab. Warnings about the query are displayed there if there are any (if there are no warnings, the tab is labeled <strong>Information</strong>). If we look at the warnings we see: </p><p><img src="image-person10-warnings.jpg" alt="Warnings for person10"></img> </p><p>You are warned that the query has a cross product (which means a join with no common variables, which can take a long time and can produce voluminous results). The remainder of the display is the information. </p><p>Though it is not obvious, technically it is true that the query has a cross product, as the plan for the query, displayed by the <strong>Show Plan</strong> button, is </p><p><img src="image-person10-plan.jpg" alt="Query plan for person10"></img> </p><p>Indeed there are no shared variables. Even though it signals a warning, it can be argued the warning should be suppressed if either the LHS or the RHS has only one row since in that case there is not likely to be a problem. At this printing, the warning is signaled. That might change in the future. But is is useful to understand that warnings can appear and they can be seen, if there are any, by clicking <strong>Show Plan</strong> prior to execution. </p><p>This has been a brief introduction to SPARQL but it does show its flexibility and power. There are more examples in the <a href="sparql-tutorial.html">SPARQL Tutorial</a>. </p><a name='aqs-other-doc' id='aqs-other-doc'></a> <h2>Other documentation</h2><p>If you have followed the steps in this document, you should have AllegroGraph installed, at least one database loaded, and should have asked and received answers about that database. See the <a href="index.html">documentation index</a> to learn more about AllegroGraph. </p></div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

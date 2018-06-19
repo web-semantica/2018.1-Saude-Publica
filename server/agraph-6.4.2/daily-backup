@@ -1,0 +1,69 @@
+#!/bin/bash
+
+# Sample script for performing a daily backup of a single AllegroGraph
+# database.  Also see daily-backup.crontab.
+
+########################
+# Configurables
+
+# PATH to agraph-backup executable
+AGRAPH_BACKUP=$(dirname $0)/agraph-backup
+
+# AllegroGraph port
+PORT=10035
+
+# Leave blank for root catalog
+CATALOG=
+
+DBNAME=test
+
+# Use a different backup dir for each database
+BACKUPDIR=/disk1/agraph/backups
+# The date code and ".agbackup" will be appended
+FILENAME_PREFIX=backup-
+
+# Only keep 7 backups
+MAX_BACKUPS=7
+
+# End configurables
+########################
+
+function do_backup {
+    local datecode=`date '+%Y-%m-%d-%H:%M:%S'`
+    local filename=$BACKUPDIR/${FILENAME_PREFIX}${datecode}.agbackup
+    
+    local catalog_arg
+
+    if [ "$CATALOG" ]; then
+	catalog_arg="--catalog $CATALOG"
+    fi
+
+    mkdir -p $BACKUPDIR
+    $AGRAPH_BACKUP --port $PORT $catalog_arg backup $DBNAME $filename
+}
+
+function purge_old_backups {
+    # Count number of existing backup dirs
+    local num_backups=`find $BACKUPDIR -maxdepth 1 -name "$FILENAME_PREFIX*.agbackup" | wc -l`
+
+    if [ $num_backups -gt $MAX_BACKUPS ]; then
+	# Compute the number of existing backups that need to be purged
+	local purge_count=$((num_backups-MAX_BACKUPS))
+	
+	# Purge the oldest $purge_count backups
+	for dir in `find $BACKUPDIR -maxdepth 1 -name "$FILENAME_PREFIX*.agbackup" | sort | head -$purge_count`; do
+	    echo Purging $dir
+	    rm -r $dir
+	done
+    fi
+}
+
+set -e
+
+if [ -z "$DBNAME" ]; then
+    echo 'DBNAME must be set!'
+    exit 1
+fi
+
+do_backup
+purge_old_backups

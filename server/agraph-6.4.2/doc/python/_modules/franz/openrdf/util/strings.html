@@ -1,0 +1,291 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>franz.openrdf.util.strings &#8212; AllegroGraph Python client 100.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '100.2.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+    <div class="nav-links nav-links-header">
+    </div>
+  
+    
+  <h1>Source code for franz.openrdf.util.strings</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># pylint: disable-msg=C0103</span>
+
+<span class="c1">################################################################################</span>
+<span class="c1"># Copyright (c) 2006-2017 Franz Inc.  </span>
+<span class="c1"># All rights reserved. This program and the accompanying materials are</span>
+<span class="c1"># made available under the terms of the MIT License which accompanies</span>
+<span class="c1"># this distribution, and is available at http://opensource.org/licenses/MIT</span>
+<span class="c1">################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+<span class="kn">from</span> <span class="nn">future.builtins</span> <span class="k">import</span> <span class="nb">chr</span>
+<span class="kn">from</span> <span class="nn">future.types</span> <span class="k">import</span> <span class="n">newbytes</span>
+<span class="kn">from</span> <span class="nn">future.utils</span> <span class="k">import</span> <span class="n">native_str</span><span class="p">,</span> <span class="n">isnewbytes</span>
+<span class="kn">from</span> <span class="nn">past.builtins</span> <span class="k">import</span> <span class="n">unicode</span>
+<span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">A strings utility module for helper functions.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="c1">###############################################################################</span>
+<span class="c1">## Canonical NTriples encoding</span>
+<span class="c1">###############################################################################</span>
+
+
+<div class="viewcode-block" id="encode_ntriple_string"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.util.html#franz.openrdf.util.strings.encode_ntriple_string">[docs]</a><span class="k">def</span> <span class="nf">encode_ntriple_string</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a unicode string escaped according to N-Triples</span>
+<span class="sd">    canonical encoding rules.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">unicode</span><span class="p">):</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">unicode</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">char</span><span class="p">,</span> <span class="n">replacement</span> <span class="ow">in</span> <span class="n">ESCAPES</span><span class="p">:</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">replacement</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">string</span></div>
+
+
+<span class="n">ESCAPES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># Replacements will be performed sequentially, so backslash </span>
+    <span class="c1"># must be the first character on the list</span>
+    <span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="mh">0x5C</span><span class="p">),</span> <span class="sa">r</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">),</span>  
+    <span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="mh">0x0A</span><span class="p">),</span> <span class="sa">r</span><span class="s1">&#39;\n&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="mh">0x0D</span><span class="p">),</span> <span class="sa">r</span><span class="s1">&#39;\r&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="mh">0x22</span><span class="p">),</span> <span class="sa">r</span><span class="s1">&#39;\&quot;&#39;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">uri_escaped_chars</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[\x00-\x20&lt;&gt;&quot;</span><span class="si">{}</span><span class="s1">|^`</span><span class="se">\\</span><span class="s1">]&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="uri_escape_match"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.util.html#franz.openrdf.util.strings.uri_escape_match">[docs]</a><span class="k">def</span> <span class="nf">uri_escape_match</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a Match object representing a single character</span>
+<span class="sd">    into an ntriple escape sequence.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">code</span> <span class="o">&lt;=</span> <span class="mh">0xffff</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">u</span><span class="si">%04x</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">code</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">U</span><span class="si">%08x</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">code</span></div>
+
+
+<div class="viewcode-block" id="encode_ntriple_uri"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.util.html#franz.openrdf.util.strings.encode_ntriple_uri">[docs]</a><span class="k">def</span> <span class="nf">encode_ntriple_uri</span><span class="p">(</span><span class="n">uri</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a string URI to ntriples by adding angle brackets</span>
+<span class="sd">    and escaping special characters.  </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s1">&#39;&lt;&#39;</span> <span class="o">+</span> <span class="n">uri_escaped_chars</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">uri_escape_match</span><span class="p">,</span> <span class="n">uri</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&gt;&#39;</span></div>
+
+
+<div class="viewcode-block" id="ntriples_unescape"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.util.html#franz.openrdf.util.strings.ntriples_unescape">[docs]</a><span class="k">def</span> <span class="nf">ntriples_unescape</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decodes ntriples escape sequences in a string.</span>
+
+<span class="sd">    Actually decodes a superset of said sequences.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;u&quot;&#39;</span> <span class="o">+</span> <span class="n">text</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="uriref"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.util.html#franz.openrdf.util.strings.uriref">[docs]</a><span class="k">def</span> <span class="nf">uriref</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If `string` is a valid NTriples URI reference, extract and return the URI (as a string).</span>
+<span class="sd">    Otherwise return `None`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">uriref</span><span class="o">.</span><span class="n">pattern</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">ntriples_unescape</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span></div>
+
+<span class="n">uri_pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;&lt;([^:]+:.+)&gt;&#39;</span>
+<span class="n">uriref</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">uri_pattern</span> <span class="o">+</span> <span class="s1">&#39;$&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="nodeid"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.util.html#franz.openrdf.util.strings.nodeid">[docs]</a><span class="k">def</span> <span class="nf">nodeid</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If `string` is a valid NTriples BNode reference, extract and return the node id.</span>
+<span class="sd">    Otherwise return `None`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">nodeid</span><span class="o">.</span><span class="n">pattern</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+<span class="n">nodeid</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;_:([A-Za-z][A-Za-z0-9]*)$&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="literal"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.util.html#franz.openrdf.util.strings.literal">[docs]</a><span class="k">def</span> <span class="nf">literal</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If `string` is a valid literal in NTriples syntax, return its value, lang tag and type.</span>
+<span class="sd">    Use `None` if there is no language tag or no datatype.</span>
+<span class="sd">    If `string` is not a valid literal return `None`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">literal</span><span class="o">.</span><span class="n">pattern</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">label</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">ntriples_unescape</span><span class="p">(</span><span class="n">label</span><span class="p">),</span> <span class="n">ntriples_unescape</span><span class="p">(</span><span class="n">dtype</span><span class="p">),</span> <span class="n">lang</span></div>
+
+<span class="n">litvalue</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;&quot;([^&quot;</span><span class="se">\\</span><span class="s1">]*(?:</span><span class="se">\\</span><span class="s1">.[^&quot;</span><span class="se">\\</span><span class="s1">]*)*)&quot;&#39;</span>
+<span class="n">litinfo</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;(?:@([a-z]+(?:-[a-z0-9]+)*)|\^\^&#39;</span> <span class="o">+</span> <span class="n">uri_pattern</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;)?&#39;</span>
+<span class="n">literal</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">litvalue</span> <span class="o">+</span> <span class="n">litinfo</span> <span class="o">+</span> <span class="s1">&#39;$&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="to_bytes"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.util.html#franz.openrdf.util.strings.to_bytes">[docs]</a><span class="k">def</span> <span class="nf">to_bytes</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If TEXT is a Unicode string, return a byte string in utf-8.</span>
+<span class="sd">    Otherwise simply return TEXT.</span>
+
+<span class="sd">    :param text: Text to be converted.</span>
+<span class="sd">    :type text: str|bytes|unicode</span>
+<span class="sd">    :rtype: bytes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">unicode</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span></div>
+
+
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">to_native_string</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts text to the native string type of the Python version used.</span>
+<span class="sd">        UTF-8 encoding is used if the text needs to be encoded or decoded.</span>
+
+<span class="sd">        :param text: Text to be converted (either Unicode or bytes).</span>
+<span class="sd">        :type text: str|bytes|unicode</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">text</span>
+<span class="k">else</span><span class="p">:</span>
+<div class="viewcode-block" id="to_native_string"><a class="viewcode-back" href="../../../../_gen/franz.openrdf.util.html#franz.openrdf.util.strings.to_native_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_native_string</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">isnewbytes</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">bytes</span><span class="o">.</span><span class="fm">__str__</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">native_str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">text</span>
+        <span class="c1"># Must be Unicode...</span>
+        <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span></div>
+</pre></div>
+
+  
+    <div class="nav-links nav-links-footer">
+    </div>
+  
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../../index.html">AllegroGraph Python client</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=franzinc&repo=agraph-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">AllegroGraph Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changes.html">Release notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Franz Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

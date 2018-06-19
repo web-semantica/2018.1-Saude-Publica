@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>AllegroGraph Text Index</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<body id="text-index"> <div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>AllegroGraph Full-Text Indexing</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-10' title='Text-Indexing Features'>Text-Indexing Features</a>
+<ul>
+<li><a href='#header3-24' title='From strings to words: Tokenizing'>From strings to words: Tokenizing</a></li>
+<li><a href='#ref-freetext-query-grammar' title='Freetext Query Expressions'>Freetext Query Expressions</a></li></ul></li>
+<li><a href='#header2-66' title='Solr text indexing'>Solr text indexing</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>AllegroGraph supports its own built in full-text indexer, Apache <a href="solr-index.html">Solr</a> text indices, and <a href="http://www.mongodb.org/">MongoDB</a> indices. </p><a name='header2-10' id='header2-10'></a><h2>Text-Indexing Features</h2><p>The built in text indices are based on a locality-optimized <a href="http://en.wikipedia.org/wiki/Patricia_trie" title="Patricia trie" class="external" target="_blank">Patricia trie</a>, on which we do intelligent trie traversal for fast wildcard and fuzzy searches.  The indexing process is fully transactional and is able to easily handle billions of documents. </p><p>You may manage AllegroGraph full-text indices through <a href="agwebview.html">AGWebView</a> or any of the AllegroGraph client APIs including <a href="lisp-reference.html#ref-freetext-indexing">Lisp</a>, <a href="https://franz.com/agraph/support/documentation/current/python/tutorial/example012.html">Python</a>, or <a href="https://franz.com/agraph/support/documentation/current/javadoc/index.html">Java</a>. </p><p>Each full-text index has a name, so you can apply it to a query or perform maintenance on it. </p><p>Each index works with one or more specific predicates, including an option to index all predicates. </p><p>An index can be configured to include: </p>
+<ul>
+<li>All literals, no literals, or specific types of literals.</li>
+<li>The full URI of a resource, just the local name of the resource (after the # or /), or ignore resource URIs entirely.</li>
+<li>Any combination of the four parts of a "triple:" the subject, predicate, object, and graph.</li></ul><p>Stop words (ignored words) may be specified for each index, or the index can use a default list of stop words. </p><p>An index can make use of word filters such as stem.english, drop-accents, and soundex. </p>
+<ul>
+<li><strong>stem.english</strong>: Provides stemming of English text.</li>
+<li><strong>drop-accents</strong>: Normalizes non-English text by removing accented characters.</li>
+<li><strong>soundex</strong>: Indexes words by how they sound, rather than how they are spelled.</li></ul><a name='header3-24' id='header3-24'></a><h3>From strings to words: Tokenizing</h3><p>To index freetext, the engine first breaks strings into words (a process called tokenization).  There are three built in tokenizers: <em>default</em>, <em>japanese</em> and <em>simple-cjk</em>. </p><h4>the Default Tokenizer</h4><p>The <em>default</em> tokenizer works well for most European languages. It defines a <code>word</code> as any run of letters that is at least as long as the <code>minimum-word-size</code> specified for an index. Dashes, underscores and periods do not break words unless they occur at the start or the end. It will also omit the <em>stop words</em> configured for the index. The default list is: </p>
+<div id='freetext-stop-words'>
+<span class='freetext-stop-word'>and</span> 
+<span class='freetext-stop-word'>are</span> 
+<span class='freetext-stop-word'>but</span> 
+<span class='freetext-stop-word'>for</span> 
+<span class='freetext-stop-word'>into</span> 
+<span class='freetext-stop-word'>not</span> 
+<span class='freetext-stop-word'>such</span> 
+<span class='freetext-stop-word'>that</span> 
+<span class='freetext-stop-word'>the</span> 
+<span class='freetext-stop-word'>their</span> 
+<span class='freetext-stop-word'>then</span> 
+<span class='freetext-stop-word'>there</span> 
+<span class='freetext-stop-word'>these</span> 
+<span class='freetext-stop-word'>they</span> 
+<span class='freetext-stop-word'>this</span> 
+<span class='freetext-stop-word'>was</span> 
+<span class='freetext-stop-word'>will</span> 
+<span class='freetext-stop-word'>with</span> 
+</div>
+ <p>Below are some examples of strings and the words the tokenizer will extract from them: </p><p><table id="freetext-examples"> 
+<tr>
+<td>Hello there. I am fine. how are you?</td>
+<td>"hello" "there" "fine" "how" "are" "you"</td>
+</tr>
+  
+<tr>
+<td>I think...therefore... I am.</td>
+<td>"think...therefore"</td>
+</tr>
+  
+<tr>
+<td>When indexing, the freetext engine first tokenizes the
+strings in the triple's object.</td>
+<td>"when" "indexing" "the" "freetext" "engine" "first" "tokenizes" "the" "strings" "the" "triple" "object"</td>
+</tr>
+  
+<tr>
+<td>k = x^{2} + y^{2} defines a circle.</td>
+<td>"defines" "circle"</td>
+</tr>
+  </table> </p><h4>Indexing words in Japanese</h4><p>Specifying the <code>:japanese</code> tokenizer allows AllegroGraph to correctly index text from the Japanese language. Here is an example: </p><p><img src="japanese-fti-screenshot.png" alt="Creating a Japanese freetext index"></img> </p><h4>Indexing CJK (Chinese/Japanese/Korean words)</h4><p>The value <code>:simple-cjk' for the </code>:tokenizer` keyword argument to <a href="lisp-reference.html#create-freetext-index" title="description of create-freetext-index">create-freetext-index</a> indexes Chinese/Japanese/Korean (CJK) text. It uses bigrams for consecutive CJK characters as words.  To use this tokenizer, specify :simple-cjk as the <code>tokenizer</code> option when creating or modifying a full-text index. </p><p>The bigram tokenizer can be used for CJK mixed text, but its simplicity may result in false positives.  It also tends to index a much larger number of words compared to other tokenizers. </p><a name='ref-freetext-query-grammar' id='ref-freetext-query-grammar'></a> <h3>Freetext Query Expressions</h3><p>You can query the full-text indices using any AllegroGraph client and via SPARQL using the <a href="http://franz.com/ns/allegrograph/2.2/textindex/match">fti:match</a>  and <a href="http://franz.com/ns/allegrograph/2.2/textindex/matchExpression">fti:matchExpression</a> <a href="magic-properties.html">magic properties</a>. Each client uses the same query expression language defined informally below: </p>
+<dl><dt><code>"string"</code> </dt>
+<dd>Matches triples containing all the words in the string.</dd><dt><code>(and &lt;pattern1&gt; &lt;pattern2&gt; ...)</code> </dt>
+<dd>Matches triples that match all of the given patterns.</dd><dt><code>(or &lt;pattern1&gt; &lt;pattern2&gt; ...)</code> </dt>
+<dd>Matches triples that match any of the given patterns.</dd><dt><code>(phrase "string")</code> </dt>
+<dd>Matches triples that contain the exact string given.</dd><dt><code>(match "?string*")</code> </dt>
+<dd>Matches triples that match the given string, supporting wildcards,   where <code>?</code> matches any single character, and <code>*</code> matches any number   of characters. Note that, in a big triple-store, matching patterns   starting with a <code>*</code> or <code>?</code> can be very slow. </dd></dl><p>Here are some Lisp client examples: </p>
+<ul>
+<li>find all the triples whose object contains the word "baseball"
+<pre><code>(freetext-get-triples "baseball") </code></pre></li>
+<li>find all triples whose object contains all of the words "baseball", "soccer", and "champions"
+<pre><code>(freetext-get-triples "baseball soccer champions")  
+(freetext-get-triples '(and "baseball" "soccer" "champions")) </code></pre></li>
+<li>find all triples whose object contains at least one of the words "baseball", "soccer", or "champions"
+<pre><code>(freetext-get-triples '(or "baseball" "soccer" "champions")) </code></pre></li>
+<li>find all triples that contain any word ending in "ball". Note that this wildcard match is more expensive than the simple word matches above. 
+<pre><code>(freetext-get-triples '(match "*ball")) </code></pre></li>
+<li>find all triples that contain any 8-letter word ending in "ball". Note that this wildcard match is more expensive than the simple word matches above. 
+<pre><code>(freetext-get-triples '(match "????ball")) </code></pre></li>
+<li>find all triples that contain the exact phrase "baseball champions"
+<pre><code>(freetext-get-triples '(phrase "baseball champions")) </code></pre></li></ul><p>The function <code>text-index:parse-query</code> converts a string based query into the s-expression based format. For example: </p>
+<pre><code>(text-index:parse-query "\"common lisp\" (programming | devel*)")  
+==&gt;  
+(and (phrase "common lisp") (or "programming" (match "devel*"))) </code></pre><p>This can be convenient when needing to convert user input into a free text query. </p><a name='header2-66' id='header2-66'></a><h2>Solr text indexing</h2><p>Text indexing using <strong>Apache Solr</strong> is described the document <a href="solr-index.html">Solr text indices</a>. In that document, we go into some detail about whether to use the native AllegroGraph full-text indexing or to use Solr. In short (again, see <a href="solr-index.html">Solr text indices</a> for full details), the native full-text indexer is faster, has a simpler API, and does not require synchronization between the indexer and the database (Solr runs as as a separate program and so has to be told about changes to the database). The native indexer is sufficient for many purpose. Solr has the advantage of using a powerful public product which is always being improved. </p></div> </div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="author" content="Franz Incorporated"/>
+<title>SPARQL Tutorial | AllegroGraph 6.4.2</title>
+<link rel='stylesheet' href='jquery-ui.custom.min.css' />
+<link rel='stylesheet' href='stylesheet.css' />
+<link rel='stylesheet' href='print.css' media='print' />
+<link rel='stylesheet' href='sparql.css' />
+<body id="sparql-tutorial"><div id="header"> <p>                 </p>                <p><script src="jquery.min.js" type="text/javascript" charset="utf-8"></script> <script src="jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script> <script src="activebookmark.js" type="text/javascript" charset="utf-8"></script> </p> <div id='search-form'>   <form method="GET" action="https://www.google.com/search">     <input type="hidden" name="as_sitesearch" value=""> </input>     <input type="text" size="40" name="as_q" value="" placeholder="Please enable JavaScript to use search!"> </input>&nbsp;     <input type="submit" value="Search" disabled> </input>   </form> </div> <script>    /* Docudown has no support for function calls in HTML attributes. 
+<ul>
+<li>Thus, we set the as_sitesearch attribute using JavaScript below.    */   (function () { 'use strict'; var properValue = "franz.com/agraph/support/documentation/6.4.2/"; var input = document.querySelector(   '#search-form input[name="as_sitesearch"]'); input.setAttribute('value', properValue); /* The submit button was disabled so that search would be 
+<ul>
+<li>impossible for users without JavaScript. Enabling now: */ document.querySelector('#search-form input[type="submit"]').   removeAttribute('disabled'); document.querySelector('#search-form input[name="as_q"]').   removeAttribute('placeholder');   })(); </script> <div id="copyright">  Copyright (c) 2005 - 2018 Franz, Incorporated</div> <div id="timestamp">  Last updated 8 June 2018 at 06:55</div> <a href="https://franz.com" alt="Franz Inc Home Page"><div id="hdLogo"> </div></a> </li></ul></li></ul>       <h1>AllegroGraph 6.4.2 SPARQL tutorial</h1></div> <div id="contents">  <div id="docIndex"> <ul id="agmenu"> <li><a href="index.html">Documentation Index</a> 
+<ul>
+<li><a href="release-notes.html">Release Notes</a></li>
+<li><a href="agraph-quick-start.html">Quick Start</a></li>
+<li><a href="agraph-introduction.html" id="agraph-introduction-tab">Introduction</a></li>
+<li>Setup and Configuration
+<ul>
+<li><a href="http://franz.com/agraph/downloads/" target="_blank">Download</a></li>
+<li><a href="server-installation.html">Server Installation</a></li>
+<li><a href="daemon-config.html">Server Configuration and Control</a></li>
+<li><a href="agwebview.html">WebView</a></li>
+<li><a href="upgrade-guide.html">Database Upgrading</a></li></ul></li>
+<li>Server Management
+<ul>
+<li><a href="performance-tuning.html">Performance Tuning</a></li>
+<li><a href="deleting-duplicate-triples.html">Deleting Duplicate Triples</a></li>
+<li><a href="purging-deleted-triples.html">Purging Deleted Triples</a></li>
+<li><a href="audit.html">Auditing</a></li>
+<li><a href="managing-users.html">Managing Users</a></li>
+<li><a href="replication.html">Replication</a></li>
+<li><a href="point-in-time-recovery.html">Point-in-Time Recovery</a></li>
+<li><a href="transaction-log-archiving.html">Transaction Log Archiving</a></li>
+<li><a href="security-overview.html">Security Overview</a></li>
+<li><a href="security.html">Security Implementation</a></li></ul></li>
+<li>Tools
+<ul>
+<li><a href="agtool.html">agtool</a></li>
+<li><a href="agload.html">Data Loading</a></li>
+<li><a href="agexport.html">Data Export</a></li>
+<li><a href="backup-and-restore.html">Backup and Restore</a></li>
+<li><a href="agquery.html">Querying</a></li>
+<li><a href="reasoner-tutorial.html" id="reasoner-tutorial-tab">RDFS++</a></li>
+<li><a href="materializer.html">Materializer</a></li></ul></li>
+<li>Details
+<ul>
+<li><a href="triple-index.html">AllegroGraph Indices</a></li>
+<li><a href="text-index.html">Full-text Indices</a></li>
+<li><a href="encoded-ids.html">Encoded IDs</a></li>
+<li><a href="connection-pooling.html">Connection Pooling</a></li>
+<li><a href="geospatial-nd.html">N-dimensional Geospatial Overview</a></li>
+<li><a href="magic-properties.html#sparql-magic-geo-2d">2-D Geospatial</a></li>
+<li><a href="magic-properties.html#sparql-magic-temporal">Temporal</a></li>
+<li><a href="magic-properties.html#sparql-magic-sna">Social Network</a></li>
+<li><a href="javascript.html">JavaScript</a></li>
+<li><a href="datatypes.html">Datatypes</a></li>
+<li><a href="rapper.html">Data Conversion (Rapper)</a></li>
+<li><a href="stored-procedures.html">Stored Procedures</a></li>
+<li><a href="triple-attributes.html">Triple Attributes</a></li></ul></li>
+<li>Querying
+<ul>
+<li><a href="sparql-overview.html">SPARQL documentation summary</a></li>
+<li><a href="sparql-reference.html">SPARQL Reference</a></li>
+<li><a href="spin.html">SPIN</a></li>
+<li><a href="magic-properties.html">SPARQL Magic Properties</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li></ul></li>
+<li>3rd-party tools
+<ul>
+<li><a href="solr-index.html">Solr text Indices</a></li>
+<li><a href="mongo-interface.html">MongoDB integration</a></li>
+<li><a href="TBCplugin.html">TopBraid Composer Plugin</a></li>
+<li><a href="agraph-introduction.html#othertools">Cloudera</a></li></ul></li>
+<li>Client APIs
+<ul>
+<li><a href="http://franz.com/agraph/gruff/" title="Gruff" target="_blank">Gruff</a></li>
+<li><a href="http-protocol.html">REST/HTTP interface</a></li>
+<li><a href="http-reference.html">HTTP reference</a></li>
+<li><a href="javadoc/index.html">Javadocs (Sesame and Jena)</a></li>
+<li><a href="python/index.html">Python API</a></li>
+<li><a href="lisp-reference.html">Lisp Reference</a></li>
+<li><a href="javascript.html">JavaScript</a></li></ul></li>
+<li>Tutorials
+<ul>
+<li><a href="geospatial-nd-tutorial.html">N-dimensional Geospatial</a></li>
+<li><a href="sparql-tutorial.html">SPARQL Tutorial</a></li>
+<li><a href="java-tutorial/java-tutorial.html">Java Sesame</a></li>
+<li><a href="java-tutorial/jena-tutorial.html">Java Jena</a></li>
+<li><a href="python/tutorial.html">Python Sesame</a></li>
+<li><a href="lisp-quickstart.html">Lisp</a></li>
+<li><a href="prolog-tutorial.html">Prolog</a></li>
+<li><a href="tutorial-index.html">More...</a></li></ul></li>
+<li>Other
+<ul>
+<li><a href="suggested-reading.html">Suggested Reading</a></li>
+<li><a href="http://franz.com/ps/services/conferences_seminars/" title="Conferences and Seminars" target="_blank">Conferences and Seminars</a></li>
+<li><a href="http://github.com/franzinc">Source Code on Github</a></li>
+<li><a href="http://agraph.franz.com/cresources/index.lhtml" target="_blank">Community Resources</a></li>
+<li><a href="http://franz.com/agraph/ec2/">Amazon EC2</a></li>
+<li><a href="copyrights.html">Copyrights</a></li>
+<li><a href="change-history.html" id="change-history-tab">Change History</a></li></ul></li>
+<li><a href="http://franz.com/" target="_blank">Franz, Inc.</a> </li> </ul> </li></ul><p><script> $(function() { $( "#agmenu" ).menu(); }); </script> </p></div>   
+<div class='table-of-contents' id='table-of-contents'>
+
+<ul>
+<li><a href='#header2-8' title='Introduction'>Introduction</a></li>
+<li><a href='#header2-25' title='RDF and querying'>RDF and querying</a>
+<ul>
+<li><a href='#header3-27' title='Bindings'>Bindings</a></li>
+<li><a href='#header3-39' title='Multiple triple patterns'>Multiple triple patterns</a></li></ul></li>
+<li><a href='#header2-50' title='SPARQL syntax'>SPARQL syntax</a>
+<ul>
+<li><a href='#header3-56' title='Verbs and variables'>Verbs and variables</a></li></ul></li>
+<li><a href='#header2-77' title='Patterns'>Patterns</a>
+<ul>
+<li><a href='#header3-84' title='Basic and optional patterns'>Basic and optional patterns</a></li>
+<li><a href='#header3-93' title='Filters'>Filters</a></li>
+<li><a href='#header3-112' title='UNION'>UNION</a></li></ul></li>
+<li><a href='#header2-119' title='Ordering and slicing results'>Ordering and slicing results</a>
+<ul>
+<li><a href='#header3-121' title='DISTINCT and REDUCED'>DISTINCT and REDUCED</a></li>
+<li><a href='#header3-135' title='ORDER BY'>ORDER BY</a></li>
+<li><a href='#header3-149' title='LIMIT and OFFSET'>LIMIT and OFFSET</a></li></ul></li>
+<li><a href='#header2-154' title='Other verbs'>Other verbs</a>
+<ul>
+<li><a href='#header3-156' title='DESCRIBE'>DESCRIBE</a></li>
+<li><a href='#header3-167' title='CONSTRUCT'>CONSTRUCT</a></li></ul></li>
+<li><a href='#header2-181' title='What the tutorial hasn&#39;t covered'>What the tutorial hasn't covered</a></li></ul>
+<div id='tocLink'><a href='index.html'>Documentation Index</a></div>
+</div>
+  <div id="main-content"> <a name='header2-8' id='header2-8'></a><h2>Introduction</h2><p>This is not a semantics document, or a general description of SPARQL, or a standards document; for these, we advise the reader to look elsewhere, starting with the <a href="sparql-reference.html">SPARQL Reference</a>. </p><p>Note that this document sometimes omits details or complicating factors, entirely or until later. The tutorial uses the AGWebView client for AllegroGraph (see <a href="agwebview.html">WebView</a>). </p><p>To run this tutorial, start an AllegroGraph server and log into AllegroGraph WebView with your browser. See <a href="server-installation.html">Server Installation</a> and <a href="agwebview.html">WebView</a> for details. </p><p>Once you have logged in, create a <code>sparqltutorial</code> repository (type <code>sparqltutorial</code> into the <strong>Name:</strong> field under <strong>Create new repository</strong> and click the <strong>Create</strong> button). The result is shown in the first picture (you may have additional repositories, of course). In this and later illustrations, red text, arrows, etc. are added and will not be seen on your AGWebView display. </p><p><img src="sparql-tut-01.png" alt="sparql-tut-1"></img> </p><p>You need to define three namespaces, for prefixes <code>ex</code>, <code>foaf</code>. and <code>xsd</code>.  First click on the sparqltutorial repository name to get to the page for that repository. You can display namespaces with the <strong>Namespaces</strong> choice on the <strong>Utilities</strong> menu or by displaying the Queries page by choosing <strong>new</strong> from the <strong>Queries</strong> menu (shown in the illustration) and displaying namespaces using the button next to the Edit Query area: </p><p><img src="sparql-tut-02.png" alt="sparql-tut-2"></img> </p><p>That displays an Edit Query area: </p><p><img src="sparql-tut-03.png" alt="sparql-tut-3"></img> </p><p>To the right there are buttons for showing namespaces and adding a namespace (indicated by the red arrow). Click on <strong>Show namespaces</strong> and namespaces defined for the repository are displayed. We want to add three namespaces: </p>
+<ul>
+<li>prefix <code>ex</code>, URI <code>http://example.com/</code></li>
+<li>prefix <code>foaf</code>, URI <code>http://xmlns.com/foaf/0.1/</code></li>
+<li>prefix <code>xsd</code>, URI <code>http://www.w3.org/2001/XMLSchema#</code></li></ul><p>Check to see if any of these are already listed. For each not already listed, click on <strong>Add a namespace</strong> and enter the prefix and URI into the text boxes that appear. In the illustration, we have entered the prefix <code>ex</code> and the URI <code>http://example.com/</code>. Note that you do not put a colon (:) after the prefix or wrap the URI in angle brackets. </p><p><img src="sparql-tut-04.png" alt="sparql-tut-4"></img> </p><p>Once all the namespaces are defined, continue to the next section. </p><a name='header2-25' id='header2-25'></a><h2>RDF and querying</h2><p>RDF is an elegant formalism for describing graphs. These graphs can encode almost anything given the right vocabulary. The model is a superset of the relational model (so you can encode conventional databases) and trees (so you can encode anything that can be expressed in XML, for example). AllegroGraph gives you several options for extracting data from these graphs. SPARQL, the subject of this tutorial, is the standard tool for extracting data from RDF graphs. </p><a name='header3-27' id='header3-27'></a><h3>Bindings</h3><p>Consider a graph, <em>G</em>. <em>G</em> contains triples that share objects or subjects (using Turtle syntax, the <code>:</code> prefix is assumed to be defined for all subsequent examples): </p>
+<pre><code>prefix : &lt;http://example#&gt;  
+:john :knows :karen ;  
+      :name "John" .  
+:karen :knows :alex ;  
+       :name "Karen" .  
+:alex :name "Alex" . </code></pre><p>SPARQL's approach to selecting values is to take triple patterns and allow them to contain <em>variables</em> (denoted by a <code>?</code> or <code>$</code> before a string). These triple patterns match against real triples in the store, or inferred triples if you wish to use a reasoner. Every time a triple pattern matches against a triple, it produces a <em>binding</em> for each variable. </p><p>For example, the triple pattern </p>
+<pre><code>  :john :knows ?y . </code></pre><p>produces one binding for <code>?y</code>: karen. </p><p>The pattern </p>
+<pre><code>  ?x :knows ?y . </code></pre><p>produces more bindings: </p>
+<pre><code>  |   x   |   y   |  
+  =================  
+1 | john  | karen |  
+2 | karen |  alex | </code></pre><p>Each row in this table is a match for the pattern. </p><a name='header3-39' id='header3-39'></a><h3>Multiple triple patterns</h3><p>Variables can occur in multiple patterns that together comprise a query. Patterns that overlap in variables narrow down the results, while those that do not expand them. </p><p>To extend the earlier example: </p>
+<pre><code>  ?x :knows ?y .  
+  ?y :name  ?name . </code></pre><p>produces the following results: </p>
+<pre><code>  |   x   |   y   |  name   |  
+  ===========================  
+1 | john  | karen | "Karen" |  
+2 | karen |  alex | "Alex"  |    </code></pre><p>Adding an additional triple to the store: </p>
+<pre><code>  :alex :name "Alexander" . </code></pre><p>yields the following: </p>
+<pre><code>  |   x   |   y   |  name        |  
+  ================================  
+1 | john  | karen | "Karen"      |  
+2 | karen |  alex | "Alex"       |  
+3 | karen |  alex | "Alexander"  | </code></pre><p>This should tell you something interesting: a row exists in the results for every possible substitution of values into the query that would yield a set of triples that exist in the graph. Each row can contain only one binding, so Alex's two names fork the results. </p><a name='header2-50' id='header2-50'></a><h2>SPARQL syntax</h2><p>SPARQL borrows Turtle's syntax for triple patterns (Turtle is described <a href="http://www.w3.org/TR/turtle/" class="external" target="_blank">here</a>). A variable is a string starting with a <code>?</code> or a <code>$</code>, but otherwise things are much the same. The above query pattern, borrowing the <a href="http://xmlns.com/foaf/0.1/" title="FOAF">FOAF vocabulary</a> and assigning it the prefix <code>foaf</code>, would be written as </p>
+<pre><code>  ?x foaf:knows ?y .  
+  ?y foaf:name  ?name . </code></pre><p>You'll be shown more syntax as you progress through this tutorial. </p><p>Every triple pattern in SPARQL lives inside a graph pattern (as can other graph patterns!). Graph patterns are denoted by curly brackets, so our query would look like </p>
+<pre><code>{  
+  ?x foaf:knows ?y .  
+  ?y foaf:name  ?name .  
+} </code></pre><a name='header3-56' id='header3-56'></a><h3>Verbs and variables</h3><p>SPARQL doesn't just do results querying &mdash; it can also ask questions, describe resources, and construct new graphs. One can also specify which columns to select from the result table. This SPARQL query includes a verb and a single-element list of variables: </p>
+<pre><code>SELECT ?name WHERE {  
+  ?x &lt;http://xmlns.com/foaf/0.1/knows&gt; ?y .  
+  ?y &lt;http://xmlns.com/foaf/0.1/name&gt;  ?name .  
+} </code></pre><p>As you can see, a full URI can be specified in angle brackets. </p><p>Now we want to add some data, starting with four triples. We use SPARQL's <code>INSERT DATA</code> command, which gets pasted into the query area, as shown in the illustration. (SPARQL commands are case-insensitive but we usually use uppercase). </p>
+<pre><code>INSERT DATA { ex:john foaf:knows ex:karen .   
+	  ex:karen foaf:knows ex:alex .   
+	  ex:karen foaf:name "Karen" .   
+	  ex:alex foaf:name "Alex" .   
+        } </code></pre><p>Once the statement is entered, click on the <strong>Execute</strong> button. </p><p><img src="sparql-tut-05.png" alt="sparql-tut-5"></img> </p><p>The system will display <strong>True</strong> and the data is now available. </p><p>Now that we have some data in our repository, we can start making queries. For, example, who is known by at least one other? The SPARQL querying command is SELECT (meaning select items which satisfy the statements in the SELECT body). The SELECT statement to ask ' who is known by at least one other?' is: </p>
+<pre><code>SELECT ?name WHERE {   
+  ?x &lt;http://xmlns.com/foaf/0.1/knows&gt; ?y .   
+  ?y &lt;http://xmlns.com/foaf/0.1/name&gt;  ?name .   
+} </code></pre><p>x? and y? are variables. This statement says 'select all names of items where the item appears as the object in a triple where <code>&lt;http://xmlns.com/foaf/0.1/knows&gt;</code> is the predicate'. Note we use the complete URI of the predicates (instead of the abbreviated foaf:knows). We are just illustrating that either can be used at any time. </p><p>Back in the browser window, choose <strong>New</strong> from the <strong>Query</strong> menu and enter the query. Click the <strong>Execute</strong> button to send the query to AllegroGraph, which displays the results in a new field below the <strong>Query</strong> field. The results are "Karen" and "Alex" because we have triples </p>
+<pre><code>ex:john foaf:knows ex:karen   
+ex:karen foaf:knows ex:alex    
+ex:karen foaf:name "Karen"    
+ex:alex foaf:name "Alex"  </code></pre><p>so both ex:karen and ex:alex are objects of triples which have the predicate foaf:knows, and "Alex" is the name of ex:alex, "Karen" the name of ex:karen. </p><p><img src="sparql-tut-06.png" alt="sparql-tut-6"></img> </p><p>Notice the <strong>Save</strong> button at the bottom of the <strong>Query</strong> field. If you type a name into the text box next that button (like <code>query1</code>) and click on <strong>Save</strong>, the query will be saved and can be retrieved with the <strong>Saved</strong> option on the Queries menu. (Recent queries can also be retrieved with the <strong>Recent</strong> option on that menu, but those will not survive restarting the server while saved queries will). </p><p>The Download button below the results field allows you to save the results in a selected format. (The query is actually re-executed by the server and all results are downloaded regardless of whether the <em>Limit to 1000 results</em> checkbox on the Query page is checked; a limit within the query is respected however.) The results will be saved to a file. Here is the file saved when clicking on <strong>Download</strong> with the SPARQL JSON results format: </p>
+<pre><code>{"head":{"vars":["name"]},"results":{"bindings":[  
+ {"name":{"type":"literal","value":"Karen"}},  
+ {"name":{"type":"literal","value":"Alex"}}]}} </code></pre><p>Congratulations! Your first SPARQL query. </p><p>We will not be showing as many pictures of the browser for the rest of this tutorial. Instead, we will often just say where queries, statements, etc. should go and what buttons you should click. </p><a name='header2-77' id='header2-77'></a><h2>Patterns</h2><p>SPARQL, being a fully-fledged query language, doesn't just have basic graph patterns. You can also: </p>
+<ul>
+<li>Nest patterns:
+<pre><code>{  
+  ?x ?y "Jim" .  
+  { ?y rdfs:subPropertyOf ex:someProperty }  
+} </code></pre></li>
+<li>Mark patterns as optional</li>
+<li>Filter results based on built-in or custom predicates</li>
+<li>Find alternative matches using UNION patterns.</li></ul><a name='header3-84' id='header3-84'></a><h3>Basic and optional patterns</h3><p>All triples and all other basic patterns inside a basic pattern must match. So, in the nested pattern above, <code>?y</code> would bind to properties that were direct subproperties of <code>ex:someProperty</code>. </p><p>This is not the case for optional patterns. An optional pattern will not cause a result to fail if it does not match with the current bindings. This manifests itself as an empty (unbound) cell in the results table. </p><p>Example: </p>
+<pre><code>SELECT ?name ?email WHERE {  
+  ?x foaf:knows ?y .  
+  ?y foaf:name ?name .  
+  OPTIONAL { ?y foaf:mbox ?email }  
+} </code></pre><p>If you run this on the data so far, you'll get two results in the output with no bindings shown for <code>?email</code>. </p><p><img src="sparql-tut-07.png" alt="sparql-tut-7"></img> </p><p>Try taking out the word "<code>OPTIONAL</code>": you get no results. </p><p><img src="sparql-tut-08.png" alt="sparql-tut-8"></img> </p><a name='header3-93' id='header3-93'></a><h3>Filters</h3><p>Matching and comparing data is a very common operation in a query language. SPARQL has a full suite of comparisons. A common one is regex testing: </p>
+<pre><code>SELECT ?name WHERE {  
+  ?x foaf:knows ?y .  
+  ?y foaf:name ?name .  
+  FILTER regex(?name, '^K.*')  
+}    </code></pre><p>&#8230; returning only "Karen". </p><p>You can even define your own, referencing them by URI, though this is a more involved topic, left for later discussion. </p><h4>Filters and optionals</h4><p>It's important to note the interaction between filter patterns and optional patterns. Remember that an optional pattern contributes to the results if it matches, and leaves the results unchanged if it does not. An optional pattern can do some interesting things to the results when combined with a filter. </p><p>Try the following: </p>
+<pre><code>INSERT DATA { ex:book1 ex:title "Cheap Book" .   
+	  ex:book1 ex:price "30"^^xsd:integer .   
+	  ex:book2 ex:title "Expensive Book" .   
+	  ex:book2 foaf:name "90"^^xsd:integer .   
+        } </code></pre><p>Note we are using the <code>xsd</code> prefix we defined with the other namespaces above. Call this data <code>data2</code>. Now lets ask a query (we put in a redundant PREFIX statement for a namespace already defined, just to show how you can define prefixes on the fly): </p>
+<pre><code>PREFIX ex: &lt;http://example.com/&gt;  
+SELECT ?title ?price WHERE {  
+  ?x ex:title ?title .  
+  OPTIONAL {  
+    ?x ex:price ?price .  
+    FILTER ( ?price &lt; 40 )  
+  }  
+} </code></pre><p>You should get something like: </p><p><img src="sparql-tut-09.png" alt="sparql-tut-9"></img> </p><p>The price for the expensive book is not returned, because it wasn't under 40. If you move the price triple pattern to outside the optional, you get the expensive book's price in the results. If you add another book without a listed price, the optional will also fail to match, so expensive books and books with no price are indistinguishable. </p><p>Remember this when you write queries! </p><h4>Combining filters</h4><p>You can combine filters with boolean operators, parentheses, and so on: </p>
+<pre><code>SELECT ?title ?price WHERE {  
+  ?x ex:title ?title .  
+  OPTIONAL {  
+    ?x ex:price ?price .  
+  }  
+  FILTER ( bound(?price) &amp;&amp; ?price &lt; 40 )  
+} </code></pre><p>&#8230; matching only books where the <code>OPTIONAL</code> matches, providing a price, and the price is less than 40. On the example data, this returns one result: the cheap book and its price, 30. </p><a name='header3-112' id='header3-112'></a><h3>UNION</h3><p>As well as using optional patterns to extend data, SPARQL allows you to bind variables using alternatives. Using <code>UNION</code> you can specify a number of graph patterns, separated by the <code>UNION</code> keyword, that can each contribute to the query result. The union pattern matches if any of its graph patterns match, and all of them have a chance to contribute. Try the following: </p>
+<pre><code>INSERT DATA { ex:a ex:b ex:c .   
+	  ex:a ex:d ex:e .  
+        } </code></pre><p>And try this query: </p>
+<pre><code>SELECT ?third {  
+  { &lt;http://example.com/a&gt; &lt;http://example.com/b&gt; ?third }  
+  UNION  
+  { &lt;http://example.com/a&gt; &lt;http://example.com/d&gt; ?third }  
+} </code></pre><p>You'll see ex:c and ex:e under the heading <code>third</code>. </p><p>That the union pattern can match as a whole, but the sub-patterns do not have to contain the same variables, can be useful; the sub-patterns can contain optionals to contribute additional information, or bind to differently-named variables to track which branch was applied. </p><a name='header2-119' id='header2-119'></a><h2>Ordering and slicing results</h2><p>SPARQL can post-process result sets. </p><a name='header3-121' id='header3-121'></a><h3>DISTINCT and REDUCED</h3><p>A SELECT query can optionally be specified to return unique results for each row. Query patterns often return duplicate bindings, and implementations must not eliminate duplicates unless explicitly instructed. (See <a href="lisp-reference.html#delete-duplicate-triples" title="description of delete-duplicate-triples">delete-duplicate-triples</a> for information on duplicate deletion.) </p><p>Simply add the DISTINCT keyword: </p>
+<pre><code>PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;  
+SELECT DISTINCT ?x ?y WHERE {  
+  ?x foaf:knows [ foaf:knows ?y ] .  
+}    </code></pre><p>Note that this removal of duplicates occurs after the results are refined down to the specified variable list. </p><p>In SPARQL, the <code>... [ ... ]</code> syntax represents anonymous blank nodes. The full details can be found in the SPARQL reference (<a href="http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/#dfn-blank-node" class="external" target="_blank">here</a> and <a href="http://www.w3.org/TR/2008/REC-rdf-sparql-query-20080115/#QSynBlankNodes" class="external" target="_blank">here</a>) but the general idea is that: </p>
+<ul>
+<li><code>[]</code> specifies a blank node,
+<li><code>[ ?p ?o ]</code> is the same as <code>[] ?p ?o</code> and is equivalent to writing out a blank node in <em>longhand</em> as in <code>_:b25 ?p ?o</code>,</li>
+<li>The blank node can be used in multiple triple-patterns. For example, this pattern <code>[ :p "v" ] :q "w"</code> is equivalent to these two combined patterns:
+<pre><code> _:b23 :p "v" .  
+ _:b23 :q "w" . </code></pre></li></li><p>and this pattern <code>:x :q [ :p "v" ] .</code> is the same as </p>
+<pre><code>:x  :q _:b19 .  
+_:b19 :p "v" . </code></pre></ul><p>See the SPARQL <a href="http://www.w3.org/TR/2008/REC-rdf-sparql-query-20080115/#QSynBlankNodes" class="external" target="_blank">reference</a> guide for more details and other useful abbreviations. </p><p>If you do not need duplicates to be removed, but you do not need the redundant entries, either &mdash; which would be the case if you are relying on counts to be correct, for example &mdash; then you can specify <code>REDUCED</code> instead of <code>DISTINCT</code>. This allows AllegroGraph to discard duplicate values if it's advantageous to do so. </p><a name='header3-135' id='header3-135'></a><h3>ORDER BY</h3><p>Ordering directives can be appended to a SELECT query. These allow you to impose a sorted order on a results set. </p><p>Naturally, the results of a query can be ordered by any combination of variables in the results, in ascending or descending order. Furthermore, multiple sorting criteria can be specified to break ties. </p><p>Criteria can be: </p>
+<ul>
+<li>Simple variables:
+<pre><code>ORDER BY ?firstName </code></pre></li>
+<li>Arbitrary functions, named by URI:
+<pre><code>ORDER BY ex:calculateImportance(?person) </code></pre></li>
+<li>Nested SPARQL expressions, surrounded by parentheses, including   arbitrary boolean operations (<em>e.g.</em>, &amp;&amp; and ||; see <a href="http://www.w3.org/TR/rdf-sparql-query/#SparqlOps" title="SPARQL Ops">this section   of the SPARQL specification</a> for more): 
+<pre><code>ORDER BY (REGEX('Mr.*', ?title) &amp;&amp; BOUND(?employer)) ASC(?surname) </code></pre></li></ul><p>This expression will sort the results into two partitions: one containing people whose title begins with "Mr" and are employed, and its counterpart. Each category will then be sorted alphabetically by surname. </p><p>These criteria can be optionally annotated with ascending/descending (ascending by default): </p>
+<pre><code>ORDER BY DESC(?age) ASC(?lastName) </code></pre><p>The values generated by the criteria (<em>e.g.</em>, the bound value of a variable) are compared according to <a href="http://www.w3.org/TR/rdf-sparql-query/#modOrderBy" title="Order By in the SPARQL specification">a strict set of rules</a> to yield an ordering. If a criterion does not yield an ordering, the next criterion is applied, and so on until an ordering is achieved. If an ordering is never achieved, then the order is unspecified. </p><a name='header3-149' id='header3-149'></a><h3>LIMIT and OFFSET</h3><p>Once solutions are ordered, it makes sense to be able to return 'slices' of a sequence of results. <code>LIMIT</code> is an upper bound on the number of results returned. <em>E.g.</em>, <code>LIMIT 5</code> will return no more than 5 results for the query. <code>OFFSET n</code> causes the first <code>n</code> results to be discarded. For example: </p>
+<pre><code>PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;  
+SELECT ?name WHERE {  
+  ?person foaf:name ?name .  
+}  
+ORDER BY ?name  
+LIMIT 10  
+OFFSET 20 </code></pre><p>implements the usual ten-per-page style of results, starting on page 3 &mdash; results 21&ndash;30 inclusive. If the number of results is smaller than <code>OFFSET</code>, no results are returned. If <code>LIMIT</code> is 0, no results are returned. </p><p>It is technically possible to apply LIMIT and OFFSET to unordered results, but this is largely pointless, as the values returned in each slice are unpredictable. </p><a name='header2-154' id='header2-154'></a><h2>Other verbs</h2><p>The most common use of SPARQL is to return results bindings from queries &mdash; SELECT. As previously mentioned, though, there are three other things it can do. </p><a name='header3-156' id='header3-156'></a><h3>DESCRIBE</h3><p>In many situations you simply do not have enough information to properly query a store for information about a resource -- you might not know which properties it has, for example. DESCRIBE allows you to provide a list of resources or variables that you wish to be described; the variables can be bound by an implicit SELECT query. </p>
+<pre><code>DESCRIBE &lt;http://example.com/fish&gt; ?x WHERE {  
+  ?x ?y &lt;http://example.com/fish&gt;  
+} </code></pre><p>This query asks for a description of fish and any resource directly related to fish. The implementation of DESCRIBE uses <a href="http://www.w3.org/Submission/CBD/" title="CBD submission">Concise Bounded Descriptions</a> as a formalism for descriptions; informally, this is the smallest useful section of outward-facing graph around each resource. </p><p>DESCRIBE returns a collection of triples, not a set of bindings, and these are ordinarily serialized in RDF/XML. </p><p>Example: </p>
+<pre><code>PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;  
+PREFIX ex: &lt;http://example.com/&gt;  
+DESCRIBE ex:karen ?friend {  
+  ex:karen foaf:knows ?friend .  
+} </code></pre><p>displays </p><p><img src="sparql-tut-10.png" alt="sparql-tut-10"></img> </p><p>If you download as N-Triples (as suggested in the Download widget), you get a file containing: </p>
+<pre><code>&lt;http://example.com/karen&gt; &lt;http://xmlns.com/foaf/0.1/knows&gt; &lt;http://example.com/alex&gt; .  
+&lt;http://example.com/karen&gt; &lt;http://xmlns.com/foaf/0.1/name&gt; "Karen" .  
+&lt;http://example.com/alex&gt; &lt;http://xmlns.com/foaf/0.1/name&gt; "Alex" . </code></pre><a name='header3-167' id='header3-167'></a><h3>CONSTRUCT</h3><p>A CONSTRUCT query returns a new collection of RDF triples based on the results of the query and a template. Note that CONSTRUCT produces only valid RDF triples. Thus if the subject or predicate of a triple is a literal, then the triple will be silently discarded from the result. </p><p>Much of the time, your purpose for querying an RDF store is to construct a new set of triples. For example, you can do a limited amount of inference this way: </p>
+<pre><code>INSERT DATA {ex:bill ex:mother ex:doris .  
+             ex:doris ex:brother ex:billsuncle .  
+             ex:fred ex:brother ex:billsotheruncle .   
+             ex:bill ex:father ex:fred .   
+             } </code></pre><p>And then this query:  <br />
+</p>
+<pre><code>PREFIX ex: &lt;http://example.com/&gt;  
+SELECT * WHERE {  
+  { ?x ex:mother [ ex:brother ?uncle ] }  
+  UNION  
+  { ?x ex:father [ ex:brother ?uncle ] }  
+} </code></pre><p>produces the following </p><p><img src="sparql-tut-11.png" alt="sparql-tut-11"></img> </p><p>CONSTRUCT allows you to yield triples directly from the query: </p>
+<pre><code>PREFIX ex: &lt;http://example.com/&gt;  
+CONSTRUCT {  
+  ?x ex:uncle ?uncle  
+}  
+WHERE {  
+  { ?x ex:mother [ ex:brother ?uncle ] }  
+  UNION  
+  { ?x ex:father [ ex:brother ?uncle ] }  
+} </code></pre><p>produces these triples: </p><p><img src="sparql-tut-12.png" alt="sparql-tut-12"></img> </p><p>These triples have not been added to the store. That can be done with a similar query, replacing CONSTRUCT with INSERT: </p>
+<pre><code>PREFIX ex: &lt;http://example.com/&gt;  
+INSERT {   
+  ?x ex:uncle ?uncle   
+     }  
+WHERE {   
+  { ?x ex:mother [ ex:brother ?uncle ] }   
+  UNION  
+  { ?x ex:father [ ex:brother ?uncle ] }  
+  }  
+</code></pre><a name='header2-181' id='header2-181'></a><h2>What the tutorial hasn't covered</h2><p>There are a lot of things! SPARQL can also: </p>
+<ul>
+<li>Restrict queries to a set of graphs: <code>FROM</code>, <code>FROM NAMED</code></li>
+<li>Match graphs: <code>GRAPH</code></li>
+<li>Serialize to many different formats</li>
+<li>Perform aggregation on result sets</li>
+<li>Ask boolean queries: <code>ASK</code></li>
+<li>Using AllegroGraph's geospatial support with SPARQL (see <a href="magic-properties.html#sparql-magic-geo-nd">nD Geospatial Magic Properties</a> for details) </li></ul><p>Take a look at the <a href="sparql-reference.html">reference</a> for more details. </p><p>You can use other clients with SPARQL. See for example <a href="sparql-lisp-tutorial.html">SPARQL Tutorial using the Lisp Client</a>. </p></div>  <p><script> $.each($("#agmenu ul li a"), function(ignore, link) {   var anchor = $(link);   anchor.parent().on("click", function () { window.location = anchor.prop("href"); }); }); $("#agmenu").css("display", "block") </script> </p> 
+</body>
+</html>

@@ -1,0 +1,5 @@
+# Sample crontab entry for performing a daily backup of a single
+# allegrograph database.  Replace 'agraph' with whatever user your
+# AllegroGraph installation runs as.
+
+0 0 * * * agraph ...agraph-lib-path.../daily-backup

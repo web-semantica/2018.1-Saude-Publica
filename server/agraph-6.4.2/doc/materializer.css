@@ -1,0 +1,142 @@
+/* @override https://internal.franz.com/people/gwking/agraph/docs/materializer.css */
+
+table.matTable thead {
+
+}
+
+
+div.matDivOuter {
+//	display: inline-block;
+	/** any margins or padding leaves the two
+	tables out of sync?!
+	*/
+//	padding-left: 2em;
+//	padding-right: 2em;
+//	margin-left: 2em;
+//	margin-right: 2em;
+}
+
+div.matDivInner {
+//	max-height: 600px;	
+	overflow: auto;
+//	margin-right: 18px;
+}
+
+table.matTable tbody {
+	text-align:center; 
+}
+	
+table.matTable tfoot {
+	background-color:#000268; 
+	color:#FFFFFF;
+	text-align:center; 
+	position:fixed; 
+	bottom:0px;
+	display: none;
+}
+
+table.matTable {
+	border-style: solid;
+	border-width: 1px;
+	border-collapse: collapse;
+//	position: relative;
+//	overflow: scroll;
+//	height:600px;
+//	width: 700px;
+}
+
+table.matTable th {
+	font-weight: bold;
+	border-width: 1px;
+	border-style: solid;
+	background-color: #dedede;
+}
+
+table.matTable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	//font: 10pt "Courier New", Courier, mono;
+}
+
+tr.notDoneConsistency {
+	color: #feffff;
+	background-color: #424dd5;
+}
+
+tr.notDoneExpensive {
+	color: #feffff;
+	background-color: #4248a9;
+}
+
+tr.notDoneClutter {
+	color: #feffff;
+	background-color: #797dd5;
+}
+
+tr.notDoneUnimplemented {
+	color: #feffff;
+	background-color: #001279;
+}
+
+/* columns */
+
+table.matTable td:nth-child(1) {
+	
+	width: 80px;
+	font: italic bold 11pt "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+table.matTable td:nth-child(2) {
+	width: 6em;
+}
+
+table.matTable td:nth-child(3) {
+	text-align: left;
+	width: 20em;
+	font: 10pt "Courier New", Courier, mono;
+}
+
+table.matTable td:nth-child(4) {
+	text-align: left;
+	width: 20em;
+	font: 10pt "Courier New", Courier, mono;
+}
+
+table.matTable td:nth-child(5) {
+	text-align: left;
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+	width: 20em;
+	font-size: 12;
+}
+
+table.matLegend {
+	width: 80%;
+}
+
+table.matLegend {
+	width: 60%;	
+	border-style: solid;
+	border-width: 1px;
+	border-collapse: collapse;
+	border-color: #666666;
+	float: right;
+	margin-bottom: 2em;
+}
+
+table.matLegend td:nth-child(1) {
+	font-weight: bold;
+	font-style: italic;
+	width: 100px;
+	text-align:center; 
+	padding: 8px;
+}
+
+#matTableHeader {
+	width: 100%;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-weight: bold;
+//	width: 700px;
+}
+

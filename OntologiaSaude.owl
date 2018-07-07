@@ -1,0 +1,1116 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#"
+     xml:base="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.w3.org/2001/XMLSchema#string -->
+
+    <rdf:Description rdf:about="http://www.w3.org/2001/XMLSchema#string">
+        <owl:equivalentClass rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </rdf:Description>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Atende -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Atende">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#UnidadeDeSaúde"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Pessoa"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Constitui -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Constitui">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#InstituiçãoGovernamental"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#UnidadeDeSaúde"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Consulta -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Consulta">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Pessoa"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#PessoaTemCarreira -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#PessoaTemCarreira">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Pessoa"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Cargo"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#PessoaTemEscalaDeTrabalho -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#PessoaTemEscalaDeTrabalho">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Pessoa"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Escala"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#TemCarreira -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#TemCarreira">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#UnidadeDeSaúde"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Cargo"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#HorarioDeAtendimento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#HorarioDeAtendimento">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Intervalo -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Intervalo">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#cpf -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#cpf">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#data_de_nascimento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#data_de_nascimento">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#descrição -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#descrição">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#latitude -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#latitude">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#longitude -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#longitude">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#nome -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#nome">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#sexo -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#sexo">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Administrador -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Administrador">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#EspecialistaEmSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AgenteComunitarioDeSaude -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AgenteComunitarioDeSaude">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#EmpregoComunitarioDoDistritoFederal"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AgenteDePortaria -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AgenteDePortaria">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AuxiliarDeSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AgenteDeVigilanciaAmbientalEmSaude -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AgenteDeVigilanciaAmbientalEmSaude">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#EmpregoComunitarioDoDistritoFederal"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AnalistaPoliticaPublicaGestaoGovernamental -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AnalistaPoliticaPublicaGestaoGovernamental">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#PoliticaPublicaGestaoGovernamental"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Arquiteto -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Arquiteto">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#EspecialistaEmSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AssistenteServicosGerais -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AssistenteServicosGerais">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AuxiliarDeSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AssistenteSocial -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AssistenteSocial">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#EspecialistaEmSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Atendimento -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Atendimento"/>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AuxiliarDeSaude -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AuxiliarDeSaude">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Cargo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AuxiliarEletroCardiografia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AuxiliarEletroCardiografia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AuxiliarDeSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AuxiliarOrtopediaEGesso -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AuxiliarOrtopediaEGesso">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AuxiliarDeSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AuxiliarPadioleiro -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AuxiliarPadioleiro">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AuxiliarDeSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AuxiliarRadiologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AuxiliarRadiologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AuxiliarDeSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Bibliotecario -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Bibliotecario">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#EspecialistaEmSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Cargo -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Cargo">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#nome"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#CentroDeSaúde -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#CentroDeSaúde">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#UnidadeDeSaúde"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#CirurgiaoDentista -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#CirurgiaoDentista">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Cargo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#EmpregoComunitarioDoDistritoFederal -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#EmpregoComunitarioDoDistritoFederal">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Cargo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Enfermeiro -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Enfermeiro">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Cargo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Escala -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Escala">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Intervalo"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#EspecialistaEmSaude -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#EspecialistaEmSaude">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Cargo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#FarmeceuticoBioquimicoFarmacia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#FarmeceuticoBioquimicoFarmacia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#EspecialistaEmSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Fisioterapeuta -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Fisioterapeuta">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#EspecialistaEmSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Homem -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Homem">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Pessoa"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Mulher"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Hospital -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Hospital">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#UnidadeDeSaúde"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#InstituiçãoGovernamental -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#InstituiçãoGovernamental"/>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Mulher -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Mulher">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Pessoa"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Cargo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoAcupuntura -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoAcupuntura">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoAlergiaEImunologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoAlergiaEImunologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoAnatomiaPatológica -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoAnatomiaPatológica">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoAnestesiologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoAnestesiologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoBroncoesofagologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoBroncoesofagologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCardiologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCardiologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCirurgiaCabecaEPescoco -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCirurgiaCabecaEPescoco">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCirurgiaGeral -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCirurgiaGeral">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCirurgiaOncologica -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCirurgiaOncologica">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCirurgiaPediátrica -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCirurgiaPediátrica">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCirurgiaPlástica -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCirurgiaPlástica">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCirurgiaToráxica -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCirurgiaToráxica">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCirurgiaVascularPeriferica -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCirurgiaVascularPeriferica">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCirurgiaVáscular -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCirurgiaVáscular">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCitologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCitologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCitopatologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoCitopatologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoClinicaMédica -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoClinicaMédica">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoClinicaMédicaQueimados -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoClinicaMédicaQueimados">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoDaFamiliaEComunidade -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoDaFamiliaEComunidade">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoDermatologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoDermatologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoEletromiografia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoEletromiografia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoEndocrinologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoEndocrinologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoGastroenterologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoGastroenterologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoGeneralista -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoGeneralista">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoGenéticaClinica -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoGenéticaClinica">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoGeriatra -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoGeriatra">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoGinecologistaEObstetricia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoGinecologistaEObstetricia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoHematologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoHematologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoHemeopatia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoHemeopatia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoHemoterapia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoHemoterapia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoInfectologista -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoInfectologista">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoMastologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoMastologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoMedicinaDoTrabalho -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoMedicinaDoTrabalho">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoMedicinaFisicaEReabilitacao -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoMedicinaFisicaEReabilitacao">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoMedicinaNuclear -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoMedicinaNuclear">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoNefrologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoNefrologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoNeunatologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoNeunatologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoNeurocirurgia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoNeurocirurgia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoNeurologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoNeurologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoNeurologiaPediatrica -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoNeurologiaPediatrica">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoOftalmologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoOftalmologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoOncologiaClinica -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoOncologiaClinica">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoOrtopediaETraumatologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoOrtopediaETraumatologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoOtorrinolaringologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoOtorrinolaringologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoOtorrinolaringologista -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoOtorrinolaringologista">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoPatologiaClinica -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoPatologiaClinica">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoPediatra -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoPediatra">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoPediatria -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoPediatria">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoPneumologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoPneumologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoProctologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoProctologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoProvab -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoProvab">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoPsiquiatria -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoPsiquiatria">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoRadiologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoRadiologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoRadiologista -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoRadiologista">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoRadioterapia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoRadioterapia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoReumatologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoReumatologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoSanitaria -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoSanitaria">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoTerapiaIntensivaAdulto -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoTerapiaIntensivaAdulto">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoTerapiaIntensivaPetriatrica -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoTerapiaIntensivaPetriatrica">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoTisiologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoTisiologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoUrologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#MédicoUrologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Nutricionista -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Nutricionista">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#EspecialistaEmSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Pessoa -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Pessoa">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#nome"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#cpf"/>
+                <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#data_de_nascimento"/>
+                <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#sexo"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#PoliticaPublicaGestaoGovernamental -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#PoliticaPublicaGestaoGovernamental">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Cargo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#PostoDeSaúdeRural -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#PostoDeSaúdeRural">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#UnidadeDeSaúde"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#PostoDeSaúdeUrbano -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#PostoDeSaúdeUrbano">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#UnidadeDeSaúde"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Psicologo -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Psicologo">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#EspecialistaEmSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#TecnicoAdministrativo -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#TecnicoAdministrativo">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#TecnicoEmSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#TecnicoEmEnfermangem -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#TecnicoEmEnfermangem">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#TecnicoEmSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#TecnicoEmSaude -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#TecnicoEmSaude">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Cargo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#TerapeutaOcupacional -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#TerapeutaOcupacional">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#EspecialistaEmSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#UnidadeDeSaúde -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#UnidadeDeSaúde">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#HorarioDeAtendimento"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#latitude"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#longitude"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#nome"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#UnidadeDeSaúdePrisional -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#UnidadeDeSaúdePrisional">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#UnidadeDeSaúde"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Atendimento"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Cargo"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Escala"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#InstituiçãoGovernamental"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Pessoa"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#UnidadeDeSaúde"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#AuxiliarDeSaude"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#CirurgiaoDentista"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#EmpregoComunitarioDoDistritoFederal"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Enfermeiro"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#EspecialistaEmSaude"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Médico"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#PoliticaPublicaGestaoGovernamental"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#TecnicoEmSaude"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#CentroDeSaúde"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#Hospital"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#PostoDeSaúdeRural"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#PostoDeSaúdeUrbano"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/carolina/ontologies/2018/6/saudeOntologia#UnidadeDeSaúdePrisional"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->
+

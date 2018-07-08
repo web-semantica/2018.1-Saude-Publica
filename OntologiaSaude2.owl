@@ -1,0 +1,393 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#"
+     xml:base="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#OfereceAtendimentoEm -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#OfereceAtendimentoEm">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeDeSaude"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Possui -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Possui">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Medico"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#atendeEm -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#atendeEm">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#empregaMedico"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Medico"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeDeSaude"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#empregaMedico -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#empregaMedico">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeDeSaude"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Medico"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#tem -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#tem">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pessoa"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Proficao"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#trabalhaPorEscala -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#trabalhaPorEscala">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Medico"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Escala"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#comeco -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#comeco">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Escala"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#cpf -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#cpf">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pessoa"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#dataNascimento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#dataNascimento">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pessoa"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#descricaco -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#descricaco">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Proficao"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#fim -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#fim">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Escala"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#latitude -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#latitude">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeDeSaude"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#longitude -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#longitude">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeDeSaude"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#nome -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#nome">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pessoa"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Proficao"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeDeSaude"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#sexo -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#sexo">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pessoa"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Cardiologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Cardiologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#ClinicaGeral -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#ClinicaGeral">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Escala -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Escala"/>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Ginecologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Ginecologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Homem -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Homem">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pessoa"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Mulher"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Hospital -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Hospital">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeDeSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Medico -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Medico">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Proficao"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Mulher -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Mulher">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pessoa"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Neurologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Neurologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Ortopedia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Ortopedia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pediatria -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pediatria">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pessoa -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pessoa"/>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Proficao -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Proficao"/>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeDeSaude -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeDeSaude"/>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadePrisional -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadePrisional">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeDeSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeRural -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeRural">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeDeSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeUrbana -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeUrbana">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeDeSaude"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Urologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Urologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Cardiologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#ClinicaGeral"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Ginecologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Neurologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Ortopedia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pediatria"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Urologia"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Escala"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pessoa"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Proficao"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeDeSaude"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Hospital"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadePrisional"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeRural"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeUrbana"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->
+

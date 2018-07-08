@@ -72,7 +72,7 @@
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pessoa"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Proficao"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Profissao"/>
     </owl:ObjectProperty>
     
 
@@ -133,7 +133,7 @@
 
     <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#descricaco">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Proficao"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Profissao"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     </owl:DatatypeProperty>
     
@@ -175,7 +175,7 @@
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pessoa"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Proficao"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Profissao"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeDeSaude"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     </owl:DatatypeProperty>
@@ -259,7 +259,7 @@
     <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Medico -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Medico">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Proficao"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Profissao"/>
     </owl:Class>
     
 
@@ -302,9 +302,9 @@
     
 
 
-    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Proficao -->
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Profissao -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Proficao"/>
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Profissao"/>
     
 
 
@@ -372,7 +372,7 @@
             <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Escala"/>
             <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
             <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pessoa"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Proficao"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Profissao"/>
             <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#UnidadeDeSaude"/>
         </owl:members>
     </rdf:Description>

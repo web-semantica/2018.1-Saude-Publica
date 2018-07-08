@@ -203,6 +203,14 @@
     
 
 
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Anestesiologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Anestesiologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Cardiologia -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Cardiologia">
@@ -211,9 +219,73 @@
     
 
 
-    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#ClinicaGeral -->
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#CirurgiaGeral -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#ClinicaGeral">
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#CirurgiaGeral">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#CirurgiaPlastica -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#CirurgiaPlastica">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#CirurgiaVascular -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#CirurgiaVascular">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Citologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Citologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Citopatologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Citopatologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#ClinicaMedica -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#ClinicaMedica">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Croncoesofagologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Croncoesofagologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Dermatologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Dermatologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Endocrinologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Endocrinologia">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
     </owl:Class>
     
@@ -231,9 +303,33 @@
     
 
 
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Geriatra -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Geriatra">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Ginecologia -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Ginecologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Hematologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Hematologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Hemeopatia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Hemeopatia">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
     </owl:Class>
     
@@ -256,6 +352,22 @@
     
 
 
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Infectologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Infectologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Mastologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Mastologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Medico -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Medico">
@@ -272,6 +384,22 @@
     
 
 
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Nefrologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Nefrologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Neurocirurgia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Neurocirurgia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Neurologia -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Neurologia">
@@ -280,9 +408,33 @@
     
 
 
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Oftamologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Oftamologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Oncologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Oncologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Ortopedia -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Ortopedia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Otorrinolaringologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Otorrinolaringologia">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
     </owl:Class>
     
@@ -302,9 +454,41 @@
     
 
 
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pneumologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pneumologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Proctologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Proctologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Profissao -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Profissao"/>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Radiologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Radiologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Reumatologia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Reumatologia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Especialidade"/>
+    </owl:Class>
     
 
 
@@ -357,13 +541,58 @@
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Anestesiologia"/>
             <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Cardiologia"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#ClinicaGeral"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#CirurgiaGeral"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#CirurgiaPlastica"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#CirurgiaVascular"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Citologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Citopatologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#ClinicaMedica"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Croncoesofagologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Dermatologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Endocrinologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Geriatra"/>
             <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Ginecologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Hematologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Hemeopatia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Infectologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Mastologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Nefrologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Neurocirurgia"/>
             <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Neurologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Oftamologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Oncologia"/>
             <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Ortopedia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Otorrinolaringologia"/>
             <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pediatria"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pneumologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Proctologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Radiologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Reumatologia"/>
             <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Urologia"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Anestesiologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Cardiologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#CirurgiaGeral"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#CirurgiaPlastica"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#CirurgiaVascular"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Citologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Citopatologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#ClinicaMedica"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Croncoesofagologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Dermatologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Endocrinologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Geriatra"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Ginecologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Hematologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Hemeopatia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Infectologia"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/geovannioliveiradejesus/ontologies/2018/6/untitled-ontology-28#Pediatria"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
